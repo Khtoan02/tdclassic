@@ -1,0 +1,953 @@
+/* Mobile Optimization CSS - TD Classic Theme */
+/* Font size: 2/3 của desktop, Layout: 2 cột cho sản phẩm và footer */
+
+/* ===== MOBILE TYPOGRAPHY (2/3 font size) ===== */
+@media (max-width: 768px) {
+  /* Base typography - 2/3 của desktop */
+  body {
+    font-size: 14px; /* 2/3 của 21px */
+    line-height: 1.4;
+  }
+
+  /* Headings - 2/3 của desktop */
+  h1 {
+    font-size: 1.67rem !important; /* 2/3 của 2.5rem */
+  }
+
+  h2 {
+    font-size: 1.33rem !important; /* 2/3 của 2rem */
+  }
+
+  h3 {
+    font-size: 1rem !important; /* 2/3 của 1.5rem */
+  }
+
+  h4 {
+    font-size: 0.83rem !important; /* 2/3 của 1.25rem */
+  }
+
+  h5 {
+    font-size: 0.75rem !important; /* 2/3 của 1.125rem */
+  }
+
+  h6 {
+    font-size: 0.67rem !important; /* 2/3 của 1rem */
+  }
+
+  /* Paragraphs and text */
+  p {
+    font-size: 0.93rem !important; /* 2/3 của 1.4rem */
+    margin-bottom: 0.67rem;
+  }
+
+  /* Links */
+  a {
+    font-size: 0.93rem !important;
+  }
+
+  /* Buttons */
+  .btn,
+  button,
+  input[type="submit"],
+  input[type="button"] {
+    font-size: 0.87rem !important; /* 2/3 của 1.3rem */
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* Navigation - chỉ áp dụng cho mobile, không ảnh hưởng đến header mới */
+  .navbar-nav .nav-link:not(.main-header .navbar-nav .nav-link) {
+    font-size: 0.87rem !important;
+  }
+
+  /* Form elements */
+  input,
+  textarea,
+  select {
+    font-size: 0.87rem !important;
+    padding: 0.4rem 0.6rem;
+  }
+
+  /* Labels */
+  label {
+    font-size: 0.8rem !important;
+  }
+
+  /* Small text */
+  .text-muted,
+  small {
+    font-size: 0.73rem !important;
+  }
+}
+
+/* ===== SMALL MOBILE TYPOGRAPHY (2/3 font size) ===== */
+@media (max-width: 480px) {
+  /* Even smaller for very small screens */
+  body {
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: 1.33rem !important; /* 2/3 của 2rem */
+  }
+
+  h2 {
+    font-size: 1.17rem !important; /* 2/3 của 1.75rem */
+  }
+
+  h3 {
+    font-size: 0.93rem !important; /* 2/3 của 1.4rem */
+  }
+
+  p {
+    font-size: 0.87rem !important;
+  }
+
+  .btn,
+  button {
+    font-size: 0.8rem !important;
+    padding: 0.33rem 0.67rem;
+  }
+}
+
+/* ===== PRODUCT GRID - 2 COLUMNS ===== */
+@media (max-width: 768px) {
+  /* Products grid - 2 columns - ALL PRODUCT GRIDS */
+  .products-container,
+  .woocommerce ul.products,
+  .products-grid .products-container,
+  .archive-product .products,
+  .page-san-pham .products-container,
+  .woocommerce .products,
+  .woocommerce ul.products,
+  .woocommerce .woocommerce-loop-product__title,
+  .products-grid,
+  .archive-product,
+  .page-san-pham,
+  .woocommerce .products,
+  .woocommerce .products-grid,
+  .woocommerce .archive-product,
+  .woocommerce .page-san-pham {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.67rem !important;
+  }
+
+  /* Force 2 columns for all product grids */
+  [class*="products-container"],
+  [class*="products-grid"],
+  [class*="woocommerce"] ul.products,
+  [class*="archive-product"] .products,
+  [class*="page-san-pham"] .products-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.67rem !important;
+  }
+
+  /* Product items */
+  .product-item,
+  .woocommerce ul.products li.product,
+  .products-grid .product-item,
+  .product-card,
+  .product-card-inner {
+    margin-bottom: 0.67rem;
+  }
+
+  /* Product titles */
+  .product-title,
+  .woocommerce ul.products li.product .woocommerce-loop-product__title,
+  .products-grid .product-title,
+  .product-title a,
+  .woocommerce-loop-product__title {
+    font-size: 0.87rem !important; /* 2/3 của 1.3rem */
+    line-height: 1.2;
+    margin-bottom: 0.33rem;
+  }
+
+  /* Product prices */
+  .product-price,
+  .woocommerce ul.products li.product .price,
+  .products-grid .product-price,
+  .price {
+    font-size: 0.8rem !important; /* 2/3 của 1.2rem */
+  }
+
+  /* Product images */
+  .product-image img,
+  .woocommerce ul.products li.product img,
+  .product-image img {
+    max-height: 120px;
+    object-fit: cover;
+  }
+
+  /* Product cards */
+  .product-card,
+  .product-card-inner {
+    padding: 0.67rem;
+  }
+
+  /* Product meta */
+  .product-meta,
+  .meta-item {
+    font-size: 0.73rem !important;
+  }
+
+  /* Product buttons */
+  .btn-view-details,
+  .btn-share,
+  .woocommerce .button {
+    font-size: 0.8rem !important;
+    padding: 0.33rem 0.67rem;
+  }
+}
+
+/* ===== FOOTER LAYOUT - 2 COLUMNS ===== */
+@media (max-width: 768px) {
+  /* Footer main layout */
+  .footer-content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Footer accordions - 2 columns instead of 3 */
+  .footer-accordions {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Footer accordion items */
+  .footer-item {
+    margin-bottom: 1rem;
+  }
+
+  .footer-item-title {
+    font-size: 0.87rem !important; /* 2/3 của 1.3rem */
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.33rem;
+  }
+
+  .footer-links a {
+    font-size: 0.73rem !important; /* 2/3 của 1.1rem */
+  }
+
+  /* Footer right */
+  .footer-right {
+    width: 100%;
+  }
+
+  /* Newsletter form */
+  .newsletter-form input {
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .newsletter-btn {
+    font-size: 0.8rem !important;
+    padding: 0.4rem;
+  }
+
+  /* Company info */
+  .company-info p,
+  .company-info li {
+    font-size: 0.73rem !important;
+    margin-bottom: 0.33rem;
+  }
+
+  /* Social links */
+  .social-link {
+    font-size: 1rem !important;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  /* Footer main padding */
+  .footer-main {
+    padding: 2rem 0 !important;
+  }
+}
+
+/* ===== HEADER MOBILE OPTIMIZATION ===== */
+@media (max-width: 768px) {
+  /* Header brand - chỉ áp dụng cho header cũ, không ảnh hưởng đến main-header */
+  .header-left .navbar-brand:not(.main-header .navbar-brand) {
+    font-size: 1.2rem !important; /* 2/3 của 1.8rem */
+  }
+
+  /* Navigation - chỉ áp dụng cho mobile, không ảnh hưởng đến header mới */
+  .navbar-nav .nav-link:not(.main-header .navbar-nav .nav-link) {
+    padding: 0.33rem 0.5rem;
+  }
+
+  /* Ẩn navbar-toggler trên mobile */
+  .navbar-toggler {
+    display: none !important;
+  }
+
+  /* Hero section */
+  .hero-section h1 {
+    font-size: 1.33rem !important; /* 2/3 của 2rem */
+  }
+
+  .hero-section p {
+    font-size: 0.67rem !important; /* 2/3 của 1rem */
+  }
+
+  /* Section titles */
+  .section-title,
+  .section-header h2 {
+    font-size: 1.33rem !important; /* 2/3 của 2rem */
+  }
+}
+
+/* ===== FORM AND INPUT OPTIMIZATION ===== */
+@media (max-width: 768px) {
+  /* Form spacing */
+  .form-group {
+    margin-bottom: 0.67rem;
+  }
+
+  /* Input fields */
+  .form-control,
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 0.87rem !important;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.67rem;
+  }
+
+  /* Form labels */
+  .form-label,
+  label {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.33rem;
+  }
+
+  /* Form buttons */
+  .form-submit,
+  .submit-btn {
+    font-size: 0.87rem !important;
+    padding: 0.4rem 1rem;
+    width: 100%;
+  }
+}
+
+/* ===== SPACING OPTIMIZATION ===== */
+@media (max-width: 768px) {
+  /* Reduce margins and padding */
+  .container {
+    padding-left: 0.67rem;
+    padding-right: 0.67rem;
+  }
+
+  .section {
+    padding: 1.33rem 0;
+  }
+
+  .py-5 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .my-5 {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  /* Card spacing */
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .card-body {
+    padding: 0.67rem;
+  }
+
+  /* List spacing */
+  ul,
+  ol {
+    margin-bottom: 0.67rem;
+    padding-left: 1.33rem;
+  }
+
+  li {
+    margin-bottom: 0.33rem;
+  }
+}
+
+/* ===== TABLE MOBILE OPTIMIZATION ===== */
+@media (max-width: 768px) {
+  /* Responsive tables */
+  table {
+    font-size: 0.73rem !important;
+  }
+
+  th,
+  td {
+    padding: 0.33rem 0.5rem;
+  }
+
+  /* Stack table on mobile */
+  .table-responsive {
+    overflow-x: auto;
+  }
+}
+
+/* ===== ICON AND IMAGE OPTIMIZATION ===== */
+@media (max-width: 768px) {
+  /* Icons */
+  .icon {
+    font-size: 1rem !important;
+    width: 1.33rem;
+    height: 1.33rem;
+  }
+
+  /* Small icons */
+  .icon-sm {
+    font-size: 0.8rem !important;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Large icons */
+  .icon-lg {
+    font-size: 1.33rem !important;
+    width: 1.67rem;
+    height: 1.67rem;
+  }
+}
+
+/* ===== UTILITY CLASSES FOR MOBILE ===== */
+@media (max-width: 768px) {
+  /* Text sizes */
+  .text-sm {
+    font-size: 0.73rem !important;
+  }
+
+  .text-md {
+    font-size: 0.87rem !important;
+  }
+
+  .text-lg {
+    font-size: 1rem !important;
+  }
+
+  /* Spacing utilities */
+  .p-1 {
+    padding: 0.33rem !important;
+  }
+  .p-2 {
+    padding: 0.67rem !important;
+  }
+  .p-3 {
+    padding: 1rem !important;
+  }
+  .p-4 {
+    padding: 1.33rem !important;
+  }
+  .p-5 {
+    padding: 1.67rem !important;
+  }
+
+  .m-1 {
+    margin: 0.33rem !important;
+  }
+  .m-2 {
+    margin: 0.67rem !important;
+  }
+  .m-3 {
+    margin: 1rem !important;
+  }
+  .m-4 {
+    margin: 1.33rem !important;
+  }
+  .m-5 {
+    margin: 1.67rem !important;
+  }
+}
+
+/* ===== WOOCOMMERCE SPECIFIC MOBILE OPTIMIZATION ===== */
+@media (max-width: 768px) {
+  /* WooCommerce product grid */
+  .woocommerce ul.products {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.67rem !important;
+  }
+
+  /* WooCommerce product titles */
+  .woocommerce ul.products li.product .woocommerce-loop-product__title {
+    font-size: 0.87rem !important;
+    line-height: 1.2;
+  }
+
+  /* WooCommerce prices */
+  .woocommerce ul.products li.product .price {
+    font-size: 0.8rem !important;
+  }
+
+  /* WooCommerce buttons */
+  .woocommerce .button,
+  .woocommerce button.button,
+  .woocommerce input.button {
+    font-size: 0.87rem !important;
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* WooCommerce forms */
+  .woocommerce form .form-row input.input-text,
+  .woocommerce form .form-row textarea {
+    font-size: 0.87rem !important;
+    padding: 0.4rem 0.6rem;
+  }
+
+  /* WooCommerce single product */
+  .woocommerce .product .summary h1.product_title {
+    font-size: 1.67rem !important; /* 2/3 của 2.5rem */
+  }
+
+  .woocommerce .product .summary .price {
+    font-size: 1.33rem !important; /* 2/3 của 2rem */
+  }
+
+  .woocommerce
+    .product
+    .summary
+    .woocommerce-product-details__short-description {
+    font-size: 0.87rem !important;
+  }
+
+  /* WooCommerce cart */
+  .woocommerce .cart .cart_item td {
+    font-size: 0.87rem !important;
+  }
+
+  .woocommerce .cart .cart_item .product-name a {
+    font-size: 0.87rem !important;
+  }
+
+  /* WooCommerce checkout */
+  .woocommerce-checkout .form-row label {
+    font-size: 0.8rem !important;
+  }
+
+  .woocommerce-checkout .form-row input,
+  .woocommerce-checkout .form-row textarea {
+    font-size: 0.87rem !important;
+  }
+
+  /* WooCommerce account */
+  .woocommerce-account .woocommerce-MyAccount-navigation ul li a {
+    font-size: 0.87rem !important;
+  }
+
+  .woocommerce-account .woocommerce-MyAccount-content {
+    font-size: 0.87rem !important;
+  }
+}
+
+/* ===== CUSTOM COMPONENT MOBILE OPTIMIZATION ===== */
+@media (max-width: 768px) {
+  /* Hero sections */
+  .hero-title {
+    font-size: 1.67rem !important; /* 2/3 của 2.5rem */
+  }
+
+  .hero-subtitle {
+    font-size: 0.75rem !important; /* 2/3 của 1.125rem */
+  }
+
+  /* Feature slides */
+  .feature-slide h3 {
+    font-size: 0.83rem !important; /* 2/3 của 1.25rem */
+  }
+
+  .feature-slide p {
+    font-size: 0.58rem !important; /* 2/3 của 0.875rem */
+  }
+
+  /* CTA sections */
+  .products-cta h2 {
+    font-size: 1.33rem !important; /* 2/3 của 2rem */
+  }
+
+  /* Filter elements */
+  .filter-tabs .filter-tab {
+    font-size: 0.8rem !important;
+    padding: 0.33rem 0.67rem;
+  }
+
+  .filter-search input {
+    font-size: 0.8rem !important;
+  }
+
+  /* Section headers */
+  .section-header h2,
+  .section-title,
+  .title-text {
+    font-size: 1.33rem !important; /* 2/3 của 2rem */
+  }
+
+  /* Cards and boxes */
+  .card-title,
+  .box-title {
+    font-size: 1rem !important; /* 2/3 của 1.5rem */
+  }
+
+  .card-text,
+  .box-text {
+    font-size: 0.87rem !important; /* 2/3 của 1.3rem */
+  }
+
+  /* Lists and navigation */
+  .nav-link,
+  .menu-item a,
+  .footer-links a,
+  .sidebar a {
+    font-size: 0.87rem !important;
+  }
+
+  /* Sidebar widgets */
+  .widget-title {
+    font-size: 1rem !important; /* 2/3 của 1.5rem */
+  }
+
+  .widget-content {
+    font-size: 0.87rem !important;
+  }
+
+  /* Comments */
+  .comment-author {
+    font-size: 0.87rem !important;
+  }
+
+  .comment-content {
+    font-size: 0.8rem !important;
+  }
+
+  .comment-date {
+    font-size: 0.73rem !important;
+  }
+
+  /* Breadcrumbs */
+  .breadcrumb {
+    font-size: 0.73rem !important;
+  }
+
+  .breadcrumb-item {
+    font-size: 0.73rem !important;
+  }
+
+  /* Pagination */
+  .pagination .page-link {
+    font-size: 0.87rem !important;
+    padding: 0.33rem 0.67rem;
+  }
+
+  /* Alerts and notifications */
+  .alert {
+    font-size: 0.87rem !important;
+    padding: 0.67rem;
+  }
+
+  .alert-heading {
+    font-size: 1rem !important;
+  }
+
+  /* Tooltips and popovers */
+  .tooltip {
+    font-size: 0.73rem !important;
+  }
+
+  .popover {
+    font-size: 0.87rem !important;
+  }
+
+  .popover-title {
+    font-size: 1rem !important;
+  }
+
+  /* Modal dialogs */
+  .modal-title {
+    font-size: 1.33rem !important; /* 2/3 của 2rem */
+  }
+
+  .modal-body {
+    font-size: 0.87rem !important;
+  }
+
+  .modal-footer .btn {
+    font-size: 0.87rem !important;
+  }
+}
+
+/* ===== PRINT OPTIMIZATION ===== */
+@media print {
+  /* Ensure readable font sizes for printing */
+  body {
+    font-size: 12pt;
+  }
+
+  h1 {
+    font-size: 18pt;
+  }
+  h2 {
+    font-size: 16pt;
+  }
+  h3 {
+    font-size: 14pt;
+  }
+  h4 {
+    font-size: 12pt;
+  }
+  h5 {
+    font-size: 11pt;
+  }
+  h6 {
+    font-size: 10pt;
+  }
+}
+
+/* ===== ADDITIONAL MOBILE OPTIMIZATIONS ===== */
+@media (max-width: 768px) {
+  /* Force all text elements to use mobile font sizes */
+  * {
+    font-size: inherit;
+  }
+
+  /* Ensure all headings use mobile sizes */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 13px !important;
+  }
+
+  /* Ensure all paragraphs use mobile sizes */
+  p,
+  div,
+  span,
+  li,
+  td,
+  th {
+    font-size: 13px !important;
+  }
+
+  /* Ensure all buttons use mobile sizes */
+  button,
+  .btn,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    font-size: 13px !important;
+  }
+
+  /* Ensure all form elements use mobile sizes */
+  input,
+  textarea,
+  select,
+  label {
+    font-size: 13px !important;
+  }
+
+  /* Ensure all links use mobile sizes */
+  a {
+    font-size: 13px !important;
+  }
+
+  /* Additional specific elements */
+  .site-title,
+  .site-description {
+    font-size: 1.2rem !important; /* 2/3 của 1.8rem */
+  }
+
+  .navbar-brand:not(.main-header .navbar-brand) {
+    font-size: 1.2rem !important;
+  }
+
+  .dropdown-menu {
+    font-size: 0.87rem !important;
+  }
+
+  .dropdown-item {
+    font-size: 0.87rem !important;
+    padding: 0.33rem 1rem;
+  }
+
+  /* Tables */
+  .table th,
+  .table td {
+    font-size: 0.73rem !important;
+    padding: 0.33rem 0.5rem;
+  }
+
+  /* Code blocks */
+  code,
+  pre {
+    font-size: 0.73rem !important;
+  }
+
+  /* Blockquotes */
+  blockquote {
+    font-size: 0.87rem !important;
+    padding: 0.67rem;
+    margin: 0.67rem 0;
+  }
+
+  /* Definition lists */
+  dl dt {
+    font-size: 0.87rem !important;
+    font-weight: 600;
+  }
+
+  dl dd {
+    font-size: 0.8rem !important;
+  }
+
+  /* Address */
+  address {
+    font-size: 0.87rem !important;
+  }
+
+  /* Time */
+  time {
+    font-size: 0.73rem !important;
+  }
+
+  /* Mark */
+  mark {
+    font-size: 0.87rem !important;
+  }
+
+  /* Small */
+  small {
+    font-size: 0.67rem !important;
+  }
+
+  /* Strong and em */
+  strong,
+  b {
+    font-size: 13px !important;
+  }
+
+  em,
+  i {
+    font-size: 13px !important;
+  }
+
+  /* Abbreviations */
+  abbr[title] {
+    font-size: 0.87rem !important;
+  }
+
+  /* Citations */
+  cite {
+    font-size: 0.87rem !important;
+  }
+
+  /* Variables */
+  var {
+    font-size: 0.87rem !important;
+  }
+
+  /* Sample output */
+  samp {
+    font-size: 0.87rem !important;
+  }
+
+  /* Keyboard input */
+  kbd {
+    font-size: 0.8rem !important;
+  }
+
+  /* Subscript and superscript */
+  sub,
+  sup {
+    font-size: 0.67rem !important;
+  }
+
+  /* Custom theme elements */
+  .hero-section,
+  .hero-content,
+  .hero-text {
+    font-size: 13px !important;
+  }
+
+  .section-header,
+  .section-content,
+  .section-footer {
+    font-size: 13px !important;
+  }
+
+  .content-area,
+  .sidebar,
+  .main-content {
+    font-size: 13px !important;
+  }
+
+  /* WordPress specific elements */
+  .wp-block-heading h1,
+  .wp-block-heading h2,
+  .wp-block-heading h3,
+  .wp-block-heading h4,
+  .wp-block-heading h5,
+  .wp-block-heading h6 {
+    font-size: 13px !important;
+  }
+
+  .wp-block-paragraph {
+    font-size: 13px !important;
+  }
+
+  .wp-block-button .wp-block-button__link {
+    font-size: 13px !important;
+  }
+
+  .wp-block-quote {
+    font-size: 13px !important;
+  }
+
+  .wp-block-code {
+    font-size: 13px !important;
+  }
+
+  .wp-block-table {
+    font-size: 13px !important;
+  }
+
+  .wp-block-list {
+    font-size: 13px !important;
+  }
+
+  /* Ensure all custom classes use mobile font sizes */
+  [class*="title"],
+  [class*="heading"],
+  [class*="text"],
+  [class*="content"],
+  [class*="description"] {
+    font-size: 13px !important;
+  }
+
+  /* Force all elements to use mobile font sizes with !important */
+  * {
+    font-size: 13px !important;
+  }
+
+  /* Override any inline styles */
+  [style*="font-size"] {
+    font-size: 13px !important;
+  }
+
+  /* Override any CSS variables */
+  :root {
+    --font-size-base: 14px !important;
+    --font-size-lg: 16px !important;
+    --font-size-sm: 12px !important;
+  }
+}

@@ -1,0 +1,368 @@
+/* Product Image Square CSS - TD Classic Theme */
+/* Đảm bảo tất cả hình ảnh sản phẩm có tỉ lệ 1:1 (hình vuông) */
+
+/* ===== PRODUCT IMAGE SQUARE RATIO ===== */
+
+/* Tất cả hình ảnh sản phẩm chính */
+.product-image,
+.product-thumbnail,
+.product-img,
+.product-picture,
+.product-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1 !important;
+  overflow: hidden;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+/* Hình ảnh bên trong container */
+.product-image img,
+.product-thumbnail img,
+.product-img img,
+.product-picture img,
+.product-photo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transition: transform 0.3s ease;
+  will-change: transform;
+}
+
+/* Hover effect cho hình ảnh */
+.product-image:hover img,
+.product-thumbnail:hover img,
+.product-img:hover img,
+.product-picture:hover img,
+.product-photo:hover img {
+  transform: scale(1.05);
+}
+
+/* ===== WOOCOMMERCE SPECIFIC ===== */
+
+/* WooCommerce product images */
+.woocommerce ul.products li.product .product-image,
+.woocommerce ul.products li.product .product-thumbnail,
+.woocommerce ul.products li.product .attachment-woocommerce_thumbnail,
+.woocommerce ul.products li.product .woocommerce-loop-product__thumbnail {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.woocommerce ul.products li.product .product-image img,
+.woocommerce ul.products li.product .product-thumbnail img,
+.woocommerce ul.products li.product .attachment-woocommerce_thumbnail,
+.woocommerce ul.products li.product .woocommerce-loop-product__thumbnail {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* WooCommerce single product gallery */
+.woocommerce .woocommerce-product-gallery .woocommerce-product-gallery__image,
+.woocommerce .woocommerce-product-gallery .flex-viewport,
+.woocommerce
+  .woocommerce-product-gallery
+  .woocommerce-product-gallery__wrapper {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.woocommerce
+  .woocommerce-product-gallery
+  .woocommerce-product-gallery__image
+  img,
+.woocommerce .woocommerce-product-gallery .flex-viewport img,
+.woocommerce
+  .woocommerce-product-gallery
+  .woocommerce-product-gallery__wrapper
+  img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* WooCommerce cart images */
+.woocommerce .cart .cart_item .product-thumbnail,
+.woocommerce .cart .cart_item .product-thumbnail img {
+  aspect-ratio: 1/1 !important;
+  width: 60px;
+  height: 60px;
+  object-fit: cover !important;
+}
+
+/* ===== PRODUCT GRID LAYOUTS ===== */
+
+/* Products grid */
+.products-container .product-image,
+.products-grid .product-image,
+.archive-product .product-image,
+.page-san-pham .product-image {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.products-container .product-image img,
+.products-grid .product-image img,
+.archive-product .product-image img,
+.page-san-pham .product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* Product cards */
+.product-card .product-image,
+.product-item .product-image,
+.product-box .product-image {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.product-card .product-image img,
+.product-item .product-image img,
+.product-box .product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ===== CAROUSEL AND SLIDER ===== */
+
+/* Product carousels */
+.products-carousel .product-image,
+.news-carousel .product-image,
+.tdc-product-grid .product-image {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.products-carousel .product-image img,
+.news-carousel .product-image img,
+.tdc-product-grid .product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ===== RELATED PRODUCTS ===== */
+
+/* Related products section */
+.related-products .product-image,
+.other-products-section .product-image,
+.cross-sells .product-image,
+.upsells .product-image {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.related-products .product-image img,
+.other-products-section .product-image img,
+.cross-sells .product-image img,
+.upsells .product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ===== CATEGORY PAGES ===== */
+
+/* Product category pages */
+.product-category .product-image,
+.taxonomy-product_cat .product-image,
+.taxonomy-product_category .product-image {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.product-category .product-image img,
+.taxonomy-product_cat .product-image img,
+.taxonomy-product_category .product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ===== SEARCH RESULTS ===== */
+
+/* Search results */
+.search-results .product-image,
+.search .product-image {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.search-results .product-image img,
+.search .product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ===== FRONT PAGE PRODUCTS ===== */
+
+/* Front page product sections */
+.front-page-products .product-image,
+.hero-products .product-image,
+.featured-products .product-image {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.front-page-products .product-image img,
+.hero-products .product-image img,
+.featured-products .product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .product-image,
+  .product-thumbnail,
+  .product-img,
+  .product-picture,
+  .product-photo {
+    aspect-ratio: 1/1 !important;
+    width: 100%;
+    max-height: 200px;
+  }
+
+  .product-image img,
+  .product-thumbnail img,
+  .product-img img,
+  .product-picture img,
+  .product-photo img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .product-image,
+  .product-thumbnail,
+  .product-img,
+  .product-picture,
+  .product-photo {
+    aspect-ratio: 1/1 !important;
+    width: 100%;
+    max-height: 150px;
+  }
+}
+
+/* ===== PLACEHOLDER IMAGES ===== */
+
+/* Product placeholder when no image */
+.product-image:empty::before,
+.product-thumbnail:empty::before,
+.product-img:empty::before,
+.product-picture:empty::before,
+.product-photo:empty::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #f8f9fa;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f9fa"/><text x="50" y="50" font-family="Arial" font-size="12" fill="%23999" text-anchor="middle" dy=".3em">No Image</text></svg>');
+  background-size: cover;
+  background-position: center;
+  aspect-ratio: 1/1;
+}
+
+/* ===== FORCE SQUARE RATIO ===== */
+
+/* Override any conflicting CSS */
+[class*="product"][class*="image"],
+[class*="product"][class*="thumbnail"],
+[class*="product"][class*="img"] {
+  aspect-ratio: 1/1 !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+[class*="product"][class*="image"] img,
+[class*="product"][class*="thumbnail"] img,
+[class*="product"][class*="img"] img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ===== WOOCOMMERCE BLOCKS ===== */
+
+/* WooCommerce blocks */
+.wc-block-grid__product-image,
+.wc-block-components-product-image {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.wc-block-grid__product-image img,
+.wc-block-components-product-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ===== CUSTOM THEME ELEMENTS ===== */
+
+/* Custom theme product elements */
+.tdc-product,
+.tdc-product-item,
+.tdc-product-card {
+  aspect-ratio: 1/1 !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+.tdc-product img,
+.tdc-product-item img,
+.tdc-product-card img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ===== PRINT OPTIMIZATION ===== */
+
+@media print {
+  .product-image,
+  .product-thumbnail,
+  .product-img,
+  .product-picture,
+  .product-photo {
+    aspect-ratio: 1/1 !important;
+    width: 100px !important;
+    height: 100px !important;
+    page-break-inside: avoid;
+  }
+}

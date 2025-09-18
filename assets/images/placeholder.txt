@@ -1,0 +1,46 @@
+Thư mục này dành cho hình ảnh trang chủ TD Classic
+
+Cần chuẩn bị các hình ảnh sau:
+
+HERO SLIDESHOW:
+- hero-slide-1.jpg (1920x1080)
+- hero-slide-2.jpg (1920x1080)
+- hero-slide-3.jpg (1920x1080)
+
+DANH MỤC SẢN PHẨM:
+- category-dsp.jpg (400x300)
+- category-amplifier.jpg (400x300)
+- category-speakers.jpg (400x300)
+- category-microphone.jpg (400x300)
+- category-mixer.jpg (400x300)
+- category-accessories.jpg (400x300)
+
+DỰ ÁN:
+- project-sample-1.jpg (600x400)
+- project-sample-2.jpg (600x400)
+- project-sample-3.jpg (600x400)
+
+GIẢI PHÁP:
+- solution-ktv.jpg (600x400)
+- solution-conference.jpg (600x400)
+- solution-event.jpg (600x400)
+
+ĐỐI TÁC:
+- partner-berase.png (200x100)
+- partner-yamaha.png (200x100)
+- partner-jbl.png (200x100)
+- partner-shure.png (200x100)
+- partner-crown.png (200x100)
+- partner-sennheiser.png (200x100)
+
+CHỨNG NHẬN:
+- cert-iso.png (150x150)
+- cert-ce.png (150x150)
+- cert-quality.png (150x150)
+
+TIN TỨC:
+- news-sample-1.jpg (400x250)
+- news-sample-2.jpg (400x250)
+- news-sample-3.jpg (400x250)
+
+Hiện tại đang dùng hình ảnh mẫu từ Unsplash làm placeholder. 
