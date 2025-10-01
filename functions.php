@@ -1690,6 +1690,102 @@ function tdclassic_display_email($echo = true) {
 }
 
 /**
+ * Company Profile (Hồ sơ năng lực) settings and helpers
+ */
+
+// Add Company Profile PDF setting to Settings → General
+function tdclassic_add_company_profile_settings() {
+    add_settings_section(
+        'tdclassic_company_profile_section',
+        __('Hồ sơ năng lực', 'tdclassic'),
+        function() {
+            echo '<p>' . __('Cấu hình file PDF hồ sơ năng lực để hiển thị trên trang công khai.', 'tdclassic') . '</p>';
+        },
+        'general'
+    );
+
+    add_settings_field(
+        'tdclassic_company_profile_pdf',
+        __('File PDF hồ sơ năng lực', 'tdclassic'),
+        'tdclassic_company_profile_pdf_callback',
+        'general',
+        'tdclassic_company_profile_section'
+    );
+
+    register_setting('general', 'tdclassic_company_profile_pdf');
+}
+add_action('admin_init', 'tdclassic_add_company_profile_settings');
+
+// Render input + select button
+function tdclassic_company_profile_pdf_callback() {
+    $pdf_url = esc_url(get_option('tdclassic_company_profile_pdf', ''));
+    echo '<input type="url" id="tdclassic_company_profile_pdf" name="tdclassic_company_profile_pdf" value="' . $pdf_url . '" class="regular-text" placeholder="https://.../ho-so-nang-luc.pdf" />';
+    echo ' <button type="button" class="button" id="tdclassic_select_company_profile_pdf">' . __('Chọn file', 'tdclassic') . '</button>';
+    echo '<p class="description">' . __('Chọn hoặc dán URL file PDF. Sau khi lưu, trang Hồ sơ năng lực sẽ hiển thị tài liệu này.', 'tdclassic') . '</p>';
+    ?>
+    <script>
+    (function($){
+        $(document).on('click', '#tdclassic_select_company_profile_pdf', function(e){
+            e.preventDefault();
+            if (typeof wp === 'undefined' || !wp.media) { return; }
+            const frame = wp.media({
+                title: '<?php echo esc_js(__('Chọn file PDF hồ sơ năng lực', 'tdclassic')); ?>',
+                library: { type: 'application/pdf' },
+                button: { text: '<?php echo esc_js(__('Chọn', 'tdclassic')); ?>' },
+                multiple: false
+            });
+            frame.on('select', function(){
+                const attachment = frame.state().get('selection').first().toJSON();
+                if (attachment && attachment.url) {
+                    $('#tdclassic_company_profile_pdf').val(attachment.url);
+                }
+            });
+            frame.open();
+        });
+    })(jQuery);
+    </script>
+    <?php
+}
+
+// Ensure media scripts available in admin
+function tdclassic_admin_enqueue_media($hook) {
+    if ($hook === 'options-general.php') {
+        wp_enqueue_media();
+    }
+}
+add_action('admin_enqueue_scripts', 'tdclassic_admin_enqueue_media');
+
+// Helper to get Company Profile PDF URL
+function tdclassic_get_company_profile_pdf_url() {
+    return esc_url(get_option('tdclassic_company_profile_pdf', ''));
+}
+
+// Shortcode to display the embedded Company Profile PDF
+function tdclassic_company_profile_shortcode($atts) {
+    $pdf_url = tdclassic_get_company_profile_pdf_url();
+    if (empty($pdf_url)) {
+        return '<div class="alert alert-warning" role="alert">' . __('Chưa cấu hình file PDF hồ sơ năng lực. Vui lòng vào Settings → General để thiết lập.', 'tdclassic') . '</div>';
+    }
+    $download = '<p class="mt-3"><a class="btn btn-dark" href="' . esc_url($pdf_url) . '" target="_blank" rel="noopener">' . __('Tải về PDF', 'tdclassic') . '</a></p>';
+    $embed = '<div class="container my-4"><div class="ratio ratio-4x3"><iframe src="' . esc_url($pdf_url) . '#view=fitH" style="border:0;" loading="lazy" allowfullscreen></iframe></div>' . $download . '</div>';
+    return $embed;
+}
+add_shortcode('tdclassic_company_profile', 'tdclassic_company_profile_shortcode');
+
+// Enqueue Company Profile CSS only when using the Company Profile page template
+function tdclassic_enqueue_company_profile_css() {
+    if (is_page_template('page-ho-so-nang-luc.php')) {
+        wp_enqueue_style(
+            'tdclassic-company-profile',
+            get_template_directory_uri() . '/assets/css/company-profile.css',
+            array('tdclassic-style'),
+            '1.0.0'
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'tdclassic_enqueue_company_profile_css');
+
+/**
  * Project helpers
  */
 function tdclassic_get_project_thumb_url($post_id = null, $size = 'project-thumb') {

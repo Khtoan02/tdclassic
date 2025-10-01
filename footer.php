@@ -105,6 +105,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Chứng chỉ -->
+                            <div class="footer-item">
+                                <div class="footer-item-header" style="gap: 4px;">
+                                    <h3 class="footer-item-title" style="color: #fff; font-size: 1rem; font-weight: 600; margin: 0;">Chứng chỉ Website</h3>
+                                    <svg class="footer-item-arrow" viewBox="0 0 24 24" stroke="currentColor" fill="none" style="width: 18px; height: 18px; color: #888;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 15L12 9L18 15"></path>
+                                    </svg>
+                                </div>
+                                <div class="footer-item-content" style="padding: 0; margin: 0;">
+                                    <div class="footer-certificates" style="display: flex; gap: 8px; justify-content: flex-start; align-items: center; margin: 0;">
+                                        <a href="//www.dmca.com/Protection/Status.aspx?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" title="DMCA.com Protection Status" class="dmca-badge" style="display: flex; align-items: center; justify-content: center; background: #222; border-radius: 6px; padding: 2px 4px;">
+                                            <img src="https://images.dmca.com/Badges/DMCA_badge_grn_60w.png?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" alt="DMCA.com Protection Status" style="width: 38px; height: 38px; object-fit: contain; display: block;" />
+                                        </a>
+                                        <a href="/" title="Nói không với hàng giả" class="dmca-badge" style="display: flex; align-items: center; justify-content: center; background: #222; border-radius: 6px; padding: 2px 4px;">
+                                            <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" style="width: 38px; height: 38px; object-fit: contain; display: block;" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 

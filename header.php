@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
+    <meta name="google-site-verification" content="35TfiXUHMlaZi3kdFlm-4Zg0SJIPBriGjPDah-BkYmo" />
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
@@ -26,18 +27,14 @@
                     <span><?php echo esc_html(tdclassic_get_company_email()); ?></span>
                 </a>
             </div>
-            <div class="social-links">
-                <a href="#" class="social-link" title="Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-link" title="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="#" class="social-link" title="YouTube">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="#" class="social-link" title="Zalo">
-                    <i class="fab fa-whatsapp"></i>
+            <div class="top-actions">
+                <?php
+                $profile_page = get_page_by_path('ho-so-nang-luc');
+                $profile_url = $profile_page ? get_permalink($profile_page->ID) : home_url('/ho-so-nang-luc');
+                ?>
+                <a href="<?php echo esc_url($profile_url); ?>" class="btn-profile" title="Hồ sơ năng lực">
+                    <i class="fas fa-file"></i>
+                    <span class="d-none d-sm-inline ms-1">Hồ sơ năng lực</span>
                 </a>
             </div>
         </div>

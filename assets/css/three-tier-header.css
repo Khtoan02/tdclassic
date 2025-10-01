@@ -51,30 +51,56 @@
   color: #666;
 }
 
-.top-header .social-links {
+.top-header .top-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: flex-end;
 }
 
-.top-header .social-links .social-link {
-  color: #ccc;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  width: 2rem;
-  height: 2rem;
-  display: flex;
+/* Remove legacy social styles entirely */
+
+/* Removed legacy social hover styles */
+
+/* Company Profile button - redesigned */
+.top-header .btn-profile {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background-color: #333;
-}
-
-.top-header .social-links .social-link:hover {
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: #000;
+  border: 1px solid #555;
   color: #fff;
-  background-color: #555;
-  transform: translateY(-2px);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.top-header .btn-profile:hover {
+  background: #111;
+  border-color: #777;
+}
+.top-header .btn-profile i {
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+/* Ensure the container keeps left info and right action aligned */
+.top-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Tidy spacing on small screens */
+@media (max-width: 767.98px) {
+  .top-header .container {
+    gap: 0.5rem;
+  }
+  .top-header .btn-profile span {
+    display: none; /* icon-only on very small screens */
+  }
 }
 
 /* ===== MAIN HEADER - Logo và Navigation ===== */
