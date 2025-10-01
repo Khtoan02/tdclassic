@@ -8,46 +8,47 @@
                     <!-- 404 Animation Container -->
                     <div class="error-animation">
                         <div class="error-gif-container">
-                            <!-- Placeholder cho GIF 404 - bạn có thể thay thế bằng URL GIF thực tế -->
+                            <!-- Placeholder TD Classic style -->
                             <div class="error-gif-placeholder">
                                 <div class="error-number">404</div>
+                                <div class="td-classic-icon">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/td-classic-icon.svg" alt="TD Classic" width="48" height="48" />
+                                </div>
                                 <div class="error-animation-dots">
                                     <span class="dot"></span>
                                     <span class="dot"></span>
                                     <span class="dot"></span>
                                 </div>
                             </div>
-                            <!-- Uncomment và thay thế URL GIF thực tế -->
-                            <!-- <img src="<?php echo get_template_directory_uri(); ?>/assets/images/404-animation.gif" alt="404 Animation" class="error-gif"> -->
                         </div>
                     </div>
 
                     <!-- Error Message -->
                     <div class="error-message">
-                        <h1 class="error-title">Rất tiếc, không tìm thấy trang</h1>
+                        <h1 class="error-title">Không tìm thấy trang</h1>
                         <p class="error-description">
-                            Trang bạn đang tìm kiếm có thể đã bị di chuyển, xóa hoặc không tồn tại.
+                            Trang bạn truy cập không tồn tại hoặc đã bị xóa.<br>
+                            Vui lòng kiểm tra lại đường dẫn hoặc sử dụng các lựa chọn bên dưới.
                         </p>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="error-actions">
-                        <a href="<?php echo home_url('/'); ?>" class="btn btn-primary btn-home">
-                            <i class="fas fa-home me-2"></i>
-                            Quay về trang chủ
+                        <a href="<?php echo home_url('/'); ?>" class="btn btn-home">
+                            <i class="fas fa-home me-1"></i>
+                            Trang chủ
                         </a>
-                        
                         <div class="error-links">
                             <a href="<?php echo home_url('/san-pham'); ?>" class="btn btn-outline-dark">
-                                <i class="fas fa-box me-2"></i>
-                                Xem sản phẩm
+                                <i class="fas fa-box me-1"></i>
+                                Sản phẩm
                             </a>
                             <a href="<?php echo home_url('/blog'); ?>" class="btn btn-outline-dark">
-                                <i class="fas fa-newspaper me-2"></i>
-                                Đọc tin tức
+                                <i class="fas fa-newspaper me-1"></i>
+                                Tin tức
                             </a>
                             <a href="<?php echo home_url('/lien-he'); ?>" class="btn btn-outline-dark">
-                                <i class="fas fa-envelope me-2"></i>
+                                <i class="fas fa-envelope me-1"></i>
                                 Liên hệ
                             </a>
                         </div>
@@ -55,11 +56,10 @@
 
                     <!-- Search Section -->
                     <div class="error-search">
-                        <h3>Tìm kiếm nội dung</h3>
                         <form role="search" method="get" class="search-form" action="<?php echo home_url('/'); ?>">
                             <div class="search-input-group">
-                                <input type="search" class="form-control" placeholder="Nhập từ khóa tìm kiếm..." value="<?php echo get_search_query(); ?>" name="s">
-                                <button type="submit" class="btn btn-dark">
+                                <input type="search" class="form-control" placeholder="Tìm kiếm..." value="<?php echo get_search_query(); ?>" name="s" aria-label="Tìm kiếm">
+                                <button type="submit" class="btn btn-dark" aria-label="Tìm kiếm">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
@@ -74,303 +74,221 @@
 <style>
 /* 404 Page Styles */
 .error-404-page {
-    max-height: 40vh;
+    min-height: 60vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    padding: 4rem 0;
+    background: #181818;
+    padding: 2rem 0;
 }
-
 .error-content {
     text-align: center;
-    max-width: 800px;
+    max-width: 480px;
     margin: 0 auto;
+    background: #222;
+    border-radius: 18px;
+    padding: 2rem 1.2rem 1.5rem 1.2rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    color: #fff;
+    animation: fadeInUp 0.7s;
 }
-
-/* Animation Container */
 .error-animation {
-    margin-bottom: 3rem;
+    margin-bottom: 1.2rem;
 }
-
 .error-gif-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.8rem;
 }
-
 .error-gif-placeholder {
-    width: 300px;
-    height: 200px;
-    background: linear-gradient(135deg, #000 0%, #333 100%);
-    border-radius: 20px;
+    width: 180px;
+    height: 120px;
+    background: linear-gradient(135deg, #232323 0%, #444 100%);
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    margin-bottom: 0.2rem;
+    gap: 0.2rem;
 }
-
 .error-number {
-    font-size: 4rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: #fff;
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    margin-bottom: 1rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    margin-bottom: 0.2rem;
     animation: errorPulse 2s ease-in-out infinite;
+    letter-spacing: 2px;
 }
-
+.bat-trang-icon {
+    margin-bottom: 0.2rem;
+}
 .error-animation-dots {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.25rem;
 }
-
 .dot {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     background: #fff;
     border-radius: 50%;
     animation: dotBounce 1.5s ease-in-out infinite;
 }
-
-.dot:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.dot:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
+.dot:nth-child(2) { animation-delay: 0.18s; }
+.dot:nth-child(3) { animation-delay: 0.36s; }
 @keyframes errorPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    0%, 100% { transform: scale(1);}
+    50% { transform: scale(1.07);}
 }
-
 @keyframes dotBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%, 100% { transform: translateY(0);}
+    50% { transform: translateY(-7px);}
 }
-
-.error-gif {
-    max-width: 100%;
-    height: auto;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-/* Error Message */
 .error-message {
-    margin-bottom: 3rem;
+    margin-bottom: 1.1rem;
 }
-
 .error-title {
-    font-size: 2.5rem;
+    font-size: 1.45rem;
     font-weight: 700;
-    color: #000;
-    margin-bottom: 1rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
     line-height: 1.2;
-}
-
-.error-description {
-    font-size: 1.1rem;
-    color: #666;
-    max-width: 500px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-/* Action Buttons */
-.error-actions {
-    margin-bottom: 3rem;
-}
-
-.btn-home {
-    font-size: 1.1rem;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
-
-.btn-home:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+.error-description {
+    font-size: 1rem;
+    color: #bbb;
+    margin: 0 auto;
+    line-height: 1.5;
+    max-width: 340px;
 }
-
+.error-actions {
+    margin-bottom: 1.1rem;
+}
+.btn-home {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 24px;
+    font-weight: 600;
+    background: #111;
+    color: #fff;
+    border: none;
+    margin-bottom: 0.7rem;
+    margin-right: 0.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.btn-home:hover, .btn-home:focus {
+    background: #333;
+    color: #fff;
+    text-decoration: none;
+}
 .error-links {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.3rem;
     flex-wrap: wrap;
 }
-
 .error-links .btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
+    padding: 0.5rem 1.1rem;
+    border-radius: 18px;
     font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: 0.98rem;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #444;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-bottom: 0.2rem;
 }
-
-.error-links .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.error-links .btn:hover, .error-links .btn:focus {
+    background: #333;
+    color: #fff;
+    border-color: #222;
+    text-decoration: none;
 }
-
-/* Search Section */
 .error-search {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e9ecef;
+    background: #191919;
+    padding: 1rem 0.7rem 0.7rem 0.7rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border: 1px solid #232323;
+    margin-top: 0.5rem;
 }
-
-.error-search h3 {
-    font-size: 1.5rem;
-    color: #000;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-}
-
 .search-input-group {
     display: flex;
-    max-width: 400px;
+    max-width: 320px;
     margin: 0 auto;
-    border-radius: 50px;
+    border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: #232323;
 }
-
 .search-input-group .form-control {
     border: none;
-    padding: 1rem 1.5rem;
+    padding: 0.6rem 1rem;
     font-size: 1rem;
     border-radius: 0;
     flex: 1;
+    background: #232323;
+    color: #fff;
 }
-
 .search-input-group .form-control:focus {
     box-shadow: none;
     outline: none;
+    background: #232323;
+    color: #fff;
 }
-
 .search-input-group .btn {
     border: none;
-    padding: 1rem 1.5rem;
-    background: #000;
+    padding: 0.6rem 1rem;
+    background: #111;
     color: #fff;
     border-radius: 0;
-    transition: all 0.3s ease;
+    transition: background 0.2s;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
 }
-
-.search-input-group .btn:hover {
+.search-input-group .btn:hover, .search-input-group .btn:focus {
     background: #333;
+    color: #fff;
 }
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .error-404-page {
-        padding: 2rem 0;
-        max-height: 40vh;
+@media (max-width: 600px) {
+    .error-content {
+        padding: 1.2rem 0.3rem 1rem 0.3rem;
+        max-width: 98vw;
     }
-    
+    .error-gif-placeholder {
+        width: 120px;
+        height: 80px;
+    }
     .error-title {
-        font-size: 2rem;
+        font-size: 1.1rem;
     }
-    
     .error-description {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
-    
-    .error-gif-placeholder {
-        width: 250px;
-        height: 150px;
+    .btn-home, .error-links .btn {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.7rem;
     }
-    
-    .error-number {
-        font-size: 3rem;
-    }
-    
-    .error-links {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .error-links .btn {
-        width: 100%;
-        max-width: 250px;
-    }
-    
     .search-input-group {
-        flex-direction: column;
-        border-radius: 15px;
-    }
-    
-    .search-input-group .form-control,
-    .search-input-group .btn {
-        border-radius: 0;
-    }
-    
-    .search-input-group .form-control {
-        border-radius: 15px 15px 0 0;
-    }
-    
-    .search-input-group .btn {
-        border-radius: 0 0 15px 15px;
+        max-width: 98vw;
     }
 }
-
-@media (max-width: 480px) {
-    .error-title {
-        font-size: 1.75rem;
-    }
-    
-    .error-gif-placeholder {
-        width: 200px;
-        height: 120px;
-    }
-    
-    .error-number {
-        font-size: 2.5rem;
-    }
-    
-    .btn-home {
-        font-size: 1rem;
-        padding: 0.875rem 1.75rem;
-    }
-}
-
-/* Animation for page load */
-.error-content {
-    animation: fadeInUp 0.8s ease-out;
-}
-
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Hover effects */
-.error-gif-placeholder:hover {
-    transform: scale(1.02);
-    transition: transform 0.3s ease;
-}
-
-.error-search:hover {
-    transform: translateY(-2px);
-    transition: transform 0.3s ease;
+    from { opacity: 0; transform: translateY(24px);}
+    to { opacity: 1; transform: translateY(0);}
 }
 </style>
 
-<?php get_footer(); ?> 
+<?php get_footer(); ?>
