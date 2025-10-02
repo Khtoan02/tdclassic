@@ -5,7 +5,7 @@
         <div class="error-404-modern">
             <div class="error-container">
                 <!-- Left Panel - Animation -->
-                <div class="error-animation-panel">
+                <div class="error-animation-panel"> 
                     <div class="electric-scene">
                         <!-- Bóng đèn chập chờn -->
                         <div class="lightbulb-container">
@@ -48,7 +48,7 @@
                         </div>
 
                         <div class="error-description-modern">
-                            <p>Đừng lo! Chúng tôi sẽ giúp bạn tìm đường về. Trang bạn truy cập có thể đã bị di chuyển, xóa hoặc đang gặp sự cố điện áp.</p>
+                            <p>Đừng lo! Chúng tôi sẽ giúp bạn tìm đường về. Trang bạn truy cập có thể đã bị di chuyển, xóa hoặc đang gặp sự cố.</p>
                         </div>
 
                         <div class="error-actions-modern">
@@ -118,27 +118,27 @@
 <style>
 /* Modern 404 Page Styles */
 .error-404-modern {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+	padding: 2rem;
+	position: relative;
+	overflow: hidden;
 }
 
 .error-404-modern::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(circle at 30% 20%, rgba(255, 235, 59, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 70% 80%, rgba(100, 255, 255, 0.05) 0%, transparent 50%);
-    animation: ambientFlicker 4s infinite;
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: 
+			radial-gradient(circle at 30% 20%, rgba(255, 235, 59, 0.05) 0%, transparent 50%),
+			radial-gradient(circle at 70% 80%, rgba(100, 255, 255, 0.05) 0%, transparent 50%);
+	animation: ambientFlicker 4s infinite;
 }
 
 .error-container {
