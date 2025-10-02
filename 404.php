@@ -2,68 +2,112 @@
 
 <div id="primary" class="content-area">
     <main id="main" class="site-main">
-        <div class="error-404-page">
-            <div class="container">
-                <div class="error-content">
-                    <!-- 404 Animation Container -->
-                    <div class="error-animation">
-                        <div class="error-gif-container">
-                            <!-- Placeholder TD Classic style -->
-                            <div class="error-gif-placeholder">
-                                <div class="error-number">404</div>
-                                <div class="td-classic-icon">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/td-classic-icon.svg" alt="TD Classic" width="48" height="48" />
-                                </div>
-                                <div class="error-animation-dots">
-                                    <span class="dot"></span>
-                                    <span class="dot"></span>
-                                    <span class="dot"></span>
+        <div class="error-404-modern">
+            <div class="error-container">
+                <!-- Left Panel - Animation -->
+                <div class="error-animation-panel">
+                    <div class="electric-scene">
+                        <!-- Bóng đèn chập chờn -->
+                        <div class="lightbulb-container">
+                            <div class="bulb">
+                                <svg class="bulb-svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zM9 21v1c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9z"/>
+                                </svg>
+                                <div class="bulb-halo"></div>
+                                <div class="electric-sparks">
+                                    <span class="spark"></span>
+                                    <span class="spark"></span>
+                                    <span class="spark"></span>
                                 </div>
                             </div>
+                            <div class="wire"></div>
+                        </div>
+                        
+                        <!-- Số 404 hiện đại -->
+                        <div class="error-number-modern">
+                            <div class="number-glow">404</div>
+                            <div class="number-flicker">404</div>
+                            <div class="number-main">404</div>
+                        </div>
+                        
+                        <!-- Circuit lines -->
+                        <div class="circuit-lines">
+                            <div class="line line-1"></div>
+                            <div class="line line-2"></div>
+                            <div class="line line-3"></div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Error Message -->
-                    <div class="error-message">
-                        <h1 class="error-title">Không tìm thấy trang</h1>
-                        <p class="error-description">
-                            Trang bạn truy cập không tồn tại hoặc đã bị xóa.<br>
-                            Vui lòng kiểm tra lại đường dẫn hoặc sử dụng các lựa chọn bên dưới.
-                        </p>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="error-actions">
-                        <a href="<?php echo home_url('/'); ?>" class="btn btn-home">
-                            <i class="fas fa-home me-1"></i>
-                            Trang chủ
-                        </a>
-                        <div class="error-links">
-                            <a href="<?php echo home_url('/san-pham'); ?>" class="btn btn-outline-dark">
-                                <i class="fas fa-box me-1"></i>
-                                Sản phẩm
-                            </a>
-                            <a href="<?php echo home_url('/blog'); ?>" class="btn btn-outline-dark">
-                                <i class="fas fa-newspaper me-1"></i>
-                                Tin tức
-                            </a>
-                            <a href="<?php echo home_url('/lien-he'); ?>" class="btn btn-outline-dark">
-                                <i class="fas fa-envelope me-1"></i>
-                                Liên hệ
-                            </a>
+                <!-- Right Panel - Content -->
+                <div class="error-content-panel">
+                    <div class="content-wrapper">
+                        <div class="error-header">
+                            <h1 class="error-title-modern">Trang này đang gặp sự cố</h1>
+                            <p class="error-subtitle">Có vẻ như trang bạn tìm kiếm đang bị lỗi</p>
                         </div>
-                    </div>
 
-                    <!-- Search Section -->
-                    <div class="error-search">
-                        <form role="search" method="get" class="search-form" action="<?php echo home_url('/'); ?>">
-                            <div class="search-input-group">
-                                <input type="search" class="form-control" placeholder="Tìm kiếm..." value="<?php echo get_search_query(); ?>" name="s" aria-label="Tìm kiếm">
-                                <button type="submit" class="btn btn-dark" aria-label="Tìm kiếm">
-                                    <i class="fas fa-search"></i>
-                                </button>
+                        <div class="error-description-modern">
+                            <p>Đừng lo! Chúng tôi sẽ giúp bạn tìm đường về. Trang bạn truy cập có thể đã bị di chuyển, xóa hoặc đang gặp sự cố điện áp.</p>
+                        </div>
+
+                        <div class="error-actions-modern">
+                            <a href="<?php echo home_url('/'); ?>" class="btn-primary-modern">
+                                <i class="fas fa-home"></i>
+                                <span>Quay về trang chủ</span>
+                            </a>
+                            
+                            <div class="secondary-actions">
+                                <a href="<?php echo home_url('/san-pham'); ?>" class="btn-secondary-modern">
+                                    <i class="fas fa-box"></i>
+                                    <span>Sản phẩm</span>
+                                </a>
+                                <a href="<?php echo home_url('/blog'); ?>" class="btn-secondary-modern">
+                                    <i class="fas fa-newspaper"></i>
+                                    <span>Blog</span>
+                                </a>
+                                <a href="<?php echo home_url('/lien-he'); ?>" class="btn-secondary-modern">
+                                    <i class="fas fa-headset"></i>
+                                    <span>Hỗ trợ</span>
+                                </a>
                             </div>
-                        </form>
+                        </div>
+
+                        <!-- Search Box -->
+                        <div class="search-section-modern">
+                            <h3 class="search-title">Hoặc tìm kiếm trong bóng tối</h3>
+                            <form role="search" method="get" class="search-form-modern" action="<?php echo home_url('/'); ?>">
+                                <div class="search-input-modern">
+                                    <input type="search" class="search-field" placeholder="Nhập từ khóa tìm kiếm..." value="<?php echo get_search_query(); ?>" name="s" aria-label="Tìm kiếm">
+                                    <button type="submit" class="search-btn" aria-label="Tìm kiếm">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Helpful Links -->
+                        <div class="helpful-links-modern">
+                            <h3 class="links-title">Có thể bạn cần</h3>
+                            <div class="links-grid">
+                                <a href="<?php echo home_url('/gioi-thieu'); ?>" class="link-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Về chúng tôi</span>
+                                </a>
+                                <a href="<?php echo home_url('/chinh-sach'); ?>" class="link-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Chính sách</span>
+                                </a>
+                                <a href="<?php echo home_url('/dich-vu'); ?>" class="link-item">
+                                    <i class="fas fa-cogs"></i>
+                                    <span>Dịch vụ</span>
+                                </a>
+                                <a href="tel:<?php echo get_option('phone'); ?>" class="link-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>Liên hệ nhanh</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,222 +116,516 @@
 </div>
 
 <style>
-/* 404 Page Styles */
-.error-404-page {
-    min-height: 60vh;
+/* Modern 404 Page Styles */
+.error-404-modern {
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    background: #181818;
-    padding: 2rem 0;
-}
-.error-content {
-    text-align: center;
-    max-width: 480px;
-    margin: 0 auto;
-    background: #222;
-    border-radius: 18px;
-    padding: 2rem 1.2rem 1.5rem 1.2rem;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
-    color: #fff;
-    animation: fadeInUp 0.7s;
-}
-.error-animation {
-    margin-bottom: 1.2rem;
-}
-.error-gif-container {
-    display: flex;
     justify-content: center;
-    margin-bottom: 0.8rem;
-}
-.error-gif-placeholder {
-    width: 180px;
-    height: 120px;
-    background: linear-gradient(135deg, #232323 0%, #444 100%);
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+    padding: 2rem;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-    margin-bottom: 0.2rem;
-    gap: 0.2rem;
 }
-.error-number {
+
+.error-404-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(255, 235, 59, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(100, 255, 255, 0.05) 0%, transparent 50%);
+    animation: ambientFlicker 4s infinite;
+}
+
+.error-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+/* Animation Panel */
+.error-animation-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.electric-scene {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Lightbulb */
+.lightbulb-container {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bulb {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.bulb-svg {
+    width: 80px;
+    height: 80px;
+    color: #ffeb3b;
+    filter: drop-shadow(0 0 20px #ffeb3b);
+    animation: modernBulbFlicker 2.5s infinite;
+}
+
+.bulb-halo {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: radial-gradient(circle, rgba(255, 235, 59, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: modernHaloFlicker 2.5s infinite;
+}
+
+.electric-sparks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.spark {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    animation: sparkFloat 3s infinite;
+}
+
+.spark:nth-child(1) {
+    top: 10px;
+    left: 20px;
+    animation-delay: 0s;
+}
+
+.spark:nth-child(2) {
+    top: 50px;
+    right: 15px;
+    animation-delay: 1s;
+}
+
+.spark:nth-child(3) {
+    bottom: 10px;
+    left: 40px;
+    animation-delay: 2s;
+}
+
+.wire {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    width: 3px;
+    height: 60px;
+    background: linear-gradient(to bottom, #666, #333);
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+/* Error Number */
+.error-number-modern {
+    position: relative;
+    font-size: 8rem;
+    font-weight: 900;
+    letter-spacing: -5px;
+    margin-top: 120px;
+}
+
+.number-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #ffeb3b;
+    filter: blur(15px);
+    opacity: 0.7;
+    animation: numberGlow 3s infinite;
+}
+
+.number-flicker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff;
+    opacity: 0.8;
+    animation: numberFlicker 1.5s infinite;
+}
+
+.number-main {
+    position: relative;
+    color: #fff;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+    animation: numberMain 2s infinite;
+}
+
+/* Circuit Lines */
+.circuit-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.line {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, #ffeb3b, transparent);
+    animation: circuitFlow 4s infinite;
+}
+
+.line-1 {
+    top: 30%;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    animation-delay: 0s;
+}
+
+.line-2 {
+    top: 60%;
+    left: 20%;
+    width: 60%;
+    height: 2px;
+    animation-delay: 1.5s;
+}
+
+.line-3 {
+    bottom: 20%;
+    left: 15%;
+    width: 70%;
+    height: 2px;
+    animation-delay: 3s;
+}
+
+/* Content Panel */
+.error-content-panel {
+    display: flex;
+    align-items: center;
+}
+
+.content-wrapper {
+    width: 100%;
+}
+
+.error-header {
+    margin-bottom: 2rem;
+}
+
+.error-title-modern {
     font-size: 2.5rem;
     font-weight: 700;
     color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    margin-bottom: 0.2rem;
-    animation: errorPulse 2s ease-in-out infinite;
-    letter-spacing: 2px;
-}
-.bat-trang-icon {
-    margin-bottom: 0.2rem;
-}
-.error-animation-dots {
-    display: flex;
-    gap: 0.25rem;
-}
-.dot {
-    width: 8px;
-    height: 8px;
-    background: #fff;
-    border-radius: 50%;
-    animation: dotBounce 1.5s ease-in-out infinite;
-}
-.dot:nth-child(2) { animation-delay: 0.18s; }
-.dot:nth-child(3) { animation-delay: 0.36s; }
-@keyframes errorPulse {
-    0%, 100% { transform: scale(1);}
-    50% { transform: scale(1.07);}
-}
-@keyframes dotBounce {
-    0%, 100% { transform: translateY(0);}
-    50% { transform: translateY(-7px);}
-}
-.error-message {
-    margin-bottom: 1.1rem;
-}
-.error-title {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
     line-height: 1.2;
-    letter-spacing: 0.5px;
 }
-.error-description {
-    font-size: 1rem;
+
+.error-subtitle {
+    font-size: 1.2rem;
     color: #bbb;
-    margin: 0 auto;
-    line-height: 1.5;
-    max-width: 340px;
+    font-weight: 400;
 }
-.error-actions {
-    margin-bottom: 1.1rem;
+
+.error-description-modern {
+    margin-bottom: 2.5rem;
 }
-.btn-home {
-    font-size: 1rem;
-    padding: 0.6rem 1.2rem;
-    border-radius: 24px;
-    font-weight: 600;
-    background: #111;
-    color: #fff;
-    border: none;
-    margin-bottom: 0.7rem;
-    margin-right: 0.2rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: background 0.2s, color 0.2s;
+
+.error-description-modern p {
+    font-size: 1.1rem;
+    color: #999;
+    line-height: 1.6;
+}
+
+/* Actions */
+.error-actions-modern {
+    margin-bottom: 3rem;
+}
+
+.btn-primary-modern {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-}
-.btn-home:hover, .btn-home:focus {
-    background: #333;
-    color: #fff;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, #ffeb3b 0%, #ffc107 100%);
+    color: #000;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
     text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(255, 235, 59, 0.3);
+    margin-bottom: 1.5rem;
 }
-.error-links {
+
+.btn-primary-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 235, 59, 0.4);
+}
+
+.secondary-actions {
     display: flex;
-    justify-content: center;
-    gap: 0.3rem;
+    gap: 1rem;
     flex-wrap: wrap;
 }
-.error-links .btn {
-    padding: 0.5rem 1.1rem;
-    border-radius: 18px;
-    font-weight: 500;
-    font-size: 0.98rem;
-    background: transparent;
-    color: #fff;
-    border: 1px solid #444;
-    transition: background 0.2s, color 0.2s, border 0.2s;
-    display: inline-flex;
+
+.btn-secondary-modern {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.3rem;
-    margin-bottom: 0.2rem;
-}
-.error-links .btn:hover, .error-links .btn:focus {
-    background: #333;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
     color: #fff;
-    border-color: #222;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
     text-decoration: none;
-}
-.error-search {
-    background: #191919;
-    padding: 1rem 0.7rem 0.7rem 0.7rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    border: 1px solid #232323;
-    margin-top: 0.5rem;
-}
-.search-input-group {
-    display: flex;
-    max-width: 320px;
-    margin: 0 auto;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    background: #232323;
-}
-.search-input-group .form-control {
-    border: none;
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    border-radius: 0;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     flex: 1;
-    background: #232323;
-    color: #fff;
+    min-width: 120px;
 }
-.search-input-group .form-control:focus {
-    box-shadow: none;
-    outline: none;
-    background: #232323;
-    color: #fff;
+
+.btn-secondary-modern:hover {
+    background: rgba(255, 235, 59, 0.1);
+    border-color: rgba(255, 235, 59, 0.3);
+    transform: translateY(-2px);
 }
-.search-input-group .btn {
+
+.btn-secondary-modern i {
+    font-size: 1.5rem;
+    color: #ffeb3b;
+}
+
+.btn-secondary-modern span {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Search Section */
+.search-section-modern {
+    margin-bottom: 2.5rem;
+}
+
+.search-title {
+    font-size: 1.2rem;
+    color: #bbb;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.search-form-modern {
+    position: relative;
+}
+
+.search-input-modern {
+    position: relative;
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.search-input-modern:focus-within {
+    border-color: rgba(255, 235, 59, 0.3);
+    box-shadow: 0 0 20px rgba(255, 235, 59, 0.1);
+}
+
+.search-field {
+    flex: 1;
+    background: transparent;
     border: none;
-    padding: 0.6rem 1rem;
-    background: #111;
+    padding: 1rem 1.5rem;
     color: #fff;
-    border-radius: 0;
-    transition: background 0.2s;
     font-size: 1rem;
+    outline: none;
+}
+
+.search-field::placeholder {
+    color: #666;
+}
+
+.search-btn {
+    background: linear-gradient(135deg, #ffeb3b 0%, #ffc107 100%);
+    border: none;
+    padding: 1rem 1.5rem;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+}
+
+/* Helpful Links */
+.helpful-links-modern {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 2rem;
+}
+
+.links-title {
+    font-size: 1.1rem;
+    color: #bbb;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.link-item {
     display: flex;
     align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    text-decoration: none;
+    color: #bbb;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
-.search-input-group .btn:hover, .search-input-group .btn:focus {
-    background: #333;
+
+.link-item:hover {
+    background: rgba(255, 235, 59, 0.1);
+    border-color: rgba(255, 235, 59, 0.2);
     color: #fff;
+    transform: translateX(5px);
 }
-@media (max-width: 600px) {
-    .error-content {
-        padding: 1.2rem 0.3rem 1rem 0.3rem;
-        max-width: 98vw;
+
+.link-item i {
+    color: #ffeb3b;
+    width: 16px;
+}
+
+/* Animations */
+@keyframes ambientFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes modernBulbFlicker {
+    0%, 45%, 47%, 63%, 100% { 
+        opacity: 1;
+        filter: drop-shadow(0 0 20px #ffeb3b);
     }
-    .error-gif-placeholder {
-        width: 120px;
-        height: 80px;
-    }
-    .error-title {
-        font-size: 1.1rem;
-    }
-    .error-description {
-        font-size: 0.95rem;
-    }
-    .btn-home, .error-links .btn {
-        font-size: 0.95rem;
-        padding: 0.5rem 0.7rem;
-    }
-    .search-input-group {
-        max-width: 98vw;
+    46%, 62% { 
+        opacity: 0.4;
+        filter: drop-shadow(0 0 5px #ffeb3b);
     }
 }
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(24px);}
-    to { opacity: 1; transform: translateY(0);}
+
+@keyframes modernHaloFlicker {
+    0%, 45%, 47%, 63%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    46%, 62% { 
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+}
+
+@keyframes sparkFloat {
+    0%, 100% { 
+        opacity: 0;
+        transform: translateY(0) scale(0);
+    }
+    50% { 
+        opacity: 1;
+        transform: translateY(-20px) scale(1);
+    }
+}
+
+@keyframes numberGlow {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 0.3; }
+}
+
+@keyframes numberFlicker {
+    0%, 85%, 87%, 100% { opacity: 0.8; }
+    86% { opacity: 0.2; }
+}
+
+@keyframes numberMain {
+    0%, 90%, 92%, 100% { 
+        opacity: 1;
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+    }
+    91% { 
+        opacity: 0.6;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+}
+
+@keyframes circuitFlow {
+    0% { opacity: 0; transform: translateX(-100%); }
+    50% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(100%); }
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .error-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .electric-scene {
+        height: 300px;
+    }
+    
+    .error-number-modern {
+        font-size: 6rem;
+    }
+    
+    .error-title-modern {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-404-modern {
+        padding: 1rem;
+    }
+    
+    .error-number-modern {
+        font-size: 4rem;
+    }
+    
+    .secondary-actions {
+        flex-direction: column;
+    }
+    
+    .links-grid {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 
