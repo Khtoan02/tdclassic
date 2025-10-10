@@ -133,6 +133,9 @@ function tdclassic_scripts() {
     // Three-tier header CSS - load on all pages
     wp_enqueue_style('tdclassic-three-tier-header', get_template_directory_uri() . '/assets/css/three-tier-header.css', array('tdclassic-style'), '1.32.8');
     
+    // WordPress Caption Responsive CSS - load on all pages
+    wp_enqueue_style('tdclassic-wordpress-caption-responsive', get_template_directory_uri() . '/assets/css/wordpress-caption-responsive.css', array('tdclassic-style'), '1.32.8');
+    
     // Front page styles
     if (is_front_page()) {
         wp_enqueue_style('tdclassic-front-page', get_template_directory_uri() . '/assets/css/front-page.css', array('tdclassic-style'), '1.32.8');

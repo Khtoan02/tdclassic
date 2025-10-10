@@ -903,6 +903,46 @@ if (have_posts()) {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* WordPress Caption Styles - Responsive Images */
+.post-content .wp-caption,
+.post-content figure {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.post-content .wp-caption img,
+.post-content figure img {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 0;
+}
+
+.post-content .wp-caption-text,
+.post-content figcaption {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 0.8rem;
+    padding: 0 1rem;
+    line-height: 1.4;
+}
+
+/* Override inline styles for WordPress captions */
+.post-content .wp-caption[style*="width"] {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.post-content .wp-caption img[style*="width"] {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
 .post-content blockquote {
     background: #fafafa;
     border-left: 4px solid #000;

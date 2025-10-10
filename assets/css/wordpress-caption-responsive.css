@@ -1,0 +1,202 @@
+/* WordPress Caption Responsive CSS - TD Classic Theme */
+/* Đảm bảo hình ảnh có caption trong bài viết responsive theo độ rộng wrapper */
+
+/* ===== GENERAL POST CONTENT IMAGES ===== */
+
+.post-content img,
+.entry-content img,
+.content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== WORDPRESS CAPTION CONTAINER ===== */
+
+.post-content .wp-caption,
+.post-content figure,
+.entry-content .wp-caption,
+.entry-content figure,
+.content .wp-caption,
+.content figure {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 1.5rem 0;
+    text-align: center;
+    display: block;
+    box-sizing: border-box;
+}
+
+/* ===== WORDPRESS CAPTION IMAGES ===== */
+
+.post-content .wp-caption img,
+.post-content figure img,
+.entry-content .wp-caption img,
+.entry-content figure img,
+.content .wp-caption img,
+.content figure img {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    display: block;
+    box-sizing: border-box;
+}
+
+/* ===== WORDPRESS CAPTION TEXT ===== */
+
+.post-content .wp-caption-text,
+.post-content figcaption,
+.entry-content .wp-caption-text,
+.entry-content figcaption,
+.content .wp-caption-text,
+.content figcaption {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 0.8rem;
+    padding: 0 1rem;
+    line-height: 1.4;
+    text-align: center;
+    background: transparent;
+    border: none;
+}
+
+/* ===== OVERRIDE INLINE STYLES ===== */
+
+/* Override WordPress inline width styles */
+.post-content .wp-caption[style*="width"],
+.entry-content .wp-caption[style*="width"],
+.content .wp-caption[style*="width"] {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.post-content .wp-caption img[style*="width"],
+.entry-content .wp-caption img[style*="width"],
+.content .wp-caption img[style*="width"] {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Override WordPress inline height styles */
+.post-content .wp-caption img[style*="height"],
+.entry-content .wp-caption img[style*="height"],
+.content .wp-caption img[style*="height"] {
+    height: auto !important;
+}
+
+/* ===== ALIGNMENT SUPPORT ===== */
+
+/* Left aligned captions */
+.post-content .wp-caption.alignleft,
+.post-content figure.alignleft,
+.entry-content .wp-caption.alignleft,
+.entry-content figure.alignleft {
+    float: left;
+    margin-right: 1.5rem;
+    margin-left: 0;
+    max-width: 50%;
+}
+
+/* Right aligned captions */
+.post-content .wp-caption.alignright,
+.post-content figure.alignright,
+.entry-content .wp-caption.alignright,
+.entry-content figure.alignright {
+    float: right;
+    margin-left: 1.5rem;
+    margin-right: 0;
+    max-width: 50%;
+}
+
+/* Center aligned captions (default) */
+.post-content .wp-caption.aligncenter,
+.post-content figure.aligncenter,
+.entry-content .wp-caption.aligncenter,
+.entry-content figure.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 768px) {
+    /* Reduce margins on mobile */
+    .post-content .wp-caption,
+    .post-content figure,
+    .entry-content .wp-caption,
+    .entry-content figure,
+    .content .wp-caption,
+    .content figure {
+        margin: 1rem 0;
+    }
+    
+    /* Smaller caption text on mobile */
+    .post-content .wp-caption-text,
+    .post-content figcaption,
+    .entry-content .wp-caption-text,
+    .entry-content figcaption,
+    .content .wp-caption-text,
+    .content figcaption {
+        font-size: 0.85rem;
+        padding: 0 0.5rem;
+    }
+    
+    /* Reset float on mobile for better layout */
+    .post-content .wp-caption.alignleft,
+    .post-content figure.alignleft,
+    .post-content .wp-caption.alignright,
+    .post-content figure.alignright,
+    .entry-content .wp-caption.alignleft,
+    .entry-content figure.alignleft,
+    .entry-content .wp-caption.alignright,
+    .entry-content figure.alignright {
+        float: none;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Even smaller margins on very small screens */
+    .post-content .wp-caption,
+    .post-content figure,
+    .entry-content .wp-caption,
+    .entry-content figure,
+    .content .wp-caption,
+    .content figure {
+        margin: 0.8rem 0;
+    }
+    
+    /* Smaller caption text on very small screens */
+    .post-content .wp-caption-text,
+    .post-content figcaption,
+    .entry-content .wp-caption-text,
+    .entry-content figcaption,
+    .content .wp-caption-text,
+    .content figcaption {
+        font-size: 0.8rem;
+        padding: 0 0.3rem;
+    }
+}
+
+/* ===== CLEARFIX FOR FLOATED CAPTIONS ===== */
+
+.post-content::after,
+.entry-content::after,
+.content::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* ===== END WORDPRESS CAPTION RESPONSIVE CSS ===== */

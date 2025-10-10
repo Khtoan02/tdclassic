@@ -6473,3 +6473,102 @@ html {
 }
 
 /* ================= END COMMON RESPONSIVE DESIGN ================= */
+
+/* ================= WORDPRESS CAPTION STYLES ================= */
+/* Responsive WordPress Caption Images */
+
+/* General post content images */
+.post-content img,
+.entry-content img,
+.content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* WordPress Caption Container */
+.post-content .wp-caption,
+.post-content figure,
+.entry-content .wp-caption,
+.entry-content figure,
+.content .wp-caption,
+.content figure {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 1.5rem 0;
+    text-align: center;
+    display: block;
+}
+
+/* WordPress Caption Images */
+.post-content .wp-caption img,
+.post-content figure img,
+.entry-content .wp-caption img,
+.entry-content figure img,
+.content .wp-caption img,
+.content figure img {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    display: block;
+}
+
+/* WordPress Caption Text */
+.post-content .wp-caption-text,
+.post-content figcaption,
+.entry-content .wp-caption-text,
+.entry-content figcaption,
+.content .wp-caption-text,
+.content figcaption {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 0.8rem;
+    padding: 0 1rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Override inline styles for WordPress captions */
+.post-content .wp-caption[style*="width"],
+.entry-content .wp-caption[style*="width"],
+.content .wp-caption[style*="width"] {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.post-content .wp-caption img[style*="width"],
+.entry-content .wp-caption img[style*="width"],
+.content .wp-caption img[style*="width"] {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Responsive adjustments for captions */
+@media (max-width: 768px) {
+    .post-content .wp-caption,
+    .post-content figure,
+    .entry-content .wp-caption,
+    .entry-content figure,
+    .content .wp-caption,
+    .content figure {
+        margin: 1rem 0;
+    }
+    
+    .post-content .wp-caption-text,
+    .post-content figcaption,
+    .entry-content .wp-caption-text,
+    .entry-content figcaption,
+    .content .wp-caption-text,
+    .content figcaption {
+        font-size: 0.85rem;
+        padding: 0 0.5rem;
+    }
+}
+
+/* ================= END WORDPRESS CAPTION STYLES ================= */
