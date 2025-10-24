@@ -173,7 +173,6 @@
   .product-image img,
   .woocommerce ul.products li.product img,
   .product-image img {
-    max-height: 120px;
     object-fit: cover;
   }
 
