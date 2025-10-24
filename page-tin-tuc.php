@@ -45,13 +45,43 @@ get_header(); ?>
                                 <div class="stat-label">Cập nhật</div>
                             </div>
                         </div>
+                        <div class="hero-categories-section">
+                            <div class="hero-categories-container">
+                                <div class="hero-categories-scroll-wrapper" id="categoriesScroll">
+                                    <div class="hero-categories-scroll-content">
+                                        <?php
+                                        $categories = get_categories(array(
+                                            'orderby' => 'count',
+                                            'order' => 'DESC',
+                                            'number' => 12
+                                        ));
+                                        
+                                        foreach ($categories as $category) :
+                                        ?>
+                                            <a href="<?php echo get_category_link($category->term_id); ?>" class="hero-category-btn">
+                                                <span class="hero-category-name"><?php echo $category->name; ?></span>
+                                                <span class="hero-category-count"><?php echo $category->count; ?> bài</span>
+                                            </a>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                                
+                                <button class="hero-scroll-btn hero-scroll-left" id="scrollLeft">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                
+                                <button class="hero-scroll-btn hero-scroll-right" id="scrollRight">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Latest News Grid Section -->
+    <!-- Newsletter Section -->
     <section class="latest-news-grid-section">
         <div class="container">
             <div class="row">
@@ -84,10 +114,21 @@ get_header(); ?>
                 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
                 $blog_posts = new WP_Query(array(
                     'post_type' => 'post',
-                    'posts_per_page' => 12,
+                    'posts_per_page' => 15,
                     'paged' => $paged,
                     'orderby' => 'date',
-                    'order' => 'DESC'
+                    'order' => 'DESC',
+                    'meta_query' => array(
+                        'relation' => 'OR',
+                        array(
+                            'key' => '_thumbnail_id',
+                            'compare' => 'EXISTS'
+                        ),
+                        array(
+                            'key' => '_thumbnail_id',
+                            'compare' => 'NOT EXISTS'
+                        )
+                    )
                 ));
 
                 if ($blog_posts->have_posts()) :
@@ -98,10 +139,21 @@ get_header(); ?>
                         // Get post data
                         $post_id = get_the_ID();
                         $post_title = get_the_title();
-                        $post_image = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'full');
+                        $post_image = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'large');
                         $post_image_url = $post_image ? $post_image[0] : '';
                         $post_link = get_permalink();
                         $post_excerpt = get_the_excerpt();
+                        
+                        // Generate WebP image URL for better quality
+                        $webp_image_url = '';
+                        if ($post_image_url) {
+                            $image_path = str_replace(home_url(), ABSPATH, $post_image_url);
+                            $path_info = pathinfo($image_path);
+                            $webp_path = $path_info['dirname'] . '/' . $path_info['filename'] . '.webp';
+                            if (file_exists($webp_path)) {
+                                $webp_image_url = str_replace(ABSPATH, home_url('/'), $webp_path);
+                            }
+                        }
                         
                         // Get post categories
                         $categories = get_the_category();
@@ -126,7 +178,17 @@ get_header(); ?>
                             <div class="news-image-container">
                                 <div class="news-image">
                                     <?php if ($post_image_url) : ?>
-                                        <img src="<?php echo esc_url($post_image_url); ?>" alt="<?php echo esc_attr($post_title); ?>" loading="lazy">
+                                        <picture>
+                                            <?php if ($webp_image_url) : ?>
+                                                <source srcset="<?php echo esc_url($webp_image_url); ?>" type="image/webp">
+                                            <?php endif; ?>
+                                            <img src="<?php echo esc_url($post_image_url); ?>" 
+                                                 alt="<?php echo esc_attr($post_title); ?>" 
+                                                 loading="lazy"
+                                                 decoding="async"
+                                                 width="400"
+                                                 height="250">
+                                        </picture>
                                     <?php else : ?>
                                         <div class="placeholder-image">
                                             <i class="fas fa-newspaper"></i>
@@ -234,54 +296,6 @@ get_header(); ?>
                         </div>
                     </div>
                 <?php endif; ?>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section class="categories-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-header text-center">
-                        <h2 class="section-title">
-                            <span class="title-text">Danh mục bài viết</span>
-                            <span class="title-line"></span>
-                        </h2>
-                        <p class="section-description">
-                            Khám phá các chủ đề đa dạng và phong phú
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="categories-grid">
-                <?php
-                $categories = get_categories(array(
-                    'orderby' => 'count',
-                    'order' => 'DESC',
-                    'number' => 8
-                ));
-                
-                foreach ($categories as $category) :
-                ?>
-                    <div class="category-item">
-                        <div class="category-card">
-                            <div class="category-icon">
-                                <i class="fas fa-folder"></i>
-                            </div>
-                            <div class="category-content">
-                                <h4><?php echo $category->name; ?></h4>
-                                <p><?php echo $category->count; ?> bài viết</p>
-                                <?php if ($category->description) : ?>
-                                    <small class="category-desc"><?php echo wp_trim_words($category->description, 8); ?></small>
-                                <?php endif; ?>
-                                <a href="<?php echo get_category_link($category->term_id); ?>" class="btn-category">
-                                    Xem danh mục
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
             </div>
         </div>
     </section>
@@ -509,6 +523,7 @@ get_header(); ?>
 .latest-news-grid-section {
     padding: 80px 0;
     background-color: #f8f9fa;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .section-header {
@@ -569,20 +584,34 @@ get_header(); ?>
 
 .news-posts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin-bottom: 4rem;
     justify-content: center;
     align-content: start;
 }
 
+@media (max-width: 1200px) {
+    .news-posts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .news-posts-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
 .news-post-card-wrapper {
     animation: fadeInUp 0.6s ease forwards;
     opacity: 0;
     transform: translateY(30px);
-    justify-self: center;
-    max-width: 450px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 @keyframes fadeInUp {
@@ -596,35 +625,64 @@ get_header(); ?>
     background: #fff;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
-    transition: all 0.4s ease;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     width: 100%;
     height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .modern-news-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.modern-news-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.05));
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.modern-news-card:hover::before {
+    opacity: 1;
 }
 
 .news-image-container {
     position: relative;
     overflow: hidden;
-    height: 250px;
+    height: 280px;
+    border-radius: 15px 15px 0 0;
 }
 
 .news-image {
     overflow: hidden;
     position: relative;
     height: 100%;
+    width: 100%;
 }
 
+.news-image picture,
 .news-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.news-image img {
+    filter: brightness(1) contrast(1.05) saturate(1.1);
 }
 
 .placeholder-image {
@@ -639,7 +697,8 @@ get_header(); ?>
 }
 
 .modern-news-card:hover .news-image img {
-    transform: scale(1.1);
+    transform: scale(1.08);
+    filter: brightness(1.05) contrast(1.1) saturate(1.15);
 }
 
 .image-overlay {
@@ -758,7 +817,12 @@ get_header(); ?>
 }
 
 .news-content {
-    padding: 1.5rem;
+    padding: 1.8rem;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .news-meta {
@@ -869,87 +933,137 @@ get_header(); ?>
     transform: translateX(5px);
 }
 
-/* Categories Section */
-.categories-section {
-    padding: 80px 0;
-    background-color: #fff;
-}
-
-.categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+/* Hero Categories Section */
+.hero-categories-section {
     margin-top: 3rem;
+    position: relative;
+    z-index: 10;
 }
 
-.category-item {
-    animation: fadeInUp 0.6s ease forwards;
+.hero-categories-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.category-card {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 15px;
-    padding: 2rem;
-    text-align: center;
-    transition: all 0.3s ease;
-    height: 100%;
-}
-
-.category-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    border-color: #000;
-}
-
-.category-icon {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #000, #333);
-    color: #fff;
-    border-radius: 15px;
+.hero-scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    margin: 0 auto 1.5rem;
-}
-
-.category-content h4 {
-    color: #000;
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-}
-
-.category-content p {
-    color: #666;
-    margin-bottom: 0.5rem;
-}
-
-.category-desc {
-    color: #999;
-    font-size: 0.85rem;
-    margin-bottom: 1.5rem;
-    display: block;
-}
-
-.btn-category {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.6rem 1.2rem;
-    background: transparent;
-    color: #000;
-    text-decoration: none;
-    border: 1px solid #000;
-    border-radius: 20px;
-    font-weight: 500;
+    cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 0.9rem;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    color: #fff;
 }
 
-.btn-category:hover {
-    background: #000;
+.hero-scroll-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.1);
+}
+
+.hero-scroll-left {
+    left: -25px;
+}
+
+.hero-scroll-right {
+    right: -25px;
+}
+
+.hero-categories-scroll-wrapper {
+    flex: 1;
+    overflow: hidden;
+    margin: 0 2rem;
+}
+
+.hero-categories-scroll-content {
+    display: flex;
+    gap: 1rem;
+    transition: transform 0.3s ease;
+    padding: 0.5rem 0;
+    width: max-content;
+}
+
+.hero-category-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    backdrop-filter: blur(10px);
+}
+
+.hero-category-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+}
+
+.hero-category-name {
+    font-weight: 600;
+    font-size: 0.9rem;
     color: #fff;
+    transition: color 0.3s ease;
+}
+
+.hero-category-count {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease;
+}
+
+.hero-category-btn:hover .hero-category-name {
+    color: #fff;
+}
+
+.hero-category-btn:hover .hero-category-count {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Desktop: Show 6 categories per row */
+@media (min-width: 1200px) {
+    .hero-category-btn {
+        min-width: calc((100vw - 200px)- 20px);
+        max-width: calc((100vw - 200px) / 6 - 20px);
+    }
+}
+
+/* Tablet: Show 4 categories per row */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .hero-category-btn {
+        min-width: calc((100vw - 150px) / 4 - 15px);
+        max-width: calc((100vw - 150px) / 4 - 15px);
+    }
+}
+
+/* Mobile: Show 2 categories per row */
+@media (max-width: 767px) {
+    .hero-category-btn {
+        min-width: calc((100vw - 100px) / 2 - 10px);
+        max-width: calc((100vw - 100px) / 2 - 10px);
+    }
 }
 
 /* Newsletter Section */
@@ -1310,7 +1424,7 @@ get_header(); ?>
     }
     
     .news-posts-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
     
@@ -1328,6 +1442,45 @@ get_header(); ?>
     .newsletter-title,
     .cta-title {
         font-size: 2rem;
+    }
+    
+    .hero-categories-section {
+        margin-top: 2rem;
+    }
+    
+    .hero-categories-container {
+        margin: 0 1rem;
+    }
+    
+    .hero-scroll-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+    }
+    
+    .hero-scroll-left {
+        left: -15px;
+    }
+    
+    .hero-scroll-right {
+        right: -15px;
+    }
+    
+    .hero-categories-scroll-wrapper {
+        margin: 0 1.5rem;
+    }
+    
+    .hero-category-btn {
+        min-width: 100px;
+        padding: 0.8rem 1rem;
+    }
+    
+    .hero-category-name {
+        font-size: 0.85rem;
+    }
+    
+    .hero-category-count {
+        font-size: 0.75rem;
     }
 }
 
@@ -1371,10 +1524,30 @@ function shareArticle(title, url) {
     }
 }
 
-// Filter functionality
+// Enhanced filter functionality with smooth animations
 document.addEventListener('DOMContentLoaded', function() {
     const filterItems = document.querySelectorAll('.filter-item');
     const newsCards = document.querySelectorAll('.news-post-card-wrapper');
+    
+    // Intersection Observer for lazy loading animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all news cards
+    newsCards.forEach(card => {
+        card.style.animationPlayState = 'paused';
+        observer.observe(card);
+    });
     
     filterItems.forEach(filter => {
         filter.addEventListener('click', function() {
@@ -1385,13 +1558,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const filterValue = this.getAttribute('data-filter');
             
-            newsCards.forEach(card => {
+            newsCards.forEach((card, index) => {
                 if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
                     card.style.display = 'block';
                     setTimeout(() => {
                         card.style.opacity = '1';
                         card.style.transform = 'translateY(0)';
-                    }, 100);
+                    }, index * 50);
                 } else {
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(30px)';
@@ -1402,6 +1575,81 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+    
+    // Categories scroll functionality
+    const scrollLeftBtn = document.getElementById('scrollLeft');
+    const scrollRightBtn = document.getElementById('scrollRight');
+    const categoriesScroll = document.getElementById('categoriesScroll');
+    const categoriesContent = categoriesScroll.querySelector('.hero-categories-scroll-content');
+    
+    if (scrollLeftBtn && scrollRightBtn && categoriesScroll) {
+        let scrollPosition = 0;
+        const scrollAmount = 200;
+        const maxScroll = categoriesContent.scrollWidth - categoriesScroll.clientWidth;
+        
+        // Update button visibility
+        function updateButtons() {
+            scrollLeftBtn.style.opacity = scrollPosition > 0 ? '1' : '0.5';
+            scrollRightBtn.style.opacity = scrollPosition < maxScroll ? '1' : '0.5';
+        }
+        
+        // Scroll left
+        scrollLeftBtn.addEventListener('click', () => {
+            scrollPosition = Math.max(0, scrollPosition - scrollAmount);
+            categoriesContent.style.transform = `translateX(-${scrollPosition}px)`;
+            updateButtons();
+        });
+        
+        // Scroll right
+        scrollRightBtn.addEventListener('click', () => {
+            scrollPosition = Math.min(maxScroll, scrollPosition + scrollAmount);
+            categoriesContent.style.transform = `translateX(-${scrollPosition}px)`;
+            updateButtons();
+        });
+        
+        // Touch/swipe support for mobile
+        let startX = 0;
+        let isScrolling = false;
+        
+        categoriesScroll.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isScrolling = true;
+        });
+        
+        categoriesScroll.addEventListener('touchmove', (e) => {
+            if (!isScrolling) return;
+            e.preventDefault();
+            const currentX = e.touches[0].clientX;
+            const diffX = startX - currentX;
+            const newPosition = Math.max(0, Math.min(maxScroll, scrollPosition + diffX));
+            
+            categoriesContent.style.transform = `translateX(-${newPosition}px)`;
+            scrollPosition = newPosition;
+            updateButtons();
+        });
+        
+        categoriesScroll.addEventListener('touchend', () => {
+            isScrolling = false;
+        });
+        
+        // Initialize
+        updateButtons();
+        
+        // Hide scroll buttons on mobile if not needed
+        if (window.innerWidth <= 768) {
+            const checkScroll = () => {
+                if (maxScroll <= 0) {
+                    scrollLeftBtn.style.display = 'none';
+                    scrollRightBtn.style.display = 'none';
+                } else {
+                    scrollLeftBtn.style.display = 'flex';
+                    scrollRightBtn.style.display = 'flex';
+                }
+            };
+            checkScroll();
+            window.addEventListener('resize', checkScroll);
+        }
+    }
     
     // Newsletter subscription
     const subscriptionForm = document.querySelector('.subscription-form');
