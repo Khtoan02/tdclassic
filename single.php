@@ -67,7 +67,7 @@ get_header(); ?>
                         <div class="section-filters">
                             <div class="filter-item active" data-filter="all">
                                 <i class="fas fa-th-large"></i>
-                                <span>Tất cả</span>
+                                <span>Tat cả</span>
                             </div>
                             <div class="filter-item" data-filter="featured">
                                 <i class="fas fa-star"></i>
