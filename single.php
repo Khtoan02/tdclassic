@@ -130,22 +130,11 @@ get_header(); ?>
                         // Animation delay
                         $delay = ($product_count % 4) * 0.1;
                 ?>
-                    <div class="product-card-wrapper" data-category="<?php echo esc_attr($badge_class ? $badge_class : 'all'); ?>" style="animation-delay: <?php echo $delay; ?>s;">
+                    <a href="<?php echo esc_url($product_link); ?>" class="product-card-wrapper" data-category="<?php echo esc_attr($badge_class ? $badge_class : 'all'); ?>" style="animation-delay: <?php echo $delay; ?>s;">
                         <div class="modern-product-card">
                             <div class="product-image-container">
                                 <div class="product-image">
                                     <img src="<?php echo esc_url($product_image_url); ?>" alt="<?php echo esc_attr($product_title); ?>" loading="lazy">
-                                    <div class="image-overlay">
-                                        <div class="overlay-content">
-                                            <a href="<?php echo esc_url($product_link); ?>" class="btn-overlay-primary">
-                                                <i class="fas fa-eye"></i>
-                                                <span>Xem chi tiết</span>
-                                            </a>
-                                            <button class="btn-overlay-secondary" onclick="shareProduct('<?php echo esc_js($product_title); ?>', '<?php echo esc_url($product_link); ?>')">
-                                                <i class="fas fa-share-alt"></i>
-                                            </button>
-                                        </div>
-                                    </div>
                                 </div>
                                 <?php if ($badge): ?>
                                     <div class="product-badge <?php echo esc_attr($badge_class); ?>">
@@ -164,7 +153,7 @@ get_header(); ?>
                                     <span><?php echo esc_html($main_category); ?></span>
                                 </div>
                                 <h3 class="product-title">
-                                    <a href="<?php echo esc_url($product_link); ?>"><?php echo esc_html($product_title); ?></a>
+                                    <?php echo esc_html($product_title); ?>
                                 </h3>
                                 <div class="product-description">
                                     <?php 
@@ -186,15 +175,9 @@ get_header(); ?>
                                         <span>Giao nhanh</span>
                                     </div>
                                 </div>
-                                <div class="product-actions">
-                                    <a href="<?php echo esc_url($product_link); ?>" class="btn-product-detail">
-                                        <span>Tìm hiểu thêm</span>
-                                        <i class="fas fa-arrow-right"></i>
-                                    </a>
-                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 <?php
                     endwhile;
                     wp_reset_postdata();
