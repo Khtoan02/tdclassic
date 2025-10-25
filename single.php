@@ -195,7 +195,9 @@ get_header(); ?>
                             </div>
                         </div>
                     </div>
-                <?php
+            </div>
+
+            <?php
                     endwhile;
                     
                     // Pagination
@@ -233,7 +235,6 @@ get_header(); ?>
                         </div>
                     </div>
                 <?php endif; ?>
-            </div>
         </div>
     </section>
 
