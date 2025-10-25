@@ -148,19 +148,9 @@ get_header(); ?>
                                 </div>
                             </div>
                             <div class="product-content">
-                                <div class="product-category-tag">
-                                    <i class="fas fa-tag"></i>
-                                    <span><?php echo esc_html($main_category); ?></span>
-                                </div>
                                 <h3 class="product-title">
                                     <?php echo esc_html($product_title); ?>
                                 </h3>
-                                <div class="product-description">
-                                    <?php 
-                                    $description = $product_short_description ? wp_trim_words($product_short_description, 12) : wp_trim_words(get_the_excerpt(), 12);
-                                    echo '<p>' . $description . '</p>';
-                                    ?>
-                                </div>
                                 <div class="product-features">
                                     <div class="feature-item">
                                         <i class="fas fa-check-circle"></i>
