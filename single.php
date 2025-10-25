@@ -195,29 +195,8 @@ get_header(); ?>
                             </div>
                         </div>
                     </div>
-            </div>
-
-            <?php
-                    endwhile;
-                    
-                    // Pagination
-                    if ($product_query->max_num_pages > 1) :
-                ?>
-                    <div class="pagination-wrapper col-12">
-                        <div class="modern-pagination">
-                            <?php
-                            echo paginate_links(array(
-                                'total' => $product_query->max_num_pages,
-                                'current' => $paged,
-                                'prev_text' => '<i class="fas fa-chevron-left"></i><span>Trước</span>',
-                                'next_text' => '<span>Sau</span><i class="fas fa-chevron-right"></i>',
-                                'type' => 'list'
-                            ));
-                            ?>
-                        </div>
-                    </div>
                 <?php
-                    endif;
+                    endwhile;
                     wp_reset_postdata();
                 else :
                 ?>
@@ -235,6 +214,26 @@ get_header(); ?>
                         </div>
                     </div>
                 <?php endif; ?>
+            </div>
+            
+            <?php
+            // Pagination - moved outside products-grid
+            if ($product_query->max_num_pages > 1) :
+            ?>
+                <div class="pagination-wrapper col-12">
+                    <div class="modern-pagination">
+                        <?php
+                        echo paginate_links(array(
+                            'total' => $product_query->max_num_pages,
+                            'current' => $paged,
+                            'prev_text' => '<i class="fas fa-chevron-left"></i><span>Trước</span>',
+                            'next_text' => '<span>Sau</span><i class="fas fa-chevron-right"></i>',
+                            'type' => 'list'
+                        ));
+                        ?>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </section>
 
