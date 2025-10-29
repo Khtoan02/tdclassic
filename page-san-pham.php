@@ -7,12 +7,41 @@
 get_header(); ?>
 
 <main id="main" class="site-main products-page">
-    <!-- Hero Section -->
-    <section class="products-hero">
+    <!-- Hero Section with Category Title -->
+    <section class="category-hero-section">
+        <div class="category-hero-background">
+            <div class="category-hero-overlay"></div>
+            <div class="tech-grid-pattern"></div>
+        </div>
         <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Sản phẩm</h1>
-                <p class="hero-subtitle">Khám phá các giải pháp được thiết kế đặc biệt cho doanh nghiệp hiện đại</p>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="category-hero-content text-center">
+                        <h1 class="category-hero-title">
+                            <span class="category-title-main">Sản phẩm</span>
+                            <span class="category-title-sub">GIẢI PHÁP & SẢN PHẨM</span>
+                        </h1>
+                        <div class="category-description-wrapper">
+                            <p class="category-hero-description">Khám phá các giải pháp và sản phẩm âm thanh chuyên nghiệp được thiết kế cho doanh nghiệp hiện đại.</p>
+                        </div>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <div class="stat-number"><?php echo (int) wp_count_posts('product')->publish; ?>+</div>
+                                <div class="stat-label">Sản phẩm</div>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-item">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">Chính hãng</div>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Hỗ trợ</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -279,6 +308,27 @@ get_header(); ?>
         </div>
     </section>
 </main>
+
+<style>
+/* Products Page - Hero Section (reused from blog category hero) */
+.category-hero-section { background: radial-gradient(circle, rgba(66,66,66,1) 0%, rgba(0,0,0,1) 100%); color: #fff; padding: 100px 0 80px; position: relative; overflow: hidden; }
+.category-hero-background { position: absolute; inset: 0; z-index: 1; }
+.category-hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+.tech-grid-pattern { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 50px 50px; }
+.category-hero-content { position: relative; z-index: 10; }
+.category-hero-title { margin-bottom: 2rem; }
+.category-title-main { display: block; font-size: 3.5rem; font-weight: 800; margin-bottom: .5rem; background: linear-gradient(45deg, #fff, #ccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.category-title-sub { display: block; font-size: 1.2rem; font-weight: 400; color: #ccc; letter-spacing: 3px; text-transform: uppercase; }
+.category-description-wrapper { margin: 0 auto 3rem; }
+.category-hero-description { font-size: 1.2rem; color: #ccc; line-height: 1.8; }
+.category-stats { display: flex; justify-content: center; align-items: center; gap: 2rem; margin-top: 3rem; }
+.category-stats .stat-item { text-align: center; }
+.category-stats .stat-number { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
+.category-stats .stat-label { font-size: .9rem; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+.category-stats .stat-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.2); }
+@media (max-width: 768px) { .category-title-main { font-size: 2.5rem; } .category-title-sub { font-size:1rem; letter-spacing:2px; } .category-stats { flex-wrap: wrap; gap: 1rem; } }
+@media (max-width: 480px) { .category-hero-section { padding:60px 0 50px; } .category-title-main { font-size:2rem; } }
+</style>
 
 <script>
 // Product filtering and search functionality

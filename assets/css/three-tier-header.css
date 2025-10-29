@@ -107,7 +107,7 @@
 .main-header {
   background-color: #000 !important;
   color: #fff !important;
-  padding: 1rem 0 !important;
+  padding: 0.5rem 0 !important;
   position: relative;
   z-index: 1000;
 }
@@ -116,7 +116,7 @@
 .main-header.site-header {
   background-color: #000 !important;
   color: #fff !important;
-  padding: 1rem 0 !important;
+  padding: 0.5rem 0 !important;
 }
 
 /* Đảm bảo main-header không bị ảnh hưởng bởi CSS cũ */
@@ -129,6 +129,11 @@
 .main-header .navbar {
   position: relative;
   z-index: 20;
+}
+
+/* Hide navbar collapse container by default to prevent icon misalignment on mobile/tablet */
+.main-header #navbarNav {
+  display: none !important;
 }
 
 .main-header .container {
@@ -230,7 +235,7 @@
 /* ===== BOTTOM HEADER - Mobile Navigation ===== */
 .bottom-header {
   color: #fff !important;
-  padding: 0.75rem 0 !important;
+  padding: 0.4rem 0 !important;
   display: none;
 }
 
@@ -257,7 +262,7 @@
   font-size: 0.75rem;
   font-weight: 500;
   transition: all 0.3s ease;
-  padding: 0.5rem;
+  padding: 0.35rem;
   border-radius: 0.5rem;
   min-width: 60px;
 }
@@ -295,6 +300,23 @@
     display: flex !important;
   }
 
+  /* Show navbar collapse container on desktop */
+  .main-header #navbarNav {
+    display: flex !important;
+  }
+
+	/* CSS-only dropdowns on hover (no JS needed) */
+	.navbar-nav .dropdown:hover > .dropdown-menu {
+		display: block;
+		margin-top: 0;
+	}
+	
+	/* Ensure proper positioning within navbar */
+	.navbar-nav .dropdown-menu {
+		display: none;
+		position: absolute;
+	}
+
   .main-header .navbar-brand {
     font-weight: 900 !important;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.4),
@@ -316,7 +338,7 @@
 /* TABLET LAYOUT (768px - 991px) */
 @media (max-width: 991.98px) and (min-width: 768px) {
   .top-header {
-    display: block;
+    display: none !important;
   }
 
   .main-header {
@@ -368,8 +390,7 @@
 /* MOBILE LAYOUT (dưới 768px) */
 @media (max-width: 767.98px) {
   .top-header {
-    display: block;
-    padding: 0.4rem 0;
+    display: none !important;
   }
 
   .top-header .contact-info {
@@ -394,7 +415,7 @@
   .main-header {
     display: flex;
     align-items: center;
-    padding: 0.75rem 0 !important;
+    padding: 0.5rem 0 !important;
     background: linear-gradient(135deg, #000 0%, #1a1a1a 100%) !important;
     border-bottom: 1px solid #333 !important;
     position: relative;
@@ -459,16 +480,19 @@
   /* Bottom header nằm bên phải logo */
   .bottom-header {
     display: flex !important;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
+    flex: 1 1 auto;
+    margin-left: 0.75rem;
   }
 
   .bottom-header .mobile-nav-item {
     display: flex !important;
-    font-size: 0.65rem;
-    min-width: 40px;
-    padding: 0.4rem 0.3rem;
+    font-size: 0.7rem;
+    min-width: 0;
+    flex: 1 1 0;
+    padding: 0.3rem 0.25rem;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -524,7 +548,7 @@
   }
 
   .bottom-header .mobile-nav-item .nav-text {
-    font-size: 0.5rem;
+    font-size: 0.6rem;
     line-height: 1.2;
     font-weight: 600;
     text-align: center;
@@ -541,19 +565,7 @@
 
 /* VERY SMALL MOBILE (dưới 480px) */
 @media (max-width: 479.98px) {
-  .top-header .contact-info {
-    gap: 0.5rem;
-  }
-
-  .top-header .contact-info .contact-item {
-    font-size: 0.7rem;
-  }
-
-  .top-header .social-links .social-link {
-    width: 1.5rem;
-    height: 1.5rem;
-    font-size: 0.8rem;
-  }
+  .top-header { display: none !important; }
 
   .main-header {
     justify-content: center !important;
@@ -574,7 +586,7 @@
   }
 
   .main-header {
-    padding: 0.6rem 0 !important;
+    padding: 0.45rem 0 !important;
   }
 
   .main-header .navbar-brand {
@@ -597,15 +609,16 @@
 
   .bottom-header {
     display: flex !important;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 0.3rem;
   }
 
   .bottom-header .mobile-nav-item {
     display: flex !important;
-    font-size: 0.6rem;
-    min-width: 35px;
+    font-size: 0.65rem;
+    min-width: 0;
+    flex: 1 1 0;
     padding: 0.3rem 0.25rem;
     flex-direction: column;
     align-items: center;
@@ -662,7 +675,7 @@
   }
 
   .bottom-header .mobile-nav-item .nav-text {
-    font-size: 0.45rem;
+    font-size: 0.55rem;
     line-height: 1.2;
     font-weight: 600;
     text-align: center;
@@ -890,6 +903,9 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+
+/* Hide any generic Topbar component if present */
+.topbar { display: none !important; }
 
 @keyframes spin {
   0% {

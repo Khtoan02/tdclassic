@@ -141,16 +141,12 @@ function tdclassic_scripts() {
         wp_enqueue_style('tdclassic-front-page', get_template_directory_uri() . '/assets/css/front-page.css', array('tdclassic-style'), '1.32.8');
     }
     
-    // Bootstrap JS
-    wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', array(), '5.3.0', true);
+	// Simplified header: avoid loading Bootstrap JS and theme JS to reduce page load
     
-    // Theme JS
-    wp_enqueue_script('tdclassic-script', get_template_directory_uri() . '/js/script.js', array('jquery'), '1.32.8', true);
-    
-    // Partner Slider JS (only on front page)
-    if (is_front_page()) {
-        wp_enqueue_script('tdclassic-partner-slider', get_template_directory_uri() . '/js/partner-slider.js', array(), '1.32.8', true);
-    }
+	// Keep front-page slider JS optional; disabled to minimize JS on header pages
+	// if (is_front_page()) {
+	// 	wp_enqueue_script('tdclassic-partner-slider', get_template_directory_uri() . '/js/partner-slider.js', array(), '1.32.8', true);
+	// }
     
     // Comment reply script
     if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -826,7 +822,8 @@ function tdclassic_localize_scripts() {
         'nonce' => wp_create_nonce('weather_nonce')
     ));
 }
-add_action('wp_enqueue_scripts', 'tdclassic_localize_scripts');
+// Disabled to avoid injecting inline JS for weather in simplified header
+// add_action('wp_enqueue_scripts', 'tdclassic_localize_scripts');
 
 // Projects CSS - load only on project archive/single
 function tdclassic_enqueue_projects_css() {
@@ -853,7 +850,8 @@ function tdclassic_weather_config() {
     </script>
     <?php
 }
-add_action('wp_head', 'tdclassic_weather_config');
+// Disabled inline weather config for simplified header
+// add_action('wp_head', 'tdclassic_weather_config');
 
 // Create sample product categories if none exist (disabled for WooCommerce)
 /*
