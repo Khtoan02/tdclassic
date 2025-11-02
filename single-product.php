@@ -645,57 +645,50 @@ get_header(); ?>
                                 $category_name = $product_categories[0]->name;
                             }
                     ?>
-                        <article class="product-card<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>">
-                            <div class="product-image">
-                                <?php if (has_post_thumbnail()) : ?>
-                                    <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
-                                <?php else : ?>
-                                    <div class="product-placeholder">
-                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                            <polyline points="21,15 16,10 5,21"></polyline>
-                                        </svg>
+                        <a href="<?php the_permalink(); ?>" class="product-card-wrapper<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>">
+                            <div class="modern-product-card">
+                                <div class="product-image-container">
+                                    <div class="product-image">
+                                        <?php if (has_post_thumbnail()) : ?>
+                                            <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
+                                        <?php else : ?>
+                                            <div class="product-placeholder">
+                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                    <polyline points="21,15 16,10 5,21"></polyline>
+                                                </svg>
+                                                <span class="placeholder-text">Chưa có ảnh</span>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
-                                
-                                <!-- Description Overlay -->
-                                <div class="product-description-overlay">
-                                    <div class="description-content">
-                                        <h4>Thông tin chi tiết</h4>
-                                        <div class="description-text">
-                                            <?php echo get_the_excerpt(); ?>
+                                    <div class="product-tech-indicator">
+                                        <div class="tech-dot"></div>
+                                        <div class="tech-dot"></div>
+                                        <div class="tech-dot"></div>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h3 class="product-title">
+                                        <?php the_title(); ?>
+                                    </h3>
+                                    <div class="product-features">
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Chính hãng</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-shield-alt"></i>
+                                            <span>Bảo hành</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-shipping-fast"></i>
+                                            <span>Giao nhanh</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="product-content">
-                                <h3 class="product-title">
-                                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                </h3>
-                                
-                                <?php if ($category_name) : ?>
-                                    <div class="product-category-highlight">
-                                        <span class="category-badge"><?php echo $category_name; ?></span>
-                                    </div>
-                                <?php endif; ?>
-                                
-                                <p class="product-excerpt">
-                                    <?php echo wp_trim_words(get_the_excerpt(), 12, '...'); ?>
-                                </p>
-                                
-                                <div class="product-actions">
-                                    <a href="<?php the_permalink(); ?>" class="btn-view-details">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                            <circle cx="12" cy="12" r="3"></circle>
-                                        </svg>
-                                        Xem chi tiết
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
+                        </a>
                     <?php
                         endwhile;
                         wp_reset_postdata();

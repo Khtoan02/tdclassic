@@ -136,68 +136,50 @@ get_header(); ?>
                         // Animation delay
                         $delay = ($post_count % 4) * 0.1;
                     ?>
-                        <article class="blog-post-card<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>" style="animation-delay: <?php echo $delay; ?>s;">
-                            <div class="post-card-inner">
-                                <div class="post-image">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
-                                    </a>
-                                    <?php if ($category_name) : ?>
-                                        <div class="post-category-badge">
-                                            <a href="#"><?php echo $category_name; ?></a>
-                                        </div>
-                                    <?php endif; ?>
-                                    
-                                    <!-- Quick Actions Overlay -->
-                                    <div class="product-actions-overlay">
-                                        <div class="action-buttons">
-                                            <a href="<?php the_permalink(); ?>" class="btn-quick-view" title="Xem chi tiết">
-                                                <i class="fas fa-eye"></i>
-                                                <span>Xem chi tiết</span>
-                                            </a>
-                                            <button class="btn-quick-share" title="Chia sẻ" onclick="shareProduct('<?php echo esc_js(get_the_title()); ?>', '<?php echo esc_url(get_permalink()); ?>')">
-                                                <i class="fas fa-share-alt"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="post-content">
-                                    <div class="post-meta">
-                                        <div class="meta-item">
-                                            <i class="fas fa-calendar-alt"></i>
-                                            <span><?php echo get_the_date('d/m/Y'); ?></span>
-                                        </div>
-                                        <?php if ($category_name) : ?>
-                                            <div class="meta-item">
-                                                <i class="fas fa-tag"></i>
-                                                <span><?php echo $category_name; ?></span>
+                        <a href="<?php the_permalink(); ?>" class="product-card-wrapper<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>" style="animation-delay: <?php echo $delay; ?>s;">
+                            <div class="modern-product-card">
+                                <div class="product-image-container">
+                                    <div class="product-image">
+                                        <?php if (has_post_thumbnail()) : ?>
+                                            <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
+                                        <?php else : ?>
+                                            <div class="product-placeholder">
+                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                    <polyline points="21,15 16,10 5,21"></polyline>
+                                                </svg>
+                                                <span class="placeholder-text">Chưa có ảnh</span>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    
-                                    <h3 class="post-title">
-                                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                    </h3>
-                                    
-                                    <div class="post-excerpt">
-                                        <?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
+                                    <div class="product-tech-indicator">
+                                        <div class="tech-dot"></div>
+                                        <div class="tech-dot"></div>
+                                        <div class="tech-dot"></div>
                                     </div>
-                                    
-                                    <div class="post-footer">
-                                        <a href="<?php the_permalink(); ?>" class="btn-read-more">
-                                            <span>Xem chi tiết</span>
-                                            <i class="fas fa-arrow-right"></i>
-                                        </a>
-                                        <div class="post-share">
-                                            <button class="btn-share" onclick="shareProduct('<?php echo esc_js(get_the_title()); ?>', '<?php echo esc_url(get_permalink()); ?>')">
-                                                <i class="fas fa-share-alt"></i>
-                                            </button>
+                                </div>
+                                <div class="product-content">
+                                    <h3 class="product-title">
+                                        <?php the_title(); ?>
+                                    </h3>
+                                    <div class="product-features">
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Chính hãng</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-shield-alt"></i>
+                                            <span>Bảo hành</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-shipping-fast"></i>
+                                            <span>Giao nhanh</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </article>
+                        </a>
                     <?php
                     endwhile;
                     ?>

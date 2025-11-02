@@ -124,24 +124,26 @@ function tdclassic_scripts() {
     // Theme stylesheet
     wp_enqueue_style('tdclassic-style', get_stylesheet_uri(), array('bootstrap-css'), '1.32.8');
     
-    // Mobile optimization CSS - load on all pages
-    wp_enqueue_style('tdclassic-mobile-optimization', get_template_directory_uri() . '/assets/css/mobile-optimization.css', array('tdclassic-style'), '1.32.8');
-    
-    // Product image square CSS - load on all pages
-    wp_enqueue_style('tdclassic-product-image-square', get_template_directory_uri() . '/assets/css/product-image-square.css', array('tdclassic-style'), '1.32.8');
-    
-    // Three-tier header CSS - load on all pages
+    // Three-tier header CSS - load on all pages (needed for header structure)
     wp_enqueue_style('tdclassic-three-tier-header', get_template_directory_uri() . '/assets/css/three-tier-header.css', array('tdclassic-style'), '1.32.8');
     
-    // WordPress Caption Responsive CSS - load on all pages
-    wp_enqueue_style('tdclassic-wordpress-caption-responsive', get_template_directory_uri() . '/assets/css/wordpress-caption-responsive.css', array('tdclassic-style'), '1.32.8');
-    
-    // Front page styles
-    if (is_front_page()) {
-        wp_enqueue_style('tdclassic-front-page', get_template_directory_uri() . '/assets/css/front-page.css', array('tdclassic-style'), '1.32.8');
+    // Mobile optimization CSS - load on pages with products
+    if (is_singular('product') || is_post_type_archive('product') || (function_exists('is_product_category') && is_product_category()) || is_front_page() || is_page_template('page-san-pham.php')) {
+        wp_enqueue_style('tdclassic-mobile-optimization', get_template_directory_uri() . '/assets/css/mobile-optimization.css', array('tdclassic-style'), '1.32.8');
+        wp_enqueue_style('tdclassic-product-image-square', get_template_directory_uri() . '/assets/css/product-image-square.css', array('tdclassic-style'), '1.32.8');
     }
     
-	// Simplified header: avoid loading Bootstrap JS and theme JS to reduce page load
+    // WordPress Caption Responsive CSS - load only on posts/blogs
+    if (is_singular('post') || is_home() || is_category() || is_tag() || is_archive()) {
+        wp_enqueue_style('tdclassic-wordpress-caption-responsive', get_template_directory_uri() . '/assets/css/wordpress-caption-responsive.css', array('tdclassic-style'), '1.32.8');
+    }
+    
+    // Front page styles
+    // NOTE: front-page-enhanced.css is loaded inline in front-page.php template
+    // No need to enqueue front-page.css here to avoid duplicate CSS
+    
+    // Bootstrap JS - Load globally for dropdown, modal, collapse functionality
+    wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', array(), '5.3.0', true);
     
 	// Keep front-page slider JS optional; disabled to minimize JS on header pages
 	// if (is_front_page()) {
@@ -942,17 +944,7 @@ function tdclassic_create_sample_products() {
  */
 function tdclassic_enqueue_product_assets() {
     if (is_singular('product')) {
-        // Enqueue Font Awesome
-        wp_enqueue_style(
-            'font-awesome',
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
-        );
-        
-        // Enqueue Bootstrap CSS (if not already loaded)
-        wp_enqueue_style(
-            'bootstrap',
-            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'
-        );
+        // NOTE: Bootstrap & Font Awesome already loaded globally, no need to enqueue again
         
         // Enqueue custom product page CSS
         wp_enqueue_style(
@@ -970,14 +962,7 @@ function tdclassic_enqueue_product_assets() {
             '1.0.0'
         );
         
-        // Enqueue Bootstrap JS
-        wp_enqueue_script(
-            'bootstrap',
-            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
-            array(),
-            '5.3.0',
-            true
-        );
+        // NOTE: Bootstrap JS is loaded globally, no need to enqueue here
         
         // Enqueue custom product page JS
         wp_enqueue_script(
