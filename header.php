@@ -59,6 +59,7 @@
                     </a>
 					<!-- Simplified: Removed JS-dependent DateTime & Weather Widget -->
                 </div>
+                
                 <!-- Bottom Header - Mobile Navigation -->
 				<div class="bottom-header">
 						<a href="<?php echo home_url('/san-pham'); ?>" class="mobile-nav-item">
@@ -74,7 +75,6 @@
 							<span class="nav-text">Liên hệ</span>
 						</a>
 				</div>
-                
                 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">

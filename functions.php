@@ -14,6 +14,9 @@ require_once get_template_directory() . '/inc/admin-product-specs.php';
 // Include consultation manager
 require_once get_template_directory() . '/inc/admin-consultation-manager.php';
 
+// Include company information management
+require_once get_template_directory() . '/inc/admin-company-info.php';
+
 // Helper function to get WooCommerce product categories with images and descriptions
 function tdclassic_get_product_categories($limit = 6) {
     // Lấy danh mục "Chưa phân loại" để loại bỏ
@@ -1626,13 +1629,21 @@ add_action('admin_enqueue_scripts', 'tdclassic_admin_email_styles');
  * Helper functions to get company contact info
  */
 
-// Get company phone number
+// Get company phone number (backward compatible)
 function tdclassic_get_company_phone() {
+    // Sử dụng hệ thống mới từ admin-company-info.php
+    if (function_exists('tdclassic_get_primary_phone')) {
+        return tdclassic_get_primary_phone();
+    }
     return get_option('tdclassic_company_phone', '+84 904 433 799');
 }
 
-// Get company address
+// Get company address (backward compatible)
 function tdclassic_get_company_address() {
+    // Sử dụng hệ thống mới từ admin-company-info.php
+    if (function_exists('tdclassic_get_primary_address')) {
+        return tdclassic_get_primary_address();
+    }
     return get_option('tdclassic_company_address', 'Số 22A Ngô Quyền, phường Ngô Quyền, Thành phố Hải Phòng, Việt Nam');
 }
 
@@ -1660,10 +1671,15 @@ function tdclassic_display_address($echo = true) {
     }
 } 
 
-// Get company email
+// Get company email (backward compatible)
 function tdclassic_get_company_email() {
+    // Sử dụng hệ thống mới từ admin-company-info.php
+    if (function_exists('tdclassic_get_primary_email')) {
+        return tdclassic_get_primary_email();
+    }
     return get_option('tdclassic_company_email', 'cskh.tdclassic@gmail.com');
 }
+
 // Display company email with mailto link
 function tdclassic_display_email($echo = true) {
     $email = tdclassic_get_company_email();

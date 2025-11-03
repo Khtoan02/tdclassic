@@ -235,21 +235,25 @@
 /* ===== BOTTOM HEADER - Mobile Navigation ===== */
 .bottom-header {
   color: #fff !important;
-  padding: 0.4rem 0 !important;
+  padding: 0 !important;
   display: none;
+  flex: 1 1 auto;
+  margin-left: 0.75rem;
 }
 
-/* Hiển thị bottom-header trên mobile */
-@media (max-width: 767.98px) {
+/* Hiển thị bottom-header trên mobile/tablet */
+@media (max-width: 991.98px) {
   .bottom-header {
     display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
   }
 }
 
+/* Bottom header không cần container riêng vì đã nằm trong main-header container */
 .bottom-header .container {
-  display: flex !important;
-  justify-content: space-around;
-  align-items: center;
+  display: none !important;
 }
 
 .bottom-header .mobile-nav-item {
