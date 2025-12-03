@@ -1803,3 +1803,118 @@ function tdclassic_get_project_thumb_url($post_id = null, $size = 'project-thumb
     return get_template_directory_uri() . '/assets/images/project-placeholder.jpg';
 }
 
+/* --- CODE LẤY TIN (DÀNH CHO LOCALHOST / TIN TỨC) --- */
+/**
+ * Lấy bài viết từ site chính TavaLED thông qua REST API.
+ *
+ * @param int  $quantity     Số bài trên mỗi trang.
+ * @param int  $page         Trang hiện tại (phục vụ phân trang).
+ * @param int  $total_pages  (tham chiếu) Tổng số trang lấy từ header API.
+ *
+ * @return array Danh sách bài viết đã được chuẩn hoá.
+ */
+function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1) {
+    $quantity    = max(1, (int) $quantity);
+    $page        = max(1, (int) $page);
+    $total_pages = 1;
+
+    // 1. Nếu đang làm giao diện, có thể bật cache để nhẹ server hơn
+    // $cache_key    = 'db_main_posts_' . $quantity . '_page_' . $page;
+    // $cached_posts = get_transient($cache_key);
+    // if (false !== $cached_posts) {
+    //     $total_pages = isset($cached_posts['total_pages']) ? (int) $cached_posts['total_pages'] : 1;
+    //     return isset($cached_posts['items']) ? $cached_posts['items'] : [];
+    // }
+
+    $api_url = add_query_arg(
+        array(
+            '_embed'    => 1,
+            'per_page'  => $quantity,
+            'page'      => $page,
+        ),
+        'https://tavaled.vn/wp-json/wp/v2/posts'
+    );
+
+    // QUAN TRỌNG: Thêm 'sslverify' => false để tránh lỗi trên Localhost
+    $response = wp_remote_get(
+        $api_url,
+        array(
+            'timeout'   => 15,
+            'sslverify' => false,
+        )
+    );
+
+    if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
+        // Mẹo: In lỗi ra để xem nếu không lấy được tin
+        // echo '<pre>'; print_r($response); echo '</pre>';
+        return array();
+    }
+
+    $posts_data  = json_decode(wp_remote_retrieve_body($response), true);
+    $total_pages = (int) wp_remote_retrieve_header($response, 'x-wp-totalpages');
+    if ($total_pages < 1) {
+        $total_pages = 1;
+    }
+
+    $final_posts = array();
+
+    if (!empty($posts_data) && is_array($posts_data)) {
+        foreach ($posts_data as $post) {
+            // Ảnh đại diện
+            $thumbnail = isset($post['_embedded']['wp:featuredmedia'][0]['source_url'])
+                ? $post['_embedded']['wp:featuredmedia'][0]['source_url']
+                : 'https://via.placeholder.com/400x250?text=TavaLED';
+
+            // Ngày đăng
+            $raw_date = isset($post['date']) ? $post['date'] : '';
+            $date     = $raw_date ? date_i18n('d/m/Y', strtotime($raw_date)) : '';
+
+            // Tác giả (nếu có _embed)
+            $author_name = '';
+            if (isset($post['_embedded']['author'][0]['name'])) {
+                $author_name = $post['_embedded']['author'][0]['name'];
+            }
+
+            // Nội dung & thời gian đọc ước lượng
+            $content_rendered = isset($post['content']['rendered']) ? $post['content']['rendered'] : '';
+            $content_text     = wp_strip_all_tags($content_rendered);
+            $word_count       = !empty($content_text) ? str_word_count($content_text) : 0;
+            $reading_time     = max(1, (int) ceil($word_count / 200));
+
+            // Category chính (nếu có _embed terms)
+            $main_category = '';
+            if (isset($post['_embedded']['wp:term'][0]) && is_array($post['_embedded']['wp:term'][0])) {
+                foreach ($post['_embedded']['wp:term'][0] as $term) {
+                    if (isset($term['name'])) {
+                        $main_category = $term['name'];
+                        break;
+                    }
+                }
+            }
+
+            $final_posts[] = array(
+                'title'         => isset($post['title']['rendered']) ? $post['title']['rendered'] : '',
+                'link'          => isset($post['link']) ? $post['link'] : '',
+                'excerpt'       => isset($post['excerpt']['rendered']) ? wp_trim_words(wp_strip_all_tags($post['excerpt']['rendered']), 25, '...') : '',
+                'image'         => $thumbnail,
+                'date'          => $date,
+                'raw_date'      => $raw_date,
+                'author'        => $author_name,
+                'reading_time'  => $reading_time,
+                'main_category' => $main_category,
+            );
+        }
+
+        // Dev xong nếu muốn có thể bật cache lại cho nhẹ server
+        // set_transient(
+        //     $cache_key,
+        //     array(
+        //         'items'       => $final_posts,
+        //         'total_pages' => $total_pages,
+        //     ),
+        //     600 // Cache 10 phút
+        // );
+    }
+
+    return $final_posts;
+}

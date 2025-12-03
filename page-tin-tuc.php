@@ -111,79 +111,146 @@ get_header(); ?>
 
             <div class="news-posts-grid">
                 <?php
-                $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-                $blog_posts = new WP_Query(array(
-                    'post_type' => 'post',
-                    'posts_per_page' => 15,
-                    'paged' => $paged,
-                    'orderby' => 'date',
-                    'order' => 'DESC',
-                    'meta_query' => array(
-                        'relation' => 'OR',
-                        array(
-                            'key' => '_thumbnail_id',
-                            'compare' => 'EXISTS'
-                        ),
-                        array(
-                            'key' => '_thumbnail_id',
-                            'compare' => 'NOT EXISTS'
-                        )
-                    )
-                ));
+                // LẤY BÀI VIẾT CẢ TỪ WEBSITE (LOCAL) VÀ TavaLED
+                $paged          = (get_query_var('paged')) ? (int) get_query_var('paged') : 1;
+                $posts_per_page = 6; // Số bài local + số bài remote mỗi trang (6 + 6 = 12 bài)
 
-                if ($blog_posts->have_posts()) :
-                    $post_count = 0;
-                    while ($blog_posts->have_posts()) : $blog_posts->the_post();
-                        $post_count++;
-                        
-                        // Get post data
-                        $post_id = get_the_ID();
-                        $post_title = get_the_title();
-                        $post_image = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'large');
+                // 1. Bài viết local (TD Classic)
+                $local_query = new WP_Query(
+                    array(
+                        'post_type'      => 'post',
+                        'posts_per_page' => $posts_per_page,
+                        'paged'          => $paged,
+                        'orderby'        => 'date',
+                        'order'          => 'DESC',
+                    )
+                );
+
+                $combined_posts = array();
+                $total_pages_local = $local_query->max_num_pages;
+
+                if ($local_query->have_posts()) {
+                    while ($local_query->have_posts()) {
+                        $local_query->the_post();
+
+                        $post_id        = get_the_ID();
+                        $post_title     = get_the_title();
+                        $post_link      = get_permalink();
+                        $post_image     = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'large');
                         $post_image_url = $post_image ? $post_image[0] : '';
-                        $post_link = get_permalink();
-                        $post_excerpt = get_the_excerpt();
-                        
-                        // Generate WebP image URL for better quality
-                        $webp_image_url = '';
-                        if ($post_image_url) {
-                            $image_path = str_replace(home_url(), ABSPATH, $post_image_url);
-                            $path_info = pathinfo($image_path);
-                            $webp_path = $path_info['dirname'] . '/' . $path_info['filename'] . '.webp';
-                            if (file_exists($webp_path)) {
-                                $webp_image_url = str_replace(ABSPATH, home_url('/'), $webp_path);
-                            }
-                        }
-                        
-                        // Get post categories
-                        $categories = get_the_category();
-                        $main_category = $categories ? $categories[0]->name : '';
-                        
-                        // Determine badge
-                        $badge = '';
+                        $post_excerpt   = wp_trim_words(get_the_excerpt(), 25);
+                        $post_date      = get_the_date('d/m/Y');
+                        $post_raw_date  = get_the_date('c');
+                        $post_author    = get_the_author();
+
+                        $categories     = get_the_category();
+                        $main_category  = $categories ? $categories[0]->name : 'Tin tức';
+                        $reading_time   = estimated_reading_time(get_the_content());
+
+                        // Badge cho bài local
+                        $badge       = '';
                         $badge_class = '';
                         if (strtotime(get_the_date()) > strtotime('-7 days')) {
-                            $badge = 'MỚI';
+                            $badge       = 'MỚI';
                             $badge_class = 'recent';
                         } elseif (get_post_meta($post_id, 'popular_post', true)) {
-                            $badge = 'HOT';
+                            $badge       = 'HOT';
                             $badge_class = 'popular';
                         }
-                        
+
+                        $combined_posts[] = array(
+                            'origin'        => 'local',
+                            'title'         => $post_title,
+                            'link'          => $post_link,
+                            'image'         => $post_image_url,
+                            'date'          => $post_date,
+                            'raw_date'      => $post_raw_date,
+                            'excerpt'       => $post_excerpt,
+                            'author'        => $post_author,
+                            'main_category' => $main_category,
+                            'reading_time'  => $reading_time,
+                            'badge'         => $badge,
+                            'badge_class'   => $badge_class,
+                        );
+                    }
+                    wp_reset_postdata();
+                }
+
+                // 2. Bài viết remote từ TavaLED
+                $total_pages_remote = 1;
+                $remote_posts       = get_posts_from_main_site($posts_per_page, $paged, $total_pages_remote);
+
+                if (!empty($remote_posts)) {
+                    foreach ($remote_posts as $remote_post) {
+                        $combined_posts[] = array(
+                            'origin'        => 'remote',
+                            'title'         => isset($remote_post['title']) ? $remote_post['title'] : '',
+                            'link'          => isset($remote_post['link']) ? $remote_post['link'] : '#',
+                            'image'         => isset($remote_post['image']) ? $remote_post['image'] : '',
+                            'date'          => isset($remote_post['date']) ? $remote_post['date'] : '',
+                            'raw_date'      => isset($remote_post['raw_date']) ? $remote_post['raw_date'] : '',
+                            'excerpt'       => isset($remote_post['excerpt']) ? $remote_post['excerpt'] : '',
+                            'author'        => !empty($remote_post['author']) ? $remote_post['author'] : 'TavaLED',
+                            'main_category' => !empty($remote_post['main_category']) ? $remote_post['main_category'] : 'Tin tức',
+                            'reading_time'  => isset($remote_post['reading_time']) ? (int) $remote_post['reading_time'] : 1,
+                            // Badge remote: mặc định mới trong 7 ngày là "MỚI", còn lại là "HOT"
+                            'badge'         => (isset($remote_post['raw_date']) && strtotime($remote_post['raw_date']) > strtotime('-7 days')) ? 'MỚI' : 'HOT',
+                            'badge_class'   => (isset($remote_post['raw_date']) && strtotime($remote_post['raw_date']) > strtotime('-7 days')) ? 'recent' : 'popular',
+                        );
+                    }
+                }
+
+                // 3. Nếu không có bài nào
+                if (empty($combined_posts)) :
+                ?>
+                    <div class="no-news-wrapper col-12">
+                        <div class="no-news-content">
+                            <div class="no-news-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <h3>Chưa có bài viết nào</h3>
+                            <p>Hiện tại chúng tôi chưa có bài viết nào để hiển thị. Vui lòng quay lại sau.</p>
+                        </div>
+                    </div>
+                <?php
+                else :
+                    // 4. Sắp xếp tất cả bài theo ngày đăng mới nhất (dựa trên raw_date)
+                    usort(
+                        $combined_posts,
+                        function ($a, $b) {
+                            $time_a = !empty($a['raw_date']) ? strtotime($a['raw_date']) : 0;
+                            $time_b = !empty($b['raw_date']) ? strtotime($b['raw_date']) : 0;
+                            return $time_b <=> $time_a;
+                        }
+                    );
+
+                    $post_count = 0;
+                    foreach ($combined_posts as $post_item) :
+                        $post_count++;
+
+                        $origin        = $post_item['origin']; // local | remote
+                        $post_title    = $post_item['title'];
+                        $post_link     = $post_item['link'];
+                        $post_image_url= $post_item['image'];
+                        $post_date     = $post_item['date'];
+                        $post_excerpt  = $post_item['excerpt'];
+                        $post_author   = $post_item['author'];
+                        $main_category = $post_item['main_category'];
+                        $reading_time  = (int) $post_item['reading_time'];
+                        $badge         = $post_item['badge'];
+                        $badge_class   = $post_item['badge_class'];
+
                         // Animation delay
                         $delay = ($post_count % 4) * 0.1;
                 ?>
-                    <div class="news-post-card-wrapper" data-category="<?php echo esc_attr($badge_class ? $badge_class : 'all'); ?>" style="animation-delay: <?php echo $delay; ?>s;">
+                    <div class="news-post-card-wrapper" data-category="<?php echo esc_attr($badge_class ? $badge_class : 'all'); ?>" style="animation-delay: <?php echo esc_attr($delay); ?>s;">
                         <div class="modern-news-card">
                             <div class="news-image-container">
                                 <div class="news-image">
-                                    <?php if ($post_image_url) : ?>
+                                    <?php if (!empty($post_image_url)) : ?>
                                         <picture>
-                                            <?php if ($webp_image_url) : ?>
-                                                <source srcset="<?php echo esc_url($webp_image_url); ?>" type="image/webp">
-                                            <?php endif; ?>
                                             <img src="<?php echo esc_url($post_image_url); ?>" 
-                                                 alt="<?php echo esc_attr($post_title); ?>" 
+                                                 alt="<?php echo esc_attr(wp_strip_all_tags($post_title)); ?>" 
                                                  loading="lazy"
                                                  decoding="async"
                                                  width="400"
@@ -196,17 +263,26 @@ get_header(); ?>
                                     <?php endif; ?>
                                     <div class="image-overlay">
                                         <div class="overlay-content">
-                                            <a href="<?php echo esc_url($post_link); ?>" class="btn-overlay-primary">
-                                                <i class="fas fa-eye"></i>
-                                                <span>Đọc bài viết</span>
-                                            </a>
-                                            <button class="btn-overlay-secondary" onclick="shareArticle('<?php echo esc_js($post_title); ?>', '<?php echo esc_url($post_link); ?>')">
+                                            <?php if ($origin === 'remote') : ?>
+                                                <!-- Bài TavaLED: hiện popup trước -->
+                                                <button class="btn-overlay-primary" type="button" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_js(wp_strip_all_tags($post_excerpt)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                                    <i class="fas fa-eye"></i>
+                                                    <span>Xem nhanh</span>
+                                                </button>
+                                            <?php else : ?>
+                                                <!-- Bài local: trỏ thẳng ra single -->
+                                                <a href="<?php echo esc_url($post_link); ?>" class="btn-overlay-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                    <span>Đọc bài viết</span>
+                                                </a>
+                                            <?php endif; ?>
+                                            <button class="btn-overlay-secondary" onclick="shareArticle('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_url($post_link); ?>')">
                                                 <i class="fas fa-share-alt"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                                <?php if ($badge): ?>
+                                <?php if ($badge) : ?>
                                     <div class="news-badge <?php echo esc_attr($badge_class); ?>">
                                         <span><?php echo esc_html($badge); ?></span>
                                     </div>
@@ -221,15 +297,15 @@ get_header(); ?>
                                 <div class="news-meta">
                                     <div class="meta-item">
                                         <i class="fas fa-calendar-alt"></i>
-                                        <span><?php echo get_the_date('d/m/Y'); ?></span>
+                                        <span><?php echo esc_html($post_date); ?></span>
                                     </div>
                                     <div class="meta-item">
                                         <i class="fas fa-user"></i>
-                                        <span><?php the_author(); ?></span>
+                                        <span><?php echo esc_html($post_author); ?></span>
                                     </div>
                                     <div class="meta-item">
                                         <i class="fas fa-clock"></i>
-                                        <span><?php echo estimated_reading_time(get_the_content()); ?> phút đọc</span>
+                                        <span><?php echo (int) $reading_time; ?> phút đọc</span>
                                     </div>
                                 </div>
                                 <div class="news-category-tag">
@@ -237,114 +313,69 @@ get_header(); ?>
                                     <span><?php echo esc_html($main_category); ?></span>
                                 </div>
                                 <h3 class="news-title">
-                                    <a href="<?php echo esc_url($post_link); ?>"><?php echo esc_html($post_title); ?></a>
+                                    <?php if ($origin === 'remote') : ?>
+                                        <a href="javascript:void(0)" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_js(wp_strip_all_tags($post_excerpt)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                            <?php echo esc_html(wp_strip_all_tags($post_title)); ?>
+                                        </a>
+                                    <?php else : ?>
+                                        <a href="<?php echo esc_url($post_link); ?>">
+                                            <?php echo esc_html(wp_strip_all_tags($post_title)); ?>
+                                        </a>
+                                    <?php endif; ?>
                                 </h3>
                                 <div class="news-description">
-                                    <p><?php echo wp_trim_words($post_excerpt, 15); ?></p>
-                                </div>
-                                <div class="news-tags">
-                                    <?php if (get_the_tags()) : ?>
-                                        <div class="tags-list">
-                                            <i class="fas fa-tags"></i>
-                                            <?php the_tags('', ', ', ''); ?>
-                                        </div>
-                                    <?php endif; ?>
+                                    <p><?php echo esc_html($post_excerpt); ?></p>
                                 </div>
                                 <div class="news-actions">
-                                    <a href="<?php echo esc_url($post_link); ?>" class="btn-news-detail">
-                                        <span>Đọc thêm</span>
-                                        <i class="fas fa-arrow-right"></i>
-                                    </a>
+                                    <?php if ($origin === 'remote') : ?>
+                                        <button class="btn-news-detail" type="button" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_js(wp_strip_all_tags($post_excerpt)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                            <span>Xem chi tiết</span>
+                                            <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    <?php else : ?>
+                                        <a href="<?php echo esc_url($post_link); ?>" class="btn-news-detail">
+                                            <span>Đọc thêm</span>
+                                            <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                 <?php
-                    endwhile;
-                    
-                    // Pagination
-                    if ($blog_posts->max_num_pages > 1) :
+                    endforeach;
+
+                    // 5. Pagination: lấy max giữa local & remote
+                    $total_pages = max((int) $total_pages_local, (int) $total_pages_remote);
+                    if ($total_pages > 1) :
                 ?>
                     <div class="pagination-wrapper col-12">
                         <div class="modern-pagination">
                             <?php
                             $big = 999999999;
-                            echo paginate_links(array(
-                                'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
-                                'format' => '?paged=%#%',
-                                'current' => max(1, get_query_var('paged')),
-                                'total' => $blog_posts->max_num_pages,
-                                'prev_text' => '<i class="fas fa-chevron-left"></i><span>Trước</span>',
-                                'next_text' => '<span>Sau</span><i class="fas fa-chevron-right"></i>',
-                                'type' => 'list'
-                            ));
+                            // Trên mobile, rút gọn số trang hiển thị để tránh tràn ngang
+                            $is_mobile = wp_is_mobile();
+                            echo paginate_links(
+                                array(
+                                    'base'      => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+                                    'format'    => '?paged=%#%',
+                                    'current'   => max(1, $paged),
+                                    'total'     => $total_pages,
+                                    'prev_text' => '<i class="fas fa-chevron-left"></i><span>Trước</span>',
+                                    'next_text' => '<span>Sau</span><i class="fas fa-chevron-right"></i>',
+                                    'type'      => 'list',
+                                    // Desktop: hiển thị nhiều số trang hơn, Mobile: chỉ giữ current ±1
+                                    'end_size'  => $is_mobile ? 1 : 2,
+                                    'mid_size'  => $is_mobile ? 0 : 2,
+                                )
+                            );
                             ?>
                         </div>
                     </div>
                 <?php
                     endif;
-                    wp_reset_postdata();
-                else :
+                endif;
                 ?>
-                    <div class="no-news-wrapper col-12">
-                        <div class="no-news-content">
-                            <div class="no-news-icon">
-                                <i class="fas fa-newspaper"></i>
-                            </div>
-                            <h3>Chưa có bài viết nào</h3>
-                            <p>Hiện tại chúng tôi chưa có bài viết nào để hiển thị. Vui lòng quay lại sau.</p>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter Section -->
-    <section class="newsletter-section">
-        <div class="container">
-            <div class="newsletter-wrapper">
-                <div class="newsletter-background">
-                    <div class="newsletter-pattern"></div>
-                </div>
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-                        <div class="newsletter-content">
-                            <h2 class="newsletter-title">Đăng ký nhận tin tức mới nhất</h2>
-                            <p class="newsletter-description">
-                                Nhận thông báo về những bài viết mới nhất và xu hướng công nghệ hot nhất qua email của bạn.
-                            </p>
-                            <div class="newsletter-features">
-                                <div class="newsletter-feature">
-                                    <i class="fas fa-envelope"></i>
-                                    <span>Email hàng tuần</span>
-                                </div>
-                                <div class="newsletter-feature">
-                                    <i class="fas fa-lightning"></i>
-                                    <span>Nội dung độc quyền</span>
-                                </div>
-                                <div class="newsletter-feature">
-                                    <i class="fas fa-gift"></i>
-                                    <span>Ưu đãi đặc biệt</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="newsletter-form">
-                            <form class="subscription-form">
-                                <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Nhập email của bạn..." required>
-                                    <button type="submit" class="btn-subscribe">
-                                        <i class="fas fa-paper-plane"></i>
-                                        <span>Đăng ký</span>
-                                    </button>
-                                </div>
-                                <small class="form-text">Chúng tôi không spam và bảo mật thông tin của bạn.</small>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -395,6 +426,30 @@ get_header(); ?>
             </div>
         </div>
     </section>
+    <!-- Modal xem nhanh bài viết TavaLED -->
+    <div id="newsPreviewModal" class="news-preview-modal" aria-hidden="true">
+        <div class="news-preview-backdrop" onclick="closeNewsPreview()"></div>
+        <div class="news-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="newsPreviewTitle">
+            <button type="button" class="news-preview-close" onclick="closeNewsPreview()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="news-preview-content">
+                <div class="news-preview-header">
+                    <span class="news-preview-badge">TavaLED</span>
+                    <h3 id="newsPreviewTitle" class="news-preview-title"></h3>
+                </div>
+                <div class="news-preview-body">
+                    <p class="news-preview-excerpt"></p>
+                </div>
+                <div class="news-preview-footer">
+                    <a href="#" target="_blank" rel="noopener" class="btn-news-preview-detail">
+                        <span>Xem bài đầy đủ</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <style>
@@ -1327,14 +1382,27 @@ get_header(); ?>
     display: flex;
     justify-content: center;
     margin-top: 3rem;
+    /* Khi nằm trong grid, cho pagination chiếm full width để không phá layout thẻ bài */
+    grid-column: 1 / -1;
+}
+
+.modern-pagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .modern-pagination ul {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     list-style: none;
-    padding: 0;
+    padding: 0.4rem 0.6rem;
     margin: 0;
+    background: #fff;
+    border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .modern-pagination li {
@@ -1343,24 +1411,66 @@ get_header(); ?>
 
 .modern-pagination a,
 .modern-pagination span {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1.2rem;
-    background: #fff;
+    justify-content: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 0.9rem;
+    background: transparent;
     color: #666;
     text-decoration: none;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    border-radius: 999px;
+    border: none;
+    font-size: 0.9rem;
     font-weight: 500;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
 }
 
-.modern-pagination a:hover,
-.modern-pagination .current span {
+.modern-pagination a:hover {
+    background: rgba(0, 0, 0, 0.06);
+    color: #000;
+    transform: translateY(-1px);
+}
+
+/* Trang hiện tại */
+.modern-pagination .current {
     background: #000;
     color: #fff;
-    border-color: #000;
+    cursor: default;
+    pointer-events: none;
+    transform: translateY(-1px);
+}
+
+/* Nút Prev/Next nổi bật hơn một chút */
+.modern-pagination .prev a,
+.modern-pagination .next a {
+    padding-inline: 1.1rem;
+    font-size: 0.85rem;
+}
+
+/* Dấu ... (dots) */
+.modern-pagination .dots {
+    opacity: 0.7;
+}
+
+/* UX tốt hơn trên mobile: cho phép scroll ngang cụm pagination nếu quá nhiều trang */
+@media (max-width: 768px) {
+    .pagination-wrapper {
+        justify-content: flex-start;
+    }
+
+    .modern-pagination {
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .modern-pagination ul {
+        justify-content: flex-start;
+        white-space: nowrap;
+        padding-inline: 0.5rem;
+    }
 }
 
 /* No News */
@@ -1390,6 +1500,117 @@ get_header(); ?>
 .no-news-content p {
     color: #666;
     margin-bottom: 2rem;
+}
+
+/* Modal xem nhanh bài viết TavaLED */
+.news-preview-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.news-preview-modal.is-active {
+    display: flex;
+}
+
+.news-preview-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.news-preview-dialog {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    width: 90%;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    padding: 1.8rem 2rem 1.8rem;
+    animation: fadeInUp 0.35s ease;
+}
+
+.news-preview-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    border: none;
+    background: transparent;
+    color: #999;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.news-preview-close:hover {
+    color: #000;
+    transform: scale(1.05);
+}
+
+.news-preview-content {
+    position: relative;
+}
+
+.news-preview-header {
+    margin-bottom: 1rem;
+}
+
+.news-preview-badge {
+    display: inline-block;
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    background: #000;
+    color: #fff;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.5rem;
+}
+
+.news-preview-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    color: #000;
+}
+
+.news-preview-body {
+    margin: 1rem 0 1.5rem;
+}
+
+.news-preview-excerpt {
+    margin: 0;
+    color: #555;
+    line-height: 1.7;
+}
+
+.news-preview-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-news-preview-detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-news-preview-detail:hover {
+    background: #333;
+    color: #fff;
+    transform: translateX(3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
 /* Responsive Design */
@@ -1423,8 +1644,9 @@ get_header(); ?>
         font-size: 0.9rem;
     }
     
+    /* Mobile & tablet: 1 cột cho thẻ bài để tránh vỡ layout */
     .news-posts-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
         gap: 1.5rem;
     }
     
@@ -1651,18 +1873,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Newsletter subscription
-    const subscriptionForm = document.querySelector('.subscription-form');
-    if (subscriptionForm) {
-        subscriptionForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            if (email) {
-                alert('Cảm ơn bạn đã đăng ký! Chúng tôi sẽ gửi tin tức mới nhất đến email của bạn.');
-                this.reset();
-            }
-        });
-    }
+    // Modal xem nhanh bài viết TavaLED
+    window.openNewsPreview = function(title, excerpt, url) {
+        const modal = document.getElementById('newsPreviewModal');
+        if (!modal) return;
+
+        const titleEl   = modal.querySelector('.news-preview-title');
+        const excerptEl = modal.querySelector('.news-preview-excerpt');
+        const linkEl    = modal.querySelector('.btn-news-preview-detail');
+
+        if (titleEl)   titleEl.textContent   = title || '';
+        if (excerptEl) excerptEl.textContent = excerpt || '';
+        if (linkEl)    linkEl.setAttribute('href', url || '#');
+
+        modal.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeNewsPreview = function() {
+        const modal = document.getElementById('newsPreviewModal');
+        if (!modal) return;
+        modal.classList.remove('is-active');
+        document.body.style.overflow = '';
+    };
 });
 
 // Reading time estimation
