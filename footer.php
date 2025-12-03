@@ -154,9 +154,9 @@
                                 <ul>
                                     <li>Tên viết tắt: TAVA VIETNAM TECHNOLOGY JSC</li>
                                     <li>Giấy chứng nhận đăng ký kinh doanh: 0201879542</li>
-                                    <li>Cơ quan cấp: Sở Kế hoạch và Đầu tư Thành phố Hà Nội</li>
+                                    <li>Cơ quan cấp: Sở Kế hoạch và Đầu tư Thành phố Hải Phòng</li>
                                     <li>Ngày cấp: 07/06/2018</li>
-                                    <li>Địa chỉ: <?php tdclassic_display_address(); ?></li>
+                                    <li>Địa chỉ: Số 22A Ngô Quyền, phường Ngô Quyền, Thành phố Hải Phòng, Việt Nam</li>
                                 </ul>
                             </div>
                         </div>

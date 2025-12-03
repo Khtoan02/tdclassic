@@ -57,60 +57,24 @@
                         }
                         ?>
                     </a>
-                    <!-- DateTime & Weather Widget -->
-                    <div class="datetime-weather-widget d-none d-lg-block">
-                        <div class="widget-info">
-                            <!-- Row 1: Time -->
-                            <div class="time-row">
-                                <i class="fas fa-clock me-1"></i>
-                                <span id="current-time"></span>
-                                <span class="separator">|</span>
-                                <span id="current-date"></span>
-                            </div>
-                            <!-- Row 2: Weather & Location -->
-                            <div class="weather-row">
-                                <div class="location-selector">
-                                    <select id="location-select" class="form-select form-select-sm">
-                                        <option value="hanoi">Hà Nội</option>
-                                        <option value="hochiminh">TP. Hồ Chí Minh</option>
-                                        <option value="danang">Đà Nẵng</option>
-                                        <option value="haiphong">Hải Phòng</option>
-                                        <option value="cantho">Cần Thơ</option>
-                                    </select>
-                                    <button id="get-location" class="btn btn-sm btn-outline-light location-btn" title="Lấy vị trí hiện tại">
-                                        <i class="fas fa-location-arrow"></i>
-                                    </button>
-                                </div>
-                                <span class="weather-info">
-                                    <i class="fas fa-cloud-sun weather-icon me-1"></i>
-                                    <span id="weather-temp">--°C</span>
-                                    <span class="separator">|</span>
-                                    <span id="weather-desc">Đang tải...</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Bottom Header - Mobile Navigation -->
-                <div class="bottom-header">
-                        <a href="<?php echo home_url('/san-pham'); ?>" class="mobile-nav-item">
-                            <i class="fas fa-box"></i>
-                            <span class="nav-text">Sản phẩm</span>
-                        </a>
-                        <a href="<?php echo home_url('/du-an'); ?>" class="mobile-nav-item">
-                            <i class="fas fa-briefcase"></i>
-                            <span class="nav-text">Dự án</span>
-                        </a>
-                        <a href="<?php echo home_url('/lien-he'); ?>" class="mobile-nav-item">
-                            <i class="fas fa-envelope"></i>
-                            <span class="nav-text">Liên hệ</span>
-                        </a>
-                        <a href="<?php echo home_url('/dai-ly'); ?>" class="mobile-nav-item">
-                            <i class="fa-solid fa-store"></i>
-                            <span class="nav-text">Đại lý</span>
-                        </a>
+					<!-- Simplified: Removed JS-dependent DateTime & Weather Widget -->
                 </div>
                 
+                <!-- Bottom Header - Mobile Navigation -->
+				<div class="bottom-header">
+						<a href="<?php echo home_url('/san-pham'); ?>" class="mobile-nav-item">
+							<i class="fas fa-box"></i>
+							<span class="nav-text">Sản phẩm</span>
+						</a>
+						<a href="<?php echo home_url('/tin-tuc'); ?>" class="mobile-nav-item">
+							<i class="fas fa-share-alt"></i>
+							<span class="nav-text">Kinh nghiệm</span>
+						</a>
+						<a href="<?php echo home_url('/lien-he'); ?>" class="mobile-nav-item">
+							<i class="fas fa-envelope"></i>
+							<span class="nav-text">Liên hệ</span>
+						</a>
+				</div>
                 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">

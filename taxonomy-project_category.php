@@ -10,6 +10,47 @@ get_header(); ?>
         <div class="row">
             <div class="col-lg-12">
                 <header class="page-header mb-5">
+                    <style>
+                        .breadcrumb-modern {
+                            background: #f9f9fb;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 8px 0 rgba(80,80,120,0.04);
+                            padding: 2px 10px;
+                            margin-bottom: 0.8rem;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            font-size: .95rem;
+                        }
+                        .breadcrumb-modern .breadcrumb-item + .breadcrumb-item::before {
+                            content: '\203A';
+                            color: #b3b3b3;
+                            margin: 0 8px;
+                            font-size: 1.1em;
+                        }
+                        .breadcrumb-modern .breadcrumb-item a {
+                            color: #3471f7;
+                            text-decoration: none;
+                            transition: color 0.2s;
+                        }
+                        .breadcrumb-modern .breadcrumb-item a:hover {
+                            text-decoration: underline;
+                        }
+                        .breadcrumb-modern .breadcrumb-item.active {
+                            color: #21243d;
+                            font-weight: 600;
+                            display: inline-block;
+                            max-width: 60vw;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            vertical-align: bottom;
+                        }
+                        @media (max-width:600px) {
+                            .breadcrumb-modern {
+                                padding: 2px 8px;
+                                font-size: .92rem;
+                            }
+                        }
+                    </style>
                     <h1 class="page-title">
                         <i class="fas fa-briefcase me-2"></i>
                         Danh mục dự án: <?php single_term_title(); ?>
@@ -19,10 +60,9 @@ get_header(); ?>
                             <?php echo term_description(); ?>
                         </div>
                     <?php endif; ?>
-                    
+                    <!-- Breadcrumb Section: Modern -->
                     <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="<?php echo home_url('/'); ?>">Trang chủ</a></li>
+                        <ol class="breadcrumb breadcrumb-modern align-items-center m-0">
                             <li class="breadcrumb-item"><a href="<?php echo home_url('/du-an'); ?>">Dự án</a></li>
                             <li class="breadcrumb-item active" aria-current="page"><?php single_term_title(); ?></li>
                         </ol>

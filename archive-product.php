@@ -7,12 +7,41 @@
 get_header(); ?>
 
 <main id="main" class="site-main products-page">
-    <!-- Hero Section -->
-    <section class="products-hero">
+    <!-- Hero Section with Category Title -->
+    <section class="category-hero-section">
+        <div class="category-hero-background">
+            <div class="category-hero-overlay"></div>
+            <div class="tech-grid-pattern"></div>
+        </div>
         <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Sản phẩm</h1>
-                <p class="hero-subtitle">Khám phá các giải pháp được thiết kế đặc biệt cho doanh nghiệp hiện đại</p>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="category-hero-content text-center">
+                        <h1 class="category-hero-title">
+                            <span class="category-title-main">Sản phẩm</span>
+                            <span class="category-title-sub">GIẢI PHÁP & SẢN PHẨM</span>
+                        </h1>
+                        <div class="category-description-wrapper">
+                            <p class="category-hero-description">Khám phá các giải pháp và sản phẩm âm thanh chuyên nghiệp được thiết kế cho doanh nghiệp hiện đại.</p>
+                        </div>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <div class="stat-number"><?php echo (int) wp_count_posts('product')->publish; ?>+</div>
+                                <div class="stat-label">Sản phẩm</div>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-item">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">Chính hãng</div>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Hỗ trợ</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -107,68 +136,50 @@ get_header(); ?>
                         // Animation delay
                         $delay = ($post_count % 4) * 0.1;
                     ?>
-                        <article class="blog-post-card<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>" style="animation-delay: <?php echo $delay; ?>s;">
-                            <div class="post-card-inner">
-                                <div class="post-image">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
-                                    </a>
-                                    <?php if ($category_name) : ?>
-                                        <div class="post-category-badge">
-                                            <a href="#"><?php echo $category_name; ?></a>
-                                        </div>
-                                    <?php endif; ?>
-                                    
-                                    <!-- Quick Actions Overlay -->
-                                    <div class="product-actions-overlay">
-                                        <div class="action-buttons">
-                                            <a href="<?php the_permalink(); ?>" class="btn-quick-view" title="Xem chi tiết">
-                                                <i class="fas fa-eye"></i>
-                                                <span>Xem chi tiết</span>
-                                            </a>
-                                            <button class="btn-quick-share" title="Chia sẻ" onclick="shareProduct('<?php echo esc_js(get_the_title()); ?>', '<?php echo esc_url(get_permalink()); ?>')">
-                                                <i class="fas fa-share-alt"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="post-content">
-                                    <div class="post-meta">
-                                        <div class="meta-item">
-                                            <i class="fas fa-calendar-alt"></i>
-                                            <span><?php echo get_the_date('d/m/Y'); ?></span>
-                                        </div>
-                                        <?php if ($category_name) : ?>
-                                            <div class="meta-item">
-                                                <i class="fas fa-tag"></i>
-                                                <span><?php echo $category_name; ?></span>
+                        <a href="<?php the_permalink(); ?>" class="product-card-wrapper<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>" style="animation-delay: <?php echo $delay; ?>s;">
+                            <div class="modern-product-card">
+                                <div class="product-image-container">
+                                    <div class="product-image">
+                                        <?php if (has_post_thumbnail()) : ?>
+                                            <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
+                                        <?php else : ?>
+                                            <div class="product-placeholder">
+                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                    <polyline points="21,15 16,10 5,21"></polyline>
+                                                </svg>
+                                                <span class="placeholder-text">Chưa có ảnh</span>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    
-                                    <h3 class="post-title">
-                                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                    </h3>
-                                    
-                                    <div class="post-excerpt">
-                                        <?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
+                                    <div class="product-tech-indicator">
+                                        <div class="tech-dot"></div>
+                                        <div class="tech-dot"></div>
+                                        <div class="tech-dot"></div>
                                     </div>
-                                    
-                                    <div class="post-footer">
-                                        <a href="<?php the_permalink(); ?>" class="btn-read-more">
-                                            <span>Xem chi tiết</span>
-                                            <i class="fas fa-arrow-right"></i>
-                                        </a>
-                                        <div class="post-share">
-                                            <button class="btn-share" onclick="shareProduct('<?php echo esc_js(get_the_title()); ?>', '<?php echo esc_url(get_permalink()); ?>')">
-                                                <i class="fas fa-share-alt"></i>
-                                            </button>
+                                </div>
+                                <div class="product-content">
+                                    <h3 class="product-title">
+                                        <?php the_title(); ?>
+                                    </h3>
+                                    <div class="product-features">
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Chính hãng</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-shield-alt"></i>
+                                            <span>Bảo hành</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-shipping-fast"></i>
+                                            <span>Giao nhanh</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </article>
+                        </a>
                     <?php
                     endwhile;
                     ?>
@@ -314,6 +325,27 @@ get_header(); ?>
         </div>
     </section>
 </main>
+
+<style>
+/* Products Archive - Hero Section (reuse category hero styles) */
+.category-hero-section { background: radial-gradient(circle, rgba(66,66,66,1) 0%, rgba(0,0,0,1) 100%); color: #fff; padding: 100px 0 80px; position: relative; overflow: hidden; }
+.category-hero-background { position: absolute; inset: 0; z-index: 1; }
+.category-hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+.tech-grid-pattern { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 50px 50px; }
+.category-hero-content { position: relative; z-index: 10; }
+.category-hero-title { margin-bottom: 2rem; }
+.category-title-main { display: block; font-size: 3.5rem; font-weight: 800; margin-bottom: .5rem; background: linear-gradient(45deg, #fff, #ccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.category-title-sub { display: block; font-size: 1.2rem; font-weight: 400; color: #ccc; letter-spacing: 3px; text-transform: uppercase; }
+.category-description-wrapper { margin: 0 auto 3rem; }
+.category-hero-description { font-size: 1.2rem; color: #ccc; line-height: 1.8; }
+.category-stats { display: flex; justify-content: center; align-items: center; gap: 2rem; margin-top: 3rem; }
+.category-stats .stat-item { text-align: center; }
+.category-stats .stat-number { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
+.category-stats .stat-label { font-size: .9rem; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+.category-stats .stat-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.2); }
+@media (max-width: 768px) { .category-title-main { font-size: 2.5rem; } .category-title-sub { font-size:1rem; letter-spacing:2px; } .category-stats { flex-wrap: wrap; gap: 1rem; } }
+@media (max-width: 480px) { .category-hero-section { padding:60px 0 50px; } .category-title-main { font-size:2rem; } }
+</style>
 
 <script>
 // Product filtering and search functionality

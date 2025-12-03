@@ -9,26 +9,60 @@ get_header(); ?>
     <?php while (have_posts()) : the_post(); ?>
         <!-- Breadcrumb Section -->
         <section class="breadcrumb-section">
+            <style>
+                .breadcrumb-modern {
+                    background: #f9f9fb;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 8px 0 rgba(80,80,120,0.04);
+                    padding: 2px 10px;
+                    margin-bottom: 0.8rem;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    font-size: .95rem;
+                }
+                .breadcrumb-modern .breadcrumb-item + .breadcrumb-item::before {
+                    content: '\203A';
+                    color: #b3b3b3;
+                    margin: 0 8px;
+                    font-size: 1.1em;
+                }
+                .breadcrumb-modern .breadcrumb-item a {
+                    color: #3471f7;
+                    text-decoration: none;
+                    transition: color 0.2s;
+                }
+                .breadcrumb-modern .breadcrumb-item a:hover {
+                    text-decoration: underline;
+                }
+                .breadcrumb-modern .breadcrumb-item.active {
+                    color: #21243d;
+                    font-weight: 600;
+                    display: inline-block;
+                    max-width: 60vw;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    vertical-align: bottom;
+                }
+                @media (max-width:600px) {
+                    .breadcrumb-modern {
+                        padding: 2px 8px;
+                        font-size: .92rem;
+                    }
+                }
+            </style>
             <div class="container">
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="<?php echo home_url(); ?>">
-                                <i class="fas fa-home"></i>
-                                <span>Trang chủ</span>
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="<?php echo home_url('/san-pham'); ?>">Sản phẩm</a>
-                        </li>
+                    <ol class="breadcrumb breadcrumb-modern align-items-center m-0">
                         <?php 
                         $product_categories = get_the_terms(get_the_ID(), 'product_cat');
-                        if ($product_categories && !is_wp_error($product_categories)) :
+                        $main_category = null;
+                        if ($product_categories && !is_wp_error($product_categories)) {
                             $main_category = $product_categories[0];
-                        ?>
-                        <li class="breadcrumb-item">
-                            <a href="<?php echo get_term_link($main_category); ?>"><?php echo $main_category->name; ?></a>
-                        </li>
+                        }
+                        if ($main_category) : ?>
+                            <li class="breadcrumb-item"><a href="<?php echo get_term_link($main_category); ?>"><?php echo $main_category->name; ?></a></li>
+                        <?php else : ?>
+                            <li class="breadcrumb-item"><a href="<?php echo home_url('/san-pham'); ?>">Sản phẩm</a></li>
                         <?php endif; ?>
                         <li class="breadcrumb-item active" aria-current="page"><?php the_title(); ?></li>
                     </ol>
@@ -45,8 +79,8 @@ get_header(); ?>
                     <div class="col-lg-6">
                         <div class="product-gallery-wrapper">
                         <?php if (has_post_thumbnail()) : ?>
-                                <!-- Main Product Image -->
-                                <div class="main-image-container">
+                                <!-- Main Product Image with thumbnail rail (mobile-first) -->
+                                <div class="main-image-container mobile-two-col-gallery">
                                     <div class="product-badges">
                                         <span class="badge badge-premium">
                                             <i class="fas fa-crown"></i>
@@ -62,6 +96,32 @@ get_header(); ?>
                                         </span>
                                     </div>
                                     
+                                    <!-- Thumbnails rail (left) -->
+                                    <div class="thumbs-rail">
+                                        <?php
+                                        $thumb_urls = array();
+                                        $thumb_urls[] = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                                        $gallery_meta = get_post_meta(get_the_ID(), '_product_image_gallery', true);
+                                        if (!empty($gallery_meta)) {
+                                            $ids = array_filter(array_map('trim', explode(',', $gallery_meta)));
+                                            foreach ($ids as $gid) {
+                                                $u = wp_get_attachment_image_url($gid, 'large');
+                                                if ($u) { $thumb_urls[] = $u; }
+                                            }
+                                        } else {
+                                            $imgs = get_attached_media('image', get_the_ID());
+                                            foreach ($imgs as $att) {
+                                                $u = wp_get_attachment_image_url($att->ID, 'large');
+                                                if ($u && !in_array($u, $thumb_urls, true)) { $thumb_urls[] = $u; }
+                                            }
+                                        }
+                                        foreach ($thumb_urls as $i => $u) : ?>
+                                            <button class="thumb-item<?php echo $i === 0 ? ' active' : ''; ?>" data-image="<?php echo esc_url($u); ?>" aria-label="Xem ảnh">
+                                                <img src="<?php echo esc_url($u); ?>" alt="Thumb">
+                                            </button>
+                                        <?php endforeach; ?>
+                                    </div>
+
                                     <div class="main-image-wrapper">
                                         <img src="<?php the_post_thumbnail_url('large'); ?>" 
                                              class="product-main-image" 
@@ -184,10 +244,8 @@ get_header(); ?>
                     <div class="col-lg-6">
                         <div class="product-info">
                             
-                            <!-- Product Title & Rating -->
+                            <!-- Rating then Title -->
                             <div class="title-section">
-                            <h1 class="product-title"><?php the_title(); ?></h1>
-                            
                                 <div class="product-rating">
                                     <span class="product-header">
                             <?php
@@ -215,10 +273,8 @@ get_header(); ?>
                                     </div>
                                     
                                     <span class="rating-text">(4.9/5 - 127 đánh giá)</span>
-                                    <!-- Product Category & Brand -->
-                            
-                            
                                 </div>
+                                <h1 class="product-title"><?php the_title(); ?></h1>
                             </div>
                             
                             <!-- Product Description -->
@@ -322,24 +378,16 @@ get_header(); ?>
                             </div>
                           
                                                     
-                            <!-- View Full Specifications -->
-                            <div class="view-full-specs">
-                                <button class="btn btn-outline-dark btn-block specs-toggle" data-bs-toggle="modal" data-bs-target="#specsModal">
+                            <!-- Primary actions: Specs + Contact in one row -->
+                            <div class="primary-actions">
+                                <button class="btn btn-outline-dark specs-toggle" data-bs-toggle="modal" data-bs-target="#specsModal">
                                     <i class="fas fa-list-ul me-2"></i>
-                                    Xem thông số kỹ thuật đầy đủ
+                                    Xem thông số kỹ thuật
                                 </button>
-                            </div>
-                            
-                                                        <!-- Unified Contact Actions -->
-                            <div class="contact-actions">
-                                <button class="btn btn-dark btn-lg btn-block contact-consultation-btn" data-bs-toggle="modal" data-bs-target="#consultationModal">
+                                <button class="btn btn-dark contact-consultation-btn" data-bs-toggle="modal" data-bs-target="#consultationModal">
                                     <i class="fas fa-headset me-2"></i>
                                     Liên hệ tư vấn & báo giá
                                 </button>
-                                <div class="action-note">
-                                    <i class="fas fa-clock me-1"></i>
-                                    <span>Tư vấn miễn phí - Báo giá nhanh trong 30 phút</span>
-                                </div>
                             </div>
 
                             
@@ -597,57 +645,50 @@ get_header(); ?>
                                 $category_name = $product_categories[0]->name;
                             }
                     ?>
-                        <article class="product-card<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>">
-                            <div class="product-image">
-                                <?php if (has_post_thumbnail()) : ?>
-                                    <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
-                                <?php else : ?>
-                                    <div class="product-placeholder">
-                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                            <polyline points="21,15 16,10 5,21"></polyline>
-                                        </svg>
+                        <a href="<?php the_permalink(); ?>" class="product-card-wrapper<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>">
+                            <div class="modern-product-card">
+                                <div class="product-image-container">
+                                    <div class="product-image">
+                                        <?php if (has_post_thumbnail()) : ?>
+                                            <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
+                                        <?php else : ?>
+                                            <div class="product-placeholder">
+                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                    <polyline points="21,15 16,10 5,21"></polyline>
+                                                </svg>
+                                                <span class="placeholder-text">Chưa có ảnh</span>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
-                                
-                                <!-- Description Overlay -->
-                                <div class="product-description-overlay">
-                                    <div class="description-content">
-                                        <h4>Thông tin chi tiết</h4>
-                                        <div class="description-text">
-                                            <?php echo get_the_excerpt(); ?>
+                                    <div class="product-tech-indicator">
+                                        <div class="tech-dot"></div>
+                                        <div class="tech-dot"></div>
+                                        <div class="tech-dot"></div>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h3 class="product-title">
+                                        <?php the_title(); ?>
+                                    </h3>
+                                    <div class="product-features">
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Chính hãng</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-shield-alt"></i>
+                                            <span>Bảo hành</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-shipping-fast"></i>
+                                            <span>Giao nhanh</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="product-content">
-                                <h3 class="product-title">
-                                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                </h3>
-                                
-                                <?php if ($category_name) : ?>
-                                    <div class="product-category-highlight">
-                                        <span class="category-badge"><?php echo $category_name; ?></span>
-                                    </div>
-                                <?php endif; ?>
-                                
-                                <p class="product-excerpt">
-                                    <?php echo wp_trim_words(get_the_excerpt(), 12, '...'); ?>
-                                </p>
-                                
-                                <div class="product-actions">
-                                    <a href="<?php the_permalink(); ?>" class="btn-view-details">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                            <circle cx="12" cy="12" r="3"></circle>
-                                        </svg>
-                                        Xem chi tiết
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
+                        </a>
                     <?php
                         endwhile;
                         wp_reset_postdata();
@@ -1087,6 +1128,21 @@ document.addEventListener('DOMContentLoaded', function() {
         consultationBtn.addEventListener('click', function() {
             const consultationModal = new bootstrap.Modal(document.getElementById('consultationModal'));
             consultationModal.show();
+        });
+    }
+    // Thumbnail -> main image swap (mobile gallery)
+    const mainImg = document.getElementById('mainProductImage');
+    const thumbBtns = document.querySelectorAll('.thumb-item');
+    if (mainImg && thumbBtns.length) {
+        thumbBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const url = this.getAttribute('data-image');
+                if (url) {
+                    mainImg.setAttribute('src', url);
+                    document.querySelectorAll('.thumb-item.active').forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
         });
     }
     

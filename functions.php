@@ -14,6 +14,9 @@ require_once get_template_directory() . '/inc/admin-product-specs.php';
 // Include consultation manager
 require_once get_template_directory() . '/inc/admin-consultation-manager.php';
 
+// Include company information management
+require_once get_template_directory() . '/inc/admin-company-info.php';
+
 // Helper function to get WooCommerce product categories with images and descriptions
 function tdclassic_get_product_categories($limit = 6) {
     // Lấy danh mục "Chưa phân loại" để loại bỏ
@@ -124,33 +127,31 @@ function tdclassic_scripts() {
     // Theme stylesheet
     wp_enqueue_style('tdclassic-style', get_stylesheet_uri(), array('bootstrap-css'), '1.32.8');
     
-    // Mobile optimization CSS - load on all pages
-    wp_enqueue_style('tdclassic-mobile-optimization', get_template_directory_uri() . '/assets/css/mobile-optimization.css', array('tdclassic-style'), '1.32.8');
-    
-    // Product image square CSS - load on all pages
-    wp_enqueue_style('tdclassic-product-image-square', get_template_directory_uri() . '/assets/css/product-image-square.css', array('tdclassic-style'), '1.32.8');
-    
-    // Three-tier header CSS - load on all pages
+    // Three-tier header CSS - load on all pages (needed for header structure)
     wp_enqueue_style('tdclassic-three-tier-header', get_template_directory_uri() . '/assets/css/three-tier-header.css', array('tdclassic-style'), '1.32.8');
     
-    // WordPress Caption Responsive CSS - load on all pages
-    wp_enqueue_style('tdclassic-wordpress-caption-responsive', get_template_directory_uri() . '/assets/css/wordpress-caption-responsive.css', array('tdclassic-style'), '1.32.8');
+    // Mobile optimization CSS - load on pages with products
+    if (is_singular('product') || is_post_type_archive('product') || (function_exists('is_product_category') && is_product_category()) || is_front_page() || is_page_template('page-san-pham.php')) {
+        wp_enqueue_style('tdclassic-mobile-optimization', get_template_directory_uri() . '/assets/css/mobile-optimization.css', array('tdclassic-style'), '1.32.8');
+        wp_enqueue_style('tdclassic-product-image-square', get_template_directory_uri() . '/assets/css/product-image-square.css', array('tdclassic-style'), '1.32.8');
+    }
+    
+    // WordPress Caption Responsive CSS - load only on posts/blogs
+    if (is_singular('post') || is_home() || is_category() || is_tag() || is_archive()) {
+        wp_enqueue_style('tdclassic-wordpress-caption-responsive', get_template_directory_uri() . '/assets/css/wordpress-caption-responsive.css', array('tdclassic-style'), '1.32.8');
+    }
     
     // Front page styles
-    if (is_front_page()) {
-        wp_enqueue_style('tdclassic-front-page', get_template_directory_uri() . '/assets/css/front-page.css', array('tdclassic-style'), '1.32.8');
-    }
+    // NOTE: front-page-enhanced.css is loaded inline in front-page.php template
+    // No need to enqueue front-page.css here to avoid duplicate CSS
     
-    // Bootstrap JS
+    // Bootstrap JS - Load globally for dropdown, modal, collapse functionality
     wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', array(), '5.3.0', true);
     
-    // Theme JS
-    wp_enqueue_script('tdclassic-script', get_template_directory_uri() . '/js/script.js', array('jquery'), '1.32.8', true);
-    
-    // Partner Slider JS (only on front page)
-    if (is_front_page()) {
-        wp_enqueue_script('tdclassic-partner-slider', get_template_directory_uri() . '/js/partner-slider.js', array(), '1.32.8', true);
-    }
+	// Keep front-page slider JS optional; disabled to minimize JS on header pages
+	// if (is_front_page()) {
+	// 	wp_enqueue_script('tdclassic-partner-slider', get_template_directory_uri() . '/js/partner-slider.js', array(), '1.32.8', true);
+	// }
     
     // Comment reply script
     if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -826,7 +827,8 @@ function tdclassic_localize_scripts() {
         'nonce' => wp_create_nonce('weather_nonce')
     ));
 }
-add_action('wp_enqueue_scripts', 'tdclassic_localize_scripts');
+// Disabled to avoid injecting inline JS for weather in simplified header
+// add_action('wp_enqueue_scripts', 'tdclassic_localize_scripts');
 
 // Projects CSS - load only on project archive/single
 function tdclassic_enqueue_projects_css() {
@@ -853,7 +855,8 @@ function tdclassic_weather_config() {
     </script>
     <?php
 }
-add_action('wp_head', 'tdclassic_weather_config');
+// Disabled inline weather config for simplified header
+// add_action('wp_head', 'tdclassic_weather_config');
 
 // Create sample product categories if none exist (disabled for WooCommerce)
 /*
@@ -944,17 +947,7 @@ function tdclassic_create_sample_products() {
  */
 function tdclassic_enqueue_product_assets() {
     if (is_singular('product')) {
-        // Enqueue Font Awesome
-        wp_enqueue_style(
-            'font-awesome',
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
-        );
-        
-        // Enqueue Bootstrap CSS (if not already loaded)
-        wp_enqueue_style(
-            'bootstrap',
-            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'
-        );
+        // NOTE: Bootstrap & Font Awesome already loaded globally, no need to enqueue again
         
         // Enqueue custom product page CSS
         wp_enqueue_style(
@@ -972,14 +965,7 @@ function tdclassic_enqueue_product_assets() {
             '1.0.0'
         );
         
-        // Enqueue Bootstrap JS
-        wp_enqueue_script(
-            'bootstrap',
-            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
-            array(),
-            '5.3.0',
-            true
-        );
+        // NOTE: Bootstrap JS is loaded globally, no need to enqueue here
         
         // Enqueue custom product page JS
         wp_enqueue_script(
@@ -1643,13 +1629,21 @@ add_action('admin_enqueue_scripts', 'tdclassic_admin_email_styles');
  * Helper functions to get company contact info
  */
 
-// Get company phone number
+// Get company phone number (backward compatible)
 function tdclassic_get_company_phone() {
+    // Sử dụng hệ thống mới từ admin-company-info.php
+    if (function_exists('tdclassic_get_primary_phone')) {
+        return tdclassic_get_primary_phone();
+    }
     return get_option('tdclassic_company_phone', '+84 904 433 799');
 }
 
-// Get company address
+// Get company address (backward compatible)
 function tdclassic_get_company_address() {
+    // Sử dụng hệ thống mới từ admin-company-info.php
+    if (function_exists('tdclassic_get_primary_address')) {
+        return tdclassic_get_primary_address();
+    }
     return get_option('tdclassic_company_address', 'Số 22A Ngô Quyền, phường Ngô Quyền, Thành phố Hải Phòng, Việt Nam');
 }
 
@@ -1677,10 +1671,15 @@ function tdclassic_display_address($echo = true) {
     }
 } 
 
-// Get company email
+// Get company email (backward compatible)
 function tdclassic_get_company_email() {
+    // Sử dụng hệ thống mới từ admin-company-info.php
+    if (function_exists('tdclassic_get_primary_email')) {
+        return tdclassic_get_primary_email();
+    }
     return get_option('tdclassic_company_email', 'cskh.tdclassic@gmail.com');
 }
+
 // Display company email with mailto link
 function tdclassic_display_email($echo = true) {
     $email = tdclassic_get_company_email();

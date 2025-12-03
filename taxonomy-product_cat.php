@@ -41,72 +41,55 @@ get_header();
                             }
                             ?>
                             <div class="col-md-6 col-lg-4 mb-4">
-                                <div class="card product-card h-100">
-                                    <?php if (has_post_thumbnail()) : ?>
-                                        <div class="card-img-top position-relative">
-                                            <a href="<?php the_permalink(); ?>">
-                                                <?php the_post_thumbnail('medium', array('class' => 'card-img-top')); ?>
-                                            </a>
+                                <a href="<?php the_permalink(); ?>" class="product-card-wrapper">
+                                    <div class="modern-product-card">
+                                        <div class="product-image-container">
+                                            <div class="product-image">
+                                                <?php if (has_post_thumbnail()) : ?>
+                                                    <img src="<?php the_post_thumbnail_url('medium_large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
+                                                <?php else : ?>
+                                                    <div class="product-placeholder">
+                                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                            <polyline points="21,15 16,10 5,21"></polyline>
+                                                        </svg>
+                                                        <span class="placeholder-text">Chưa có ảnh</span>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
                                             <?php if ($product && $product->is_on_sale()) : ?>
-                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2">
-                                                    <i class="fas fa-tag me-1"></i>Sale
-                                                </span>
-                                            <?php endif; ?>
-                                        </div>
-                                    <?php endif; ?>
-                                    
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title">
-                                            <a href="<?php the_permalink(); ?>" class="text-decoration-none">
-                                                <?php the_title(); ?>
-                                            </a>
-                                        </h5>
-                                        
-                                        <div class="product-meta mb-2">
-                                            <?php
-                                            $terms = get_the_terms(get_the_ID(), 'product_cat');
-                                            if ($terms && !is_wp_error($terms)) :
-                                                foreach ($terms as $term) :
-                                                    ?>
-                                                    <span class="badge bg-secondary me-1">
-                                                        <i class="fas fa-tag me-1"></i>
-                                                        <?php echo $term->name; ?>
-                                                    </span>
-                                                <?php
-                                                endforeach;
-                                            endif;
-                                            ?>
-                                        </div>
-                                        
-                                        <div class="card-text flex-grow-1">
-                                            <?php echo wp_trim_words(get_the_excerpt(), 20); ?>
-                                        </div>
-                                        
-                                        <div class="product-price mt-auto">
-                                            <?php if ($product) : ?>
-                                                <div class="price mb-2">
-                                                    <?php echo $product->get_price_html(); ?>
+                                                <div class="product-badge sale">
+                                                    <span>Sale</span>
                                                 </div>
                                             <?php endif; ?>
-                                            
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <a href="<?php the_permalink(); ?>" class="btn btn-outline-primary btn-sm">
-                                                    <i class="fas fa-eye me-1"></i>
-                                                    Xem chi tiết
-                                                </a>
-                                                
-                                                <?php if ($product && $product->is_purchasable()) : ?>
-                                                    <a href="<?php echo esc_url($product->add_to_cart_url()); ?>" 
-                                                       class="btn btn-primary btn-sm add-to-cart"
-                                                       data-product_id="<?php echo $product->get_id(); ?>">
-                                                        <i class="fas fa-shopping-cart me-1"></i>
-                                                        Thêm vào giỏ
-                                                    </a>
-                                                <?php endif; ?>
+                                            <div class="product-tech-indicator">
+                                                <div class="tech-dot"></div>
+                                                <div class="tech-dot"></div>
+                                                <div class="tech-dot"></div>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">
+                                                <?php the_title(); ?>
+                                            </h3>
+                                            <div class="product-features">
+                                                <div class="feature-item">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    <span>Chính hãng</span>
+                                                </div>
+                                                <div class="feature-item">
+                                                    <i class="fas fa-shield-alt"></i>
+                                                    <span>Bảo hành</span>
+                                                </div>
+                                                <div class="feature-item">
+                                                    <i class="fas fa-shipping-fast"></i>
+                                                    <span>Giao nhanh</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                             <?php
                         endwhile;

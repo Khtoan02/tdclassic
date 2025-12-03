@@ -107,6 +107,11 @@ get_header(); ?>
                         </div>
                         
                         <div class="contact-info-list">
+                            <!-- Địa chỉ -->
+                            <?php 
+                            $addresses = tdclassic_get_company_addresses();
+                            if (!empty($addresses)) : 
+                            ?>
                             <div class="contact-item">
                                 <div class="contact-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -116,10 +121,20 @@ get_header(); ?>
                                 </div>
                                 <div class="contact-content">
                                     <h6>Địa chỉ</h6>
-                                    <p><?php tdclassic_display_address(); ?></p>
+                                    <div class="contact-list">
+                                        <?php foreach ($addresses as $address) : ?>
+                                            <p class="contact-list-item"><?php echo esc_html($address); ?></p>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
 
+                            <!-- Số điện thoại -->
+                            <?php 
+                            $phones = tdclassic_get_company_phones();
+                            if (!empty($phones)) : 
+                            ?>
                             <div class="contact-item">
                                 <div class="contact-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -128,10 +143,24 @@ get_header(); ?>
                                 </div>
                                 <div class="contact-content">
                                     <h6>Điện thoại</h6>
-                                    <p><?php tdclassic_display_phone(); ?></p>
+                                    <div class="contact-list">
+                                        <?php foreach ($phones as $phone) : 
+                                            $phone_clean = preg_replace('/[^0-9+]/', '', $phone);
+                                        ?>
+                                            <p class="contact-list-item">
+                                                <a href="tel:<?php echo esc_attr($phone_clean); ?>"><?php echo esc_html($phone); ?></a>
+                                            </p>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
 
+                            <!-- Email -->
+                            <?php 
+                            $emails = tdclassic_get_company_emails();
+                            if (!empty($emails)) : 
+                            ?>
                             <div class="contact-item">
                                 <div class="contact-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -141,11 +170,16 @@ get_header(); ?>
                                 </div>
                                 <div class="contact-content">
                                     <h6>Email</h6>
-                                    <p>
-                                        <?php tdclassic_display_email(); ?>
-                                    </p>
+                                    <div class="contact-list">
+                                        <?php foreach ($emails as $email) : ?>
+                                            <p class="contact-list-item">
+                                                <a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a>
+                                            </p>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
 
                             <div class="contact-item">
                                 <div class="contact-icon">
@@ -200,19 +234,15 @@ get_header(); ?>
     <!-- Map Section -->
     <section class="map-section">
         <div class="container">
-            <div class="section-header">
-                <h2>Vị trí của chúng tôi</h2>
-                <p>Ghé thăm văn phòng của chúng tôi để trao đổi trực tiếp</p>
-            </div>
             <div class="map-container">
                 <div class="ratio ratio-16x9">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.999177617507!2d106.70327410000002!3d20.8720834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7adc297467ef%3A0x2d9f6796b87197c!2zMjIgTmfDtCBRdXnhu4FuLCBU4buVIGTDom4gcGjhu5Egc-G7kSA1LCBOZ8O0IFF1eeG7gW4sIEjhuqNpIFBow7JuZw!5e0!3m2!1svi!2s!4v1754320853116!5m2!1svi!2s" 
-                            width="100%" 
-                            height="400" 
-                            style="border:0; border-radius: 16px;" 
-                            allowfullscreen="" 
-                            loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade">
+                        width="100%" 
+                        height="400" 
+                        style="border:0; border-radius: 16px;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                 </div>
             </div>
@@ -353,6 +383,37 @@ document.addEventListener('DOMContentLoaded', function() {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
+/* Fix Header z-index on contact page */
+.contact-page .main-header {
+    position: relative;
+    z-index: 1000;
+}
+
+.contact-page .top-header {
+    position: relative;
+    z-index: 1001;
+}
+
+/* Đảm bảo top-header contact-item không bị ảnh hưởng bởi CSS của contact page */
+.contact-page .top-header .contact-info .contact-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    color: #ccc !important;
+    text-decoration: none !important;
+    transition: color 0.3s ease !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.contact-page .top-header .contact-info .contact-item:hover {
+    color: #fff !important;
+    transform: none !important;
+}
+
 .contact-hero {
     background: linear-gradient(135deg, #000 0%, #333 100%);
     color: #fff;
@@ -360,6 +421,7 @@ document.addEventListener('DOMContentLoaded', function() {
     text-align: center;
     position: relative;
     overflow: hidden;
+    z-index: 1;
 }
 
 .contact-hero::before {
@@ -518,55 +580,95 @@ document.addEventListener('DOMContentLoaded', function() {
     margin-bottom: 40px;
 }
 
-.contact-item {
+/* Scope contact-item chỉ cho phần contact info của trang, không bị ảnh hưởng bởi header */
+.contact-info-wrapper .contact-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 30px;
-    padding: 20px;
+    margin-bottom: 20px;
+    padding: 18px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
 }
 
-.contact-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+.contact-info-wrapper .contact-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
 
-.contact-icon {
+.contact-info-wrapper .contact-item:last-child {
+    margin-bottom: 0;
+}
+
+.contact-info-wrapper .contact-icon {
     background: linear-gradient(45deg, #000, #333);
     color: #fff;
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 20px;
+    margin-right: 16px;
     flex-shrink: 0;
 }
 
-.contact-content h6 {
-    font-weight: 600;
-    color: #000;
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
+.contact-info-wrapper .contact-icon svg {
+    width: 20px;
+    height: 20px;
 }
 
-.contact-content p {
+.contact-info-wrapper .contact-content h6 {
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.contact-info-wrapper .contact-content p {
     color: #666;
     margin: 0;
     line-height: 1.6;
+    font-size: 0.95rem;
 }
 
-.contact-content a {
+.contact-info-wrapper .contact-content a {
     color: #000;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.contact-content a:hover {
+.contact-info-wrapper .contact-content a:hover {
+    color: #666;
+}
+
+.contact-info-wrapper .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.contact-info-wrapper .contact-list-item {
+    margin: 0 !important;
+    padding: 6px 0;
+    line-height: 1.6;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.contact-info-wrapper .contact-list-item:first-child {
+    padding-top: 0;
+}
+
+.contact-info-wrapper .contact-list-item a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.contact-info-wrapper .contact-list-item a:hover {
     color: #666;
 }
 
@@ -635,6 +737,51 @@ document.addEventListener('DOMContentLoaded', function() {
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.address-tabs-section {
+    margin-top: 30px;
+}
+
+.address-tabs-section .nav-pills {
+    gap: 10px;
+}
+
+.address-tabs-section .nav-pills .nav-link {
+    background: #fff;
+    color: #333;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.address-tabs-section .nav-pills .nav-link:hover {
+    background: #f8f9fa;
+    border-color: #000;
+    color: #000;
+}
+
+.address-tabs-section .nav-pills .nav-link.active {
+    background: linear-gradient(45deg, #000, #333);
+    border-color: #000;
+    color: #fff;
+}
+
+.address-info {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 12px;
+    color: #333;
+    font-size: 1.05rem;
+}
+
+.address-info i {
+    color: #000;
 }
 
 .faq-section {

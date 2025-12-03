@@ -329,58 +329,50 @@ get_header();
                                 $view_count = 2731 + rand(0, 500);
                         ?>
                             <div class="product-slide">
-                                <div class="product-card">
-                                    <div class="product-image">
-                                        <?php if (has_post_thumbnail()) : ?>
-                                            <img src="<?php the_post_thumbnail_url('medium_large'); ?>" alt="<?php the_title(); ?>">
-                                        <?php else : ?>
-                                            <div class="product-placeholder">
-                                                <i class="fas fa-image"></i>
-                                                <span>Chưa có ảnh</span>
+                                <a href="<?php the_permalink(); ?>" class="product-card-wrapper">
+                                    <div class="modern-product-card">
+                                        <div class="product-image-container">
+                                            <div class="product-image">
+                                                <?php if (has_post_thumbnail()) : ?>
+                                                    <img src="<?php the_post_thumbnail_url('medium_large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
+                                                <?php else : ?>
+                                                    <div class="product-placeholder">
+                                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                            <polyline points="21,15 16,10 5,21"></polyline>
+                                                        </svg>
+                                                        <span class="placeholder-text">Chưa có ảnh</span>
+                                                    </div>
+                                                <?php endif; ?>
                                             </div>
-                                        <?php endif; ?>
-                                        
-                                        <div class="product-overlay">
-                                            <div class="product-actions">
-                                                <a href="<?php the_permalink(); ?>" class="btn-view-details">
-                                                    <i class="fas fa-eye"></i>
-                                                    <span>Xem chi tiết</span>
-                                                </a>
+                                            <div class="product-tech-indicator">
+                                                <div class="tech-dot"></div>
+                                                <div class="tech-dot"></div>
+                                                <div class="tech-dot"></div>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h3 class="product-title">
+                                                <?php the_title(); ?>
+                                            </h3>
+                                            <div class="product-features">
+                                                <div class="feature-item">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    <span>Chính hãng</span>
+                                                </div>
+                                                <div class="feature-item">
+                                                    <i class="fas fa-shield-alt"></i>
+                                                    <span>Bảo hành</span>
+                                                </div>
+                                                <div class="feature-item">
+                                                    <i class="fas fa-shipping-fast"></i>
+                                                    <span>Giao nhanh</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <div class="product-content">
-                                        <div class="product-meta">
-                                            <?php if ($category_name) : ?>
-                                                <span class="product-category"><?php echo $category_name; ?></span>
-                                            <?php endif; ?>
-                                            <span class="product-views">
-                                                <i class="fas fa-eye"></i>
-                                                <?php echo number_format($view_count); ?> lượt xem
-                                            </span>
-                                        </div>
-                                        
-                                        <h3 class="product-title">
-                                            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                        </h3>
-                                        
-                                        <p class="product-excerpt">
-                                            <?php echo wp_trim_words(get_the_excerpt(), 15, '...'); ?>
-                                        </p>
-                                        
-                                        <div class="product-policies">
-                                            <div class="policy-item">
-                                                <i class="fas fa-shield-alt"></i>
-                                                <span>Bảo hành 12-24 tháng</span>
-                                            </div>
-                                            <div class="policy-item">
-                                                <i class="fas fa-headphones"></i>
-                                                <span>Tư vấn miễn phí</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         <?php
                             endwhile;
@@ -444,56 +436,52 @@ get_header();
                                 if ($product_categories && !is_wp_error($product_categories)) {
                                     $category_name = $product_categories[0]->name;
                                 }
-                                $view_count = 2731 + rand(0, 500);
                         ?>
                         <div class="product-slide">
-                            <div class="product-card">
-                                <div class="product-image">
-                                    <?php if (has_post_thumbnail()) : ?>
-                                        <img src="<?php the_post_thumbnail_url('medium_large'); ?>" alt="<?php the_title(); ?>">
-                                    <?php else : ?>
-                                        <div class="product-placeholder">
-                                            <i class="fas fa-image"></i>
-                                            <span>Chưa có ảnh</span>
+                            <a href="<?php the_permalink(); ?>" class="product-card-wrapper">
+                                <div class="modern-product-card">
+                                    <div class="product-image-container">
+                                        <div class="product-image">
+                                            <?php if (has_post_thumbnail()) : ?>
+                                                <img src="<?php the_post_thumbnail_url('medium_large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
+                                            <?php else : ?>
+                                                <div class="product-placeholder">
+                                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                        <polyline points="21,15 16,10 5,21"></polyline>
+                                                    </svg>
+                                                    <span class="placeholder-text">Chưa có ảnh</span>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
-                                    <?php endif; ?>
-                                    <div class="product-overlay">
-                                        <div class="product-actions">
-                                            <a href="<?php the_permalink(); ?>" class="btn-view-details">
-                                                <i class="fas fa-eye"></i>
-                                                <span>Xem chi tiết</span>
-                                            </a>
+                                        <div class="product-tech-indicator">
+                                            <div class="tech-dot"></div>
+                                            <div class="tech-dot"></div>
+                                            <div class="tech-dot"></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <h3 class="product-title">
+                                            <?php the_title(); ?>
+                                        </h3>
+                                        <div class="product-features">
+                                            <div class="feature-item">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Chính hãng</span>
+                                            </div>
+                                            <div class="feature-item">
+                                                <i class="fas fa-shield-alt"></i>
+                                                <span>Bảo hành</span>
+                                            </div>
+                                            <div class="feature-item">
+                                                <i class="fas fa-shipping-fast"></i>
+                                                <span>Giao nhanh</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="product-content">
-                                    <div class="product-meta">
-                                        <?php if ($category_name) : ?>
-                                            <span class="product-category"><?php echo $category_name; ?></span>
-                                        <?php endif; ?>
-                                        <span class="product-views">
-                                            <i class="fas fa-eye"></i>
-                                            <?php echo number_format($view_count); ?> lượt xem
-                                        </span>
-                                    </div>
-                                    <h3 class="product-title">
-                                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                    </h3>
-                                    <p class="product-excerpt">
-                                        <?php echo wp_trim_words(get_the_excerpt(), 15, '...'); ?>
-                                    </p>
-                                    <div class="product-policies">
-                                        <div class="policy-item">
-                                            <i class="fas fa-shield-alt"></i>
-                                            <span>Bảo hành 12-24 tháng</span>
-                                        </div>
-                                        <div class="policy-item">
-                                            <i class="fas fa-headphones"></i>
-                                            <span>Tư vấn miễn phí</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         <?php endwhile; wp_reset_postdata(); else : ?>
                         <div class="no-products">
@@ -554,56 +542,52 @@ get_header();
                                 if ($product_categories && !is_wp_error($product_categories)) {
                                     $category_name = $product_categories[0]->name;
                                 }
-                                $view_count = 2731 + rand(0, 500);
                         ?>
                         <div class="product-slide">
-                            <div class="product-card">
-                                <div class="product-image">
-                                    <?php if (has_post_thumbnail()) : ?>
-                                        <img src="<?php the_post_thumbnail_url('medium_large'); ?>" alt="<?php the_title(); ?>">
-                                    <?php else : ?>
-                                        <div class="product-placeholder">
-                                            <i class="fas fa-image"></i>
-                                            <span>Chưa có ảnh</span>
+                            <a href="<?php the_permalink(); ?>" class="product-card-wrapper">
+                                <div class="modern-product-card">
+                                    <div class="product-image-container">
+                                        <div class="product-image">
+                                            <?php if (has_post_thumbnail()) : ?>
+                                                <img src="<?php the_post_thumbnail_url('medium_large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
+                                            <?php else : ?>
+                                                <div class="product-placeholder">
+                                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                        <polyline points="21,15 16,10 5,21"></polyline>
+                                                    </svg>
+                                                    <span class="placeholder-text">Chưa có ảnh</span>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
-                                    <?php endif; ?>
-                                    <div class="product-overlay">
-                                        <div class="product-actions">
-                                            <a href="<?php the_permalink(); ?>" class="btn-view-details">
-                                                <i class="fas fa-eye"></i>
-                                                <span>Xem chi tiết</span>
-                                            </a>
+                                        <div class="product-tech-indicator">
+                                            <div class="tech-dot"></div>
+                                            <div class="tech-dot"></div>
+                                            <div class="tech-dot"></div>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <h3 class="product-title">
+                                            <?php the_title(); ?>
+                                        </h3>
+                                        <div class="product-features">
+                                            <div class="feature-item">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Chính hãng</span>
+                                            </div>
+                                            <div class="feature-item">
+                                                <i class="fas fa-shield-alt"></i>
+                                                <span>Bảo hành</span>
+                                            </div>
+                                            <div class="feature-item">
+                                                <i class="fas fa-shipping-fast"></i>
+                                                <span>Giao nhanh</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="product-content">
-                                    <div class="product-meta">
-                                        <?php if ($category_name) : ?>
-                                            <span class="product-category"><?php echo $category_name; ?></span>
-                                        <?php endif; ?>
-                                        <span class="product-views">
-                                            <i class="fas fa-eye"></i>
-                                            <?php echo number_format($view_count); ?> lượt xem
-                                        </span>
-                                    </div>
-                                    <h3 class="product-title">
-                                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                    </h3>
-                                    <p class="product-excerpt">
-                                        <?php echo wp_trim_words(get_the_excerpt(), 15, '...'); ?>
-                                    </p>
-                                    <div class="product-policies">
-                                        <div class="policy-item">
-                                            <i class="fas fa-shield-alt"></i>
-                                            <span>Bảo hành 12-24 tháng</span>
-                                        </div>
-                                        <div class="policy-item">
-                                            <i class="fas fa-headphones"></i>
-                                            <span>Tư vấn miễn phí</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         <?php endwhile; wp_reset_postdata(); else : ?>
                         <div class="no-products">
