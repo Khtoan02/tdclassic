@@ -113,7 +113,7 @@ get_header(); ?>
                 <?php
                 // LẤY BÀI VIẾT CẢ TỪ WEBSITE (LOCAL) VÀ TavaLED
                 $paged          = (get_query_var('paged')) ? (int) get_query_var('paged') : 1;
-                $posts_per_page = 6; // Số bài local + số bài remote mỗi trang (6 + 6 = 12 bài)
+                $posts_per_page = 4; // Số bài local + số bài remote mỗi trang (6 + 6 = 12 bài)
 
                 // 1. Bài viết local (TD Classic)
                 $local_query = new WP_Query(
@@ -166,6 +166,7 @@ get_header(); ?>
                             'date'          => $post_date,
                             'raw_date'      => $post_raw_date,
                             'excerpt'       => $post_excerpt,
+                            'meta_description' => $post_excerpt,
                             'author'        => $post_author,
                             'main_category' => $main_category,
                             'reading_time'  => $reading_time,
@@ -190,6 +191,7 @@ get_header(); ?>
                             'date'          => isset($remote_post['date']) ? $remote_post['date'] : '',
                             'raw_date'      => isset($remote_post['raw_date']) ? $remote_post['raw_date'] : '',
                             'excerpt'       => isset($remote_post['excerpt']) ? $remote_post['excerpt'] : '',
+                            'meta_description' => !empty($remote_post['meta_description']) ? $remote_post['meta_description'] : (isset($remote_post['excerpt']) ? $remote_post['excerpt'] : ''),
                             'author'        => !empty($remote_post['author']) ? $remote_post['author'] : 'TavaLED',
                             'main_category' => !empty($remote_post['main_category']) ? $remote_post['main_category'] : 'Tin tức',
                             'reading_time'  => isset($remote_post['reading_time']) ? (int) $remote_post['reading_time'] : 1,
@@ -234,6 +236,7 @@ get_header(); ?>
                         $post_image_url= $post_item['image'];
                         $post_date     = $post_item['date'];
                         $post_excerpt  = $post_item['excerpt'];
+                        $meta_description = !empty($post_item['meta_description']) ? $post_item['meta_description'] : $post_excerpt;
                         $post_author   = $post_item['author'];
                         $main_category = $post_item['main_category'];
                         $reading_time  = (int) $post_item['reading_time'];
@@ -265,7 +268,7 @@ get_header(); ?>
                                         <div class="overlay-content">
                                             <?php if ($origin === 'remote') : ?>
                                                 <!-- Bài TavaLED: hiện popup trước -->
-                                                <button class="btn-overlay-primary" type="button" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_js(wp_strip_all_tags($post_excerpt)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                                <button class="btn-overlay-primary" type="button" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_url($post_image_url); ?>', '<?php echo esc_js(wp_strip_all_tags($meta_description)); ?>', '<?php echo esc_url($post_link); ?>')">
                                                     <i class="fas fa-eye"></i>
                                                     <span>Xem nhanh</span>
                                                 </button>
@@ -314,7 +317,7 @@ get_header(); ?>
                                 </div>
                                 <h3 class="news-title">
                                     <?php if ($origin === 'remote') : ?>
-                                        <a href="javascript:void(0)" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_js(wp_strip_all_tags($post_excerpt)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                        <a href="javascript:void(0)" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_url($post_image_url); ?>', '<?php echo esc_js(wp_strip_all_tags($meta_description)); ?>', '<?php echo esc_url($post_link); ?>')">
                                             <?php echo esc_html(wp_strip_all_tags($post_title)); ?>
                                         </a>
                                     <?php else : ?>
@@ -328,7 +331,7 @@ get_header(); ?>
                                 </div>
                                 <div class="news-actions">
                                     <?php if ($origin === 'remote') : ?>
-                                        <button class="btn-news-detail" type="button" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_js(wp_strip_all_tags($post_excerpt)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                        <button class="btn-news-detail" type="button" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_url($post_image_url); ?>', '<?php echo esc_js(wp_strip_all_tags($meta_description)); ?>', '<?php echo esc_url($post_link); ?>')">
                                             <span>Xem chi tiết</span>
                                             <i class="fas fa-arrow-right"></i>
                                         </button>
@@ -439,7 +442,10 @@ get_header(); ?>
                     <h3 id="newsPreviewTitle" class="news-preview-title"></h3>
                 </div>
                 <div class="news-preview-body">
-                    <p class="news-preview-excerpt"></p>
+                    <div class="news-preview-image">
+                        <img src="" alt="" class="news-preview-image-tag">
+                    </div>
+                    <p class="news-preview-description"></p>
                 </div>
                 <div class="news-preview-footer">
                     <a href="#" target="_blank" rel="noopener" class="btn-news-preview-detail">
@@ -1582,7 +1588,21 @@ get_header(); ?>
     margin: 1rem 0 1.5rem;
 }
 
-.news-preview-excerpt {
+.news-preview-image {
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    max-height: 260px;
+}
+
+.news-preview-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.news-preview-description {
     margin: 0;
     color: #555;
     line-height: 1.7;
@@ -1874,16 +1894,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Modal xem nhanh bài viết TavaLED
-    window.openNewsPreview = function(title, excerpt, url) {
+    window.openNewsPreview = function(title, image, description, url) {
         const modal = document.getElementById('newsPreviewModal');
         if (!modal) return;
 
         const titleEl   = modal.querySelector('.news-preview-title');
-        const excerptEl = modal.querySelector('.news-preview-excerpt');
+        const imageEl   = modal.querySelector('.news-preview-image-tag');
+        const descEl    = modal.querySelector('.news-preview-description');
         const linkEl    = modal.querySelector('.btn-news-preview-detail');
 
         if (titleEl)   titleEl.textContent   = title || '';
-        if (excerptEl) excerptEl.textContent = excerpt || '';
+        if (imageEl) {
+            if (image) {
+                imageEl.src = image;
+                imageEl.alt = title || '';
+                imageEl.style.display = 'block';
+            } else {
+                imageEl.src = '';
+                imageEl.alt = '';
+                imageEl.style.display = 'none';
+            }
+        }
+        if (descEl)    descEl.textContent    = description || '';
         if (linkEl)    linkEl.setAttribute('href', url || '#');
 
         modal.classList.add('is-active');

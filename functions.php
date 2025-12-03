@@ -1881,6 +1881,17 @@ function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1) {
             $word_count       = !empty($content_text) ? str_word_count($content_text) : 0;
             $reading_time     = max(1, (int) ceil($word_count / 200));
 
+            // Meta description (ưu tiên từ plugin SEO, fallback sang excerpt / content)
+            $meta_description = '';
+            // Yoast SEO thường lưu ở yoast_head_json.description
+            if (isset($post['yoast_head_json']['description']) && !empty($post['yoast_head_json']['description'])) {
+                $meta_description = wp_strip_all_tags($post['yoast_head_json']['description']);
+            } elseif (isset($post['excerpt']['rendered']) && !empty($post['excerpt']['rendered'])) {
+                $meta_description = wp_trim_words(wp_strip_all_tags($post['excerpt']['rendered']), 120, '...');
+            } elseif (!empty($content_text)) {
+                $meta_description = wp_trim_words($content_text, 120, '...');
+            }
+
             // Category chính (nếu có _embed terms)
             $main_category = '';
             if (isset($post['_embedded']['wp:term'][0]) && is_array($post['_embedded']['wp:term'][0])) {
@@ -1895,13 +1906,14 @@ function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1) {
             $final_posts[] = array(
                 'title'         => isset($post['title']['rendered']) ? $post['title']['rendered'] : '',
                 'link'          => isset($post['link']) ? $post['link'] : '',
-                'excerpt'       => isset($post['excerpt']['rendered']) ? wp_trim_words(wp_strip_all_tags($post['excerpt']['rendered']), 25, '...') : '',
+                'excerpt'       => isset($post['excerpt']['rendered']) ? wp_trim_words(wp_strip_all_tags($post['excerpt']['rendered']), 120, '...') : '',
                 'image'         => $thumbnail,
                 'date'          => $date,
                 'raw_date'      => $raw_date,
                 'author'        => $author_name,
                 'reading_time'  => $reading_time,
                 'main_category' => $main_category,
+                'meta_description' => $meta_description,
             );
         }
 
