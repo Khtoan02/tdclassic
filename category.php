@@ -141,9 +141,7 @@ get_header(); ?>
                                         <i class="fas fa-arrow-right"></i>
                                     </a>
                                     <div class="post-share">
-                                        <button class="btn-share" onclick="sharePost('<?php echo esc_js(get_the_title()); ?>', '<?php echo esc_url(get_permalink()); ?>')">
-                                            <i class="fas fa-share-alt"></i>
-                                        </button>
+                                        <!-- Social sharing removed -->
                                     </div>
                                 </div>
                             </div>
@@ -524,27 +522,6 @@ get_header(); ?>
     transform: translateX(5px);
 }
 
-.btn-share {
-    background: transparent;
-    border: 1px solid #e0e0e0;
-    color: #666;
-    padding: 0.5rem;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-share:hover {
-    background: #000;
-    color: #fff;
-    border-color: #000;
-}
-
 /* Pagination */
 .pagination-wrapper {
     display: flex;
@@ -801,22 +778,6 @@ get_header(); ?>
 </style>
 
 <script>
-// Share functionality
-function sharePost(title, url) {
-    if (navigator.share) {
-        navigator.share({
-            title: title,
-            url: url
-        });
-    } else {
-        // Fallback
-        const shareText = `${title} - ${url}`;
-        navigator.clipboard.writeText(shareText).then(() => {
-            alert('Đã sao chép link bài viết!');
-        });
-    }
-}
-
 // Newsletter Form
 document.querySelector('.newsletter-form')?.addEventListener('submit', function(e) {
     e.preventDefault();

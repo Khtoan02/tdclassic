@@ -108,20 +108,7 @@ if (have_posts()) {
                             <i class="fas fa-share-alt"></i>
                             CHIA SẺ BÀI VIẾT
                         </h3>
-                        <div class="share-buttons-compact">
-                            <button class="share-btn facebook" data-share-type="facebook">
-                                <i class="fab fa-facebook-f"></i>
-                            </button>
-                            <button class="share-btn twitter" data-share-type="twitter">
-                                <i class="fab fa-twitter"></i>
-                            </button>
-                            <button class="share-btn linkedin" data-share-type="linkedin">
-                                <i class="fab fa-linkedin-in"></i>
-                            </button>
-                            <button class="share-btn copy" data-share-type="copy">
-                                <i class="fas fa-link"></i>
-                            </button>
-                        </div>
+                            <!-- Social sharing removed as requested -->
                     </div>
                 </aside>
             </div>
@@ -639,48 +626,6 @@ if (have_posts()) {
 }
 
 /* Share Widget - Grid Layout */
-.share-buttons-compact {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.8rem;
-}
-
-.share-btn {
-    width: 100%;
-    height: 42px;
-    border: none;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.share-btn.facebook {
-    background: linear-gradient(135deg, #1877f2, #0d6efd);
-}
-
-.share-btn.twitter {
-    background: linear-gradient(135deg, #1da1f2, #0ea5e9);
-}
-
-.share-btn.linkedin {
-    background: linear-gradient(135deg, #0077b5, #0ea5e9);
-}
-
-.share-btn.copy {
-    background: linear-gradient(135deg, #666, #555);
-}
-
-.share-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
 /* Latest Articles Widget - Enhanced */
 .latest-article-item {
     display: flex;
@@ -1500,25 +1445,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Share Functions
-function shareOnFacebook() {
-    const url = window.location.href;
-    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-    window.open(shareUrl, '_blank', 'width=600,height=400');
-}
-
-function shareOnTwitter() {
-    const url = window.location.href;
-    const title = document.querySelector('.post-hero-title').textContent;
-    const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
-    window.open(shareUrl, '_blank', 'width=600,height=400');
-}
-
-function shareOnLinkedIn() {
-    const url = window.location.href;
-    const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
-    window.open(shareUrl, '_blank', 'width=600,height=400');
-}
 
 function copyLink() {
     const url = window.location.href;

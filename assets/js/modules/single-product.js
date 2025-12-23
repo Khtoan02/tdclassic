@@ -171,9 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const zoomBtn = document.querySelector(".zoom-btn");
     const fullscreenBtn = document.querySelector(".fullscreen-btn");
-    const shareBtn = document.querySelector(".share-btn");
-
-    console.log("Found buttons:", { zoomBtn, fullscreenBtn, shareBtn });
+    console.log("Found buttons:", { zoomBtn, fullscreenBtn });
 
     // Zoom button - opens image modal
     if (zoomBtn) {
@@ -216,27 +214,10 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // Share button
-    if (shareBtn) {
-      shareBtn.addEventListener("click", (e) => {
-        console.log("Share button clicked");
-        e.preventDefault();
-        e.stopPropagation();
-        handleImageShare();
-      });
-
-      // Add visual feedback
-      shareBtn.addEventListener("mousedown", () => {
-        shareBtn.style.transform = "scale(0.95)";
-      });
-
-      shareBtn.addEventListener("mouseup", () => {
-        shareBtn.style.transform = "";
-      });
-    }
+    // Share button removed
 
     // Also add touch events for mobile
-    [zoomBtn, fullscreenBtn, shareBtn].forEach((btn) => {
+    [zoomBtn, fullscreenBtn].forEach((btn) => {
       if (btn) {
         btn.addEventListener("touchstart", (e) => {
           e.stopPropagation();
@@ -597,15 +578,10 @@ document.addEventListener("DOMContentLoaded", function () {
    */
   function initSocialActions() {
     const wishlistBtn = document.querySelector(".wishlist-btn");
-    const shareBtn = document.querySelector(".share-btn");
     const compareBtn = document.querySelector(".compare-btn");
 
     if (wishlistBtn) {
       wishlistBtn.addEventListener("click", handleWishlist);
-    }
-
-    if (shareBtn) {
-      shareBtn.addEventListener("click", handleShare);
     }
 
     if (compareBtn) {
@@ -628,21 +604,6 @@ document.addEventListener("DOMContentLoaded", function () {
         wishlistBtn.classList.remove("btn-outline-secondary");
         wishlistBtn.classList.add("btn-danger");
         showNotification("Đã thêm vào danh sách yêu thích", "success");
-      }
-    }
-
-    function handleShare() {
-      if (navigator.share) {
-        navigator.share({
-          title: document.title,
-          text: document.querySelector(".product-title").textContent,
-          url: window.location.href,
-        });
-      } else {
-        // Fallback: copy to clipboard
-        navigator.clipboard.writeText(window.location.href).then(() => {
-          showNotification("Đã sao chép link sản phẩm", "success");
-        });
       }
     }
 

@@ -279,9 +279,7 @@ get_header(); ?>
                                                     <span>Đọc bài viết</span>
                                                 </a>
                                             <?php endif; ?>
-                                            <button class="btn-overlay-secondary btn-share" data-share-title="<?php echo esc_attr(wp_strip_all_tags($post_title)); ?>" data-share-url="<?php echo esc_url($post_link); ?>">
-                                                <i class="fas fa-share-alt"></i>
-                                            </button>
+                                            <!-- Social sharing removed -->
                                         </div>
                                     </div>
                                 </div>
@@ -1750,22 +1748,6 @@ get_header(); ?>
 </style>
 
 <script>
-// Share functionality
-function shareArticle(title, url) {
-    if (navigator.share) {
-        navigator.share({
-            title: title,
-            url: url
-        });
-    } else {
-        // Fallback
-        const shareText = `${title} - ${url}`;
-        navigator.clipboard.writeText(shareText).then(() => {
-            alert('Đã sao chép link bài viết!');
-        });
-    }
-}
-
 // Enhanced filter functionality with smooth animations
 document.addEventListener('DOMContentLoaded', function() {
     const filterItems = document.querySelectorAll('.filter-item');

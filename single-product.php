@@ -136,9 +136,6 @@ get_header(); ?>
                                                 <button class="action-btn fullscreen-btn" title="Xem toàn màn hình">
                                                     <i class="fas fa-expand"></i>
                                                 </button>
-                                                <button class="action-btn share-btn" title="Chia sẻ">
-                                                    <i class="fas fa-share-alt"></i>
-                                                </button>
                                             </div>
                                         </div>
                                         

@@ -362,11 +362,7 @@ get_header(); ?>
                                         <span>Đọc thêm</span>
                                         <i class="fas fa-arrow-right"></i>
                                     </a>
-                                    <div class="news-share">
-                                        <button class="btn-share" data-share-title="<?php echo esc_attr(get_the_title()); ?>" data-share-url="<?php echo esc_url(get_permalink()); ?>">
-                                            <i class="fas fa-share-alt"></i>
-                                        </button>
-                                    </div>
+                                    <!-- Social sharing removed -->
                                 </div>
                             </div>
                         </div>
@@ -1354,27 +1350,6 @@ get_header(); ?>
     transform: translateX(5px);
 }
 
-.btn-share {
-    background: transparent;
-    border: 1px solid #e0e0e0;
-    color: #666;
-    padding: 0.5rem;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-share:hover {
-    background: #000;
-    color: #fff;
-    border-color: #000;
-}
-
 /* Contact CTA Section */
 .contact-cta-section {
     padding: 80px 0;
@@ -1612,21 +1587,6 @@ function shareProduct(title, url) {
         const shareText = `${title} - ${url}`;
         navigator.clipboard.writeText(shareText).then(() => {
             alert('Đã sao chép link sản phẩm!');
-        });
-    }
-}
-
-function shareArticle(title, url) {
-    if (navigator.share) {
-        navigator.share({
-            title: title,
-            url: url
-        });
-    } else {
-        // Fallback
-        const shareText = `${title} - ${url}`;
-        navigator.clipboard.writeText(shareText).then(() => {
-            alert('Đã sao chép link bài viết!');
         });
     }
 }
