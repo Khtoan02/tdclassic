@@ -17,8 +17,16 @@ require_once get_template_directory() . '/inc/admin-consultation-manager.php';
 // Include company information management
 require_once get_template_directory() . '/inc/admin-company-info.php';
 
-// Helper function to get WooCommerce product categories with images and descriptions
-function tdclassic_get_product_categories($limit = 6) {
+/**
+ * Get WooCommerce product categories with images and descriptions
+ * Unified function that can be used for both front-page and mega menu
+ * 
+ * @param int $limit Number of categories to return
+ * @param bool $hide_empty Whether to hide empty categories
+ * @param bool $include_image Whether to include category image
+ * @return array Formatted categories array
+ */
+function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $include_image = true) {
     // Lấy danh mục "Chưa phân loại" để loại bỏ
     $uncategorized_term = get_term_by('slug', 'uncategorized', 'product_cat');
     $exclude_ids = array();
@@ -29,7 +37,7 @@ function tdclassic_get_product_categories($limit = 6) {
     
     $categories = get_terms(array(
         'taxonomy' => 'product_cat',
-        'hide_empty' => false,
+        'hide_empty' => $hide_empty,
         'orderby' => 'menu_order',
         'order' => 'ASC',
         'exclude' => $exclude_ids,
@@ -48,20 +56,22 @@ function tdclassic_get_product_categories($limit = 6) {
             continue;
         }
         
-        // Lấy hình ảnh danh mục
-        $image_id = get_term_meta($category->term_id, 'thumbnail_id', true);
+        // Lấy hình ảnh danh mục (nếu cần)
         $image_url = '';
         $image_alt = $category->name;
         
-        if ($image_id) {
-            $image_url = wp_get_attachment_url($image_id);
-            $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
-            if (empty($image_alt)) {
-                $image_alt = $category->name;
+        if ($include_image) {
+            $image_id = get_term_meta($category->term_id, 'thumbnail_id', true);
+            if ($image_id) {
+                $image_url = wp_get_attachment_image_url($image_id, 'large');
+                $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+                if (empty($image_alt)) {
+                    $image_alt = $category->name;
+                }
+            } else {
+                // Hình ảnh mặc định
+                $image_url = 'https://www.hifivietnam.vn/wp-content/uploads/2024/05/hfvn-nhahathoguom-5.webp';
             }
-        } else {
-            // Hình ảnh mặc định
-            $image_url = 'https://www.hifivietnam.vn/wp-content/uploads/2024/05/hfvn-nhahathoguom-5.webp';
         }
         
         // Lấy mô tả danh mục
@@ -73,7 +83,7 @@ function tdclassic_get_product_categories($limit = 6) {
         // URL danh mục
         $category_url = get_term_link($category);
         if (is_wp_error($category_url)) {
-            $category_url = home_url('/san-pham') . '?category=' . $category->slug;
+            $category_url = home_url('/product-category/' . $category->slug);
         }
         
         $formatted_categories[] = array(
@@ -85,6 +95,99 @@ function tdclassic_get_product_categories($limit = 6) {
             'image_alt' => $image_alt,
             'url' => $category_url,
             'count' => $category->count
+        );
+    }
+    
+    return $formatted_categories;
+}
+
+/**
+ * Get products by category for Mega Menu
+ * @param string $category_slug Category slug
+ * @param int $limit Number of products to return
+ * @return array Formatted products array
+ */
+function tdclassic_get_products_by_category($category_slug, $limit = 8) {
+    $args = array(
+        'post_type' => 'product',
+        'posts_per_page' => $limit,
+        'post_status' => 'publish',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field' => 'slug',
+                'terms' => $category_slug,
+            ),
+        ),
+    );
+    
+    $products = get_posts($args);
+    $formatted_products = array();
+    
+    foreach ($products as $product) {
+        $product_id = $product->ID;
+        $product_obj = wc_get_product($product_id);
+        
+        // Get product image
+        $image_id = get_post_thumbnail_id($product_id);
+        $image_url = '';
+        if ($image_id) {
+            $image_url = wp_get_attachment_image_url($image_id, 'medium');
+        } else {
+            $image_url = wc_placeholder_img_src('medium');
+        }
+        
+        // Get product price
+        $price = '';
+        if ($product_obj) {
+            $price = $product_obj->get_price_html();
+        }
+        
+        $formatted_products[] = array(
+            'id' => $product_id,
+            'title' => get_the_title($product_id),
+            'url' => get_permalink($product_id),
+            'image_url' => $image_url,
+            'price' => $price,
+            'price_raw' => $product_obj ? $product_obj->get_price() : 0,
+        );
+    }
+    
+    return $formatted_products;
+}
+
+/**
+ * Get product categories for Mega Menu with featured image
+ * Wrapper function using unified tdclassic_get_product_categories()
+ * 
+ * @param int $limit Number of categories
+ * @return array Formatted categories with featured image
+ */
+function tdclassic_get_mega_menu_categories($limit = 10) {
+    // Use unified function with hide_empty=true and include_image=true
+    return tdclassic_get_product_categories($limit, true, true);
+}
+
+/**
+ * Get news categories for dropdown menu
+ * @return array Formatted news categories
+ */
+function tdclassic_get_news_categories() {
+    $categories = get_categories(array(
+        'orderby' => 'name',
+        'order' => 'ASC',
+        'hide_empty' => true,
+    ));
+    
+    $formatted_categories = array();
+    
+    foreach ($categories as $category) {
+        $formatted_categories[] = array(
+            'id' => $category->term_id,
+            'name' => $category->name,
+            'slug' => $category->slug,
+            'url' => get_category_link($category->term_id),
+            'count' => $category->count,
         );
     }
     
@@ -121,37 +224,101 @@ add_action('after_setup_theme', 'tdclassic_setup');
 
 // Enqueue scripts and styles
 function tdclassic_scripts() {
+    $theme_version = '2.4.0';
+    
     // Bootstrap CSS
     wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css', array(), '5.3.0');
     
-    // Theme stylesheet
-    wp_enqueue_style('tdclassic-style', get_stylesheet_uri(), array('bootstrap-css'), '1.32.8');
+    // Theme stylesheet (base styles)
+    wp_enqueue_style('tdclassic-style', get_stylesheet_uri(), array('bootstrap-css'), $theme_version);
     
-    // Three-tier header CSS - load on all pages (needed for header structure)
-    wp_enqueue_style('tdclassic-three-tier-header', get_template_directory_uri() . '/assets/css/three-tier-header.css', array('tdclassic-style'), '1.32.8');
+    // Font Awesome
+    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css', array(), '6.0.0');
     
-    // Mobile optimization CSS - load on pages with products
-    if (is_singular('product') || is_post_type_archive('product') || (function_exists('is_product_category') && is_product_category()) || is_front_page() || is_page_template('page-san-pham.php')) {
-        wp_enqueue_style('tdclassic-mobile-optimization', get_template_directory_uri() . '/assets/css/mobile-optimization.css', array('tdclassic-style'), '1.32.8');
-        wp_enqueue_style('tdclassic-product-image-square', get_template_directory_uri() . '/assets/css/product-image-square.css', array('tdclassic-style'), '1.32.8');
+    // ===== CSS MODULES - Load on all pages =====
+    // Header CSS - New design - Load on all pages
+    wp_enqueue_style('tdclassic-header-new', get_template_directory_uri() . '/assets/css/modules/header-new.css', array('tdclassic-style'), $theme_version);
+    
+    // Legacy header CSS (keep for backward compatibility if needed)
+    // wp_enqueue_style('tdclassic-header', get_template_directory_uri() . '/assets/css/modules/header.css', array('tdclassic-style'), $theme_version);
+    
+    // Footer CSS - Load on all pages
+    wp_enqueue_style('tdclassic-footer', get_template_directory_uri() . '/assets/css/modules/footer.css', array('tdclassic-style'), $theme_version);
+    
+    // ===== CSS COMPONENTS - Load on all pages =====
+    // Mobile optimization - Load on all pages
+    wp_enqueue_style('tdclassic-mobile', get_template_directory_uri() . '/assets/css/components/mobile.css', array('tdclassic-style'), $theme_version);
+    
+    // ===== CSS MODULES - Conditional loading =====
+    // Front page CSS - Only on front page
+    if (is_front_page()) {
+        wp_enqueue_style('tdclassic-front-page', get_template_directory_uri() . '/assets/css/modules/front-page.css', array('tdclassic-style'), $theme_version);
+        wp_enqueue_style('tdclassic-front-page-enhanced', get_template_directory_uri() . '/assets/css/modules/front-page-enhanced.css', array('tdclassic-front-page'), $theme_version);
     }
     
-    // WordPress Caption Responsive CSS - load only on posts/blogs
+    // Product CSS - Only on product pages
+    if (is_singular('product') || is_post_type_archive('product') || (function_exists('is_product_category') && is_product_category()) || is_page_template('page-san-pham.php')) {
+        wp_enqueue_style('tdclassic-product', get_template_directory_uri() . '/assets/css/modules/product.css', array('tdclassic-style'), $theme_version);
+        wp_enqueue_style('tdclassic-product-image', get_template_directory_uri() . '/assets/css/components/product-image.css', array('tdclassic-product'), $theme_version);
+        wp_enqueue_style('tdclassic-product-tabs', get_template_directory_uri() . '/assets/css/components/product-tabs.css', array('tdclassic-product'), $theme_version);
+    }
+    
+    // WordPress Caption Responsive CSS - Only on posts/blogs
     if (is_singular('post') || is_home() || is_category() || is_tag() || is_archive()) {
-        wp_enqueue_style('tdclassic-wordpress-caption-responsive', get_template_directory_uri() . '/assets/css/wordpress-caption-responsive.css', array('tdclassic-style'), '1.32.8');
+        wp_enqueue_style('tdclassic-caption', get_template_directory_uri() . '/assets/css/components/caption.css', array('tdclassic-style'), $theme_version);
     }
     
-    // Front page styles
-    // NOTE: front-page-enhanced.css is loaded inline in front-page.php template
-    // No need to enqueue front-page.css here to avoid duplicate CSS
+    // Projects CSS - Only on project pages
+    if (is_post_type_archive('project') || is_singular('project')) {
+        wp_enqueue_style('tdclassic-projects', get_template_directory_uri() . '/assets/css/modules/projects.css', array('tdclassic-style'), $theme_version);
+    }
     
-    // Bootstrap JS - Load globally for dropdown, modal, collapse functionality
+    // Project Archive CSS - Only on project archive page
+    if (is_post_type_archive('project')) {
+        wp_enqueue_style('tdclassic-project-archive', get_template_directory_uri() . '/assets/css/pages/project-archive.css', array('tdclassic-projects'), $theme_version);
+    }
+    
+    // Company Profile CSS - Only on company profile page
+    if (is_page_template('page-ho-so-nang-luc.php')) {
+        wp_enqueue_style('tdclassic-company-profile', get_template_directory_uri() . '/assets/css/pages/company-profile.css', array('tdclassic-style'), $theme_version);
+    }
+    
+    // ===== JAVASCRIPT MODULES =====
+    // Bootstrap JS - Load globally
     wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', array(), '5.3.0', true);
     
-	// Keep front-page slider JS optional; disabled to minimize JS on header pages
-	// if (is_front_page()) {
-	// 	wp_enqueue_script('tdclassic-partner-slider', get_template_directory_uri() . '/js/partner-slider.js', array(), '1.32.8', true);
-	// }
+    // Main theme script - Load globally (header, footer, common features)
+    // Helper utilities (load before main.js)
+    wp_enqueue_script('tdclassic-helpers', get_template_directory_uri() . '/assets/js/utils/helpers.js', array(), $theme_version, true);
+    
+    wp_enqueue_script('tdclassic-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap-js', 'tdclassic-helpers'), $theme_version, true);
+    
+    // Mega Menu JS - Load globally for new header design
+    wp_enqueue_script('tdclassic-mega-menu', get_template_directory_uri() . '/assets/js/modules/mega-menu.js', array('tdclassic-main'), $theme_version, true);
+    
+    // ===== JS MODULES - Conditional loading =====
+    // Front page JS modules - Only on front page
+    if (is_front_page()) {
+        // Carousel module (reusable)
+        wp_enqueue_script('tdclassic-carousel', get_template_directory_uri() . '/assets/js/modules/carousel.js', array('tdclassic-main'), $theme_version, true);
+        
+        // Counter module
+        wp_enqueue_script('tdclassic-counter', get_template_directory_uri() . '/assets/js/modules/counter.js', array('tdclassic-main'), $theme_version, true);
+        
+        // Front page specific JS
+        wp_enqueue_script('tdclassic-front-page', get_template_directory_uri() . '/assets/js/modules/front-page.js', array('tdclassic-carousel', 'tdclassic-counter'), $theme_version, true);
+    }
+    
+    // Product JS - Only on product pages
+    if (is_singular('product')) {
+        wp_enqueue_script('tdclassic-single-product', get_template_directory_uri() . '/assets/js/modules/single-product.js', array('tdclassic-main'), $theme_version, true);
+        wp_enqueue_script('tdclassic-product-tabs', get_template_directory_uri() . '/assets/js/components/product-tabs.js', array('tdclassic-main'), $theme_version, true);
+    }
+    
+    // Partner slider - Load on pages that use it
+    if (is_front_page() || is_page_template('page-doi-tac.php')) {
+        wp_enqueue_script('tdclassic-partner-slider', get_template_directory_uri() . '/assets/js/components/partner-slider.js', array('tdclassic-main'), $theme_version, true);
+    }
     
     // Comment reply script
     if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -745,11 +912,8 @@ function create_contact_messages_table() {
 }
 add_action('after_setup_theme', 'create_contact_messages_table');
 
-// Add Font Awesome
-function tdclassic_add_fontawesome() {
-    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css', array(), '6.0.0');
-}
-add_action('wp_enqueue_scripts', 'tdclassic_add_fontawesome');
+// Font Awesome - Now enqueued in tdclassic_scripts() function above
+// Removed duplicate enqueue function
 
 // Weather API Handler (Optional - for real weather data)
 function handle_weather_api() {
@@ -830,18 +994,8 @@ function tdclassic_localize_scripts() {
 // Disabled to avoid injecting inline JS for weather in simplified header
 // add_action('wp_enqueue_scripts', 'tdclassic_localize_scripts');
 
-// Projects CSS - load only on project archive/single
-function tdclassic_enqueue_projects_css() {
-    if (is_post_type_archive('project') || is_singular('project')) {
-        wp_enqueue_style(
-            'tdclassic-projects',
-            get_template_directory_uri() . '/assets/css/projects.css',
-            array('tdclassic-style'),
-            '1.0.0'
-        );
-    }
-}
-add_action('wp_enqueue_scripts', 'tdclassic_enqueue_projects_css');
+// Projects CSS - Now handled in tdclassic_scripts() function above
+// Removed duplicate enqueue function
 
 // Add weather API configuration to JavaScript
 function tdclassic_weather_config() {
@@ -943,50 +1097,9 @@ function tdclassic_create_sample_products() {
 */ 
 
 /**
- * Enqueue custom product assets
+ * Product assets - Now handled in tdclassic_scripts() function above
+ * Removed duplicate enqueue function
  */
-function tdclassic_enqueue_product_assets() {
-    if (is_singular('product')) {
-        // NOTE: Bootstrap & Font Awesome already loaded globally, no need to enqueue again
-        
-        // Enqueue custom product page CSS
-        wp_enqueue_style(
-            'tdclassic-single-product',
-            get_template_directory_uri() . '/assets/css/single-product.css',
-            array(),
-            '1.0.0'
-        );
-        
-        // Enqueue custom product tabs CSS
-        wp_enqueue_style(
-            'tdclassic-product-tabs',
-            get_template_directory_uri() . '/assets/css/custom-product-tabs.css',
-            array(),
-            '1.0.0'
-        );
-        
-        // NOTE: Bootstrap JS is loaded globally, no need to enqueue here
-        
-        // Enqueue custom product page JS
-        wp_enqueue_script(
-            'tdclassic-single-product',
-            get_template_directory_uri() . '/assets/js/single-product.js',
-            array('jquery'),
-            '1.0.0',
-            true
-        );
-        
-        // Enqueue custom product tabs JS
-        wp_enqueue_script(
-            'tdclassic-product-tabs',
-            get_template_directory_uri() . '/assets/js/custom-product-tabs.js',
-            array('jquery'),
-            '1.0.0',
-            true
-        );
-    }
-}
-add_action('wp_enqueue_scripts', 'tdclassic_enqueue_product_assets');
 
 /**
  * Override WooCommerce product tabs template
@@ -1140,40 +1253,15 @@ function tdclassic_email_config_page() {
             </p>
         </form>
         
-        <div id="test_email_result" style="display: none;"></div>
+        <div id="test_email_result" class="test-email-result" style="display: none;"></div>
         
-        <script>
-        jQuery(document).ready(function($) {
-            $('#test_email').click(function() {
-                var button = $(this);
-                var originalText = button.text();
-                
-                button.text('Đang gửi...').prop('disabled', true);
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'tdclassic_test_email',
-                        nonce: '<?php echo wp_create_nonce('tdclassic_test_email'); ?>'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#test_email_result').html('<div class="notice notice-success"><p>' + response.data + '</p></div>').show();
-                        } else {
-                            $('#test_email_result').html('<div class="notice notice-error"><p>' + response.data + '</p></div>').show();
-                        }
-                    },
-                    error: function() {
-                        $('#test_email_result').html('<div class="notice notice-error"><p>Có lỗi xảy ra khi gửi email test.</p></div>').show();
-                    },
-                    complete: function() {
-                        button.text(originalText).prop('disabled', false);
-                    }
-                });
-            });
-        });
-        </script>
+        <?php
+        // Enqueue admin email test script
+        wp_enqueue_script('tdclassic-admin-email', get_template_directory_uri() . '/assets/js/admin/admin-email.js', array('jquery'), $theme_version, true);
+        wp_localize_script('tdclassic-admin-email', 'tdclassicEmailTest', array(
+            'nonce' => wp_create_nonce('tdclassic_test_email')
+        ));
+        ?>
     </div>
     <?php
 }
@@ -1434,7 +1522,7 @@ function tdclassic_contact_messages_page() {
                                 </a>
                                 <a href="<?php echo admin_url('admin.php?page=contact-messages&action=delete&id=' . $message->id); ?>" 
                                    class="button button-small button-link-delete"
-                                   onclick="return confirm('Bạn có chắc chắn muốn xóa tin nhắn này?')">
+                                   data-confirm-delete="Bạn có chắc chắn muốn xóa tin nhắn này?">
                                     Xóa
                                 </a>
                             </td>
@@ -1774,18 +1862,8 @@ function tdclassic_company_profile_shortcode($atts) {
 }
 add_shortcode('tdclassic_company_profile', 'tdclassic_company_profile_shortcode');
 
-// Enqueue Company Profile CSS only when using the Company Profile page template
-function tdclassic_enqueue_company_profile_css() {
-    if (is_page_template('page-ho-so-nang-luc.php')) {
-        wp_enqueue_style(
-            'tdclassic-company-profile',
-            get_template_directory_uri() . '/assets/css/company-profile.css',
-            array('tdclassic-style'),
-            '1.0.0'
-        );
-    }
-}
-add_action('wp_enqueue_scripts', 'tdclassic_enqueue_company_profile_css');
+// Company Profile CSS - Now handled in tdclassic_scripts() function above
+// Removed duplicate enqueue function
 
 /**
  * Project helpers

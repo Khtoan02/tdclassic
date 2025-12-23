@@ -130,7 +130,7 @@ get_header(); ?>
                         // Animation delay
                         $delay = ($product_count % 4) * 0.1;
                 ?>
-                    <a href="<?php echo esc_url($product_link); ?>" class="product-card-wrapper" data-category="<?php echo esc_attr($badge_class ? $badge_class : 'all'); ?>" style="animation-delay: <?php echo $delay; ?>s;">
+                    <a href="<?php echo esc_url($product_link); ?>" class="product-card-wrapper" data-category="<?php echo esc_attr($badge_class ? $badge_class : 'all'); ?>" data-animation-delay="<?php echo esc_attr($delay); ?>">
                         <div class="modern-product-card">
                             <div class="product-image-container">
                                 <div class="product-image">
@@ -264,14 +264,14 @@ get_header(); ?>
                     <div class="solution-visual">
                         <div class="tech-visualization">
                             <div class="audio-waveform">
-                                <div class="wave-bar" style="height: 40%"></div>
-                                <div class="wave-bar" style="height: 70%"></div>
-                                <div class="wave-bar" style="height: 90%"></div>
-                                <div class="wave-bar" style="height: 60%"></div>
-                                <div class="wave-bar" style="height: 80%"></div>
-                                <div class="wave-bar" style="height: 50%"></div>
-                                <div class="wave-bar" style="height: 85%"></div>
-                                <div class="wave-bar" style="height: 45%"></div>
+                                <div class="wave-bar" data-height="40"></div>
+                                <div class="wave-bar" data-height="70"></div>
+                                <div class="wave-bar" data-height="90"></div>
+                                <div class="wave-bar" data-height="60"></div>
+                                <div class="wave-bar" data-height="80"></div>
+                                <div class="wave-bar" data-height="50"></div>
+                                <div class="wave-bar" data-height="85"></div>
+                                <div class="wave-bar" data-height="45"></div>
                             </div>
                             <div class="solution-stats">
                                 <div class="stat-circle">
@@ -327,7 +327,7 @@ get_header(); ?>
                     $news_count++;
                     $delay = $news_count * 0.1;
                 ?>
-                    <article class="modern-news-card" style="animation-delay: <?php echo $delay; ?>s;">
+                    <article class="modern-news-card" data-animation-delay="<?php echo esc_attr($delay); ?>">
                         <div class="news-card-inner">
                             <?php if (has_post_thumbnail()) : ?>
                                 <div class="news-image">
@@ -363,7 +363,7 @@ get_header(); ?>
                                         <i class="fas fa-arrow-right"></i>
                                     </a>
                                     <div class="news-share">
-                                        <button class="btn-share" onclick="shareArticle('<?php echo esc_js(get_the_title()); ?>', '<?php echo esc_url(get_permalink()); ?>')">
+                                        <button class="btn-share" data-share-title="<?php echo esc_attr(get_the_title()); ?>" data-share-url="<?php echo esc_url(get_permalink()); ?>">
                                             <i class="fas fa-share-alt"></i>
                                         </button>
                                     </div>

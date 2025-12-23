@@ -106,20 +106,20 @@
                                 </div>
                             </div>
                             <!-- Chứng chỉ -->
-                            <div class="footer-item">
-                                <div class="footer-item-header" style="gap: 4px;">
-                                    <h3 class="footer-item-title" style="color: #fff; font-size: 1rem; font-weight: 600; margin: 0;">Chứng chỉ Website</h3>
-                                    <svg class="footer-item-arrow" viewBox="0 0 24 24" stroke="currentColor" fill="none" style="width: 18px; height: 18px; color: #888;">
+                            <div class="footer-item footer-item-certificate">
+                                <div class="footer-item-header">
+                                    <h3 class="footer-item-title">Chứng chỉ Website</h3>
+                                    <svg class="footer-item-arrow" viewBox="0 0 24 24" stroke="currentColor" fill="none">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 15L12 9L18 15"></path>
                                     </svg>
                                 </div>
-                                <div class="footer-item-content" style="padding: 0; margin: 0;">
-                                    <div class="footer-certificates" style="display: flex; gap: 8px; justify-content: flex-start; align-items: center; margin: 0;">
-                                        <a href="//www.dmca.com/Protection/Status.aspx?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" title="DMCA.com Protection Status" class="dmca-badge" style="display: flex; align-items: center; justify-content: center; background: #222; border-radius: 6px; padding: 2px 4px;">
-                                            <img src="https://images.dmca.com/Badges/DMCA_badge_grn_60w.png?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" alt="DMCA.com Protection Status" style="width: 38px; height: 38px; object-fit: contain; display: block;" />
+                                <div class="footer-item-content">
+                                    <div class="footer-certificates">
+                                        <a href="//www.dmca.com/Protection/Status.aspx?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" title="DMCA.com Protection Status" class="dmca-badge">
+                                            <img src="https://images.dmca.com/Badges/DMCA_badge_grn_60w.png?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" alt="DMCA.com Protection Status" />
                                         </a>
-                                        <a href="/" title="Nói không với hàng giả" class="dmca-badge" style="display: flex; align-items: center; justify-content: center; background: #222; border-radius: 6px; padding: 2px 4px;">
-                                            <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" style="width: 38px; height: 38px; object-fit: contain; display: block;" />
+                                        <a href="/" title="Nói không với hàng giả" class="dmca-badge">
+                                            <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" />
                                         </a>
                                     </div>
                                 </div>
@@ -132,17 +132,17 @@
                     <div class="footer-right">
                         <div class="footer-newsletter">
                             <div class="footer-logo">
-                                <a href="<?php echo home_url('/'); ?>">
+                                <a href="<?php echo esc_url(home_url('/')); ?>">
                                     <span class="sr-only">TD Classic</span>
                                     <h2 class="logo-text">TD Classic®</h2>
                                 </a>
                             </div>
                             
-                            <form class="newsletter-form" method="post" action="<?php echo home_url('/'); ?>">
+                            <form class="newsletter-form" method="post" action="<?php echo esc_url(home_url('/')); ?>">
                                 <div class="newsletter-field">
-                                    <input type="email" name="newsletter_email" placeholder="Nhập email của bạn" required>
-                                    <button type="submit" class="newsletter-btn">
-                                        <svg viewBox="0 0 16 16" stroke="currentColor" fill="none">
+                                    <input type="email" name="newsletter_email" placeholder="Nhập email của bạn để nhận tin tức" required aria-label="Email đăng ký nhận tin">
+                                    <button type="submit" class="newsletter-btn" aria-label="Đăng ký nhận tin">
+                                        <svg viewBox="0 0 16 16" stroke="currentColor" fill="none" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2 8.00012H14M14 8.00012L9.33333 3.3335M14 8.00012L9.33333 12.6668"></path>
                                         </svg>
                                     </button>
@@ -163,34 +163,36 @@
 
                         <div class="footer-socials">
                             <div class="social-links">
-                                <a href="https://www.facebook.com/tdclassic.official" class="social-link">
-                                    <i class="fab fa-facebook"></i>
+                                <a href="https://www.facebook.com/tdclassic.official" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                                    <i class="fab fa-facebook" aria-hidden="true"></i>
                                 </a>
-                                <a href="https://www.facebook.com/tdclassic.official" class="social-link">
-                                    <i class="fab fa-instagram"></i>
+                                <a href="https://www.instagram.com/tdclassic.official" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                    <i class="fab fa-instagram" aria-hidden="true"></i>
                                 </a>
-                                <a href="https://www.youtube.com/@tdclassic.official" class="social-link">
-                                    <i class="fab fa-youtube"></i>
+                                <a href="https://www.youtube.com/@tdclassic.official" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                                    <i class="fab fa-youtube" aria-hidden="true"></i>
                                 </a>
-                                <a href="https://www.facebook.com/tdclassic.official" class="social-link">
-                                    <i class="fab fa-linkedin"></i>
+                                <a href="https://www.linkedin.com/company/tdclassic" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                                    <i class="fab fa-linkedin" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </div>
-                    <div class="footer-map">
-                        <div class="map-container">
-                            <div class="map-wrapper">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.999177617507!2d106.70327410000002!3d20.8720834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7adc297467ef%3A0x2d9f6796b87197c!2zMjIgTmfDtCBRdXnhu4FuLCBU4buVIGTDom4gcGjhu5Egc-G7kSA1LCBOZ8O0IFF1eeG7gW4sIEjhuqNpIFBow7JuZw!5e0!3m2!1svi!2s!4v1754320853116!5m2!1svi!2s" 
-                                    width="100%" 
-                                    height="300" 
-                                    style="border:0; border-radius: 16px;" 
-                                    allowfullscreen="" 
-                                    loading="lazy" 
-                                    referrerpolicy="no-referrer-when-downgrade">
-                                </iframe>
+                        
+                        <div class="footer-map">
+                            <div class="map-container">
+                                <div class="map-wrapper">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.999177617507!2d106.70327410000002!3d20.8720834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7adc297467ef%3A0x2d9f6796b87197c!2zMjIgTmfDtCBRdXnhu4FuLCBU4buVIGTDom4gcGjhu5Egc-G7kSA1LCBOZ8O0IFF1eeG7gW4sIEjhuqNpIFBow7JuZw!5e0!3m2!1svi!2s!4v1754320853116!5m2!1svi!2s" 
+                                        width="100%" 
+                                        height="300" 
+                                        style="border:0;" 
+                                        allowfullscreen="" 
+                                        loading="lazy" 
+                                        referrerpolicy="no-referrer-when-downgrade"
+                                        title="Bản đồ vị trí công ty">
+                                    </iframe>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>

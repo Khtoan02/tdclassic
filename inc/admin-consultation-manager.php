@@ -9,6 +9,15 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Enqueue admin consultation script
+function tdclassic_enqueue_consultation_admin_scripts($hook) {
+    if (strpos($hook, 'consultation') !== false || strpos($hook, 'tdclassic') !== false) {
+        $theme_version = wp_get_theme()->get('Version');
+        wp_enqueue_script('tdclassic-admin-consultation', get_template_directory_uri() . '/assets/js/admin/admin-consultation.js', array('jquery'), $theme_version, true);
+    }
+}
+add_action('admin_enqueue_scripts', 'tdclassic_enqueue_consultation_admin_scripts');
+
 class TD_Classic_Consultation_Manager {
     
     public function __construct() {

@@ -268,7 +268,7 @@ get_header(); ?>
                                         <div class="overlay-content">
                                             <?php if ($origin === 'remote') : ?>
                                                 <!-- Bài TavaLED: hiện popup trước -->
-                                                <button class="btn-overlay-primary" type="button" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_url($post_image_url); ?>', '<?php echo esc_js(wp_strip_all_tags($meta_description)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                                <button class="btn-overlay-primary" type="button" data-news-preview data-title="<?php echo esc_attr(wp_strip_all_tags($post_title)); ?>" data-image="<?php echo esc_url($post_image_url); ?>" data-description="<?php echo esc_attr(wp_strip_all_tags($meta_description)); ?>" data-url="<?php echo esc_url($post_link); ?>">
                                                     <i class="fas fa-eye"></i>
                                                     <span>Xem nhanh</span>
                                                 </button>
@@ -279,7 +279,7 @@ get_header(); ?>
                                                     <span>Đọc bài viết</span>
                                                 </a>
                                             <?php endif; ?>
-                                            <button class="btn-overlay-secondary" onclick="shareArticle('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                            <button class="btn-overlay-secondary btn-share" data-share-title="<?php echo esc_attr(wp_strip_all_tags($post_title)); ?>" data-share-url="<?php echo esc_url($post_link); ?>">
                                                 <i class="fas fa-share-alt"></i>
                                             </button>
                                         </div>
@@ -317,7 +317,7 @@ get_header(); ?>
                                 </div>
                                 <h3 class="news-title">
                                     <?php if ($origin === 'remote') : ?>
-                                        <a href="javascript:void(0)" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_url($post_image_url); ?>', '<?php echo esc_js(wp_strip_all_tags($meta_description)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                        <a href="javascript:void(0)" class="news-preview-link" data-news-preview data-title="<?php echo esc_attr(wp_strip_all_tags($post_title)); ?>" data-image="<?php echo esc_url($post_image_url); ?>" data-description="<?php echo esc_attr(wp_strip_all_tags($meta_description)); ?>" data-url="<?php echo esc_url($post_link); ?>">
                                             <?php echo esc_html(wp_strip_all_tags($post_title)); ?>
                                         </a>
                                     <?php else : ?>
@@ -331,7 +331,7 @@ get_header(); ?>
                                 </div>
                                 <div class="news-actions">
                                     <?php if ($origin === 'remote') : ?>
-                                        <button class="btn-news-detail" type="button" onclick="openNewsPreview('<?php echo esc_js(wp_strip_all_tags($post_title)); ?>', '<?php echo esc_url($post_image_url); ?>', '<?php echo esc_js(wp_strip_all_tags($meta_description)); ?>', '<?php echo esc_url($post_link); ?>')">
+                                        <button class="btn-news-detail" type="button" data-news-preview data-title="<?php echo esc_attr(wp_strip_all_tags($post_title)); ?>" data-image="<?php echo esc_url($post_image_url); ?>" data-description="<?php echo esc_attr(wp_strip_all_tags($meta_description)); ?>" data-url="<?php echo esc_url($post_link); ?>">
                                             <span>Xem chi tiết</span>
                                             <i class="fas fa-arrow-right"></i>
                                         </button>

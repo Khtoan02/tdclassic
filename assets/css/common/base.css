@@ -1,0 +1,58 @@
+/**
+ * TD Classic - Base Styles
+ * Common base styles, CSS variables, and resets
+ */
+
+/* ===== CSS VARIABLES ===== */
+:root {
+    /* Colors */
+    --header-bg: #050505;
+    --glass-border-color: rgba(255, 255, 255, 0.1);
+    --mega-menu-bg: #0a0a0a;
+    --accent-blue: #3b82f6;
+    
+    /* Typography */
+    --font-primary: 'Outfit', sans-serif;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ===== BASE RESETS ===== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: #000;
+    color: white;
+    margin: 0;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ===== COMMON UTILITIES ===== */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+

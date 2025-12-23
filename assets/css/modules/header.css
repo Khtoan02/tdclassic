@@ -919,3 +919,924 @@
     transform: rotate(360deg);
   }
 }
+/* Three-Tier Header Responsive CSS - TD Classic Theme */
+/* Header được chia thành 3 phần: top-header, main-header, bottom-header */
+
+/* ===== OVERRIDE OLD HEADER STYLES ===== */
+/* Ẩn header cũ để tránh xung đột */
+.site-header:not(.main-header) {
+  display: none !important;
+}
+
+/* Đảm bảo main-header có class site-header */
+.main-header.site-header {
+  display: block !important;
+}
+
+/* ===== TOP HEADER - Thông tin liên hệ và Social ===== */
+.top-header {
+  background-color: #1a1a1a !important;
+  color: #fff !important;
+  padding: 0.5rem 0 !important;
+  font-size: 0.8rem !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+.top-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-header .contact-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.top-header .contact-info .contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.top-header .contact-info .contact-item:hover {
+  color: #fff;
+}
+
+.top-header .contact-info .contact-item i {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.top-header .top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Remove legacy social styles entirely */
+
+/* Removed legacy social hover styles */
+
+/* Company Profile button - redesigned */
+.top-header .btn-profile {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: #000;
+  border: 1px solid #555;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.top-header .btn-profile:hover {
+  background: #111;
+  border-color: #777;
+}
+.top-header .btn-profile i {
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+/* Ensure the container keeps left info and right action aligned */
+.top-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Tidy spacing on small screens */
+@media (max-width: 767.98px) {
+  .top-header .container {
+    gap: 0.5rem;
+  }
+  .top-header .btn-profile span {
+    display: none; /* icon-only on very small screens */
+  }
+}
+
+/* ===== MAIN HEADER - Logo và Navigation ===== */
+.main-header {
+  background-color: #000 !important;
+  color: #fff !important;
+  padding: 0.5rem 0 !important;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Đảm bảo main-header có đầy đủ style của site-header */
+.main-header.site-header {
+  background-color: #000 !important;
+  color: #fff !important;
+  padding: 0.5rem 0 !important;
+}
+
+/* Đảm bảo main-header không bị ảnh hưởng bởi CSS cũ */
+.main-header::before,
+.main-header::after,
+.main-header .navbar::before {
+  display: none !important;
+}
+
+.main-header .navbar {
+  position: relative;
+  z-index: 20;
+}
+
+/* Hide navbar collapse container by default to prevent icon misalignment on mobile/tablet */
+.main-header #navbarNav {
+  display: none !important;
+}
+
+.main-header .container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Đảm bảo main-header hoạt động đúng mà không cần navbar-toggler */
+.main-header .navbar {
+  width: 100%;
+}
+
+/* Đảm bảo main-header .navbar-collapse hoạt động đúng */
+.main-header .navbar-collapse {
+  display: flex !important;
+  flex-basis: auto;
+  flex-grow: 1;
+  align-items: center;
+}
+
+/* Đảm bảo main-header .container hoạt động đúng trên mobile */
+@media (max-width: 991.98px) {
+  .main-header .container {
+    justify-content: center !important;
+  }
+
+  .main-header .navbar {
+    justify-content: center !important;
+  }
+
+  .main-header .navbar-collapse {
+    justify-content: center !important;
+  }
+
+  .main-header .navbar-nav {
+    margin-left: 0 !important;
+  }
+
+  .main-header .header-left {
+    justify-content: center !important;
+  }
+}
+
+.main-header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.main-header .navbar-brand img {
+  height: 30px;
+  width: auto;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))
+    drop-shadow(0 0 16px rgba(255, 255, 255, 0.2));
+  transition: all 0.3s ease;
+}
+
+.main-header .navbar-brand img:hover {
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5))
+    drop-shadow(0 0 24px rgba(255, 255, 255, 0.3));
+  transform: scale(1.05);
+  animation: none;
+}
+
+/* Logo text styling với hiệu ứng glow */
+.main-header .navbar-brand {
+  font-weight: 900 !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+    0 0 20px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.5px;
+  font-family: "Arial Black", Arial, sans-serif;
+  transition: all 0.3s ease;
+}
+
+.main-header .navbar-brand:hover {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.7),
+    0 0 30px rgba(255, 255, 255, 0.4), 0 0 45px rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+  filter: brightness(1.2);
+  animation: none;
+}
+
+/* DateTime & Weather Widget - chỉ hiện trên desktop */
+.main-header .datetime-weather-widget {
+  display: none;
+}
+
+/* Navigation - chỉ hiện trên desktop */
+.main-header .navbar-nav {
+  display: none;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+/* ===== BOTTOM HEADER - Mobile Navigation ===== */
+.bottom-header {
+  color: #fff !important;
+  padding: 0 !important;
+  display: none;
+  flex: 1 1 auto;
+  margin-left: 0.75rem;
+}
+
+/* Hiển thị bottom-header trên mobile/tablet */
+@media (max-width: 991.98px) {
+  .bottom-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+/* Bottom header không cần container riêng vì đã nằm trong main-header container */
+.bottom-header .container {
+  display: none !important;
+}
+
+.bottom-header .mobile-nav-item {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  color: #ccc;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.35rem;
+  border-radius: 0.5rem;
+  min-width: 60px;
+}
+
+.bottom-header .mobile-nav-item:hover {
+  color: #fff;
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+.bottom-header .mobile-nav-item i {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.bottom-header .mobile-nav-item .nav-text {
+  font-size: 0.7rem;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* DESKTOP LAYOUT (992px và lớn hơn) */
+@media (min-width: 992px) {
+  .top-header {
+    display: block;
+  }
+
+  .main-header .datetime-weather-widget {
+    display: block;
+  }
+
+  .main-header .navbar-nav {
+    display: flex !important;
+  }
+
+  /* Show navbar collapse container on desktop */
+  .main-header #navbarNav {
+    display: flex !important;
+  }
+
+	/* CSS-only dropdowns on hover (no JS needed) */
+	.navbar-nav .dropdown:hover > .dropdown-menu {
+		display: block;
+		margin-top: 0;
+	}
+	
+	/* Ensure proper positioning within navbar */
+	.navbar-nav .dropdown-menu {
+		display: none;
+		position: absolute;
+	}
+
+  .main-header .navbar-brand {
+    font-weight: 900 !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4),
+      0 0 16px rgba(255, 255, 255, 0.2), 0 0 24px rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.5px;
+    font-family: "Arial Black", Arial, sans-serif;
+  }
+
+  .main-header .navbar-brand img {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3))
+      drop-shadow(0 0 12px rgba(255, 255, 255, 0.2));
+  }
+
+  .bottom-header {
+    display: none;
+  }
+}
+
+/* TABLET LAYOUT (768px - 991px) */
+@media (max-width: 991.98px) and (min-width: 768px) {
+  .top-header {
+    display: none !important;
+  }
+
+  .main-header {
+    justify-content: center !important;
+  }
+
+  .main-header .datetime-weather-widget {
+    display: none;
+  }
+
+  .main-header .navbar-nav {
+    display: none;
+  }
+
+  .main-header .header-left {
+    justify-content: center !important;
+  }
+
+  .main-header .navbar-brand {
+    font-size: 1.4rem !important;
+    text-align: center;
+    font-weight: 900 !important;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.5),
+      0 0 24px rgba(255, 255, 255, 0.3), 0 0 36px rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.5px;
+    font-family: "Arial Black", Arial, sans-serif;
+  }
+
+  .main-header .navbar-brand img {
+    height: 32px !important;
+    width: auto;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4))
+      drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+    transition: all 0.3s ease;
+  }
+
+  .main-header .navbar-brand img:hover {
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6))
+      drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));
+    transform: scale(1.05);
+    animation: none;
+  }
+
+  .bottom-header {
+    display: flex !important;
+  }
+}
+
+/* MOBILE LAYOUT (dưới 768px) */
+@media (max-width: 767.98px) {
+  .top-header {
+    display: none !important;
+  }
+
+  .top-header .contact-info {
+    gap: 0.75rem;
+  }
+
+  .top-header .contact-info .contact-item {
+    font-size: 0.75rem;
+  }
+
+  .top-header .social-links {
+    gap: 0.5rem;
+  }
+
+  .top-header .social-links .social-link {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.9rem;
+  }
+
+  /* Tạo layout ngang cho mobile */
+  .main-header {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0 !important;
+    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%) !important;
+    border-bottom: 1px solid #333 !important;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .main-header .container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 1rem;
+  }
+
+  .main-header .header-left {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .main-header .navbar-brand {
+    font-size: 1.2rem !important;
+    text-align: left;
+    font-weight: 900 !important;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+      0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.8px;
+    font-family: "Arial Black", Arial, sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .main-header .navbar-brand:hover {
+    text-shadow: 0 0 25px rgba(255, 255, 255, 1),
+      0 0 50px rgba(255, 255, 255, 0.6), 0 0 75px rgba(255, 255, 255, 0.3);
+    transform: scale(1.02);
+  }
+
+  .main-header .navbar-brand img {
+    height: 28px !important;
+    width: auto;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6))
+      drop-shadow(0 0 30px rgba(255, 255, 255, 0.4));
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .main-header .navbar-brand img:hover {
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8))
+      drop-shadow(0 0 40px rgba(255, 255, 255, 0.5));
+    transform: scale(1.05);
+  }
+
+  .main-header .datetime-weather-widget {
+    display: none;
+  }
+
+  .main-header .navbar-nav {
+    display: none;
+  }
+
+  /* Bottom header nằm bên phải logo */
+  .bottom-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1 1 auto;
+    margin-left: 0.75rem;
+  }
+
+  .bottom-header .mobile-nav-item {
+    display: flex !important;
+    font-size: 0.7rem;
+    min-width: 0;
+    flex: 1 1 0;
+    padding: 0.3rem 0.25rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .bottom-header .mobile-nav-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .bottom-header .mobile-nav-item:hover::before {
+    left: 100%;
+  }
+
+  .bottom-header .mobile-nav-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .bottom-header .mobile-nav-item i {
+    font-size: 0.9rem;
+    display: block;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bottom-header .mobile-nav-item:hover i {
+    transform: scale(1.1);
+    color: #fff;
+  }
+
+  .bottom-header .mobile-nav-item .nav-text {
+    font-size: 0.6rem;
+    line-height: 1.2;
+    font-weight: 600;
+    text-align: center;
+    display: block;
+    width: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bottom-header .mobile-nav-item:hover .nav-text {
+    color: #fff;
+    transform: scale(1.05);
+  }
+}
+
+/* VERY SMALL MOBILE (dưới 480px) */
+@media (max-width: 479.98px) {
+  .top-header { display: none !important; }
+
+  .main-header {
+    justify-content: center !important;
+  }
+
+  .main-header .header-left {
+    justify-content: center !important;
+  }
+
+  .main-header .navbar-brand {
+    font-size: 1.3rem !important;
+    text-align: center;
+    font-weight: 900 !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.5px;
+    font-family: "Arial Black", Arial, sans-serif;
+  }
+
+  .main-header {
+    padding: 0.45rem 0 !important;
+  }
+
+  .main-header .navbar-brand {
+    font-size: 1.1rem !important;
+  }
+
+  .main-header .navbar-brand img {
+    height: 24px !important;
+    width: auto;
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5))
+      drop-shadow(0 0 24px rgba(255, 255, 255, 0.3));
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .main-header .navbar-brand img:hover {
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.7))
+      drop-shadow(0 0 32px rgba(255, 255, 255, 0.4));
+    transform: scale(1.05);
+  }
+
+  .bottom-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .bottom-header .mobile-nav-item {
+    display: flex !important;
+    font-size: 0.65rem;
+    min-width: 0;
+    flex: 1 1 0;
+    padding: 0.3rem 0.25rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .bottom-header .mobile-nav-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .bottom-header .mobile-nav-item:hover::before {
+    left: 100%;
+  }
+
+  .bottom-header .mobile-nav-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .bottom-header .mobile-nav-item i {
+    font-size: 0.8rem;
+    display: block;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bottom-header .mobile-nav-item:hover i {
+    transform: scale(1.1);
+    color: #fff;
+  }
+
+  .bottom-header .mobile-nav-item .nav-text {
+    font-size: 0.55rem;
+    line-height: 1.2;
+    font-weight: 600;
+    text-align: center;
+    display: block;
+    width: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bottom-header .mobile-nav-item:hover .nav-text {
+    color: #fff;
+    transform: scale(1.05);
+  }
+}
+
+/* ===== ANIMATION EFFECTS ===== */
+.top-header .contact-item,
+.top-header .social-link,
+.bottom-header .mobile-nav-item {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.top-header .contact-item:hover,
+.top-header .social-link:hover,
+.bottom-header .mobile-nav-item:hover {
+  transform: translateY(-2px);
+}
+
+/* ===== SPECIAL ANIMATIONS ===== */
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4),
+      0 0 30px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation cho mobile nav items */
+.bottom-header .mobile-nav-item:nth-child(1) {
+  animation: slideInFromRight 0.6s ease-out 0.1s both;
+}
+.bottom-header .mobile-nav-item:nth-child(2) {
+  animation: slideInFromRight 0.6s ease-out 0.2s both;
+}
+.bottom-header .mobile-nav-item:nth-child(3) {
+  animation: slideInFromRight 0.6s ease-out 0.3s both;
+}
+.bottom-header .mobile-nav-item:nth-child(4) {
+  animation: slideInFromRight 0.6s ease-out 0.4s both;
+}
+
+/* Animation cho logo */
+.main-header .navbar-brand {
+  animation: slideInFromLeft 0.8s ease-out;
+}
+
+/* Pulse effect cho active nav item */
+.bottom-header .mobile-nav-item:active {
+  animation: pulseGlow 0.3s ease-out;
+}
+
+/* Logo glow animation */
+@keyframes logoGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+      0 0 20px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6),
+      0 0 30px rgba(255, 255, 255, 0.4), 0 0 45px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes logoImageGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))
+      drop-shadow(0 0 16px rgba(255, 255, 255, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5))
+      drop-shadow(0 0 24px rgba(255, 255, 255, 0.3));
+  }
+}
+
+/* Áp dụng animation cho logo */
+.main-header .navbar-brand {
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+.main-header .navbar-brand img {
+  animation: logoImageGlow 3s ease-in-out infinite;
+}
+
+/* ===== ACCESSIBILITY ===== */
+.top-header .contact-item:focus,
+.top-header .social-link:focus,
+.bottom-header .mobile-nav-item:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .top-header,
+  .bottom-header {
+    display: none !important;
+  }
+
+  .main-header {
+    background-color: #000 !important;
+    color: #fff !important;
+  }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+  .top-header {
+    background-color: #0a0a0a;
+    border-bottom-color: #444;
+  }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+  .top-header .contact-item,
+  .top-header .social-link,
+  .bottom-header .mobile-nav-item {
+    border: 1px solid #fff;
+  }
+
+  .top-header .contact-item:hover,
+  .top-header .social-link:hover,
+  .bottom-header .mobile-nav-item:hover {
+    background-color: #fff;
+    color: #000;
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .top-header .contact-item,
+  .top-header .social-link,
+  .bottom-header .mobile-nav-item,
+  .main-header .navbar-brand {
+    transition: none;
+  }
+
+  .top-header .contact-item:hover,
+  .top-header .social-link:hover,
+  .bottom-header .mobile-nav-item:hover,
+  .main-header .navbar-brand:hover {
+    transform: none;
+  }
+
+  .bottom-header .mobile-nav-item,
+  .main-header .navbar-brand {
+    animation: none;
+  }
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+.bottom-header .mobile-nav-item:focus,
+.top-header .contact-item:focus,
+.top-header .social-link:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+.main-header,
+.bottom-header,
+.top-header {
+  will-change: transform;
+}
+
+.bottom-header .mobile-nav-item,
+.top-header .contact-item,
+.top-header .social-link {
+  will-change: transform, box-shadow;
+}
+
+/* ===== LOADING STATES ===== */
+.bottom-header .mobile-nav-item.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.bottom-header .mobile-nav-item.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Hide any generic Topbar component if present */
+.topbar { display: none !important; }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

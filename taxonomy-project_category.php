@@ -83,7 +83,7 @@ get_header(); ?>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex justify-content-md-end">
-                                <select class="form-select" style="width: auto;" onchange="sortProjects(this.value)">
+                                <select class="form-select taxonomy-sort-select" data-sort-type="projects">
                                     <option value="newest">Mới nhất</option>
                                     <option value="oldest">Cũ nhất</option>
                                     <option value="name-asc">Tên A-Z</option>

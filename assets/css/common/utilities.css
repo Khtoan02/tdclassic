@@ -1,0 +1,119 @@
+/**
+ * TD Classic - Utility Classes
+ * Reusable utility classes for common patterns
+ */
+
+/* ===== BUTTONS ===== */
+.glass-btn-luxury {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-normal);
+    text-decoration: none;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    cursor: pointer;
+}
+
+.glass-btn-luxury:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+    color: white;
+    text-decoration: none;
+}
+
+/* ===== CARDS ===== */
+.modern-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    transition: all var(--transition-normal);
+}
+
+.modern-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+/* ===== FORMS ===== */
+.form-control-enhanced {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: white;
+    transition: all var(--transition-normal);
+}
+
+.form-control-enhanced:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-blue);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn var(--transition-normal);
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp var(--transition-normal);
+}
+
+.animate-slide-in-right {
+    animation: slideInRight var(--transition-normal);
+}
+
+/* ===== DATA ATTRIBUTES ===== */
+[data-animation-delay] {
+    animation-delay: var(--animation-delay, 0s);
+}
+
+.wave-bar[data-height] {
+    height: var(--wave-height, 50%);
+}
+
+/* ===== TAXONOMY SORT SELECT ===== */
+.taxonomy-sort-select {
+    width: auto;
+}
+

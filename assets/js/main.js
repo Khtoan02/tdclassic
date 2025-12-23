@@ -7,12 +7,15 @@
 
   // Document ready
   $(document).ready(function () {
+    // Set animation delays and wave bar heights from data attributes
+    initDataAttributes();
+    
     // Initialize basic features first
     initSmoothScrolling();
     initBackToTop();
     initFormValidation();
     initCardHoverEffects();
-    initMobileMenu();
+    // Mobile Menu now handled by mega-menu.js module
 
     // Initialize header features (existing)
     initDateTime();
@@ -42,6 +45,25 @@
   });
 
   // Homepage features removed - simple homepage only
+
+  // Initialize data attributes (animation delays, wave bar heights, etc.)
+  function initDataAttributes() {
+    // Set animation delays from data attributes
+    $('[data-animation-delay]').each(function() {
+      var delay = $(this).data('animation-delay');
+      if (delay !== undefined) {
+        $(this).css('--animation-delay', delay + 's');
+      }
+    });
+
+    // Set wave bar heights from data attributes
+    $('.wave-bar[data-height]').each(function() {
+      var height = $(this).data('height');
+      if (height !== undefined) {
+        $(this).css('--wave-height', height + '%');
+      }
+    });
+  }
 
   // Smooth Scrolling (universal)
   function initSmoothScrolling() {
@@ -114,24 +136,8 @@
     );
   }
 
-  // Mobile Menu (universal)
-  function initMobileMenu() {
-    $(".navbar-toggler").click(function () {
-      $(this).toggleClass("active");
-    });
-
-    // Modern dropdown menu
-    $(".navbar-nav .dropdown").hover(
-      function () {
-        $(this).addClass("show");
-        $(this).find(".dropdown-menu").addClass("show");
-      },
-      function () {
-        $(this).removeClass("show");
-        $(this).find(".dropdown-menu").removeClass("show");
-      }
-    );
-  }
+  // Mobile Menu - Now handled by mega-menu.js module for new header design
+  // Removed duplicate function - header mới sử dụng mega-menu.js
 
   // DateTime Widget (header feature - keep original)
   function initDateTime() {
@@ -542,35 +548,45 @@ if (document.body.classList.contains("home")) {
 
 // Footer functionality
 function initFooter() {
-  // Footer accordion functionality
+  // Footer accordion functionality - chỉ hoạt động trên mobile
   const footerItems = document.querySelectorAll(".footer-item");
+  const isMobile = window.innerWidth <= 768;
 
   footerItems.forEach((item) => {
     const header = item.querySelector(".footer-item-header");
     const content = item.querySelector(".footer-item-content");
-    const arrow = item.querySelector(".footer-item-arrow");
 
     if (header && content) {
-      header.addEventListener("click", () => {
-        const isOpen = content.style.display === "none";
+      // Xóa event listeners cũ bằng cách clone và replace
+      const newHeader = header.cloneNode(true);
+      header.parentNode.replaceChild(newHeader, header);
+      
+      // Lấy lại reference sau khi replace
+      const newHeaderRef = item.querySelector(".footer-item-header");
+      
+      if (isMobile) {
+        // Mobile: Accordion behavior
+        newHeaderRef.addEventListener("click", function() {
+          item.classList.toggle("active");
+        });
 
-        // Toggle content visibility
-        content.style.display = isOpen ? "block" : "none";
-
-        // Rotate arrow
-        if (arrow) {
-          arrow.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
+        // Mobile: Đóng tất cả items mặc định (trừ item đầu tiên)
+        if (item === footerItems[0]) {
+          item.classList.add("active"); // Mở item đầu tiên
+        } else {
+          item.classList.remove("active"); // Đóng các item khác
         }
-
-        // Add/remove active class
-        item.classList.toggle("active", isOpen);
-      });
-
-      // Initially show all content on desktop, hide on mobile
-      if (window.innerWidth <= 768) {
-        content.style.display = "none";
       } else {
-        content.style.display = "block";
+        // Desktop: Luôn mở tất cả items và xóa inline styles
+        item.classList.add("active");
+        // Xóa tất cả inline styles để CSS tự nhiên hoạt động
+        if (content) {
+          content.style.display = "";
+          content.style.maxHeight = "";
+          content.style.opacity = "";
+          content.style.overflow = "";
+          content.style.visibility = "";
+        }
       }
     }
   });

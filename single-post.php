@@ -109,16 +109,16 @@ if (have_posts()) {
                             CHIA SẺ BÀI VIẾT
                         </h3>
                         <div class="share-buttons-compact">
-                            <button class="share-btn facebook" onclick="shareOnFacebook()">
+                            <button class="share-btn facebook" data-share-type="facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </button>
-                            <button class="share-btn twitter" onclick="shareOnTwitter()">
+                            <button class="share-btn twitter" data-share-type="twitter">
                                 <i class="fab fa-twitter"></i>
                             </button>
-                            <button class="share-btn linkedin" onclick="shareOnLinkedIn()">
+                            <button class="share-btn linkedin" data-share-type="linkedin">
                                 <i class="fab fa-linkedin-in"></i>
                             </button>
-                            <button class="share-btn copy" onclick="copyLink()">
+                            <button class="share-btn copy" data-share-type="copy">
                                 <i class="fas fa-link"></i>
                             </button>
                         </div>
