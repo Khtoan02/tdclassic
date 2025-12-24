@@ -24,13 +24,36 @@ body {
 }
 
 /* --- HEADER STRUCTURE --- */
-.header-wrapper {
-    position: relative;
-    width: 100%;
-    z-index: 9999;
-    background-color: var(--header-bg);
-    border-bottom: 1px solid var(--glass-border-color);
-}
+    /* --- HEADER STRUCTURE --- */
+    .header-wrapper {
+        position: relative;
+        width: 100%;
+        z-index: 9999;
+        background-color: var(--header-bg);
+        border-bottom: 1px solid var(--glass-border-color);
+        transition: all 0.3s ease;
+    }
+    
+    /* Sticky Header Logic */
+    .header-wrapper.sticky-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        animation: slideDown 0.35s ease-out;
+    }
+    
+    .header-wrapper.sticky-header.scrolled {
+        background-color: rgba(5, 5, 5, 0.85); /* Tăng độ trong suốt khi scroll */
+        backdrop-filter: blur(12px);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        border-bottom-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    @keyframes slideDown {
+        from { transform: translateY(-100%); }
+        to { transform: translateY(0); }
+    }
 
 .top-bar {
     height: 40px;
@@ -374,28 +397,38 @@ body {
 }
 
 .mob-link {
-    display: block;
-    padding: 16px 24px;
-    font-size: 16px;
-    font-weight: 700;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 20px 24px;
+    font-size: 15px !important; /* Force kích thước 15px cho tất cả */
+    font-weight: 800 !important; /* Force độ đậm 800 cho tất cả */
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #ccc;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    letter-spacing: 0.15em;
+    color: #d1d5db;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
     text-decoration: none;
+    transition: all 0.3s ease;
+    line-height: normal; /* Reset line-height để tránh lệch */
+}
+
+/* Đảm bảo text bên trong (nếu nằm trong thẻ span) cũng nhận style y hệt */
+.mob-link span {
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    letter-spacing: inherit !important;
+    color: inherit;
 }
 
 .mob-link:hover { 
-    color: white; 
-    background: rgba(255,255,255,0.05); 
+    color: #D4AF37;
+    background: rgba(212, 175, 55, 0.05);
+    padding-left: 30px;
 }
 
 .mob-accordion-btn {
-    width: 100%;
-    text-align: left;
-    display: flex;
     justify-content: space-between;
-    align-items: center;
+    cursor: pointer;
 }
 
 .mob-accordion-content {

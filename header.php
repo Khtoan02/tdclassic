@@ -22,10 +22,15 @@
             <div class="max-w-[1500px] mx-auto px-6 h-full">
                 <div class="flex items-center justify-between h-full">
                     
-                    <!-- Mobile Trigger -->
-                    <button id="mob-menu-trigger" class="lg:hidden text-white text-xl p-2 hover:bg-white/10 rounded-full transition z-50">
-                        <i class="fa-solid fa-bars-staggered"></i>
-                    </button>
+                    <!-- Mobile Trigger & Actions -->
+                    <div class="flex items-center gap-3 lg:hidden">
+                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>" class="w-10 h-10 flex items-center justify-center text-white text-lg rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all">
+                            <i class="fa-solid fa-phone"></i>
+                        </a>
+                        <button id="mob-menu-trigger" class="w-10 h-10 flex items-center justify-center text-white text-xl rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all">
+                            <i class="fa-solid fa-bars-staggered"></i>
+                        </button>
+                    </div>
 
                     <!-- LOGO AREA -->
                     <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center group select-none">
@@ -34,7 +39,8 @@
                         if ($custom_logo_id) {
                             $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
                             if ($logo) {
-                                echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="logo-placeholder opacity-90 group-hover:opacity-100 transition-opacity">';
+                                // Logo: Mobile h-10 (40px), Desktop md:h-12 (48px) để đồng bộ
+                                echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="h-10 md:h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity">';
                             }
                         } else {
                             // Fallback to text logo
@@ -84,15 +90,11 @@
 
                     <!-- Right Interactions -->
                     <div class="flex items-center gap-2 md:gap-4">
-                        <div class="relative">
-                            <button class="search-btn text-white group">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <span>Tìm kiếm...</span>
-                            </button>
-                        </div>
+                        <!-- Removed Search Button as requested -->
 
-                        <a href="#" class="hidden md:flex glass-btn-luxury px-6 py-2.5 rounded-full items-center gap-3 group">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-white">Tư vấn</span>
+                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>" class="hidden md:flex glass-btn-luxury px-6 py-2.5 rounded-full items-center gap-3 group transition-all duration-300 hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-white group-hover:text-[#D4AF37] transition-colors">Tư vấn</span>
+                            <!-- Giữ nguyên chấm xanh (Green dot) thể hiện trạng thái Online/Sẵn sàng -->
                             <div class="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]"></div>
                         </a>
                     </div>

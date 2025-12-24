@@ -21,7 +21,8 @@
     initDateTime();
     initWeather();
 
-    // Homepage features removed - simple homepage only
+    initStickyHeader(); // Initialize sticky header
+    initFooter(); // Explicitly init footer here too just in case
 
     // Auto-refresh weather every 15 minutes
     setInterval(function () {
@@ -517,6 +518,25 @@
           }
         }
       }
+    });
+  }
+
+  // Sticky Header Logic
+  function initStickyHeader() {
+    var header = $('.header-wrapper');
+    var lastScrollTop = 0;
+    
+    $(window).scroll(function(event){
+       var st = $(this).scrollTop();
+       
+       // Add scrolled class for background effect
+       if (st > 50) {
+         header.addClass('sticky-header scrolled');
+       } else {
+         header.removeClass('sticky-header scrolled');
+       }
+       
+       lastScrollTop = st;
     });
   }
 
