@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên Hệ | TD Classic - Professional Audio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Manrope:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cinzel"', 'serif'],
+                        sans: ['"Manrope"', 'sans-serif'],
+                    },
+                    colors: {
+                        void: '#050505',       
+                        metal: '#151515',      
+                        surface: '#1E1E1E',
+                        gold: '#C5A059',       
+                        goldDim: '#8A703E',
+                        dust: '#666666'        
+                    },
+                    letterSpacing: {
+                        'cinematic': '0.3em',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #E5E5E5; }
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 50; opacity: 0.03;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Input Field Animation */
+        .input-group { position: relative; margin-bottom: 2rem; }
+        .input-field {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            padding: 1rem 0;
+            color: white;
+            font-family: 'Manrope', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .input-field:focus {
+            outline: none;
+            border-bottom-color: #C5A059;
+        }
+        .input-label {
+            position: absolute;
+            top: 1rem;
+            left: 0;
+            color: #666;
+            font-size: 0.875rem;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .input-field:focus ~ .input-label,
+        .input-field:valid ~ .input-label {
+            top: -0.75rem;
+            font-size: 0.75rem;
+            color: #C5A059;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold selection:text-black">
+    
+    <div class="noise"></div>
+
+    <!-- HERO HEADER -->
+    <section class="pt-40 pb-20 bg-void relative overflow-hidden">
+        <div class="container mx-auto px-6 md:px-12 text-center relative z-10">
+            <span class="font-sans text-gold text-xs tracking-[0.4em] uppercase block mb-6 animate-fade-in">Kết nối & Hợp tác</span>
+            <h1 class="font-serif text-5xl md:text-7xl text-white mb-8">Liên Hệ TD Classic</h1>
+            <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"></div>
+        </div>
+        <!-- Abstract Background lines -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 L100 0" stroke="white" stroke-width="0.1" fill="none"/>
+                <path d="M20 100 L100 20" stroke="white" stroke-width="0.1" fill="none"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- MAIN CONTACT CONTENT -->
+    <section class="pb-32 bg-void">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid lg:grid-cols-12 gap-16 md:gap-24">
+                
+                <!-- LEFT COLUMN: INFO (Corporate Identity) -->
+                <div class="lg:col-span-5 space-y-16">
+                    <!-- Brand Info -->
+                    <div>
+                        <h2 class="font-serif text-2xl text-white mb-8 border-l-2 border-gold pl-6">Thông Tin Doanh Nghiệp</h2>
+                        <p class="font-sans text-gray-400 text-sm leading-relaxed mb-8 text-justify">
+                            TD Classic là đơn vị tiên phong trong lĩnh vực cung cấp giải pháp âm thanh chuyên nghiệp tại Việt Nam. Chúng tôi luôn sẵn sàng lắng nghe và đồng hành cùng quý khách hàng trong mọi dự án.
+                        </p>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-6 group">
+                                <div class="w-12 h-12 border border-white/10 flex items-center justify-center group-hover:border-gold transition-colors">
+                                    <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-serif text-lg mb-1">Showroom & Lab</h4>
+                                    <p class="text-gray-500 text-sm font-sans">22A Ngô Quyền, Phường Ngô Quyền,<br>Thành phố Hải Phòng, Việt Nam</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-6 group">
+                                <div class="w-12 h-12 border border-white/10 flex items-center justify-center group-hover:border-gold transition-colors">
+                                    <i data-lucide="phone" class="w-5 h-5 text-gold"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-serif text-lg mb-1">Hotline 24/7</h4>
+                                    <p class="text-gray-500 text-sm font-sans mb-1">Tư vấn: <span class="text-white">0971 461 326</span></p>
+                                    <p class="text-gray-500 text-sm font-sans">Kỹ thuật: <span class="text-white">09xx xxx xxx</span></p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-6 group">
+                                <div class="w-12 h-12 border border-white/10 flex items-center justify-center group-hover:border-gold transition-colors">
+                                    <i data-lucide="mail" class="w-5 h-5 text-gold"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-serif text-lg mb-1">Email Hỗ Trợ</h4>
+                                    <p class="text-gray-500 text-sm font-sans">cskh.tdclassic@gmail.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Commitment (Replaced Working Hours) -->
+                    <div class="bg-metal p-8 border border-white/5 relative overflow-hidden group">
+                        <!-- Decoration -->
+                        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-gold/5 rounded-full blur-xl group-hover:bg-gold/10 transition-colors"></div>
+                        
+                        <h3 class="font-serif text-white text-lg mb-6 flex items-center gap-3">
+                            <i data-lucide="heart-handshake" class="w-5 h-5 text-gold"></i> Sự Tận Tâm Tuyệt Đối
+                        </h3>
+                        <p class="font-sans text-gray-400 text-sm leading-relaxed text-justify mb-6">
+                            "Tại TD Classic, chúng tôi không có khái niệm 'giờ hành chính', bởi cảm xúc âm nhạc là không ngủ. Bất cứ khi nào hệ thống của bạn cần sự chăm sóc, hay khi bạn nảy sinh một ý tưởng mới vào đêm muộn, đội ngũ chuyên gia của chúng tôi luôn sẵn sàng lắng nghe và đồng hành cùng bạn."
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <div class="h-px w-12 bg-gold"></div>
+                            <span class="font-serif text-gold text-sm tracking-widest italic">TD Classic Team</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: CONTACT FORM -->
+                <div class="lg:col-span-7">
+                    <div class="bg-surface p-8 md:p-12 border border-white/5 relative overflow-hidden">
+                        <!-- Decorative element -->
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <h2 class="font-serif text-3xl text-white mb-2">Gửi Yêu Cầu Tư Vấn</h2>
+                        <p class="font-sans text-gray-500 text-xs uppercase tracking-widest mb-12">Chúng tôi sẽ phản hồi trong vòng 2 giờ làm việc</p>
+
+                        <form class="space-y-8">
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div class="input-group">
+                                    <input type="text" id="name" class="input-field" required autocomplete="off">
+                                    <label for="name" class="input-label">Họ và tên *</label>
+                                </div>
+                                <div class="input-group">
+                                    <input type="tel" id="phone" class="input-field" required autocomplete="off">
+                                    <label for="phone" class="input-label">Số điện thoại *</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <input type="email" id="email" class="input-field" required autocomplete="off">
+                                <label for="email" class="input-label">Email (Tùy chọn)</label>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="text-gray-500 text-xs uppercase tracking-widest block mb-4">Loại hình quan tâm</label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" class="w-4 h-4 rounded border-gray-600 bg-transparent text-gold focus:ring-0 focus:ring-offset-0">
+                                        <span class="text-gray-400 text-sm group-hover:text-white transition-colors">Bar & Lounge</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" class="w-4 h-4 rounded border-gray-600 bg-transparent text-gold focus:ring-0 focus:ring-offset-0">
+                                        <span class="text-gray-400 text-sm group-hover:text-white transition-colors">Karaoke Kinh Doanh</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" class="w-4 h-4 rounded border-gray-600 bg-transparent text-gold focus:ring-0 focus:ring-offset-0">
+                                        <span class="text-gray-400 text-sm group-hover:text-white transition-colors">Hội Trường / Sự Kiện</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" class="w-4 h-4 rounded border-gray-600 bg-transparent text-gold focus:ring-0 focus:ring-offset-0">
+                                        <span class="text-gray-400 text-sm group-hover:text-white transition-colors">Mua lẻ thiết bị</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <textarea id="message" class="input-field h-32 resize-none" required autocomplete="off"></textarea>
+                                <label for="message" class="input-label">Nội dung cần tư vấn *</label>
+                            </div>
+
+                            <div class="pt-4">
+                                <button type="submit" class="w-full bg-gold hover:bg-white text-black font-serif font-bold uppercase tracking-[0.2em] py-4 transition-all duration-300 flex items-center justify-center gap-2 group">
+                                    Gửi thông tin <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                                <p class="text-center text-gray-600 text-[10px] mt-4 font-sans">
+                                    Bằng việc gửi thông tin, bạn đồng ý với chính sách bảo mật của chúng tôi.
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAP SECTION (Stylized) -->
+    <section class="h-[400px] w-full bg-metal relative border-y border-white/5">
+        <!-- Grayscale Map Overlay -->
+        <div class="absolute inset-0 bg-void/20 pointer-events-none z-10"></div>
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3728.809370617307!2d106.7067623154023!3d20.83984608610363!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7afc9a5933eb%3A0x6c6e7a2f5f6f2c7a!2s22A%20P.%20Ng%C3%B4%20Quy%E1%BB%81n%2C%20M%C3%A1y%20Chai%2C%20Ng%C3%B4%20Quy%E1%BB%81n%2C%20H%E1%BA%A3i%20Ph%C3%B2ng%2C%20Vietnam!5e0!3m2!1sen!2s!4v1620000000000!5m2!1sen!2s" 
+            width="100%" 
+            height="100%" 
+            style="border:0; filter: grayscale(100%) invert(92%) contrast(83%);" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        
+        <!-- Overlay Card -->
+        <div class="absolute bottom-8 left-6 md:left-12 bg-black/90 backdrop-blur border border-white/10 p-6 max-w-xs z-20 hidden md:block">
+            <h4 class="text-gold font-serif text-lg mb-2">TD Classic Headquarter</h4>
+            <p class="text-gray-400 text-xs font-sans mb-4">Trải nghiệm âm thanh thực tế tại phòng Lab tiêu chuẩn.</p>
+            <a href="https://maps.google.com" target="_blank" class="text-white text-xs uppercase tracking-widest border-b border-white pb-1 hover:text-gold hover:border-gold transition-colors">Chỉ đường</a>
+        </div>
+    </section>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD Classic | Professional Audio Systems</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Manrope:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cinzel"', 'serif'],
+                        sans: ['"Manrope"', 'sans-serif'],
+                    },
+                    colors: {
+                        void: '#050505',       
+                        metal: '#151515',      
+                        surface: '#1E1E1E',
+                        gold: '#C5A059',       
+                        goldDim: '#8A703E',
+                        dust: '#666666'        
+                    },
+                    letterSpacing: {
+                        'cinematic': '0.3em',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* BASE STYLES */
+        body {
+            background-color: #050505;
+            color: #E5E5E5;
+        }
+
+        /* NOISE TEXTURE */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+        }
+
+        /* Hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Hover Effects */
+        .zoom-img {
+            transition: transform 0.7s ease;
+        }
+        .group:hover .zoom-img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold selection:text-black">
+    
+    <!-- Noise Overlay -->
+    <div class="noise"></div>
+
+    <!-- 1. HERO SECTION -->
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-void border-b border-white/5">
+        <div class="absolute inset-0 opacity-40">
+             <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=1600&auto=format&fit=crop" class="w-full h-full object-cover">
+             <div class="absolute inset-0 bg-gradient-to-t from-void via-void/80 to-transparent"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="flex justify-center mb-6 md:mb-8">
+                 <div class="border border-gold/30 px-4 py-1 md:px-6 md:py-2 rounded-full bg-black/50 backdrop-blur-sm">
+                    <span class="font-sans text-gold text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] uppercase">Vietnam Professional Audio</span>
+                 </div>
+            </div>
+            
+            <h1 class="font-serif text-5xl md:text-8xl lg:text-9xl text-white leading-none mb-6 md:mb-8 tracking-wide">
+                TD CLASSIC
+            </h1>
+            
+            <p class="font-sans text-gray-400 text-sm md:text-xl font-light leading-relaxed max-w-3xl mx-auto mb-10 md:mb-12 px-4">
+                Kiến tạo chuẩn mực âm thanh chuyên nghiệp. Sự kết hợp hoàn hảo giữa kỹ thuật chính xác Châu Âu và sự thấu hiểu thị hiếu người Việt.
+            </p>
+
+            <a href="#dna" class="inline-flex items-center gap-2 text-gold font-sans text-xs font-bold uppercase tracking-widest border-b border-gold pb-1 hover:text-white hover:border-white transition-all">
+                Khám phá hành trình <i data-lucide="arrow-down" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- 2. BRAND DNA (Optimized Padding) -->
+    <section id="dna" class="py-16 md:py-32 bg-metal relative overflow-hidden">
+        <div class="container mx-auto px-4 md:px-12 relative z-10">
+            <div class="text-center mb-12 md:mb-24">
+                <span class="font-sans text-gold text-xs tracking-cinematic uppercase block mb-3 md:mb-4">Câu chuyện thương hiệu</span>
+                <h2 class="font-serif text-3xl md:text-5xl text-white">Linh Hồn Của Âm Thanh</h2>
+                <div class="w-16 md:w-24 h-[1px] bg-gold mx-auto mt-6 md:mt-8 opacity-50"></div>
+            </div>
+
+            <!-- Block 1: Sứ Mệnh -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center mb-16 md:mb-32">
+                <div class="relative group">
+                    <div class="absolute -top-2 -left-2 md:-top-4 md:-left-4 w-16 h-16 md:w-24 md:h-24 border-t border-l border-gold/30"></div>
+                    <div class="aspect-[4/3] overflow-hidden filter grayscale hover:grayscale-0 transition-all duration-1000">
+                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" alt="Sứ mệnh âm thanh">
+                    </div>
+                </div>
+                <div class="lg:pl-12 mt-4 lg:mt-0">
+                    <span class="hidden lg:block text-6xl font-serif text-white/5 absolute -translate-y-10 -translate-x-4">Mission</span>
+                    <h3 class="text-2xl md:text-3xl font-serif text-white mb-4 md:mb-6 relative z-10">Sứ Mệnh Kiến Tạo</h3>
+                    <p class="font-sans text-gray-400 font-light leading-relaxed text-sm md:text-lg mb-4 md:mb-6 text-justify">
+                        Sứ mệnh của TD Classic không dừng lại ở việc sản xuất thiết bị. Chúng tôi khao khát <strong>xóa nhòa ranh giới</strong> giữa âm thanh tái tạo và âm thanh thực tế. Mỗi sản phẩm ra đời là kết quả của hàng ngàn giờ nghiên cứu để mang lại rung cảm chân thật nhất cho người nghe.
+                    </p>
+                    <div class="flex items-center gap-4 text-gold text-xs md:text-sm font-sans tracking-widest uppercase">
+                        <span>Trung thực</span> <span class="w-1 h-1 bg-gold rounded-full"></span> <span>Cảm xúc</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Block 2: Tầm Nhìn (Mobile: Image first for consistency if needed, but keeping reverse for variety) -->
+            <div class="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-16 items-center mb-16 md:mb-32">
+                <div class="order-2 lg:order-1 lg:pr-12 text-left lg:text-right w-full">
+                    <span class="hidden lg:block text-6xl font-serif text-white/5 absolute -translate-y-10 right-0 lg:right-auto lg:left-0 translate-x-12">Vision</span>
+                    <h3 class="text-2xl md:text-3xl font-serif text-white mb-4 md:mb-6 relative z-10">Tầm Nhìn Vươn Xa</h3>
+                    <p class="font-sans text-gray-400 font-light leading-relaxed text-sm md:text-lg mb-4 md:mb-6 text-justify lg:text-right" dir="auto">
+                        Định vị trở thành biểu tượng <strong>số 1 về Pro Audio</strong> tại Việt Nam. TD Classic hướng tới việc xây dựng một hệ sinh thái âm thanh toàn diện, nơi công nghệ phục vụ nghệ thuật, và chất lượng Việt Nam vươn tầm quốc tế.
+                    </p>
+                </div>
+                <div class="order-1 lg:order-2 relative group w-full">
+                    <div class="absolute -bottom-2 -right-2 md:-bottom-4 md:-right-4 w-16 h-16 md:w-24 md:h-24 border-b border-r border-gold/30"></div>
+                    <div class="aspect-[4/3] overflow-hidden filter grayscale hover:grayscale-0 transition-all duration-1000">
+                        <img src="https://images.unsplash.com/photo-1478737270239-2f02b77ac6d5?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" alt="Tầm nhìn">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Block 3: Values Grid (Mobile: Reduced Padding) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+                <!-- Value 1 -->
+                <div class="bg-void p-6 md:p-8 border border-white/5 hover:border-gold/50 transition-colors group">
+                    <i data-lucide="gem" class="w-8 h-8 md:w-10 md:h-10 text-gold mb-4 md:mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="font-serif text-lg md:text-xl text-white mb-2 md:mb-4">Tinh Hoa</h4>
+                    <p class="font-sans text-gray-500 text-xs md:text-sm leading-relaxed">
+                        Sự tỉ mỉ trong từng mối hàn, từng lớp sơn. Sản phẩm là tác phẩm nghệ thuật.
+                    </p>
+                </div>
+                <!-- Value 2 -->
+                <div class="bg-void p-6 md:p-8 border border-white/5 hover:border-gold/50 transition-colors group">
+                    <i data-lucide="users" class="w-8 h-8 md:w-10 md:h-10 text-gold mb-4 md:mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="font-serif text-lg md:text-xl text-white mb-2 md:mb-4">Con Người</h4>
+                    <p class="font-sans text-gray-500 text-xs md:text-sm leading-relaxed">
+                        Đội ngũ kỹ thuật viên có đôi tai thẩm âm tinh tế, thấu hiểu nhu cầu.
+                    </p>
+                </div>
+                <!-- Value 3 -->
+                <div class="bg-void p-6 md:p-8 border border-white/5 hover:border-gold/50 transition-colors group">
+                    <i data-lucide="map" class="w-8 h-8 md:w-10 md:h-10 text-gold mb-4 md:mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="font-serif text-lg md:text-xl text-white mb-2 md:mb-4">Quy Mô</h4>
+                    <p class="font-sans text-gray-500 text-xs md:text-sm leading-relaxed">
+                        Mạng lưới phân phối 3 miền. Hệ thống Showroom chuẩn Lab R&D.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. CATEGORY OVERVIEW (Mobile: 2 Cols for density) -->
+    <section id="overview" class="py-16 md:py-24 bg-void">
+        <div class="container mx-auto px-4 md:px-12">
+            <div class="text-center mb-10 md:mb-16">
+                <span class="font-sans text-gold text-xs tracking-cinematic uppercase">Tổng quan danh mục</span>
+                <h2 class="font-serif text-2xl md:text-3xl text-white mt-2 md:mt-4">Hệ Sinh Thái Sản Phẩm</h2>
+            </div>
+             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+                <!-- Pillar 1 -->
+                <a href="#speakers" class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
+                    <img src="https://images.unsplash.com/photo-1595433211516-795325883d6e?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute bottom-2 left-0 w-full text-center">
+                        <p class="font-serif text-white text-sm md:text-lg group-hover:text-gold transition-colors">Speakers</p>
+                    </div>
+                </a>
+                <!-- Pillar 2 -->
+                <a href="#subs" class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
+                    <img src="https://images.unsplash.com/photo-1564510714747-69c3bc1fab41?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute bottom-2 left-0 w-full text-center">
+                        <p class="font-serif text-white text-sm md:text-lg group-hover:text-gold transition-colors">Subwoofers</p>
+                    </div>
+                </a>
+                <!-- Pillar 3 -->
+                <a href="#mics" class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
+                    <img src="https://images.unsplash.com/photo-1558507652-2d9626c4e67a?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute bottom-2 left-0 w-full text-center">
+                        <p class="font-serif text-white text-sm md:text-lg group-hover:text-gold transition-colors">Microphones</p>
+                    </div>
+                </a>
+                <!-- Pillar 4 -->
+                <a href="#amps" class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
+                    <img src="https://images.unsplash.com/photo-1629822601704-58a36f455138?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute bottom-2 left-0 w-full text-center">
+                        <p class="font-serif text-white text-sm md:text-lg group-hover:text-gold transition-colors">Amplifiers</p>
+                    </div>
+                </a>
+                <!-- Pillar 5 -->
+                <a href="#mixer" class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
+                    <img src="https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute bottom-2 left-0 w-full text-center">
+                        <p class="font-serif text-white text-sm md:text-lg group-hover:text-gold transition-colors">Processors</p>
+                    </div>
+                </a>
+                <!-- Pillar 6 -->
+                <a href="#accessories" class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
+                    <img src="https://images.unsplash.com/photo-1599558231221-a47734185123?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute bottom-2 left-0 w-full text-center">
+                        <p class="font-serif text-white text-sm md:text-lg group-hover:text-gold transition-colors">Accessories</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. PRODUCT SECTIONS (Optimized Sliders: 2 items/screen on mobile) -->
+    
+    <!-- SECTION 4.1: SPEAKERS -->
+    <section id="speakers" class="bg-metal py-16 md:py-24 border-t border-white/5">
+        <div class="container mx-auto px-4 md:px-12">
+            <!-- Intro Block -->
+            <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center mb-8 md:mb-12">
+                <div>
+                    <span class="font-sans text-gold text-xs tracking-cinematic uppercase block mb-2 md:mb-4">Category 01</span>
+                    <h2 class="font-serif text-3xl md:text-4xl text-white mb-4 md:mb-6">Loa Full Range & Array</h2>
+                    <p class="font-sans text-gray-400 font-light leading-relaxed text-sm md:text-base mb-4 md:mb-6 text-justify">
+                        Dòng loa biểu diễn chuyên nghiệp. Củ loa Neodymium tái tạo trung âm dày, treble tơi nhuyễn. Thùng gỗ Bạch Dương Baltic chịu lực cao.
+                    </p>
+                    <ul class="space-y-1 md:space-y-2 font-sans text-xs md:text-sm text-gray-500">
+                        <li>• Công suất cực đại lên tới 2400W</li>
+                        <li>• Góc phủ âm rộng 100° x 70°</li>
+                        <li>• Phân tần linh kiện Đức</li>
+                    </ul>
+                </div>
+                <div class="hidden md:block relative h-[400px] bg-void overflow-hidden group border border-white/5">
+                    <img src="https://images.unsplash.com/photo-1595433211516-795325883d6e?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" alt="Loa Cover">
+                </div>
+            </div>
+
+            <!-- Product Slider (Mobile Optimized) -->
+            <div class="relative">
+                <h3 class="font-sans text-white text-xs md:text-sm uppercase tracking-widest mb-4 md:mb-6 border-l-2 border-gold pl-4">Sản phẩm nổi bật</h3>
+                <!-- Changed gap and min-w to fit ~2.2 items on mobile screen -->
+                <div class="flex overflow-x-auto gap-3 md:gap-6 pb-8 snap-x no-scrollbar">
+                    
+                    <!-- Item 1 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1543508282-6319a3e2621f?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">TD-12 Pro</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">12" Full Range Speaker</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">450W RMS | 98dB</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1520697830682-bbb6e88e2516?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">LA-210 Array</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Dual 10" Line Array</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">800W RMS | 134dB</p>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1519638831568-d9897f54ed69?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">TD-15 Master</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">15" High Power</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">600W RMS | 99dB</p>
+                    </div>
+
+                     <!-- Item 4 -->
+                     <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1552554746-9596afc28c89?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">Monitor M-12</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Stage Monitor</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">400W RMS | Coaxial</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4.2: SUBWOOFERS -->
+    <section id="subs" class="bg-void py-16 md:py-24 border-t border-white/5">
+        <div class="container mx-auto px-4 md:px-12">
+            <!-- Intro Block -->
+            <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center mb-8 md:mb-12">
+                <div class="hidden md:block order-2 md:order-1 relative h-[400px] bg-metal overflow-hidden group border border-white/5">
+                    <img src="https://images.unsplash.com/photo-1564510714747-69c3bc1fab41?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" alt="Sub Cover">
+                </div>
+                <div class="order-1 md:order-2">
+                    <span class="font-sans text-gold text-xs tracking-cinematic uppercase block mb-2 md:mb-4">Category 02</span>
+                    <h2 class="font-serif text-3xl md:text-4xl text-white mb-4 md:mb-6">Siêu Trầm Subwoofers</h2>
+                    <p class="font-sans text-gray-400 font-light leading-relaxed text-sm md:text-base mb-4 md:mb-6 text-justify">
+                        Uy lực và sâu lắng. Dải trầm xuống tới 30Hz, tái tạo tiếng Kick Drum chắc gọn và tiếng Bass Synth rung chuyển không gian.
+                    </p>
+                    <ul class="space-y-1 md:space-y-2 font-sans text-xs md:text-sm text-gray-500">
+                        <li>• Củ loa Bass 18" - 21" Coil lớn</li>
+                        <li>• Thiết kế hầm hố cộng hưởng</li>
+                        <li>• Áp lực âm thanh (SPL) cực đại 138dB</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Product Slider -->
+            <div class="relative">
+                <h3 class="font-sans text-white text-xs md:text-sm uppercase tracking-widest mb-4 md:mb-6 border-l-2 border-gold pl-4">Sản phẩm nổi bật</h3>
+                <div class="flex overflow-x-auto gap-3 md:gap-6 pb-8 snap-x no-scrollbar">
+                    
+                    <!-- Item 1 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1615655406736-b37c4fabf923?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">S-1800 Pro</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Single 18" Sub</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">1000W RMS | 35-120Hz</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1629822601704-58a36f455138?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">S-2180 Ultra</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Dual 18" High Power</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">2000W RMS | 138dB</p>
+                    </div>
+
+                     <!-- Item 3 -->
+                     <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1547756315-1886241a4993?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">S-21 Monster</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Single 21" Sub</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">1500W RMS | 28Hz</p>
+                    </div>
+
+                    <!-- Item 4 -->
+                     <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1563351988-d6c1743a6557?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">S-15 Compact</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Single 15" Sub</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">600W RMS | Compact</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4.3: MICROPHONES -->
+    <section id="mics" class="bg-metal py-16 md:py-24 border-t border-white/5">
+         <div class="container mx-auto px-4 md:px-12">
+            <!-- Intro Block -->
+            <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center mb-8 md:mb-12">
+                <div>
+                    <span class="font-sans text-gold text-xs tracking-cinematic uppercase block mb-2 md:mb-4">Category 03</span>
+                    <h2 class="font-serif text-3xl md:text-4xl text-white mb-4 md:mb-6">Microphones Không Dây</h2>
+                    <p class="font-sans text-gray-400 font-light leading-relaxed text-sm md:text-base mb-4 md:mb-6 text-justify">
+                        Cầu nối của cảm xúc. Micro TD Classic sở hữu độ nhạy cao, khả năng bắt giọng chi tiết và công nghệ sóng UHF True Diversity ổn định tuyệt đối.
+                    </p>
+                    <ul class="space-y-1 md:space-y-2 font-sans text-xs md:text-sm text-gray-500">
+                        <li>• 200 kênh tần số lựa chọn</li>
+                        <li>• Tự ngắt khi không sử dụng (Auto-Mute)</li>
+                        <li>• Phạm vi hoạt động 100m</li>
+                    </ul>
+                </div>
+                <div class="hidden md:block relative h-[400px] bg-void overflow-hidden group border border-white/5">
+                    <img src="https://images.unsplash.com/photo-1558507652-2d9626c4e67a?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" alt="Mic Cover">
+                </div>
+            </div>
+
+            <!-- Product Slider -->
+            <div class="relative">
+                <h3 class="font-sans text-white text-xs md:text-sm uppercase tracking-widest mb-4 md:mb-6 border-l-2 border-gold pl-4">Sản phẩm nổi bật</h3>
+                <div class="flex overflow-x-auto gap-3 md:gap-6 pb-8 snap-x no-scrollbar">
+                    
+                    <!-- Item 1 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">M-20 Gold</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Wireless Vocal Mic</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">UHF | 200 Channels</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1481437642641-2f0ae875f836?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">KTV-100</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Karaoke Series</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">Anti-Feedback</p>
+                    </div>
+
+                     <!-- Item 3 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1590502160462-23297f642682?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">M-80 Pro</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Performance Mic</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">True Diversity</p>
+                    </div>
+                    
+                    <!-- Item 4 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1520523830773-8426f8d39e23?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">W-1000</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Conference Mic</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">Gooseneck Base</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4.4: AMPLIFIERS -->
+    <section id="amps" class="bg-void py-16 md:py-24 border-t border-white/5">
+        <div class="container mx-auto px-4 md:px-12">
+            <!-- Intro Block -->
+            <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center mb-8 md:mb-12">
+                <div class="hidden md:block order-2 md:order-1 relative h-[400px] bg-metal overflow-hidden group border border-white/5">
+                    <img src="https://images.unsplash.com/photo-1629822601704-58a36f455138?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" alt="Amp Cover">
+                </div>
+                <div class="order-1 md:order-2">
+                    <span class="font-sans text-gold text-xs tracking-cinematic uppercase block mb-2 md:mb-4">Category 04</span>
+                    <h2 class="font-serif text-3xl md:text-4xl text-white mb-4 md:mb-6">Cục Đẩy Công Suất</h2>
+                    <p class="font-sans text-gray-400 font-light leading-relaxed text-sm md:text-base mb-4 md:mb-6 text-justify">
+                        Trái tim của hệ thống. Dòng cục đẩy (Amplifier) TD Classic được thiết kế để hoạt động liên tục với hiệu suất cao. Công nghệ Class D và Class H giúp tiết kiệm điện năng.
+                    </p>
+                    <ul class="space-y-1 md:space-y-2 font-sans text-xs md:text-sm text-gray-500">
+                        <li>• Mạch công suất Class D / Class H tiên tiến</li>
+                        <li>• Biến áp xuyến đồng nguyên chất 100%</li>
+                        <li>• Hệ thống bảo vệ quá nhiệt, quá tải thông minh</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Product Slider -->
+            <div class="relative">
+                <h3 class="font-sans text-white text-xs md:text-sm uppercase tracking-widest mb-4 md:mb-6 border-l-2 border-gold pl-4">Sản phẩm nổi bật</h3>
+                <div class="flex overflow-x-auto gap-3 md:gap-6 pb-8 snap-x no-scrollbar">
+                    
+                    <!-- Item 1 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1595433211516-795325883d6e?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">D-4800 Pro</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">4-Channel Amplifier</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">800W x 4 @ 8Ω</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1595433211516-795325883d6e?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">X-21200</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">2-Channel High Power</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">1200W x 2 @ 8Ω</p>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1595433211516-795325883d6e?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">H-3600</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">3-Channel Karaoke</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">600W x 3 | Class H</p>
+                    </div>
+
+                    <!-- Item 4 -->
+                     <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1595433211516-795325883d6e?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">D-2500 Compact</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Digital 1U Amp</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">500W x 2 | 1U Size</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4.5: MIXERS & PROCESSORS -->
+    <section id="mixer" class="bg-metal py-16 md:py-24 border-t border-white/5">
+         <div class="container mx-auto px-4 md:px-12">
+            <!-- Intro Block -->
+            <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center mb-8 md:mb-12">
+                <div>
+                    <span class="font-sans text-gold text-xs tracking-cinematic uppercase block mb-2 md:mb-4">Category 05</span>
+                    <h2 class="font-serif text-3xl md:text-4xl text-white mb-4 md:mb-6">Vang Số & Mixer</h2>
+                    <p class="font-sans text-gray-400 font-light leading-relaxed text-sm md:text-base mb-4 md:mb-6 text-justify">
+                        Bộ não xử lý trung tâm. Các thiết bị xử lý tín hiệu (DSP) của TD Classic sử dụng chip 32-bit cho khả năng xử lý âm thanh chi tiết, mượt mà.
+                    </p>
+                    <ul class="space-y-1 md:space-y-2 font-sans text-xs md:text-sm text-gray-500">
+                        <li>• Chip xử lý DSP Analog Devices / Yamaha</li>
+                        <li>• Điều chỉnh chi tiết qua phần mềm máy tính</li>
+                        <li>• Tích hợp Bluetooth chuẩn AptX HD</li>
+                    </ul>
+                </div>
+                <div class="hidden md:block relative h-[400px] bg-void overflow-hidden group border border-white/5">
+                    <img src="https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" alt="Mixer Cover">
+                </div>
+            </div>
+
+            <!-- Product Slider -->
+            <div class="relative">
+                <h3 class="font-sans text-white text-xs md:text-sm uppercase tracking-widest mb-4 md:mb-6 border-l-2 border-gold pl-4">Sản phẩm nổi bật</h3>
+                <div class="flex overflow-x-auto gap-3 md:gap-6 pb-8 snap-x no-scrollbar">
+                    
+                    <!-- Item 1 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">TD X-6 Pro</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Digital Karaoke DSP</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">Optical | Bluetooth</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">MX-1200</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Analog Live Mixer</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">12 Channels | Effects</p>
+                    </div>
+
+                     <!-- Item 3 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">K-1000 Plus</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Home Karaoke Mixer</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">Reverb & Echo</p>
+                    </div>
+                    
+                    <!-- Item 4 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-void p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">DriveRack 260</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">System Processor</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">Crossover | EQ</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4.6: ACCESSORIES -->
+    <section id="accessories" class="bg-void py-16 md:py-24 border-t border-white/5">
+        <div class="container mx-auto px-4 md:px-12">
+            <!-- Intro Block (Reversed) -->
+            <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center mb-8 md:mb-12">
+                <div class="hidden md:block order-2 md:order-1 relative h-[400px] bg-metal overflow-hidden group border border-white/5">
+                    <img src="https://images.unsplash.com/photo-1599558231221-a47734185123?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" alt="Accessories Cover">
+                </div>
+                <div class="order-1 md:order-2">
+                    <span class="font-sans text-gold text-xs tracking-cinematic uppercase block mb-2 md:mb-4">Category 06</span>
+                    <h2 class="font-serif text-3xl md:text-4xl text-white mb-4 md:mb-6">Phụ Kiện Âm Thanh</h2>
+                    <p class="font-sans text-gray-400 font-light leading-relaxed text-sm md:text-base mb-4 md:mb-6 text-justify">
+                        Sự hoàn hảo nằm trong chi tiết. Hệ thống dây dẫn tín hiệu, giắc kết nối, tủ máy và chân loa của TD Classic đều đạt chuẩn Pro Audio.
+                    </p>
+                    <ul class="space-y-1 md:space-y-2 font-sans text-xs md:text-sm text-gray-500">
+                        <li>• Dây dẫn lõi đồng tinh khiết 99.99%</li>
+                        <li>• Đầu giắc mạ vàng chống oxy hóa</li>
+                        <li>• Tủ máy ABS chống sốc, bảo vệ thiết bị</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Product Slider -->
+            <div class="relative">
+                <h3 class="font-sans text-white text-xs md:text-sm uppercase tracking-widest mb-4 md:mb-6 border-l-2 border-gold pl-4">Sản phẩm nổi bật</h3>
+                <div class="flex overflow-x-auto gap-3 md:gap-6 pb-8 snap-x no-scrollbar">
+                    
+                    <!-- Item 1 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1599558231221-a47734185123?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">Cable Gold Pro</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Signal Cable</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">Low Noise | OFC Copper</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://plus.unsplash.com/premium_photo-1681426462828-092556558223?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">Rack Case 12U</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Equipment Case</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">ABS Plastic | Wheels</p>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1599558231221-a47734185123?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">Neutrik Connectors</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Pro Audio Plugs</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">XLR / Speakon</p>
+                    </div>
+
+                    <!-- Item 4 -->
+                     <div class="min-w-[160px] md:min-w-[320px] snap-start bg-metal p-3 md:p-4 border border-white/5 group hover:border-gold/50 transition-all">
+                        <div class="aspect-square bg-surface overflow-hidden mb-3 md:mb-4 relative">
+                            <img src="https://images.unsplash.com/photo-1599558231221-a47734185123?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover zoom-img grayscale">
+                        </div>
+                        <h4 class="text-white font-serif text-sm md:text-lg">Speaker Stand</h4>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-1 md:mb-2">Heavy Duty</p>
+                        <p class="text-gold text-[10px] md:text-xs tracking-wider">Steel | 50kg Load</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. TECHNOLOGY & QUALITY -->
+    <section class="py-16 md:py-32 bg-metal relative overflow-hidden border-y border-white/5">
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
+        <div class="container mx-auto px-4 md:px-12 relative z-10">
+            <div class="text-center mb-10 md:mb-16">
+                <span class="font-sans text-gold text-xs tracking-cinematic uppercase">Technology</span>
+                <h2 class="font-serif text-3xl md:text-4xl text-white mt-2 md:mt-4">Công Nghệ & Chất Lượng</h2>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                <div class="p-4 md:p-6 border border-white/5 hover:bg-void transition-colors">
+                    <i data-lucide="cpu" class="w-8 h-8 md:w-10 md:h-10 text-gold mb-3 md:mb-4"></i>
+                    <h4 class="text-white font-serif text-base md:text-lg mb-2">DSP 32-Bit</h4>
+                    <p class="text-gray-500 text-[10px] md:text-xs leading-relaxed">Chip xử lý tín hiệu kỹ thuật số tiên tiến nhất.</p>
+                </div>
+                <div class="p-4 md:p-6 border border-white/5 hover:bg-void transition-colors">
+                    <i data-lucide="activity" class="w-8 h-8 md:w-10 md:h-10 text-gold mb-3 md:mb-4"></i>
+                    <h4 class="text-white font-serif text-base md:text-lg mb-2">RTA Testing</h4>
+                    <p class="text-gray-500 text-[10px] md:text-xs leading-relaxed">Đo đáp tuyến tần số thực tế đảm bảo độ phẳng.</p>
+                </div>
+                <div class="p-4 md:p-6 border border-white/5 hover:bg-void transition-colors">
+                    <i data-lucide="shield-check" class="w-8 h-8 md:w-10 md:h-10 text-gold mb-3 md:mb-4"></i>
+                    <h4 class="text-white font-serif text-base md:text-lg mb-2">Burn-in 48h</h4>
+                    <p class="text-gray-500 text-[10px] md:text-xs leading-relaxed">Quy trình chạy thử tải nặng liên tục 48 giờ.</p>
+                </div>
+                <div class="p-4 md:p-6 border border-white/5 hover:bg-void transition-colors">
+                    <i data-lucide="layers" class="w-8 h-8 md:w-10 md:h-10 text-gold mb-3 md:mb-4"></i>
+                    <h4 class="text-white font-serif text-base md:text-lg mb-2">Linh Kiện</h4>
+                    <p class="text-gray-500 text-[10px] md:text-xs leading-relaxed">Tụ điện, trở, sò công suất nhập khẩu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. APPLICATIONS (Detailed & Clear) -->
+    <section class="py-16 md:py-32 bg-void">
+        <div class="container mx-auto px-4 md:px-12">
+            <div class="text-center mb-16 md:mb-24">
+                <span class="font-sans text-gold text-xs tracking-cinematic uppercase">Giải pháp chuyên sâu</span>
+                <h2 class="font-serif text-3xl md:text-4xl text-white mt-2 md:mt-4">Ứng Dụng Thực Tế</h2>
+                <p class="text-gray-400 mt-2 md:mt-4 max-w-2xl mx-auto font-light text-sm md:text-base">Mỗi không gian là một bài toán âm học riêng biệt cần lời giải chính xác.</p>
+            </div>
+            
+            <div class="space-y-16 md:space-y-24">
+                <!-- App 1: Bar & Lounge -->
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="relative group">
+                         <div class="absolute -top-2 -left-2 md:-top-4 md:-left-4 w-12 h-12 md:w-16 md:h-16 border-t border-l border-gold/50"></div>
+                        <img src="https://images.unsplash.com/photo-1570752321219-41822a21a761?q=80&w=800&auto=format&fit=crop" class="w-full grayscale group-hover:grayscale-0 transition-all duration-1000">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl md:text-4xl font-serif text-white/10">01</span>
+                            <h3 class="text-white font-serif text-xl md:text-2xl">Bar & Lounge</h3>
+                        </div>
+                        <div class="space-y-4 md:space-y-6">
+                            <div>
+                                <h4 class="text-gold text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Thách thức</h4>
+                                <p class="text-gray-400 text-xs md:text-sm font-light text-justify">Không gian ồn ào, vật liệu tiêu âm kém. Cần áp lực âm thanh lớn để kích thích không khí nhưng không gây mệt mỏi.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-gold text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Giải pháp TD Classic</h4>
+                                <p class="text-gray-400 text-xs md:text-sm font-light text-justify">Sử dụng hệ thống Array phân tán đều. Tinh chỉnh DSP cắt dải tần gây chói, tăng cường dải trầm sâu tạo độ "đầm".</p>
+                            </div>
+                            <div class="bg-metal p-3 md:p-4 border border-white/5">
+                                <h4 class="text-white text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Cấu hình đề xuất</h4>
+                                <p class="text-gray-500 text-[10px] md:text-xs">Loa Array LA-210 • Subwoofer S-2180 • Cục đẩy D-4800</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App 2: Karaoke VIP -->
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="order-2 md:order-1">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl md:text-4xl font-serif text-white/10">02</span>
+                            <h3 class="text-white font-serif text-xl md:text-2xl">Karaoke Luxury</h3>
+                        </div>
+                         <div class="space-y-4 md:space-y-6">
+                            <div>
+                                <h4 class="text-gold text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Thách thức</h4>
+                                <p class="text-gray-400 text-xs md:text-sm font-light text-justify">Khách hàng hát không chuyên, dễ hú rít. Yêu cầu hiệu ứng Vocal nịnh giọng, nhạc nền phải bốc.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-gold text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Giải pháp TD Classic</h4>
+                                <p class="text-gray-400 text-xs md:text-sm font-light text-justify">Micro độ nhạy cao kết hợp Vang số chống hú. Setup chế độ Effect riêng biệt cho từng thể loại nhạc.</p>
+                            </div>
+                            <div class="bg-metal p-3 md:p-4 border border-white/5">
+                                <h4 class="text-white text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Cấu hình đề xuất</h4>
+                                <p class="text-gray-500 text-[10px] md:text-xs">Loa Full TD-12 Pro • Sub S-1800 • Micro M-20 • Vang X-6</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="order-1 md:order-2 relative group">
+                        <div class="absolute -bottom-2 -right-2 md:-bottom-4 md:-right-4 w-12 h-12 md:w-16 md:h-16 border-b border-r border-gold/50"></div>
+                        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800&auto=format&fit=crop" class="w-full grayscale group-hover:grayscale-0 transition-all duration-1000">
+                    </div>
+                </div>
+
+                <!-- App 3: Hội Trường -->
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="relative group">
+                         <div class="absolute -top-2 -left-2 md:-top-4 md:-left-4 w-12 h-12 md:w-16 md:h-16 border-t border-l border-gold/50"></div>
+                        <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=800&auto=format&fit=crop" class="w-full grayscale group-hover:grayscale-0 transition-all duration-1000">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl md:text-4xl font-serif text-white/10">03</span>
+                            <h3 class="text-white font-serif text-xl md:text-2xl">Hội Trường & Sự Kiện</h3>
+                        </div>
+                         <div class="space-y-4 md:space-y-6">
+                            <div>
+                                <h4 class="text-gold text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Thách thức</h4>
+                                <p class="text-gray-400 text-xs md:text-sm font-light text-justify">Không gian rộng, trần cao, dễ bị vang vọng. Cần độ phủ âm đều cho cả hàng ghế đầu và cuối.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-gold text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Giải pháp TD Classic</h4>
+                                <p class="text-gray-400 text-xs md:text-sm font-light text-justify">Sử dụng loa Column hoặc Array định hướng cao. Tính toán góc phủ âm để giảm thiểu phản xạ trần/sàn.</p>
+                            </div>
+                            <div class="bg-metal p-3 md:p-4 border border-white/5">
+                                <h4 class="text-white text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Cấu hình đề xuất</h4>
+                                <p class="text-gray-500 text-[10px] md:text-xs">Loa Array/Column • Micro W-1000 • Bộ xử lý trung tâm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App 4: Sân Khấu Ngoài Trời (New Added) -->
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="order-2 md:order-1">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl md:text-4xl font-serif text-white/10">04</span>
+                            <h3 class="text-white font-serif text-xl md:text-2xl">Sân Khấu Ngoài Trời</h3>
+                        </div>
+                         <div class="space-y-4 md:space-y-6">
+                            <div>
+                                <h4 class="text-gold text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Thách thức</h4>
+                                <p class="text-gray-400 text-xs md:text-sm font-light text-justify">Không gian mở, âm thanh dễ bị loãng. Yêu cầu thiết bị chịu được thời tiết (nắng, gió, độ ẩm) và có khả năng phóng âm đi xa.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-gold text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Giải pháp TD Classic</h4>
+                                <p class="text-gray-400 text-xs md:text-sm font-light text-justify">Hệ thống Line Array công suất khủng với chỉ số chống nước IP55. Subwoofer kép tăng cường dải trầm uy lực ngoài trời.</p>
+                            </div>
+                            <div class="bg-metal p-3 md:p-4 border border-white/5">
+                                <h4 class="text-white text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">Cấu hình đề xuất</h4>
+                                <p class="text-gray-500 text-[10px] md:text-xs">Waterproof Array • Sub Dual 21" • Micro sóng xa</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="order-1 md:order-2 relative group">
+                        <div class="absolute -bottom-2 -right-2 md:-bottom-4 md:-right-4 w-12 h-12 md:w-16 md:h-16 border-b border-r border-gold/50"></div>
+                        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=800&auto=format&fit=crop" class="w-full grayscale group-hover:grayscale-0 transition-all duration-1000">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
