@@ -332,7 +332,7 @@
                         <iframe class="map-frame"
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.999177617507!2d106.70327410000002!3d20.8720834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7adc297467ef%3A0x2d9f6796b87197c!2zMjIgTmfDtCBRdXnhu4FuLCBU4buVIGTDom4gcGjhu5Egc-G7kSA1LCBOZ8O0IFF1eeG7gW4sIEjhuqNpIFBow7JuZw!5e0!3m2!1svi!2s!4v1754320853116!5m2!1svi!2s" 
                             style="border:0;" 
-                            allowfullscreen="" 
+                            allowfullscreen="" pul
                             loading="lazy" 
                             referrerpolicy="no-referrer-when-downgrade">
                         </iframe>
