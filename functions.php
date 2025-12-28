@@ -235,8 +235,8 @@ function tdclassic_scripts() {
     // Font Awesome 6.4.0 (Updated)
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
     
-    // Google Fonts - Outfit & Cormorant Garamond
-    wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;700;800&family=Cormorant+Garamond:ital,wght@1,300;1,500&display=swap', array(), null);
+    // Google Fonts - Outfit & Cormorant Garamond + Cinzel & Manrope for Product Page
+    wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;700;800&family=Cormorant+Garamond:ital,wght@1,300;1,500&family=Cinzel:wght@400;500;600;700&family=Manrope:wght@200;300;400;500;600;700&display=swap', array(), null);
     
     // ===== CSS MODULES - Load on all pages =====
     // Header CSS - New design - Load on all pages
@@ -330,9 +330,37 @@ function tdclassic_scripts() {
 }
 add_action('wp_enqueue_scripts', 'tdclassic_scripts');
 
-// Add Tailwind CSS via CDN (Development Mode)
+// Add Tailwind CSS via CDN (Development Mode) with custom config
 function tdclassic_add_tailwind() {
-    echo '<script src="https://cdn.tailwindcss.com"></script>';
+    ?>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cinzel"', 'serif'],
+                        sans: ['"Manrope"', 'sans-serif'],
+                    },
+                    colors: {
+                        void: '#050505',       
+                        metal: '#151515',      
+                        surface: '#1E1E1E',
+                        gold: '#C5A059',       
+                        goldDim: '#8A703E',
+                        dust: '#666666'        
+                    },
+                    letterSpacing: {
+                        'cinematic': '0.3em',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    <?php
 }
 add_action('wp_head', 'tdclassic_add_tailwind', 10);
 
