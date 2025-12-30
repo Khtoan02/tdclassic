@@ -6579,3 +6579,174 @@ html {
 }
 
 /* ================= END WORDPRESS CAPTION STYLES ================= */
+
+/* ================= LUXURY PRODUCT CATEGORY STYLES ================= */
+
+/* Noise texture overlay */
+.noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.03;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
+}
+
+/* Tailwind-style color utilities */
+.bg-void {
+    background-color: #050505;
+}
+
+.bg-metal {
+    background-color: #151515;
+}
+
+.bg-surface {
+    background-color: #1E1E1E;
+}
+
+.text-gold {
+    color: #C5A059;
+}
+
+.bg-gold {
+    background-color: #C5A059;
+}
+
+.border-gold {
+    border-color: #C5A059;
+}
+
+.hover\:text-gold:hover {
+    color: #C5A059;
+}
+
+.hover\:bg-gold:hover {
+    background-color: #C5A059;
+}
+
+.hover\:border-gold:hover {
+    border-color: #C5A059;
+}
+
+/* Typography utilities */
+.font-serif {
+    font-family: 'Cinzel', serif;
+}
+
+.font-sans {
+    font-family: 'Manrope', sans-serif;
+}
+
+.tracking-widest {
+    letter-spacing: 0.1em;
+}
+
+.tracking-cinematic {
+    letter-spacing: 0.3em;
+}
+
+/* Sticky filter bar effect */
+.sticky-bar {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Product card hover effects */
+.product-card .img-container img {
+    transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.product-card:hover .img-container img {
+    transform: scale(1.08);
+}
+
+.product-card .overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.product-card:hover .overlay {
+    opacity: 1 !important;
+}
+
+/* Load More Button Animation */
+.btn-load-more:hover i {
+    transform: translateY(4px);
+}
+
+/* Justified text for dense look */
+.dense-text {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+/* No scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Border utilities */
+.border-white\/5 {
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.hover\:border-gold\/30:hover {
+    border-color: rgba(197, 160, 89, 0.3);
+}
+
+/* Responsive grid utilities */
+@media (max-width: 768px) {
+    .product-card .overlay {
+        opacity: 1 !important;
+    }
+}
+
+/* Grayscale filter */
+.grayscale {
+    filter: grayscale(100%);
+}
+
+/* Stroke width utility */
+.stroke-1 {
+    stroke-width: 1;
+}
+
+/* Aspect ratio utilities */
+.aspect-square {
+    aspect-ratio: 1 / 1;
+}
+
+/* Selection colors */
+.selection\:bg-gold::selection {
+    background-color: #C5A059;
+}
+
+.selection\:text-black::selection {
+    color: #000000;
+}
+
+/* Product category hero section */
+.mask-image-gradient {
+    mask-image: linear-gradient(to left, transparent, black);
+    -webkit-mask-image: linear-gradient(to left, transparent, black);
+}
+
+/* Smooth transitions for all interactive elements */
+.product-card,
+.sticky-bar a,
+.btn-load-more {
+    transition: all 0.3s ease;
+}
+
+/* ================= END LUXURY PRODUCT CATEGORY STYLES ================= */

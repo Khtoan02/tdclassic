@@ -2,7 +2,6 @@
 /**
  * Template Name: San Pham
  * The template for displaying the products page
- * MARKER: THIS IS ARCHIVE-PRODUCT.PHP - VERSION 2.4.1
  */
 
 get_header(); ?>

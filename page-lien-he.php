@@ -4,349 +4,821 @@
  * The template for displaying the contact page
  */
 
-get_header(); ?>
+// Get company information
+$addresses = tdclassic_get_company_addresses();
+$phones = tdclassic_get_company_phones();
+$emails = tdclassic_get_company_emails();
+$primary_phone = !empty($phones) ? $phones[0] : '';
+$secondary_phone = !empty($phones) && count($phones) > 1 ? $phones[1] : '';
+$primary_email = !empty($emails) ? $emails[0] : '';
+?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?> class="scroll-smooth">
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php wp_head(); ?>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Manrope:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-<main id="main" class="site-main contact-page">
-    <!-- Hero Section -->
-    <section class="contact-hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Liên hệ với chúng tôi</h1>
-                <p class="hero-subtitle">Hãy liên hệ với chúng tôi để được tư vấn miễn phí về dự án của bạn</p>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cinzel"', 'serif'],
+                        sans: ['"Manrope"', 'sans-serif'],
+                    },
+                    colors: {
+                        void: '#050505',       
+                        metal: '#151515',      
+                        surface: '#1E1E1E',
+                        gold: '#C5A059',       
+                        goldDim: '#8A703E',
+                        dust: '#666666'        
+                    },
+                    letterSpacing: {
+                        'cinematic': '0.3em',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #E5E5E5; }
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 50; opacity: 0.03;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Input Field Animation */
+        .input-group { position: relative; margin-bottom: 2rem; }
+        .input-field {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            padding: 1rem 0;
+            color: white;
+            font-family: 'Manrope', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .input-field:focus {
+            outline: none;
+            border-bottom-color: #C5A059;
+        }
+        .input-label {
+            position: absolute;
+            top: 1rem;
+            left: 0;
+            color: #666;
+            font-size: 0.875rem;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .input-field:focus ~ .input-label,
+        .input-field:not(:placeholder-shown) ~ .input-label {
+            top: -0.75rem;
+            font-size: 0.75rem;
+            color: #C5A059;
+        }
+        
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            appearance: none;
+            width: 1rem;
+            height: 1rem;
+            border: 1px solid #666;
+            border-radius: 2px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+        }
+        input[type="checkbox"]:checked {
+            background: #C5A059;
+            border-color: #C5A059;
+        }
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: black;
+            font-size: 0.75rem;
+        }
+        
+        /* Location Card Hover Effect */
+        .location-card {
+            transition: all 0.3s ease;
+        }
+        .location-card:hover {
+            transform: translateY(-4px);
+            border-color: #C5A059 !important;
+        }
+        
+        /* Location Content Display */
+        .location-content {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        .location-content.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold selection:text-black">
+    
+    <?php wp_body_open(); ?>
+    
+    <div class="noise"></div>
+
+    <?php get_header(); ?>
+
+    <!-- HERO HEADER -->
+    <section class="pt-40 pb-20 bg-void relative overflow-hidden">
+        <div class="container mx-auto px-6 md:px-12 text-center relative z-10">
+            <span class="font-sans text-gold text-xs tracking-[0.4em] uppercase block mb-6 animate-fade-in">Kết nối & Hợp tác</span>
+            <h1 class="font-serif text-5xl md:text-7xl text-white mb-8">Liên Hệ TD Classic</h1>
+            <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-6"></div>
+            <p class="font-sans text-gray-400 max-w-2xl mx-auto text-base leading-relaxed">
+                Đồng hành cùng hơn 1,000+ dự án âm thanh chuyên nghiệp trên toàn quốc. 
+                Chúng tôi sẵn sàng lắng nghe và biến ý tưởng của bạn thành hiện thực.
+            </p>
+        </div>
+        <!-- Abstract Background lines -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 L100 0" stroke="white" stroke-width="0.1" fill="none"/>
+                <path d="M20 100 L100 20" stroke="white" stroke-width="0.1" fill="none"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- BRAND STORY SECTION -->
+    <section class="py-20 bg-void border-b border-white/5">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="font-sans text-gold text-xs tracking-[0.3em] uppercase block mb-4">Our Story</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-white mb-6">Hành Trình Định Nghĩa Lại Âm Thanh Chuyên Nghiệp</h2>
+                        <div class="w-16 h-[1px] bg-gold mb-8"></div>
+                    </div>
+                    <div class="space-y-6">
+                        <p class="font-sans text-gray-400 text-sm leading-relaxed text-justify">
+                            Từ năm 2018, TD Classic đã không ngừng nghiên cứu và phát triển các giải pháp âm thanh tiên tiến, 
+                            phục vụ hàng nghìn dự án từ các quán bar, karaoke cao cấp đến hội trường sự kiện quy mô lớn. 
+                            Chúng tôi hiểu rằng âm thanh không chỉ là công nghệ, mà là cảm xúc được truyền tải qua từng nốt nhạc.
+                        </p>
+                        <p class="font-sans text-gray-400 text-sm leading-relaxed text-justify">
+                            Với đội ngũ kỹ sư âm thanh giàu kinh nghiệm và hệ thống showroom, kho hàng trải dài khắp Việt Nam, 
+                            TD Classic tự hào là đối tác tin cậy của những thương hiệu hàng đầu trong và ngoài nước.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-12 border-t border-white/10">
+                    <div class="text-center">
+                        <div class="font-serif text-4xl text-gold mb-2">7+</div>
+                        <div class="font-sans text-xs text-gray-500 uppercase tracking-wider">Năm kinh nghiệm</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-serif text-4xl text-gold mb-2">1,000+</div>
+                        <div class="font-sans text-xs text-gray-500 uppercase tracking-wider">Dự án hoàn thành</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-serif text-4xl text-gold mb-2">3</div>
+                        <div class="font-sans text-xs text-gray-500 uppercase tracking-wider">Văn phòng toàn quốc</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-serif text-4xl text-gold mb-2">24/7</div>
+                        <div class="font-sans text-xs text-gray-500 uppercase tracking-wider">Hỗ trợ kỹ thuật</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Form Section -->
-    <section class="contact-form-section">
-        <div class="container">
-            <div class="row g-5">
-                <!-- Contact Form -->
-                <div class="col-lg-8">
-                    <div class="contact-form-wrapper">
-                        <div class="form-header">
-                            <h3>Gửi tin nhắn cho chúng tôi</h3>
-                            <p>Điền thông tin bên dưới và chúng tôi sẽ liên hệ lại trong thời gian sớm nhất</p>
-                        </div>
-                        
-                        <form id="contact-form" method="post" action="<?php echo admin_url('admin-ajax.php'); ?>" class="contact-form">
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="contact-name" class="form-label">Họ và tên *</label>
-                                        <input type="text" class="form-control" id="contact-name" name="contact_name" required>
+    <!-- NETWORK LOCATIONS SECTION -->
+    <section class="py-20 bg-metal">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                <span class="font-sans text-gold text-xs tracking-[0.3em] uppercase block mb-4">Nationwide Network</span>
+                <h2 class="font-serif text-3xl md:text-4xl text-white mb-4">Hệ Thống Trên Toàn Quốc</h2>
+                <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"></div>
+            </div>
+
+            <!-- SHOWROOM HIGHLIGHT -->
+            <div class="max-w-4xl mx-auto mb-12">
+                <div class="bg-void border-2 border-gold/30 p-8 md:p-10 relative overflow-hidden group">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-all"></div>
+                    <div class="absolute top-6 right-6 bg-gold text-black px-4 py-1 text-xs font-bold uppercase tracking-wider">
+                        Trải nghiệm thực tế
+                    </div>
+                    <div class="relative z-10">
+                        <div class="flex items-start gap-4 mb-4">
+                            <div class="w-14 h-14 border-2 border-gold flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="building-2" class="w-7 h-7 text-gold"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-2xl text-white mb-2">Showroom Trưng Bày Chính</h3>
+                                <p class="font-sans text-gray-400 text-sm mb-4">
+                                    111A tổ 3 Thị trấn An Dương, Huyện An Dương, Thành phố Hải Phòng
+                                </p>
+                                <div class="flex flex-wrap gap-4 text-xs">
+                                    <div class="flex items-center gap-2 text-gold">
+                                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                        <span class="font-sans">Phòng Demo Chuyên Nghiệp</span>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="contact-email" class="form-label">Email *</label>
-                                        <input type="email" class="form-control" id="contact-email" name="contact_email" required>
+                                    <div class="flex items-center gap-2 text-gold">
+                                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                        <span class="font-sans">Tư Vấn 1-1 Miễn Phí</span>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="contact-phone" class="form-label">Số điện thoại</label>
-                                        <input type="tel" class="form-control" id="contact-phone" name="contact_phone">
+                                    <div class="flex items-center gap-2 text-gold">
+                                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                        <span class="font-sans">Trưng Bày Đầy Đủ Sản Phẩm</span>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="contact-company" class="form-label">Công ty</label>
-                                        <input type="text" class="form-control" id="contact-company" name="contact_company">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="contact-subject" class="form-label">Chủ đề *</label>
-                                        <select class="form-select" id="contact-subject" name="contact_subject" required>
-                                            <option value="">Chọn chủ đề</option>
-                                            <option value="tu-van">Tư vấn dự án</option>
-                                            <option value="san-pham">Hỏi về sản phẩm</option>
-                                            <option value="ho-tro">Hỗ trợ kỹ thuật</option>
-                                            <option value="hop-tac">Hợp tác kinh doanh</option>
-                                            <option value="khac">Khác</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="contact-message" class="form-label">Tin nhắn *</label>
-                                        <textarea class="form-control" id="contact-message" name="contact_message" rows="6" required placeholder="Vui lòng mô tả chi tiết nhu cầu của bạn..."></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="contact-newsletter" name="contact_newsletter" value="1">
-                                        <label class="form-check-label" for="contact-newsletter">
-                                            Tôi muốn nhận thông tin về các sản phẩm và dịch vụ mới
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary btn-lg contact-submit-btn">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M22 2L11 13"></path>
-                                            <polygon points="22,2 15,22 11,13 2,9"></polygon>
-                                        </svg>
-                                        Gửi tin nhắn
-                                    </button>
                                 </div>
                             </div>
-                            <input type="hidden" name="action" value="handle_contact_form">
-                            <input type="hidden" name="nonce" value="<?php echo wp_create_nonce('contact_form_nonce'); ?>">
-                        </form>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Contact Info -->
-                <div class="col-lg-4">
-                    <div class="contact-info-wrapper">
-                        <div class="contact-info-header">
-                            <h3>Thông tin liên hệ</h3>
-                            <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn</p>
+            <!-- OFFICES GRID -->
+            <div class="mb-12">
+                <h3 class="font-serif text-xl text-white mb-6 text-center">Văn Phòng Đại Diện</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Hải Phòng Office -->
+                    <div class="location-card bg-surface border border-white/10 p-6 hover:shadow-xl">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 border border-white/20 flex items-center justify-center">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <h4 class="font-serif text-lg text-white">Văn Phòng Hải Phòng</h4>
                         </div>
+                        <p class="font-sans text-sm text-gray-400 mb-3">
+                            Số 10 Đường Cầu Bính, Sở Dầu, Hồng Bàng, Hải Phòng
+                        </p>
+                        <div class="text-xs text-gray-500 font-sans">
+                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i>
+                            Hotline: <?php echo esc_html($primary_phone); ?>
+                        </div>
+                    </div>
+
+                    <!-- Hà Nội Office -->
+                    <div class="location-card bg-surface border border-white/10 p-6 hover:shadow-xl">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 border border-white/20 flex items-center justify-center">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <h4 class="font-serif text-lg text-white">Văn Phòng Hà Nội</h4>
+                        </div>
+                        <p class="font-sans text-sm text-gray-400 mb-3">
+                            Lô 5 - TT7 - Khu đấu giá Tứ Hiệp, Thanh Trì, Hà Nội
+                        </p>
+                        <div class="text-xs text-gray-500 font-sans">
+                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i>
+                            Hotline: <?php echo esc_html($primary_phone); ?>
+                        </div>
+                    </div>
+
+                    <!-- TP.HCM Office -->
+                    <div class="location-card bg-surface border border-white/10 p-6 hover:shadow-xl">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 border border-white/20 flex items-center justify-center">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <h4 class="font-serif text-lg text-white">Văn Phòng TP. HCM</h4>
+                        </div>
+                        <p class="font-sans text-sm text-gray-400 mb-3">
+                            Toà nhà Phúc Tấn Nguyên, 400 Nguyễn Thị Thập, P. Tân Quy, Quận 7
+                        </p>
+                        <div class="text-xs text-gray-500 font-sans">
+                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i>
+                            Hotline: <?php echo esc_html($primary_phone); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WAREHOUSE SECTION -->
+            <div class="max-w-4xl mx-auto">
+                <h3 class="font-serif text-xl text-white mb-6 text-center">Hệ Thống Kho Hàng & Logistics</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Warehouse 01 -->
+                    <div class="bg-void/50 border border-white/5 p-6">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-gold/10 border border-gold/30 flex items-center justify-center">
+                                <i data-lucide="warehouse" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <h4 class="font-serif text-white">Kho Số 01</h4>
+                        </div>
+                        <p class="font-sans text-sm text-gray-400">
+                            Số 10 Đường Cầu Bính, Sở Dầu, Hồng Bàng, Hải Phòng
+                        </p>
+                        <div class="mt-3 text-xs text-gray-500">
+                            <span class="text-gold">●</span> Kho chính - Sẵn hàng 24/7
+                        </div>
+                    </div>
+
+                    <!-- Warehouse 02 -->
+                    <div class="bg-void/50 border border-white/5 p-6">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-gold/10 border border-gold/30 flex items-center justify-center">
+                                <i data-lucide="warehouse" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <h4 class="font-serif text-white">Kho Số 02</h4>
+                        </div>
+                        <p class="font-sans text-sm text-gray-400">
+                            Lô 35B+36+37A Khu Văn Tràng II, An Lão, Hải Phòng
+                        </p>
+                        <div class="mt-3 text-xs text-gray-500">
+                            <span class="text-gold">●</span> Kho dự phòng - Sản phẩm số lượng lớn
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTACT CONTENT -->
+    <section class="py-32 bg-void">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                <span class="font-sans text-gold text-xs tracking-[0.3em] uppercase block mb-4">Get In Touch</span>
+                <h2 class="font-serif text-3xl md:text-4xl text-white mb-4">Gửi Yêu Cầu Tư Vấn</h2>
+                <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"></div>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-16">
+                
+                <!-- LEFT COLUMN: CONTACT INFO -->
+                <div class="lg:col-span-5 space-y-8">
+                    <!-- Quick Contact -->
+                    <div class="bg-metal p-8 border border-white/5">
+                        <h3 class="font-serif text-xl text-white mb-6 border-l-2 border-gold pl-4">Liên Hệ Nhanh</h3>
                         
-                        <div class="contact-info-list">
-                            <!-- Địa chỉ -->
-                            <?php 
-                            $addresses = tdclassic_get_company_addresses();
-                            if (!empty($addresses)) : 
-                            ?>
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                        <circle cx="12" cy="10" r="3"></circle>
-                                    </svg>
+                        <div class="space-y-6">
+                            <?php if ($primary_phone || $secondary_phone): ?>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-12 h-12 border border-white/10 flex items-center justify-center group-hover:border-gold transition-colors flex-shrink-0">
+                                    <i data-lucide="phone" class="w-5 h-5 text-gold"></i>
                                 </div>
-                                <div class="contact-content">
-                                    <h6>Địa chỉ</h6>
-                                    <div class="contact-list">
-                                        <?php foreach ($addresses as $address) : ?>
-                                            <p class="contact-list-item"><?php echo esc_html($address); ?></p>
-                                        <?php endforeach; ?>
-                                    </div>
+                                <div>
+                                    <h4 class="text-white font-serif text-base mb-2">Hotline 24/7</h4>
+                                    <?php if ($primary_phone): ?>
+                                    <p class="text-gray-400 text-sm font-sans mb-1">
+                                        Tư vấn: <a href="tel:<?php echo esc_attr(str_replace(' ', '', $primary_phone)); ?>" class="text-white hover:text-gold transition-colors"><?php echo esc_html($primary_phone); ?></a>
+                                    </p>
+                                    <?php endif; ?>
+                                    <?php if ($secondary_phone): ?>
+                                    <p class="text-gray-400 text-sm font-sans">
+                                        Kỹ thuật: <a href="tel:<?php echo esc_attr(str_replace(' ', '', $secondary_phone)); ?>" class="text-white hover:text-gold transition-colors"><?php echo esc_html($secondary_phone); ?></a>
+                                    </p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <?php endif; ?>
 
-                            <!-- Số điện thoại -->
-                            <?php 
-                            $phones = tdclassic_get_company_phones();
-                            if (!empty($phones)) : 
-                            ?>
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                    </svg>
+                            <?php if ($primary_email): ?>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-12 h-12 border border-white/10 flex items-center justify-center group-hover:border-gold transition-colors flex-shrink-0">
+                                    <i data-lucide="mail" class="w-5 h-5 text-gold"></i>
                                 </div>
-                                <div class="contact-content">
-                                    <h6>Điện thoại</h6>
-                                    <div class="contact-list">
-                                        <?php foreach ($phones as $phone) : 
-                                            $phone_clean = preg_replace('/[^0-9+]/', '', $phone);
-                                        ?>
-                                            <p class="contact-list-item">
-                                                <a href="tel:<?php echo esc_attr($phone_clean); ?>"><?php echo esc_html($phone); ?></a>
-                                            </p>
-                                        <?php endforeach; ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php endif; ?>
-
-                            <!-- Email -->
-                            <?php 
-                            $emails = tdclassic_get_company_emails();
-                            if (!empty($emails)) : 
-                            ?>
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                        <polyline points="22,6 12,13 2,6"></polyline>
-                                    </svg>
-                                </div>
-                                <div class="contact-content">
-                                    <h6>Email</h6>
-                                    <div class="contact-list">
-                                        <?php foreach ($emails as $email) : ?>
-                                            <p class="contact-list-item">
-                                                <a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a>
-                                            </p>
-                                        <?php endforeach; ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php endif; ?>
-
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <polyline points="12,6 12,12 16,14"></polyline>
-                                    </svg>
-                                </div>
-                                <div class="contact-content">
-                                    <h6>Giờ làm việc</h6>
-                                    <p>
-                                        Thứ 2 - Thứ 6: 8:00 - 17:00<br>
-                                        Thứ 7: 8:00 - 12:00<br>
-                                        Chủ nhật: Nghỉ
+                                <div>
+                                    <h4 class="text-white font-serif text-base mb-2">Email Hỗ Trợ</h4>
+                                    <p class="text-gray-400 text-sm font-sans">
+                                        <a href="mailto:<?php echo esc_attr($primary_email); ?>" class="hover:text-gold transition-colors"><?php echo esc_html($primary_email); ?></a>
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                            <?php endif; ?>
 
-                        <!-- Social Media -->
-                        <div class="social-media-section">
-                            <h6>Kết nối với chúng tôi</h6>
-                            <div class="social-links">
-                                <a href="#" class="social-link">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                    </svg>
-                                </a>
-                                <a href="#" class="social-link">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                                    </svg>
-                                </a>
-                                <a href="#" class="social-link">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                                    </svg>
-                                </a>
-                                <a href="#" class="social-link">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/>
-                                    </svg>
-                                </a>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-12 h-12 border border-white/10 flex items-center justify-center group-hover:border-gold transition-colors flex-shrink-0">
+                                    <i data-lucide="clock" class="w-5 h-5 text-gold"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-serif text-base mb-2">Thời Gian Phục Vụ</h4>
+                                    <p class="text-gray-400 text-sm font-sans">24/7 - Không ngừng nghỉ</p>
+                                    <p class="text-gray-500 text-xs font-sans mt-1">Hotline luôn sẵn sàng hỗ trợ bạn</p>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Commitment Box -->
+                    <div class="bg-gradient-to-br from-gold/5 to-transparent p-8 border border-gold/20 relative overflow-hidden group">
+                        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-gold/10 rounded-full blur-xl group-hover:bg-gold/20 transition-colors"></div>
+                        
+                        <h3 class="font-serif text-white text-lg mb-6 flex items-center gap-3 relative z-10">
+                            <i data-lucide="heart-handshake" class="w-5 h-5 text-gold"></i> Cam Kết Của Chúng Tôi
+                        </h3>
+                        <p class="font-sans text-gray-300 text-sm leading-relaxed text-justify mb-6 relative z-10">
+                            Tại TD Classic, chúng tôi hiểu rằng mỗi dự án âm thanh đều mang trong mình một câu chuyện riêng, 
+                            một cảm xúc cần được truyền tải hoàn hảo. Đội ngũ kỹ sư của chúng tôi không chỉ là những chuyên gia 
+                            kỹ thuật, mà còn là những người đồng hành nhiệt huyết, sẵn sàng lắng nghe và biến ý tưởng của bạn 
+                            thành hiện thực.
+                        </p>
+                        <div class="flex items-center gap-4 relative z-10">
+                            <div class="h-px flex-1 bg-gradient-to-r from-gold to-transparent"></div>
+                            <span class="font-serif text-gold text-sm tracking-widest">TD Classic Team</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: CONTACT FORM -->
+                <div class="lg:col-span-7">
+                    <div class="bg-surface p-8 md:p-12 border border-white/5 relative overflow-hidden">
+                        <!-- Decorative element -->
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <h2 class="font-serif text-2xl text-white mb-2">Điền Thông Tin</h2>
+                        <p class="font-sans text-gray-500 text-xs uppercase tracking-widest mb-10">Phản hồi trong vòng 2 giờ làm việc</p>
+
+                        <form id="contact-form" method="post" action="<?php echo admin_url('admin-ajax.php'); ?>" class="space-y-8">
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div class="input-group">
+                                    <input type="text" id="name" name="contact_name" class="input-field" required placeholder=" ">
+                                    <label for="name" class="input-label">Họ và tên *</label>
+                                </div>
+                                <div class="input-group">
+                                    <input type="tel" id="phone" name="contact_phone" class="input-field" required placeholder=" ">
+                                    <label for="phone" class="input-label">Số điện thoại *</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <input type="email" id="email" name="contact_email" class="input-field" placeholder=" ">
+                                <label for="email" class="input-label">Email (Tùy chọn)</label>
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" id="company" name="contact_company" class="input-field" placeholder=" ">
+                                <label for="company" class="input-label">Công ty / Dự án</label>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="text-gray-500 text-xs uppercase tracking-widest block mb-4">Loại hình quan tâm</label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" name="contact_interests[]" value="Bar & Lounge">
+                                        <span class="text-gray-400 text-sm group-hover:text-white transition-colors">Bar & Lounge</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" name="contact_interests[]" value="Karaoke Kinh Doanh">
+                                        <span class="text-gray-400 text-sm group-hover:text-white transition-colors">Karaoke Kinh Doanh</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" name="contact_interests[]" value="Hội Trường / Sự Kiện">
+                                        <span class="text-gray-400 text-sm group-hover:text-white transition-colors">Hội Trường / Sự Kiện</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" name="contact_interests[]" value="Mua lẻ thiết bị">
+                                        <span class="text-gray-400 text-sm group-hover:text-white transition-colors">Mua lẻ thiết bị</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <textarea id="message" name="contact_message" class="input-field h-32 resize-none" required placeholder=" "></textarea>
+                                <label for="message" class="input-label">Nội dung cần tư vấn *</label>
+                            </div>
+
+                            <div class="pt-4">
+                                <button type="submit" class="w-full bg-gold hover:bg-white text-black font-serif font-bold uppercase tracking-[0.2em] py-4 transition-all duration-300 flex items-center justify-center gap-2 group">
+                                    Gửi thông tin <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                                <p class="text-center text-gray-600 text-[10px] mt-4 font-sans">
+                                    Bằng việc gửi thông tin, bạn đồng ý với chính sách bảo mật của chúng tôi.
+                                </p>
+                            </div>
+                            
+                            <input type="hidden" name="action" value="handle_contact_form">
+                            <input type="hidden" name="nonce" value="<?php echo wp_create_nonce('contact_form_nonce'); ?>">
+                        </form>
+
+                        <!-- Form response message -->
+                        <div id="form-response" class="mt-4 hidden"></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Map Section -->
-    <section class="map-section">
-        <div class="container">
-            <div class="map-container">
-                <div class="ratio ratio-16x9">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.999177617507!2d106.70327410000002!3d20.8720834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7adc297467ef%3A0x2d9f6796b87197c!2zMjIgTmfDtCBRdXnhu4FuLCBU4buVIGTDom4gcGjhu5Egc-G7kSA1LCBOZ8O0IFF1eeG7gW4sIEjhuqNpIFBow7JuZw!5e0!3m2!1svi!2s!4v1754320853116!5m2!1svi!2s" 
-                        width="100%" 
-                        height="400" 
-                        style="border:0; border-radius: 16px;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
+    <!-- MAP SECTION (Redesigned with Individual Location Cards) -->
+    <section class="py-20 bg-metal border-t border-white/5">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-12">
+                <span class="font-sans text-gold text-xs tracking-[0.3em] uppercase block mb-4">Find Us</span>
+                <h2 class="font-serif text-3xl md:text-4xl text-white mb-4">Tìm Đường Đến TD Classic</h2>
+                <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-4"></div>
+                <p class="text-gray-400 text-sm font-sans">Chọn địa điểm bạn muốn ghé thăm</p>
+            </div>
+
+            <div class="max-w-6xl mx-auto">
+                <!-- Location Tabs -->
+                <div class="flex flex-wrap gap-3 justify-center mb-10">
+                    <button onclick="showLocation('showroom')" data-location="showroom" class="location-tab active bg-gold text-black px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white">
+                        <i data-lucide="building-2" class="w-4 h-4 inline mr-2"></i>
+                        Showroom An Dương
+                    </button>
+                    <button onclick="showLocation('haiphong')" data-location="haiphong" class="location-tab bg-surface text-gray-400 px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-void hover:text-white">
+                        <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+                        VP Hải Phòng
+                    </button>
+                    <button onclick="showLocation('hanoi')" data-location="hanoi" class="location-tab bg-surface text-gray-400 px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-void hover:text-white">
+                        <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+                        VP Hà Nội
+                    </button>
+                    <button onclick="showLocation('hcm')" data-location="hcm" class="location-tab bg-surface text-gray-400 px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-void hover:text-white">
+                        <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+                        VP TP.HCM
+                    </button>
+                </div>
+
+                <!-- Location Content Containers -->
+                <div class="space-y-8">
+                    
+                    <!-- SHOWROOM LOCATION -->
+                    <div id="location-showroom" class="location-content active">
+                        <div class="grid lg:grid-cols-5 gap-8">
+                            <!-- Location Info Card -->
+                            <div class="lg:col-span-2 bg-void border border-gold/30 p-8 relative overflow-hidden group">
+                                <div class="absolute -right-6 -top-6 w-24 h-24 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-all"></div>
+                                <div class="absolute top-4 right-4 bg-gold text-black px-3 py-1 text-[10px] font-bold uppercase tracking-widest">
+                                    Trải nghiệm
+                                </div>
+                                
+                                <div class="relative z-10">
+                                    <div class="w-12 h-12 border-2 border-gold flex items-center justify-center mb-4">
+                                        <i data-lucide="building-2" class="w-6 h-6 text-gold"></i>
+                                    </div>
+                                    <h3 class="font-serif text-xl text-white mb-2">Showroom Trưng Bày</h3>
+                                    <p class="text-xs text-gold uppercase tracking-wider mb-6 font-sans">Địa điểm chính</p>
+                                    
+                                    <div class="space-y-4 mb-6">
+                                        <div class="flex items-start gap-3">
+                                            <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-1"></i>
+                                            <p class="text-sm text-gray-300 font-sans leading-relaxed">
+                                                111A tổ 3 Thị trấn An Dương, Huyện An Dương, Thành phố Hải Phòng
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="phone" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                                            <a href="tel:<?php echo esc_attr(str_replace(' ', '', $primary_phone)); ?>" class="text-sm text-white hover:text-gold transition-colors">
+                                                <?php echo esc_html($primary_phone); ?>
+                                            </a>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="clock" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                                            <span class="text-sm text-gray-400">Phục vụ 24/7</span>
+                                        </div>
+                                    </div>
+
+                                    <a href="https://maps.google.com/?q=111A+tổ+3+Thị+trấn+An+Dương+Hải+Phòng" target="_blank" class="inline-flex items-center gap-2 bg-gold text-black px-6 py-3 font-sans text-sm font-bold uppercase tracking-wider hover:bg-white transition-all duration-300 group/btn">
+                                        <i data-lucide="navigation" class="w-4 h-4 group-hover/btn:rotate-45 transition-transform"></i>
+                                        Chỉ đường
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Map -->
+                            <div class="lg:col-span-3 bg-void border border-white/10 overflow-hidden relative h-[450px]">
+                                <div class="absolute inset-0 bg-void/20 pointer-events-none z-10"></div>
+                                <iframe 
+                                    class="w-full h-full" 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.5!2d106.586!3d20.877!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDUyJzM3LjIiTiAxMDbCsDM1JzA5LjYiRQ!5e0!3m2!1svi!2s!4v1620000000000!5m2!1svi!2s" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HẢI PHÒNG OFFICE LOCATION -->
+                    <div id="location-haiphong" class="location-content hidden">
+                        <div class="grid lg:grid-cols-5 gap-8">
+                            <!-- Location Info Card -->
+                            <div class="lg:col-span-2 bg-surface border border-white/10 p-8 relative">
+                                <div class="w-12 h-12 border border-white/20 flex items-center justify-center mb-4">
+                                    <i data-lucide="briefcase" class="w-6 h-6 text-gold"></i>
+                                </div>
+                                <h3 class="font-serif text-xl text-white mb-2">Văn Phòng Hải Phòng</h3>
+                                <p class="text-xs text-gray-500 uppercase tracking-wider mb-6 font-sans">Office & Warehouse</p>
+                                
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-1"></i>
+                                        <p class="text-sm text-gray-300 font-sans leading-relaxed">
+                                            Số 10 Đường Cầu Bính, Sở Dầu, Hồng Bàng, Hải Phòng
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="phone" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                                        <a href="tel:<?php echo esc_attr(str_replace(' ', '', $primary_phone)); ?>" class="text-sm text-white hover:text-gold transition-colors">
+                                            <?php echo esc_html($primary_phone); ?>
+                                        </a>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="package" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                                        <span class="text-sm text-gray-400">Kho hàng số 01</span>
+                                    </div>
+                                </div>
+
+                                <a href="https://maps.google.com/?q=Số+10+Đường+Cầu+Bính+Hải+Phòng" target="_blank" class="inline-flex items-center gap-2 border border-gold text-gold px-6 py-3 font-sans text-sm font-bold uppercase tracking-wider hover:bg-gold hover:text-black transition-all duration-300 group/btn">
+                                    <i data-lucide="navigation" class="w-4 h-4 group-hover/btn:rotate-45 transition-transform"></i>
+                                    Chỉ đường
+                                </a>
+                            </div>
+
+                            <!-- Map -->
+                            <div class="lg:col-span-3 bg-void border border-white/10 overflow-hidden relative h-[450px]">
+                                <div class="absolute inset-0 bg-void/20 pointer-events-none z-10"></div>
+                                <iframe 
+                                    class="w-full h-full" 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3728.2!2d106.682!3d20.863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7b0e4b5c8c8f%3A0x1234567890abcdef!2zU-G7kSAxMCDEkMaw4budbmcgQ-G6p3UgQsOtbmgsIFPhu58gROG6p3UsIEjhu5NuZyBCw6BuZywgSOG6o2kgUGjDsm5n!5e0!3m2!1svi!2s!4v1620000000000!5m2!1svi!2s" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HÀ NỘI OFFICE LOCATION -->
+                    <div id="location-hanoi" class="location-content hidden">
+                        <div class="grid lg:grid-cols-5 gap-8">
+                            <!-- Location Info Card -->
+                            <div class="lg:col-span-2 bg-surface border border-white/10 p-8 relative">
+                                <div class="w-12 h-12 border border-white/20 flex items-center justify-center mb-4">
+                                    <i data-lucide="briefcase" class="w-6 h-6 text-gold"></i>
+                                </div>
+                                <h3 class="font-serif text-xl text-white mb-2">Văn Phòng Hà Nội</h3>
+                                <p class="text-xs text-gray-500 uppercase tracking-wider mb-6 font-sans">Representative Office</p>
+                                
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-1"></i>
+                                        <p class="text-sm text-gray-300 font-sans leading-relaxed">
+                                            Lô 5 - TT7 - Khu đấu giá Tứ Hiệp, Thanh Trì, Hà Nội
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="phone" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                                        <a href="tel:<?php echo esc_attr(str_replace(' ', '', $primary_phone)); ?>" class="text-sm text-white hover:text-gold transition-colors">
+                                            <?php echo esc_html($primary_phone); ?>
+                                        </a>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="users" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                                        <span class="text-sm text-gray-400">Tư vấn & Hỗ trợ khu vực phía Bắc</span>
+                                    </div>
+                                </div>
+
+                                <a href="https://maps.google.com/?q=Lô+5+TT7+Khu+Tứ+Hiệp+Thanh+Trì+Hà+Nội" target="_blank" class="inline-flex items-center gap-2 border border-gold text-gold px-6 py-3 font-sans text-sm font-bold uppercase tracking-wider hover:bg-gold hover:text-black transition-all duration-300 group/btn">
+                                    <i data-lucide="navigation" class="w-4 h-4 group-hover/btn:rotate-45 transition-transform"></i>
+                                    Chỉ đường
+                                </a>
+                            </div>
+
+                            <!-- Map -->
+                            <div class="lg:col-span-3 bg-void border border-white/10 overflow-hidden relative h-[450px]">
+                                <div class="absolute inset-0 bg-void/20 pointer-events-none z-10"></div>
+                                <iframe 
+                                    class="w-full h-full" 
+                                    src="https://maps.google.com/maps?q=L%C3%B4+5+-+TT7+-+Khu+%C4%91%E1%BA%A5u+gi%C3%A1+T%E1%BB%A9+Hi%E1%BB%87p,+Thanh+Tr%C3%AC,+H%C3%A0+N%E1%BB%99i&output=embed" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TP.HCM OFFICE LOCATION -->
+                    <div id="location-hcm" class="location-content hidden">
+                        <div class="grid lg:grid-cols-5 gap-8">
+                            <!-- Location Info Card -->
+                            <div class="lg:col-span-2 bg-surface border border-white/10 p-8 relative">
+                                <div class="w-12 h-12 border border-white/20 flex items-center justify-center mb-4">
+                                    <i data-lucide="briefcase" class="w-6 h-6 text-gold"></i>
+                                </div>
+                                <h3 class="font-serif text-xl text-white mb-2">Văn Phòng TP. HCM</h3>
+                                <p class="text-xs text-gray-500 uppercase tracking-wider mb-6 font-sans">Representative Office</p>
+                                
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-1"></i>
+                                        <p class="text-sm text-gray-300 font-sans leading-relaxed">
+                                            Toà nhà Phúc Tấn Nguyên, 400 Nguyễn Thị Thập, P. Tân Quy, Quận 7, TP. Hồ Chí Minh
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="phone" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                                        <a href="tel:<?php echo esc_attr(str_replace(' ', '', $primary_phone)); ?>" class="text-sm text-white hover:text-gold transition-colors">
+                                            <?php echo esc_html($primary_phone); ?>
+                                        </a>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="users" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                                        <span class="text-sm text-gray-400">Tư vấn & Hỗ trợ khu vực phía Nam</span>
+                                    </div>
+                                </div>
+
+                                <a href="https://maps.google.com/?q=400+Nguyễn+Thị+Thập+Quận+7+TP+HCM" target="_blank" class="inline-flex items-center gap-2 border border-gold text-gold px-6 py-3 font-sans text-sm font-bold uppercase tracking-wider hover:bg-gold hover:text-black transition-all duration-300 group/btn">
+                                    <i data-lucide="navigation" class="w-4 h-4 group-hover/btn:rotate-45 transition-transform"></i>
+                                    Chỉ đường
+                                </a>
+                            </div>
+
+                            <!-- Map -->
+                            <div class="lg:col-span-3 bg-void border border-white/10 overflow-hidden relative h-[450px]">
+                                <div class="absolute inset-0 bg-void/20 pointer-events-none z-10"></div>
+                                <iframe 
+                                    class="w-full h-full" 
+                                    src="https://maps.google.com/maps?q=400+Nguy%E1%BB%85n+Th%E1%BB%8B+Th%E1%BA%ADp,+T%C3%A2n+Quy,+Qu%E1%BA%ADn+7,+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh&output=embed" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="faq-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Câu hỏi thường gặp</h2>
-                <p>Những câu hỏi phổ biến về dịch vụ của chúng tôi</p>
-            </div>
-            <div class="faq-container">
-                <div class="accordion" id="faqAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq1">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                                Thời gian thực hiện một dự án là bao lâu?
-                            </button>
-                        </h2>
-                        <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Thời gian thực hiện dự án phụ thuộc vào độ phức tạp và yêu cầu cụ thể. Thông thường, một dự án website cơ bản mất 2-4 tuần, dự án phức tạp có thể mất 2-3 tháng.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq2">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                Chi phí cho một dự án là bao nhiêu?
-                            </button>
-                        </h2>
-                        <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Chi phí được tính dựa trên phạm vi và độ phức tạp của dự án. Chúng tôi cung cấp báo giá chi tiết sau khi trao đổi yêu cầu cụ thể với khách hàng.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faq3">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                                Có hỗ trợ sau khi hoàn thành dự án không?
-                            </button>
-                        </h2>
-                        <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Có, chúng tôi cung cấp dịch vụ bảo trì và hỗ trợ kỹ thuật trong 6 tháng đầu miễn phí. Sau đó, khách hàng có thể gia hạn gói bảo trì theo nhu cầu.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <?php get_footer(); ?>
 
-    <!-- CTA Section -->
-    <section class="contact-cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Sẵn sàng bắt đầu dự án?</h2>
-                <p>Hãy liên hệ ngay để được tư vấn và báo giá chi tiết</p>
-                <div class="cta-buttons">
-                    <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>" class="btn btn-primary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg>
-                        Gọi ngay
-                    </a>
-                    <a href="mailto:<?php echo tdclassic_get_company_email(); ?>" class="btn btn-secondary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg>
-                        Gửi email
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-</main>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Contact form submission
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+    <script>
+        lucide.createIcons();
+        
+        // Location tab switching
+        function showLocation(location) {
+            // Hide all location contents
+            document.querySelectorAll('.location-content').forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.location-tab').forEach(tab => {
+                tab.classList.remove('active', 'bg-gold', 'text-black');
+                tab.classList.add('bg-surface', 'text-gray-400');
+            });
+            
+            // Show selected location content
+            const selectedContent = document.getElementById('location-' + location);
+            if (selectedContent) {
+                selectedContent.classList.remove('hidden');
+                selectedContent.classList.add('active');
+            }
+            
+            // Activate selected tab
+            event.target.classList.add('active', 'bg-gold', 'text-black');
+            event.target.classList.remove('bg-surface', 'text-gray-400');
+            
+            // Reinitialize Lucide icons for newly shown content
+            lucide.createIcons();
+        }
+        
+        // Contact form handling
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const submitBtn = this.querySelector('.contact-submit-btn');
-            const originalText = submitBtn.innerHTML;
-            
-            // Show loading state
-            submitBtn.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning">
-                    <path d="M21 12a9 9 0 11-6.219-8.56"></path>
-                </svg>
-                Đang gửi...
-            `;
-            submitBtn.disabled = true;
-            
-            // Submit form via AJAX
             const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const responseDiv = document.getElementById('form-response');
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Đang gửi...';
+            lucide.createIcons();
             
             fetch(this.action, {
                 method: 'POST',
@@ -354,611 +826,29 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(data => {
+                responseDiv.classList.remove('hidden');
                 if (data.success) {
-                    // Show success message
-                    alert('Cảm ơn bạn! Tin nhắn đã được gửi thành công. Chúng tôi sẽ liên hệ lại sớm nhất.');
+                    responseDiv.className = 'mt-4 p-4 bg-green-500/10 border border-green-500 text-green-500 font-sans text-sm rounded';
+                    responseDiv.textContent = data.data.message || 'Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.';
                     this.reset();
                 } else {
-                    // Show error message
-                    alert('Có lỗi xảy ra. Vui lòng thử lại sau.');
+                    responseDiv.className = 'mt-4 p-4 bg-red-500/10 border border-red-500 text-red-500 font-sans text-sm rounded';
+                    responseDiv.textContent = data.data || 'Có lỗi xảy ra. Vui lòng thử lại.';
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra. Vui lòng thử lại sau.');
+                responseDiv.classList.remove('hidden');
+                responseDiv.className = 'mt-4 p-4 bg-red-500/10 border border-red-500 text-red-500 font-sans text-sm rounded';
+                responseDiv.textContent = 'Có lỗi xảy ra. Vui lòng thử lại.';
             })
             .finally(() => {
-                // Reset button state
-                submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Gửi thông tin <i data-lucide="arrow-right" class="w-4 h-4"></i>';
+                lucide.createIcons();
             });
         });
-    }
-});
-</script>
-
-<style>
-/* Contact Page Styles */
-.contact-page {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-/* Fix Header z-index on contact page */
-.contact-page .main-header {
-    position: relative;
-    z-index: 1000;
-}
-
-.contact-page .top-header {
-    position: relative;
-    z-index: 1001;
-}
-
-/* Đảm bảo top-header contact-item không bị ảnh hưởng bởi CSS của contact page */
-.contact-page .top-header .contact-info .contact-item {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    color: #ccc !important;
-    text-decoration: none !important;
-    transition: color 0.3s ease !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: transparent !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-}
-
-.contact-page .top-header .contact-info .contact-item:hover {
-    color: #fff !important;
-    transform: none !important;
-}
-
-.contact-hero {
-    background: linear-gradient(135deg, #000 0%, #333 100%);
-    color: #fff;
-    padding: 80px 0;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
-
-.contact-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.3;
-}
-
-.contact-hero .hero-content {
-    position: relative;
-    z-index: 2;
-}
-
-.contact-hero .hero-title {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    background: linear-gradient(45deg, #fff, #f0f0f0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.contact-hero .hero-subtitle {
-    font-size: 1.25rem;
-    opacity: 0.9;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.contact-form-section {
-    padding: 80px 0;
-    background: #fff;
-}
-
-.contact-form-wrapper {
-    background: #fff;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.form-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.form-header h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #000;
-}
-
-.form-header p {
-    color: #666;
-    font-size: 1.1rem;
-}
-
-.contact-form .form-group {
-    margin-bottom: 1.5rem;
-}
-
-.contact-form .form-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.5rem;
-    display: block;
-}
-
-.contact-form .form-control,
-.contact-form .form-select {
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    padding: 12px 16px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
-}
-
-.contact-form .form-control:focus,
-.contact-form .form-select:focus {
-    border-color: #000;
-    box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
-    background: #fff;
-}
-
-.contact-submit-btn {
-    background: linear-gradient(45deg, #000, #333);
-    border: none;
-    border-radius: 12px;
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #fff;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.contact-submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    color: #fff;
-}
-
-.contact-submit-btn svg {
-    transition: transform 0.3s ease;
-}
-
-.contact-submit-btn:hover svg {
-    transform: translateX(3px);
-}
-
-.contact-submit-btn.spinning svg {
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.contact-info-wrapper {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 20px;
-    padding: 40px;
-    height: 100%;
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.contact-info-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.contact-info-header h3 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #000;
-}
-
-.contact-info-header p {
-    color: #666;
-}
-
-.contact-info-list {
-    margin-bottom: 40px;
-}
-
-/* Scope contact-item chỉ cho phần contact info của trang, không bị ảnh hưởng bởi header */
-.contact-info-wrapper .contact-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding: 18px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    transition: all 0.3s ease;
-}
-
-.contact-info-wrapper .contact-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-}
-
-.contact-info-wrapper .contact-item:last-child {
-    margin-bottom: 0;
-}
-
-.contact-info-wrapper .contact-icon {
-    background: linear-gradient(45deg, #000, #333);
-    color: #fff;
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 16px;
-    flex-shrink: 0;
-}
-
-.contact-info-wrapper .contact-icon svg {
-    width: 20px;
-    height: 20px;
-}
-
-.contact-info-wrapper .contact-content h6 {
-    font-weight: 600;
-    color: #000;
-    margin-bottom: 8px;
-    font-size: 1rem;
-}
-
-.contact-info-wrapper .contact-content p {
-    color: #666;
-    margin: 0;
-    line-height: 1.6;
-    font-size: 0.95rem;
-}
-
-.contact-info-wrapper .contact-content a {
-    color: #000;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.contact-info-wrapper .contact-content a:hover {
-    color: #666;
-}
-
-.contact-info-wrapper .contact-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.contact-info-wrapper .contact-list-item {
-    margin: 0 !important;
-    padding: 6px 0;
-    line-height: 1.6;
-    color: #666;
-    font-size: 0.95rem;
-}
-
-.contact-info-wrapper .contact-list-item:first-child {
-    padding-top: 0;
-}
-
-.contact-info-wrapper .contact-list-item a {
-    color: #000;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
-
-.contact-info-wrapper .contact-list-item a:hover {
-    color: #666;
-}
-
-.social-media-section {
-    text-align: center;
-    padding-top: 30px;
-    border-top: 1px solid rgba(0,0,0,0.1);
-}
-
-.social-media-section h6 {
-    font-weight: 600;
-    color: #000;
-    margin-bottom: 20px;
-}
-
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.social-link {
-    background: #fff;
-    color: #000;
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-}
-
-.social-link:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    color: #000;
-}
-
-.map-section {
-    padding: 80px 0;
-    background: #f8f9fa;
-}
-
-.section-header {
-    margin-bottom: 50px;
-}
-
-.section-header h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #000;
-}
-
-.section-header p {
-    color: #666;
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.map-container {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
-
-.address-tabs-section {
-    margin-top: 30px;
-}
-
-.address-tabs-section .nav-pills {
-    gap: 10px;
-}
-
-.address-tabs-section .nav-pills .nav-link {
-    background: #fff;
-    color: #333;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    padding: 12px 24px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.address-tabs-section .nav-pills .nav-link:hover {
-    background: #f8f9fa;
-    border-color: #000;
-    color: #000;
-}
-
-.address-tabs-section .nav-pills .nav-link.active {
-    background: linear-gradient(45deg, #000, #333);
-    border-color: #000;
-    color: #fff;
-}
-
-.address-info {
-    background: #f8f9fa;
-    padding: 15px 20px;
-    border-radius: 12px;
-    color: #333;
-    font-size: 1.05rem;
-}
-
-.address-info i {
-    color: #000;
-}
-
-.faq-section {
-    padding: 80px 0;
-    background: #fff;
-}
-
-.faq-container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.accordion-item {
-    border: none;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-}
-
-.accordion-button {
-    background: #f8f9fa;
-    border: none;
-    padding: 20px 25px;
-    font-weight: 600;
-    color: #000;
-    font-size: 1.1rem;
-}
-
-.accordion-button:not(.collapsed) {
-    background: linear-gradient(45deg, #000, #333);
-    color: #fff;
-}
-
-.accordion-button:focus {
-    box-shadow: none;
-    border: none;
-}
-
-.accordion-body {
-    padding: 25px;
-    background: #fff;
-    color: #666;
-    line-height: 1.6;
-}
-
-.contact-cta {
-    padding: 80px 0;
-    background: linear-gradient(135deg, #000 0%, #333 100%);
-    color: #fff;
-    text-align: center;
-}
-
-.contact-cta h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.contact-cta p {
-    font-size: 1.25rem;
-    opacity: 0.9;
-    margin-bottom: 40px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.cta-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.cta-buttons .btn {
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 12px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-}
-
-.cta-buttons .btn-primary {
-    background: #fff;
-    color: #000;
-    border: none;
-}
-
-.cta-buttons .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(255,255,255,0.2);
-    color: #000;
-}
-
-.cta-buttons .btn-secondary {
-    background: transparent;
-    color: #fff;
-    border: 2px solid #fff;
-}
-
-.cta-buttons .btn-secondary:hover {
-    background: #fff;
-    color: #000;
-    transform: translateY(-3px);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .contact-hero .hero-title {
-        font-size: 2rem;
-    }
-    
-    .contact-hero .hero-subtitle {
-        font-size: 1rem;
-    }
-    
-    .contact-form-wrapper,
-    .contact-info-wrapper {
-        padding: 30px 20px;
-    }
-    
-    .form-header h3 {
-        font-size: 1.5rem;
-    }
-    
-    .section-header h2 {
-        font-size: 2rem;
-    }
-    
-    .contact-cta h2 {
-        font-size: 2rem;
-    }
-    
-    .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .cta-buttons .btn {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .contact-hero {
-        padding: 60px 0;
-    }
-    
-    .contact-form-section,
-    .map-section,
-    .faq-section,
-    .contact-cta {
-        padding: 60px 0;
-    }
-    
-    .contact-hero .hero-title {
-        font-size: 1.75rem;
-    }
-    
-    .form-header h3 {
-        font-size: 1.25rem;
-    }
-    
-    .section-header h2 {
-        font-size: 1.75rem;
-    }
-    
-    .contact-cta h2 {
-        font-size: 1.75rem;
-    }
-}
-</style>
-
-<?php get_footer(); ?> 
+    </script>
+
+    <?php wp_footer(); ?>
+</body>
+</html>

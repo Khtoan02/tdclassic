@@ -148,9 +148,32 @@ $flagship_product_query = new WP_Query(array(
 <!-- PRODUCT GRID (Comprehensive List) -->
 <section class="py-24 bg-metal">
     <div class="container mx-auto px-6 md:px-12">
-        <?php if (have_posts()) : ?>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
-                <?php while (have_posts()) : the_post(); ?>
+        <?php
+        // Get current page number
+        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        
+        // Custom query for all products in this category
+        $args = array(
+            'post_type' => 'product',
+            'posts_per_page' => 12, // Products per page
+            'paged' => $paged,
+            'post_status' => 'publish',
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'product_cat',
+                    'field' => 'term_id',
+                    'terms' => $current_category->term_id,
+                )
+            ),
+            'orderby' => 'menu_order title',
+            'order' => 'ASC'
+        );
+        
+        $products_grid_query = new WP_Query($args);
+        
+        if ($products_grid_query->have_posts()) : ?>
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+                <?php while ($products_grid_query->have_posts()) : $products_grid_query->the_post(); ?>
                     <?php 
                     global $product;
                     if (!$product) {
@@ -192,33 +215,86 @@ $flagship_product_query = new WP_Query(array(
                 <?php endwhile; ?>
             </div>
 
-            <!-- Pagination / Load More -->
-            <?php
-            $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-            $total_pages = $GLOBALS['wp_query']->max_num_pages;
-            
-            if ($total_pages > 1) :
+            <!-- Loader & Sentinel for Infinite Scroll -->
+            <?php 
+            $total_pages = $products_grid_query->max_num_pages;
+            if ($total_pages > 1) : 
             ?>
-                <div class="text-center mt-16">
-                    <nav aria-label="Products pagination" class="flex justify-center gap-2">
-                        <?php
-                        echo paginate_links(array(
-                            'base' => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
-                            'format' => '?paged=%#%',
-                            'current' => max(1, $paged),
-                            'total' => $total_pages,
-                            'prev_text' => '<i data-lucide="chevron-left" class="w-5 h-5"></i>',
-                            'next_text' => '<i data-lucide="chevron-right" class="w-5 h-5"></i>',
-                            'type' => 'plain',
-                            'end_size' => 1,
-                            'mid_size' => 1,
-                            'before_page_number' => '<span class="inline-flex items-center justify-center w-10 h-10 border border-white/5 hover:border-gold/30 transition-colors text-gray-400 hover:text-gold text-xs">',
-                            'after_page_number' => '</span>'
-                        ));
-                        ?>
-                    </nav>
+                <div id="product-grid-loader" class="text-center mt-12 hidden">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
+                    <p class="text-gray-500 text-xs mt-2 font-sans tracking-widest uppercase">Đang tải thêm...</p>
                 </div>
+                <div id="product-grid-sentinel" class="h-4 w-full"></div>
+
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    let page = 2;
+                    let maxPages = <?php echo $total_pages; ?>;
+                    let isLoading = false;
+                    let termId = <?php echo $current_category->term_id; ?>;
+                    
+                    const grid = document.getElementById('product-grid');
+                    const loader = document.getElementById('product-grid-loader');
+                    const sentinel = document.getElementById('product-grid-sentinel');
+                    
+                    if (maxPages < 2) {
+                        return;
+                    }
+
+                    const observer = new IntersectionObserver((entries) => {
+                        if (entries[0].isIntersecting && !isLoading && page <= maxPages) {
+                            loadMoreProducts();
+                        }
+                    }, { rootMargin: '200px' });
+
+                    observer.observe(sentinel);
+
+                    function loadMoreProducts() {
+                        isLoading = true;
+                        loader.classList.remove('hidden');
+                        
+                        const formData = new FormData();
+                        formData.append('action', 'tdclassic_load_more_products');
+                        formData.append('page', page);
+                        formData.append('term_id', termId);
+                        
+                        fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            if (html.trim()) {
+                                const tempDiv = document.createElement('div');
+                                tempDiv.innerHTML = html;
+                                
+                                while (tempDiv.firstChild) {
+                                    grid.appendChild(tempDiv.firstChild);
+                                }
+                                
+                                page++;
+                                isLoading = false;
+                                
+                                if (page > maxPages) {
+                                    observer.disconnect();
+                                    loader.classList.add('hidden');
+                                }
+                            } else {
+                                observer.disconnect();
+                                loader.classList.add('hidden');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error loading products:', err);
+                            isLoading = false;
+                            loader.classList.add('hidden');
+                        });
+                    }
+                });
+                </script>
             <?php endif; ?>
+            
+            <?php wp_reset_postdata(); ?>
 
         <?php else : ?>
             <div class="text-center py-20">

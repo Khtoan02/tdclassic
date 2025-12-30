@@ -224,7 +224,7 @@ add_action('after_setup_theme', 'tdclassic_setup');
 
 // Enqueue scripts and styles
 function tdclassic_scripts() {
-    $theme_version = '2.4.0';
+    $theme_version = '2.4.1';
     
     // Bootstrap CSS
     wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css', array(), '5.3.0');
@@ -237,6 +237,9 @@ function tdclassic_scripts() {
     
     // Google Fonts - Outfit & Cormorant Garamond + Cinzel & Manrope for Product Page
     wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;700;800&family=Cormorant+Garamond:ital,wght@1,300;1,500&family=Cinzel:wght@400;500;600;700&family=Manrope:wght@200;300;400;500;600;700&display=swap', array(), null);
+    
+    // Lucide Icons
+    wp_enqueue_script('lucide-icons', 'https://unpkg.com/lucide@latest', array(), null, false);
     
     // ===== CSS MODULES - Load on all pages =====
     // Header CSS - New design - Load on all pages
@@ -363,6 +366,333 @@ function tdclassic_add_tailwind() {
     <?php
 }
 add_action('wp_head', 'tdclassic_add_tailwind', 10);
+
+// Force WooCommerce to use custom product category template
+add_filter('woocommerce_locate_template', 'tdclassic_woocommerce_locate_template', 10, 3);
+function tdclassic_woocommerce_locate_template($template, $template_name, $template_path) {
+    // Force use of custom taxonomy-product_cat.php
+    if ($template_name === 'archive-product.php' && (is_product_category() || is_product_tag() || is_tax('product_cat'))) {
+        $custom_template = get_template_directory() . '/woocommerce/taxonomy-product_cat.php';
+        if (file_exists($custom_template)) {
+            return $custom_template;
+        }
+    }
+    return $template;
+}
+
+// Force product category pages to use proper taxonomy template
+add_filter('template_include', 'tdclassic_force_taxonomy_template', 99);
+function tdclassic_force_taxonomy_template($template) {
+    // Check if this is a product category page
+    if (is_product_category() || is_tax('product_cat')) {
+        $custom_template = get_template_directory() . '/woocommerce/taxonomy-product_cat.php';
+        if (file_exists($custom_template)) {
+            return $custom_template;
+        }
+        // Fallback to root level template
+        $fallback_template = get_template_directory() . '/taxonomy-product_cat.php';
+        if (file_exists($fallback_template)) {
+            return $fallback_template;
+        }
+    }
+    
+    // Check for custom product_category taxonomy
+    if (is_tax('product_category')) {
+        $custom_template = get_template_directory() . '/taxonomy-product_category.php';
+        if (file_exists($custom_template)) {
+            return $custom_template;
+        }
+    }
+    
+    // Debug for admin
+    if (current_user_can('administrator')) {
+        echo '<!-- TEMPLATE BEING USED: ' . $template . ' -->';
+    }
+    return $template;
+}
+
+// ============================================
+// PRODUCT CATEGORY PAGE - CUSTOM META BOXES
+// ============================================
+
+// Add custom meta boxes for WooCommerce products
+add_action('add_meta_boxes', 'tdclassic_add_product_meta_boxes');
+function tdclassic_add_product_meta_boxes() {
+    add_meta_box(
+        'tdclassic_product_specs',
+        'Thông Số Kỹ Thuật (Product Specs)',
+        'tdclassic_product_specs_callback',
+        'product',
+        'side',
+        'default'
+    );
+    
+    add_meta_box(
+        'tdclassic_product_badge',
+        'Huy Hiệu Sản Phẩm (Badge)',
+        'tdclassic_product_badge_callback',
+        'product',
+        'side',
+        'default'
+    );
+}
+
+// Product Specs meta box callback
+function tdclassic_product_specs_callback($post) {
+    wp_nonce_field('tdclassic_save_product_meta', 'tdclassic_product_meta_nonce');
+    $value = get_post_meta($post->ID, '_product_specs', true);
+    ?>
+    <p>
+        <label for="product_specs">Thông số kỹ thuật hiển thị trên card:</label><br>
+        <input type="text" id="product_specs" name="product_specs" value="<?php echo esc_attr($value); ?>" class="widefat" placeholder="VD: 2-Way, 400W RMS">
+    </p>
+    <p class="description">
+        Ngắn gọn, hiển thị trên product card trong category page. VD: "2-Way, 400W", "Dual 12 inch", "Class D Amp"
+    </p>
+    <?php
+}
+
+// Product Badge meta box callback
+function tdclassic_product_badge_callback($post) {
+    $value = get_post_meta($post->ID, '_product_badge', true);
+    ?>
+    <p>
+        <label for="product_badge">Huy hiệu tùy chỉnh:</label><br>
+        <select id="product_badge" name="product_badge" class="widefat">
+            <option value="">-- Không có --</option>
+            <option value="HOT" <?php selected($value, 'HOT'); ?>>🔥 HOT</option>
+            <option value="NEW" <?php selected($value, 'NEW'); ?>>✨ NEW</option>
+            <option value="BEST SELLER" <?php selected($value, 'BEST SELLER'); ?>>⭐ BEST SELLER</option>
+            <option value="LIMITED" <?php selected($value, 'LIMITED'); ?>>⏰ LIMITED</option>
+        </select>
+    </p>
+    <p class="description">
+        Badge sẽ hiển thị ở góc trên phải của product image. Nếu sản phẩm đang Sale, badge Sale sẽ được ưu tiên hiển thị.
+    </p>
+    <?php
+}
+
+// Save meta box data
+add_action('save_post_product', 'tdclassic_save_product_meta');
+function tdclassic_save_product_meta($post_id) {
+    // Check nonce
+    if (!isset($_POST['tdclassic_product_meta_nonce']) || !wp_verify_nonce($_POST['tdclassic_product_meta_nonce'], 'tdclassic_save_product_meta')) {
+        return;
+    }
+    
+    // Check autosave
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    
+    // Check permissions
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+    
+    // Save product specs
+    if (isset($_POST['product_specs'])) {
+        update_post_meta($post_id, '_product_specs', sanitize_text_field($_POST['product_specs']));
+    }
+    
+    // Save product badge
+    if (isset($_POST['product_badge'])) {
+        update_post_meta($post_id, '_product_badge', sanitize_text_field($_POST['product_badge']));
+    }
+}
+
+// ============================================
+// INFINITE SCROLL / LAZY LOAD HANDLER
+// ============================================
+
+add_action('wp_ajax_tdclassic_load_more_products', 'tdclassic_load_more_products');
+add_action('wp_ajax_nopriv_tdclassic_load_more_products', 'tdclassic_load_more_products');
+
+function tdclassic_load_more_products() {
+    $paged = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $term_id = isset($_POST['term_id']) ? intval($_POST['term_id']) : 0;
+    
+    $args = array(
+        'post_type' => 'product',
+        'posts_per_page' => 12,
+        'paged' => $paged,
+        'post_status' => 'publish',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field' => 'term_id',
+                'terms' => $term_id,
+            )
+        ),
+        'orderby' => 'menu_order title',
+        'order' => 'ASC'
+    );
+    
+    $query = new WP_Query($args);
+    
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            global $product;
+            if (!$product) {
+                $product = wc_get_product(get_the_ID());
+            }
+            $product_specs = get_post_meta(get_the_ID(), '_product_specs', true);
+            $product_badge = get_post_meta(get_the_ID(), '_product_badge', true);
+            ?>
+            <div class="product-card group cursor-pointer bg-void border border-white/5 p-4 hover:border-gold/30 transition-all">
+                <a href="<?php the_permalink(); ?>">
+                    <div class="img-container aspect-square bg-surface overflow-hidden mb-4 relative">
+                        <?php if (has_post_thumbnail()) : ?>
+                            <img src="<?php the_post_thumbnail_url('medium_large'); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="<?php the_title(); ?>" loading="lazy">
+                        <?php else : ?>
+                            <img src="https://images.unsplash.com/photo-1520697830682-bbb6e88e2516?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="<?php the_title(); ?>">
+                        <?php endif; ?>
+                        
+                        <?php if ($product && $product->is_on_sale()) : ?>
+                            <div class="absolute top-2 right-2 bg-gold text-black text-[10px] font-bold px-2 py-1">Sale</div>
+                        <?php elseif ($product_badge) : ?>
+                            <div class="absolute top-2 right-2 bg-gold text-black text-[10px] font-bold px-2 py-1"><?php echo esc_html($product_badge); ?></div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <h4 class="font-serif text-white text-sm md:text-base group-hover:text-gold transition-colors"><?php the_title(); ?></h4>
+                    <p class="font-sans text-gray-500 text-[10px] uppercase mt-1">
+                        <?php 
+                        $categories = get_the_terms(get_the_ID(), 'product_cat');
+                        if ($categories && !is_wp_error($categories)) {
+                            echo esc_html($categories[0]->name);
+                        }
+                        ?>
+                    </p>
+                    <?php if ($product_specs) : ?>
+                        <p class="text-gold text-xs mt-2"><?php echo esc_html($product_specs); ?></p>
+                    <?php endif; ?>
+                </a>
+            </div>
+            <?php
+        }
+        wp_reset_postdata();
+    }
+
+    die();
+}
+
+add_action('wp_ajax_tdclassic_load_more_news', 'tdclassic_load_more_news');
+add_action('wp_ajax_nopriv_tdclassic_load_more_news', 'tdclassic_load_more_news');
+
+function tdclassic_load_more_news() {
+    $paged = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $posts_per_page = 9;
+
+    // 1. Local Posts
+    $local_query = new WP_Query(
+        array(
+            'post_type'      => 'post',
+            'posts_per_page' => $posts_per_page,
+            'paged'          => $paged,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'post_status'    => 'publish'
+        )
+    );
+
+    $combined_posts = array();
+    
+    // Process Local
+    if ($local_query->have_posts()) {
+        while ($local_query->have_posts()) {
+            $local_query->the_post();
+            $categories = get_the_category();
+            $cat_slug = $categories ? $categories[0]->slug : 'uncategorized';
+            $cat_name = $categories ? $categories[0]->name : 'Tin tức';
+
+            $combined_posts[] = array(
+                'origin'        => 'local',
+                'title'         => get_the_title(),
+                'link'          => get_permalink(),
+                'image'         => get_the_post_thumbnail_url(get_the_ID(), 'large') ?: 'https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=800&auto=format&fit=crop',
+                'date'          => get_the_date('d M Y'),
+                'raw_date'      => get_the_date('c'),
+                'excerpt'       => get_the_excerpt(),
+                'category_slug' => $cat_slug,
+                'category_name' => $cat_name,
+                'read_time'     => '5 min read'
+            );
+        }
+        wp_reset_postdata();
+    }
+
+    // 2. Remote Posts (if available)
+    if (function_exists('get_posts_from_main_site')) {
+         // Create dummy variable for reference parameter to avoid Fatal Error
+         $dummy_total_remote = 1; 
+         $remote_posts = get_posts_from_main_site($posts_per_page, $paged, $dummy_total_remote);
+         
+         if (!empty($remote_posts)) {
+            foreach ($remote_posts as $remote_post) {
+                $combined_posts[] = array(
+                    'origin'        => 'remote',
+                    'title'         => isset($remote_post['title']) ? $remote_post['title'] : '',
+                    'link'          => isset($remote_post['link']) ? $remote_post['link'] : '#',
+                    'image'         => isset($remote_post['image']) ? $remote_post['image'] : '',
+                    'date'          => isset($remote_post['date']) ? $remote_post['date'] : '',
+                    'raw_date'      => isset($remote_post['raw_date']) ? $remote_post['raw_date'] : '',
+                    'excerpt'       => isset($remote_post['excerpt']) ? $remote_post['excerpt'] : '',
+                    'category_slug' => 'tin-tuc',
+                    'category_name' => 'TavaLED',
+                    'read_time'     => '3 min read'
+                );
+            }
+         }
+    }
+
+    // Sort combined
+    usort($combined_posts, function ($a, $b) {
+        $time_a = !empty($a['raw_date']) ? strtotime($a['raw_date']) : 0;
+        $time_b = !empty($b['raw_date']) ? strtotime($b['raw_date']) : 0;
+        return $time_b - $time_a;
+    });
+
+    // Check if we have any posts
+    if (empty($combined_posts)) {
+        die(); // Return empty to signal end
+    }
+
+    // Output HTML
+    foreach ($combined_posts as $post) {
+        ?>
+        <article class="article-card group cursor-pointer flex flex-col h-full" data-category="<?php echo esc_attr($post['category_slug']); ?>">
+            <a href="<?php echo esc_url($post['link']); ?>" class="block flex flex-col h-full">
+                <div class="img-container aspect-[3/2] bg-surface overflow-hidden relative mb-6 border border-white/5">
+                    <img src="<?php echo esc_url($post['image']); ?>" class="w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 bg-black/80 backdrop-blur text-gold text-[10px] font-bold uppercase px-3 py-1 tracking-widest border border-gold/20">
+                        <?php echo esc_html($post['category_name']); ?>
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col">
+                    <div class="flex items-center gap-3 mb-3 text-[10px] text-gray-500 font-sans tracking-widest uppercase">
+                        <span><?php echo esc_html($post['date']); ?></span>
+                        <span class="w-1 h-1 bg-gold rounded-full"></span>
+                        <span><?php echo esc_html($post['read_time']); ?></span>
+                    </div>
+                    <h3 class="font-serif text-xl text-white mb-3 group-hover:text-gold transition-colors leading-snug">
+                        <?php echo esc_html($post['title']); ?>
+                    </h3>
+                    <p class="font-sans text-xs text-gray-400 font-light leading-relaxed mb-6 line-clamp-3">
+                        <?php echo esc_html(wp_trim_words($post['excerpt'], 20)); ?>
+                    </p>
+                    <div class="mt-auto pt-4 border-t border-white/5">
+                        <span class="text-gold text-[10px] font-bold uppercase tracking-widest group-hover:underline">Đọc tiếp</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        <?php
+    }
+    
+    die();
+}
 
 // Register widget areas
 function tdclassic_widgets_init() {
