@@ -1,1290 +1,382 @@
 <?php
 /**
- * The template for displaying single product posts
+ * Single Product Template – matches design in single-product.txt
+ * Professional Tailwind CSS layout with proper structure
  */
+get_header();
+?>
 
-get_header(); ?>
+<!-- Noise Overlay -->
+<div class="noise"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; opacity: 0.03; background: url('https://grainy-gradients.vercel.app/noise.svg');">
+</div>
 
-<main id="main" class="site-main product-page">
-    <?php while (have_posts()) : the_post(); ?>
-        <!-- Breadcrumb Section -->
-        <section class="breadcrumb-section">
-            <style>
-                .breadcrumb-modern {
-                    background: #f9f9fb;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 8px 0 rgba(80,80,120,0.04);
-                    padding: 2px 10px;
-                    margin-bottom: 0.8rem;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    font-size: .95rem;
-                }
-                .breadcrumb-modern .breadcrumb-item + .breadcrumb-item::before {
-                    content: '\203A';
-                    color: #b3b3b3;
-                    margin: 0 8px;
-                    font-size: 1.1em;
-                }
-                .breadcrumb-modern .breadcrumb-item a {
-                    color: #3471f7;
-                    text-decoration: none;
-                    transition: color 0.2s;
-                }
-                .breadcrumb-modern .breadcrumb-item a:hover {
-                    text-decoration: underline;
-                }
-                .breadcrumb-modern .breadcrumb-item.active {
-                    color: #21243d;
-                    font-weight: 600;
-                    display: inline-block;
-                    max-width: 60vw;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    vertical-align: bottom;
-                }
-                @media (max-width:600px) {
-                    .breadcrumb-modern {
-                        padding: 2px 8px;
-                        font-size: .92rem;
-                    }
-                }
-            </style>
-            <div class="container">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb breadcrumb-modern align-items-center m-0">
-                        <?php 
-                        $product_categories = get_the_terms(get_the_ID(), 'product_cat');
-                        $main_category = null;
-                        if ($product_categories && !is_wp_error($product_categories)) {
-                            $main_category = $product_categories[0];
-                        }
-                        if ($main_category) : ?>
-                            <li class="breadcrumb-item"><a href="<?php echo get_term_link($main_category); ?>"><?php echo $main_category->name; ?></a></li>
-                        <?php else : ?>
-                            <li class="breadcrumb-item"><a href="<?php echo home_url('/san-pham'); ?>">Sản phẩm</a></li>
-                        <?php endif; ?>
-                        <li class="breadcrumb-item active" aria-current="page"><?php the_title(); ?></li>
-                    </ol>
-                </nav>
-            </div>
-        </section>
+<main id="main" class="site-main" style="background-color: #050505;">
+    <?php while (have_posts()):
+        the_post(); ?>
 
-        <!-- Enhanced Product Hero Section -->
-        <div class="product-hero-section">
-            <div class="hero-background-pattern"></div>
-            <div class="container">
-                <div class="row">
-                    <!-- Product Images Gallery -->
-                    <div class="col-lg-6">
-                        <div class="product-gallery-wrapper">
-                        <?php if (has_post_thumbnail()) : ?>
-                                <!-- Main Product Image with thumbnail rail (mobile-first) -->
-                                <div class="main-image-container mobile-two-col-gallery">
-                                    <div class="product-badges">
-                                        <span class="badge badge-premium">
-                                            <i class="fas fa-crown"></i>
-                                            <span>Premium</span>
-                                        </span>
-                                        <span class="badge badge-trusted">
-                                            <i class="fas fa-shield-check"></i>
-                                            <span>Tin cậy</span>
-                                        </span>
-                                        <span class="badge badge-authentic">
-                                            <i class="fas fa-certificate"></i>
-                                            <span>Chính hãng</span>
-                                        </span>
-                                    </div>
-                                    
-                                    <!-- Thumbnails rail (left) -->
-                                    <div class="thumbs-rail">
-                                        <?php
-                                        $thumb_urls = array();
-                                        $thumb_urls[] = get_the_post_thumbnail_url(get_the_ID(), 'large');
-                                        $gallery_meta = get_post_meta(get_the_ID(), '_product_image_gallery', true);
-                                        if (!empty($gallery_meta)) {
-                                            $ids = array_filter(array_map('trim', explode(',', $gallery_meta)));
-                                            foreach ($ids as $gid) {
-                                                $u = wp_get_attachment_image_url($gid, 'large');
-                                                if ($u) { $thumb_urls[] = $u; }
-                                            }
-                                        } else {
-                                            $imgs = get_attached_media('image', get_the_ID());
-                                            foreach ($imgs as $att) {
-                                                $u = wp_get_attachment_image_url($att->ID, 'large');
-                                                if ($u && !in_array($u, $thumb_urls, true)) { $thumb_urls[] = $u; }
-                                            }
-                                        }
-                                        foreach ($thumb_urls as $i => $u) : ?>
-                                            <button class="thumb-item<?php echo $i === 0 ? ' active' : ''; ?>" data-image="<?php echo esc_url($u); ?>" aria-label="Xem ảnh">
-                                                <img src="<?php echo esc_url($u); ?>" alt="Thumb">
-                                            </button>
-                                        <?php endforeach; ?>
-                                    </div>
+        <!-- ========== PRODUCT HERO SECTION ========== -->
+        <section class="pt-12 pb-20 md:py-0 md:min-h-screen relative flex items-center" style="background-color: #050505;">
+            <div class="container mx-auto px-6 md:px-12">
+                <div class="grid md:grid-cols-12 gap-12 items-center py-12 md:py-24">
 
-                                    <div class="main-image-wrapper">
-                                        <img src="<?php the_post_thumbnail_url('large'); ?>" 
-                                             class="product-main-image" 
-                                             alt="<?php the_title(); ?>"
-                                             id="mainProductImage">
-                                        
-                                        <div class="image-overlay">
-                                            <div class="overlay-actions">
-                                                <button class="action-btn zoom-btn" data-bs-toggle="modal" data-bs-target="#imageModal" title="Phóng to hình ảnh">
-                                                    <i class="fas fa-search-plus"></i>
-                                                </button>
-                                                <button class="action-btn fullscreen-btn" title="Xem toàn màn hình">
-                                                    <i class="fas fa-expand"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Mobile Floating Actions -->
-                                        <div class="mobile-floating-actions">
-                                            <button class="floating-btn mobile-zoom-btn" title="Xem chi tiết">
-                                                <i class="fas fa-search-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                        <?php endif; ?>
-                        </div>
-                            
-                        <!-- Enhanced Quick Contact -->
-                            <div class="enhanced-contact-section">
-                                <div class="contact-section-header">
-                                    <div class="header-content">
-                                        <h4>Liên hệ ngay</h4>
-                                        <div class="availability-indicator">
-                                            <div class="status-dot"></div>
-                                            <span>Sẵn sàng hỗ trợ</span>
-                                        </div>
-                                    </div>
-                                    <div class="response-time">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Phản hồi < 30 phút</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="contact-methods-grid">
-                                    <!-- Hotline Contact -->
-                                    <a href="tel:<?php echo str_replace(' ', '', tdclassic_get_company_phone()); ?>" class="contact-method-card hotline-card">
-                                        <div class="method-icon-wrapper">
-                                            <div class="method-icon">
-                                                <i class="fas fa-phone-volume"></i>
-                                            </div>
-                                            <div class="icon-badge">
-                                                <i class="fas fa-star"></i>
-                                            </div>
-                                        </div>
-                                        <div class="method-content">
-                                            <div class="method-title">Hotline 24/7</div>
-                                            <div class="method-subtitle"><?php echo tdclassic_get_company_phone(); ?></div>
-                                            <div class="method-description">Tư vấn trực tiếp với chuyên gia</div>
-                                        </div>
-                                        <div class="method-arrow">
-                                            <i class="fas fa-arrow-right"></i>
-                                        </div>
-                                    </a>
-                                    
-                                    <!-- Zalo Contact -->
-                                    <a href="https://zalo.me/<?php echo str_replace(' ', '', tdclassic_get_company_phone()); ?>" class="contact-method-card zalo-card" target="_blank">
-                                        <div class="method-icon-wrapper">
-                                            <div class="method-icon zalo-icon">
-                                                <i class="fas fa-comments"></i>
-                                            </div>
-                                            <div class="icon-badge zalo-badge">
-                                                <i class="fas fa-bolt"></i>
-                                            </div>
-                                        </div>
-                                        <div class="method-content">
-                                            <div class="method-title">Chat Zalo</div>
-                                            <div class="method-subtitle"><?php echo tdclassic_get_company_phone(); ?></div>
-                                            <div class="method-description">Nhắn tin nhanh, hỗ trợ ngay</div>
-                                        </div>
-                                        <div class="method-arrow">
-                                            <i class="fas fa-external-link-alt"></i>
-                                        </div>
-                                    </a>
-                                    
-                                    <!-- Email Contact -->
-                                    <a href="mailto:<?php echo tdclassic_get_company_email(); ?>" class="contact-method-card email-card">
-                                        <div class="method-icon-wrapper">
-                                            <div class="method-icon">
-                                                <i class="fas fa-envelope-open-text"></i>
-                                            </div>
-                                            <div class="icon-badge">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                        </div>
-                                        <div class="method-content">
-                                            <div class="method-title">Email hỗ trợ</div>
-                                            <div class="method-subtitle"><?php echo tdclassic_get_company_email(); ?></div>
-                                            <div class="method-description">Gửi thông tin chi tiết dự án</div>
-                                        </div>
-                                        <div class="method-arrow">
-                                            <i class="fas fa-paper-plane"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                                
-                                <div class="contact-footer">
-                                    <div class="footer-info">
-                                        <i class="fas fa-shield-check"></i>
-                                        <span>Bảo mật thông tin 100% - Tư vấn miễn phí</span>
-                                    </div>
+                    <!-- Left: Visual Gallery (7 columns) -->
+                    <div class="md:col-span-7 flex flex-col justify-center relative group">
+                        <!-- Main Image Area -->
+                        <?php if (has_post_thumbnail()): ?>
+                            <div class="relative aspect-[4/5] md:aspect-square w-full overflow-hidden border border-white/5"
+                                style="background-color: #151515;">
+                                <img id="mainImage" src="<?php the_post_thumbnail_url('large'); ?>"
+                                    class="w-full h-full object-cover p-8 md:p-16 transition-all duration-700 group-hover:scale-105"
+                                    style="opacity: 1; transition: opacity 0.3s ease, transform 0.7s ease;"
+                                    alt="<?php the_title_attribute(); ?>" />
+                                <!-- Floating Badge -->
+                                <div class="absolute top-6 left-6 border px-3 py-1 backdrop-blur"
+                                    style="border-color: #C5A059; background: rgba(0,0,0,0.5);">
+                                    <span class="font-sans text-[10px] tracking-[0.2em] uppercase"
+                                        style="color: #C5A059;">Signature Series</span>
                                 </div>
                             </div>
-                    </div>
-                    
-                    <!-- Enhanced Product Information -->
-                    <div class="col-lg-6">
-                        <div class="product-info">
-                            
-                            <!-- Rating then Title -->
-                            <div class="title-section">
-                                <div class="product-rating">
-                                    <span class="product-header">
+                        <?php endif; ?>
+
+                        <!-- Thumbnails Rail -->
+                        <div class="flex gap-4 mt-6 overflow-x-auto pb-2"
+                            style="-ms-overflow-style: none; scrollbar-width: none;">
                             <?php
-                            $product_categories = get_the_terms(get_the_ID(), 'product_cat');
-                            if ($product_categories && !is_wp_error($product_categories)) :
-                                $primary_category = $product_categories[0];
-                            ?>
-                            <div class="product-category">
-                                <i class="fas fa-headphones-alt"></i>
-                                <span><?php echo esc_html($primary_category->name); ?></span>
+                            $thumb_urls = [];
+                            $thumb_urls[] = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                            $gallery_meta = get_post_meta(get_the_ID(), '_product_image_gallery', true);
+                            if (!empty($gallery_meta)) {
+                                $ids = array_filter(array_map('trim', explode(',', $gallery_meta)));
+                                foreach ($ids as $gid) {
+                                    $u = wp_get_attachment_image_url($gid, 'large');
+                                    if ($u) {
+                                        $thumb_urls[] = $u;
+                                    }
+                                }
+                            } else {
+                                $imgs = get_attached_media('image', get_the_ID());
+                                foreach ($imgs as $att) {
+                                    $u = wp_get_attachment_image_url($att->ID, 'large');
+                                    if ($u && !in_array($u, $thumb_urls, true)) {
+                                        $thumb_urls[] = $u;
+                                    }
+                                }
+                            }
+                            foreach ($thumb_urls as $i => $u): ?>
+                                <div class="thumb<?php echo $i === 0 ? ' active' : ''; ?> w-20 h-20 border flex-shrink-0 cursor-pointer"
+                                    style="border-color: <?php echo $i === 0 ? '#C5A059' : 'rgba(255,255,255,0.2)'; ?>; background-color: #151515; opacity: <?php echo $i === 0 ? '1' : '0.5'; ?>; transition: all 0.3s;"
+                                    onclick="changeImage(this, '<?php echo esc_url($u); ?>')">
+                                    <img src="<?php echo esc_url($u); ?>" class="w-full h-full object-cover p-2"
+                                        alt="Thumbnail <?php echo $i + 1; ?>" />
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <!-- Right: Information (5 columns) -->
+                    <div class="md:col-span-5 flex flex-col justify-center">
+                        <div class="mb-2">
+                            <span class="font-sans text-xs tracking-[0.3em] uppercase" style="color: #C5A059;">Professional
+                                Audio</span>
+                        </div>
+                        <h1 class="font-serif text-2xl md:text-3xl lg:text-4xl text-white mb-4 leading-tight">
+                            <?php the_title(); ?>
+                            <br>
+                            <span class="text-lg md:text-xl lg:text-2xl"
+                                style="color: #666666;"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_edition', true) ?: 'Edition 2025'); ?></span>
+                        </h1>
+
+                        <!-- Quick Specs Row -->
+                        <div class="flex gap-6 py-6 my-8"
+                            style="border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <div>
+                                <span class="block text-[10px] uppercase tracking-wider mb-1" style="color: #666666;">Power
+                                    (RMS)</span>
+                                <span
+                                    class="font-serif text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_power', true) ?: '450W'); ?></span>
                             </div>
-                            <?php else : ?>
-                            <div class="product-category">
-                                <i class="fas fa-headphones-alt"></i>
-                                <span>Thiết bị âm thanh</span>
+                            <div class="h-10" style="width: 1px; background: rgba(255,255,255,0.1);"></div>
+                            <div>
+                                <span class="block text-[10px] uppercase tracking-wider mb-1"
+                                    style="color: #666666;">Sensitivity</span>
+                                <span
+                                    class="font-serif text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_sensitivity', true) ?: '98dB'); ?></span>
                             </div>
+                            <div class="h-10" style="width: 1px; background: rgba(255,255,255,0.1);"></div>
+                            <div>
+                                <span class="block text-[10px] uppercase tracking-wider mb-1"
+                                    style="color: #666666;">Response</span>
+                                <span
+                                    class="font-serif text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_response', true) ?: '50Hz-20kHz'); ?></span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <?php
+                        $full_content = get_the_content();
+                        $plain_content = wp_strip_all_tags($full_content);
+                        $max_chars = 200;
+                        $is_truncated = mb_strlen($plain_content) > $max_chars;
+                        $short_content = $is_truncated ? mb_substr($plain_content, 0, $max_chars) . '...' : $plain_content;
+                        if (empty($plain_content)) {
+                            $short_content = 'Sự kết hợp hoàn hảo giữa sức mạnh và sự tinh tế. Sản phẩm được chế tác với các vật liệu cao cấp, mang đến chất lượng âm thanh vượt trội.';
+                            $is_truncated = false;
+                        }
+                        ?>
+                        <div class="mb-10">
+                            <p id="shortDesc" class="font-sans text-sm leading-relaxed text-justify"
+                                style="color: #999999;">
+                                <?php echo esc_html($short_content); ?>
+                            </p>
+                            <?php if ($is_truncated): ?>
+                                <div id="fullDesc" class="font-sans text-sm leading-relaxed text-justify"
+                                    style="color: #999999; display: none;">
+                                    <?php echo wp_kses_post($full_content); ?>
+                                </div>
+                                <button id="toggleDescBtn" onclick="toggleDescription()"
+                                    class="mt-3 text-xs uppercase tracking-wider transition-colors" style="color: #C5A059;"
+                                    onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#C5A059';">
+                                    Xem thêm <span class="toggle-icon">↓</span>
+                                </button>
                             <?php endif; ?>
-                            </span>
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    
-                                    <span class="rating-text">(4.9/5 - 127 đánh giá)</span>
-                                </div>
-                                <h1 class="product-title"><?php the_title(); ?></h1>
-                            </div>
-                            
-                            <!-- Product Description -->
-                            <div class="product-excerpt">
-                                <?php echo wp_trim_words(get_the_excerpt(), 35, '...'); ?>
-                            </div>
-
-                            <!-- Social Proof -->
-                            <div class="social-proof">
-                                <div class="proof-item">
-                                    <i class="fas fa-users"></i>
-                                    <span><strong>1,247</strong> khách hàng đã mua</span>
-                                </div>
-                                <div class="proof-item">
-                                    <i class="fas fa-eye"></i>
-                                    <span><strong>5,632</strong> lượt xem</span>
-                                </div>
-                                <div class="proof-item">
-                                    <i class="fas fa-thumbs-up"></i>
-                                    <span><strong>98.6</strong> % khách hàng hài lòng</span>
-                                </div>
-                            </div>
-
-                            <!-- Key Features -->
-                            <div class="key-features">
-                                <h3>Điểm nổi bật</h3>
-                                <div class="features-list">
-                                    <?php 
-                                    $key_features = get_post_meta(get_the_ID(), '_key_features', true);
-                                    if ($key_features) :
-                                        $features = explode("\n", $key_features);
-                                        foreach ($features as $feature) :
-                                            if (trim($feature)) :
-                                    ?>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span><?php echo esc_html(trim($feature)); ?></span>
-                                    </div>
-                                    <?php 
-                                            endif;
-                                        endforeach;
-                                    else :
-                                    ?>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Công nghệ âm thanh tiên tiến</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Thiết kế hiện đại, sang trọng</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Chất lượng âm thanh vượt trội</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Dễ dàng lắp đặt và sử dụng</span>
-                                    </div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            
-
-                            <!-- Trust Statement for Large Projects -->
-                            <div class="trust-statement">
-                                <div class="statement-content">
-                                    <div class="statement-icon">
-                                        <i class="fas fa-building"></i>
-                                    </div>
-                                    <div class="statement-text">
-                                        <h4>Tin cậy cho các công trình lớn</h4>
-                                        <p>Được tin dùng bởi hơn <strong>500+ dự án</strong> khách sạn, resort, trung tâm thương mại và các công trình quy mô lớn trên toàn quốc</p>
-                                        <div class="statement-badges">
-                                            <span class="mini-badge">Hotels & Resorts</span>
-                                            <span class="mini-badge">Shopping Malls</span>
-                                            <span class="mini-badge">Office Buildings</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Trust Indicators -->
-                            <div class="trust-indicators">
-                                <div class="trust-item">
-                                    <i class="fas fa-certificate"></i>
-                                    <span>Sản phẩm chính hãng 100%</span>
-                                </div>
-                                <div class="trust-item">
-                                    <i class="fas fa-tags"></i>
-                                    <span>Giá cả cạnh tranh nhất thị trường</span>
-                                </div>
-                                <div class="trust-item">
-                                    <i class="fas fa-shipping-fast"></i>
-                                    <span>Giao hàng nhanh toàn quốc</span>
-                                </div>
-                                <div class="trust-item">
-                                    <i class="fas fa-tools"></i>
-                                    <span>Hỗ trợ kỹ thuật 24/7</span>
-                                </div>
-                            </div>
-                          
-                                                    
-                            <!-- Primary actions: Specs + Contact in one row -->
-                            <div class="primary-actions">
-                                <button class="btn btn-outline-dark specs-toggle" data-bs-toggle="modal" data-bs-target="#specsModal">
-                                    <i class="fas fa-list-ul me-2"></i>
-                                    Xem thông số kỹ thuật
-                                </button>
-                                <button class="btn btn-dark contact-consultation-btn" data-bs-toggle="modal" data-bs-target="#consultationModal">
-                                    <i class="fas fa-headset me-2"></i>
-                                    Liên hệ tư vấn & báo giá
-                                </button>
-                            </div>
-
-                            
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-col gap-4">
+                            <a href="tel:<?php echo esc_attr(str_replace(' ', '', tdclassic_get_company_phone())); ?>"
+                                class="w-full text-center font-sans text-sm font-bold uppercase tracking-[0.2em] py-4 transition-all"
+                                style="background-color: #C5A059; color: #000;">
+                                Liên hệ báo giá
+                            </a>
+                            <button
+                                class="w-full border font-sans text-sm font-bold uppercase tracking-[0.2em] py-4 transition-all flex items-center justify-center gap-2 text-white"
+                                style="border-color: rgba(255,255,255,0.2);"
+                                onmouseover="this.style.borderColor='#C5A059'; this.style.color='#C5A059';"
+                                onmouseout="this.style.borderColor='rgba(255,255,255,0.2)'; this.style.color='#fff';">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Tải Datasheet
+                            </button>
+                        </div>
 
-        
-
-        <!-- Audio Solutions Section -->
-        <section class="audio-solutions-section">
-            <div class="container">
-                <div class="section-header text-center">
-                    <div class="section-badge">
-                        <i class="fas fa-cogs"></i>
-                        <span>Giải pháp âm thanh</span>
-                    </div>
-                    <h2 class="section-title">Giải pháp âm thanh tối ưu cho mọi nhu cầu</h2>
-                    <p class="section-description">
-                        Chúng tôi cung cấp các giải pháp âm thanh chuyên nghiệp, phù hợp với mọi nhu cầu từ cá nhân đến doanh nghiệp
-                    </p>
-                </div>
-                
-                <div class="solutions-grid">
-                    <div class="solution-card">
-                        <div class="solution-image">
-                            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Âm thanh chất lượng cao">
-                            <div class="solution-overlay">
-                                <div class="solution-icon">
-                                    <i class="fas fa-volume-up"></i>
-                                </div>
-                            </div>
+                        <!-- Warranty Badge -->
+                        <div class="mt-8 flex items-center gap-2 text-xs font-sans" style="color: #666666;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="#C5A059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <polyline points="9 12 11 14 15 10"></polyline>
+                            </svg>
+                            Bảo hành chính hãng 24 tháng
                         </div>
-                        <div class="solution-content">
-                            <h3>Âm thanh chất lượng cao</h3>
-                            <p>Công nghệ âm thanh tiên tiến, cho chất lượng âm thanh sống động và chân thực nhất.</p>
-                            <ul class="solution-features">
-                                <li><i class="fas fa-check"></i> Chất lượng âm thanh Hi-Fi</li>
-                                <li><i class="fas fa-check"></i> Công nghệ chống nhiễu tiên tiến</li>
-                                <li><i class="fas fa-check"></i> Tương thích đa thiết bị</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="solution-card">
-                        <div class="solution-image">
-                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dễ dàng cài đặt">
-                            <div class="solution-overlay">
-                                <div class="solution-icon">
-                                    <i class="fas fa-cogs"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="solution-content">
-                            <h3>Dễ dàng cài đặt</h3>
-                            <p>Thiết kế thông minh, dễ dàng lắp đặt và sử dụng ngay cả với người không chuyên.</p>
-                            <ul class="solution-features">
-                                <li><i class="fas fa-check"></i> Hướng dẫn chi tiết từng bước</li>
-                                <li><i class="fas fa-check"></i> Hỗ trợ kỹ thuật 24/7</li>
-                                <li><i class="fas fa-check"></i> Cài đặt tại nhà miễn phí</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="solution-card">
-                        <div class="solution-image">
-                            <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bền bỉ theo thời gian">
-                            <div class="solution-overlay">
-                                <div class="solution-icon">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="solution-content">
-                            <h3>Bền bỉ theo thời gian</h3>
-                            <p>Vật liệu cao cấp, thiết kế chắc chắn đảm bảo độ bền và tuổi thọ sản phẩm.</p>
-                            <ul class="solution-features">
-                                <li><i class="fas fa-check"></i> Vật liệu cao cấp chống ăn mòn</li>
-                                <li><i class="fas fa-check"></i> Bảo hành lên đến 24 tháng</li>
-                                <li><i class="fas fa-check"></i> Bảo trì định kỳ miễn phí</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="solutions-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Dự án hoàn thành</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">98%</div>
-                        <div class="stat-label">Khách hàng hài lòng</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">24/7</div>
-                        <div class="stat-label">Hỗ trợ kỹ thuật</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">15+</div>
-                        <div class="stat-label">Năm kinh nghiệm</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Latest News Section -->
-        <section class="latest-news-section">
-            <div class="container">
-                <div class="section-header text-center">
-                    <div class="section-badge">
-                        <i class="fas fa-newspaper"></i>
-                        <span>Tin tức & Kiến thức</span>
-                    </div>
-                    <h2 class="section-title">Cập nhật thông tin mới nhất</h2>
-                    <p class="section-description">
-                        Những thông tin hữu ích về công nghệ âm thanh và xu hướng mới nhất trong ngành
-                    </p>
+        <!-- ========== FULL SPECS TABLE ========== -->
+        <section class="py-24" style="background-color: #050505;">
+            <div class="container mx-auto px-6 md:px-12 max-w-4xl">
+                <div class="text-center mb-16">
+                    <h2 class="font-serif text-3xl text-white">Thông Số Kỹ Thuật</h2>
+                    <p class="font-sans text-xs mt-2 uppercase tracking-widest" style="color: #666666;">Technical
+                        Specifications</p>
                 </div>
-                
-                <?php
-                // Get latest blog posts
-                $args = array(
-                    'post_type' => 'post',
-                    'posts_per_page' => 3,
-                    'orderby' => 'date',
-                    'order' => 'DESC',
-                    'meta_query' => array(
-                        array(
-                            'key' => '_thumbnail_id',
-                            'compare' => 'EXISTS'
-                        )
-                    )
-                );
-                
-                $latest_posts = new WP_Query($args);
-                
-                if ($latest_posts->have_posts()) : ?>
-                    <div class="articles-grid">
-                        <?php while ($latest_posts->have_posts()) : $latest_posts->the_post(); ?>
-                            <article class="article-card">
-                                <div class="article-image">
-                                    <?php if (has_post_thumbnail()) : ?>
-                                        <img src="<?php the_post_thumbnail_url('medium_large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
-                                    <?php else : ?>
-                                        <div class="article-placeholder">
-                                            <i class="fas fa-newspaper"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                    
-                                    <div class="article-overlay">
-                                        <div class="article-date">
-                                            <span class="day"><?php echo get_the_date('d'); ?></span>
-                                            <span class="month"><?php echo get_the_date('M'); ?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="article-content">
-                                    <div class="article-meta">
-                                        <span class="article-category">
-                                            <?php
-                                            $categories = get_the_category();
-                                            if ($categories) {
-                                                echo $categories[0]->name;
-                                            }
-                                            ?>
-                                        </span>
-                                        <span class="article-read-time">
-                                            <i class="fas fa-clock"></i>
-                                            <?php echo rand(3, 8); ?> phút đọc
-                                        </span>
-                                    </div>
-                                    
-                                    <h3 class="article-title">
-                                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                    </h3>
-                                    
-                                    <p class="article-excerpt">
-                                        <?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
-                                    </p>
-                                    
-                                    <div class="article-footer">
-                                        <div class="article-author">
-                                            <i class="fas fa-user"></i>
-                                            <span><?php the_author(); ?></span>
-                                        </div>
-                                        <a href="<?php the_permalink(); ?>" class="article-read-more">
-                                            <span>Đọc tiếp</span>
-                                            <i class="fas fa-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </article>
-                        <?php endwhile; ?>
-                    </div>
-                    
-                    <div class="news-cta text-center">
-                        <a href="<?php echo esc_url(home_url('/tin-tuc')); ?>" class="btn-primary">
-                            <i class="fas fa-newspaper"></i>
-                            <span>Xem tất cả tin tức</span>
-                        </a>
-                    </div>
-                <?php
-                    wp_reset_postdata();
-                else :
-                ?>
-                    <div class="no-posts-wrapper">
-                        <div class="no-posts-content">
-                            <div class="no-posts-icon">
-                                <i class="fas fa-newspaper"></i>
-                            </div>
-                            <h3>Chưa có bài viết nào</h3>
-                            <p>Hiện tại chúng tôi chưa có bài viết nào để hiển thị.</p>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </section>
-
-        
-
-        <!-- Other Products Section -->
-        <section class="other-products-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Các sản phẩm khác</h2>
-                    <p>Khám phá thêm các sản phẩm âm thanh chất lượng cao</p>
-                </div>
-                
-                <div class="products-container">
+                <div style="border-top: 1px solid rgba(255,255,255,0.1);">
                     <?php
-                    $args = array(
+                    $specs = [
+                        'Model' => get_post_meta(get_the_ID(), '_product_model', true) ?: get_the_title(),
+                        'System Type' => get_post_meta(get_the_ID(), '_product_system_type', true) ?: '12-inch, 2-way, bass-reflex',
+                        'Frequency Range' => get_post_meta(get_the_ID(), '_product_frequency_range', true) ?: '50 Hz - 20 kHz (-10 dB)',
+                        'Power Rating' => get_post_meta(get_the_ID(), '_product_power_rating', true) ?: '450W / 900W / 1800W (Continuous/Program/Peak)',
+                        'Sensitivity' => get_post_meta(get_the_ID(), '_product_sensitivity', true) ?: '98 dB SPL (1W @ 1m)',
+                        'Nominal Impedance' => get_post_meta(get_the_ID(), '_product_impedance', true) ?: '8 Ohms',
+                        'Dimensions (HxWxD)' => get_post_meta(get_the_ID(), '_product_dimensions', true) ?: '600mm x 360mm x 382mm',
+                        'Weight' => get_post_meta(get_the_ID(), '_product_weight', true) ?: '18.5 Kg (40.8 lbs)',
+                    ];
+                    foreach ($specs as $label => $value): ?>
+                        <div class="grid grid-cols-2 md:grid-cols-4 py-4 px-4 hover:bg-white/5 transition-colors"
+                            style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <div class="font-sans text-xs uppercase tracking-wide" style="color: #666666;">
+                                <?php echo esc_html($label); ?>
+                            </div>
+                            <div class="text-white font-sans text-sm md:col-span-3"><?php echo esc_html($value); ?></div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== RELATED PRODUCTS ========== -->
+        <section class="py-24" style="background-color: #151515; border-top: 1px solid rgba(255,255,255,0.05);">
+            <div class="container mx-auto px-6 md:px-12">
+                <div class="flex justify-between items-end mb-12">
+                    <h3 class="font-serif text-2xl text-white">Sản Phẩm Tương Tự</h3>
+                    <a href="<?php echo esc_url(home_url('/san-pham/')); ?>"
+                        class="text-xs uppercase tracking-widest transition-colors" style="color: #C5A059;"
+                        onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#C5A059';">Xem tất cả</a>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    <?php
+                    $current_id = get_the_ID();
+                    $terms = wp_get_post_terms($current_id, 'product_cat');
+                    $cat_ids = wp_list_pluck($terms, 'term_id');
+                    $related_args = [
                         'post_type' => 'product',
                         'posts_per_page' => 4,
-                        'post__not_in' => array(get_the_ID()),
-                        'orderby' => 'rand'
-                    );
-                    
-                    $other_products = new WP_Query($args);
-                    
-                    if ($other_products->have_posts()) :
-                        while ($other_products->have_posts()) : $other_products->the_post();
-                            $product_categories = get_the_terms(get_the_ID(), 'product_category');
-                            $category_classes = '';
-                            $category_name = '';
-                            if ($product_categories && !is_wp_error($product_categories)) {
-                                foreach ($product_categories as $category) {
-                                    $category_classes .= ' category-' . $category->slug;
-                                }
-                                $category_name = $product_categories[0]->name;
-                            }
-                    ?>
-                        <a href="<?php the_permalink(); ?>" class="product-card-wrapper<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>">
-                            <div class="modern-product-card">
-                                <div class="product-image-container">
-                                    <div class="product-image">
-                                        <?php if (has_post_thumbnail()) : ?>
-                                            <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
-                                        <?php else : ?>
-                                            <div class="product-placeholder">
-                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        'post__not_in' => [$current_id],
+                    ];
+                    if (!empty($cat_ids)) {
+                        $related_args['tax_query'] = [
+                            [
+                                'taxonomy' => 'product_cat',
+                                'field' => 'term_id',
+                                'terms' => $cat_ids,
+                            ],
+                        ];
+                    }
+                    $related = new WP_Query($related_args);
+                    if ($related->have_posts()):
+                        while ($related->have_posts()):
+                            $related->the_post(); ?>
+                            <a href="<?php the_permalink(); ?>" class="block group">
+                                <div class="h-full p-4 border transition-all cursor-pointer flex flex-col"
+                                    style="background-color: #050505; border-color: rgba(255,255,255,0.05);"
+                                    onmouseover="this.style.borderColor='rgba(197,160,89,0.5)';"
+                                    onmouseout="this.style.borderColor='rgba(255,255,255,0.05)';">
+                                    <div class="aspect-square overflow-hidden mb-4 relative flex-shrink-0"
+                                        style="background-color: #1E1E1E;">
+                                        <?php if (has_post_thumbnail()): ?>
+                                            <img src="<?php the_post_thumbnail_url('medium'); ?>" alt="<?php the_title_attribute(); ?>"
+                                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                                        <?php else: ?>
+                                            <div class="w-full h-full flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                                    fill="none" stroke="#333" stroke-width="1">
                                                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                                     <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                                    <polyline points="21,15 16,10 5,21"></polyline>
+                                                    <polyline points="21 15 16 10 5 21"></polyline>
                                                 </svg>
-                                                <span class="placeholder-text">Chưa có ảnh</span>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="product-tech-indicator">
-                                        <div class="tech-dot"></div>
-                                        <div class="tech-dot"></div>
-                                        <div class="tech-dot"></div>
+                                    <div class="flex-grow flex flex-col justify-between">
+                                        <h4 class="text-white font-serif text-sm md:text-base line-clamp-2"
+                                            style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                            <?php the_title(); ?>
+                                        </h4>
+                                        <?php $cats = get_the_terms(get_the_ID(), 'product_cat');
+                                        if ($cats && !is_wp_error($cats)): ?>
+                                            <p class="text-xs mt-2" style="color: #666666;"><?php echo esc_html($cats[0]->name); ?>
+                                            </p>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="product-content">
-                                    <h3 class="product-title">
-                                        <?php the_title(); ?>
-                                    </h3>
-                                    <div class="product-features">
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Chính hãng</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-shield-alt"></i>
-                                            <span>Bảo hành</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-shipping-fast"></i>
-                                            <span>Giao nhanh</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    <?php
-                        endwhile;
+                            </a>
+                        <?php endwhile;
                         wp_reset_postdata();
-                    endif;
-                    ?>
+                    endif; ?>
                 </div>
             </div>
         </section>
 
-
-        <!-- Simplified Image Modal -->
-        <div class="modal fade" id="imageModal" tabindex="-1">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><?php the_title(); ?> - Hình ảnh sản phẩm</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="image-gallery-modal">
-                            <div class="main-modal-image">
-                                <?php if (has_post_thumbnail()) : ?>
-                                    <img src="<?php the_post_thumbnail_url('full'); ?>" class="img-fluid" alt="<?php the_title(); ?>" id="modalMainImage">
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
+        <!-- ========== DETAILED DOCUMENTATION ========== -->
+        <section class="py-20 font-sans text-[10px] leading-relaxed"
+            style="background-color: #050505; border-top: 1px solid rgba(255,255,255,0.05); color: #666666;">
+            <div class="container mx-auto px-6 md:px-12 max-w-5xl">
+                <div class="space-y-6 opacity-70" style="text-align: justify; text-justify: inter-word;">
+                    <?php
+                    $doc = get_post_meta(get_the_ID(), '_product_documentation', true);
+                    if ($doc) {
+                        echo wp_kses_post($doc);
+                    } else {
+                        ?>
+                        <p>
+                            Thông tin được cung cấp trong tài liệu này phản ánh các thông số kỹ thuật và đặc tính hiệu suất của
+                            sản phẩm tại thời điểm xuất bản. TD Classic, tuân theo chính sách phát triển và cải tiến sản phẩm
+                            liên tục, bảo lưu quyền thay đổi thiết kế, vật liệu và thông số kỹ thuật mà không cần thông báo
+                            trước. Những thay đổi này có thể bao gồm, nhưng không giới hạn ở, việc nâng cấp linh kiện phân tần,
+                            thay đổi cấu trúc thùng loa nhằm tối ưu hóa cộng hưởng âm học, hoặc điều chỉnh các thông số đáp
+                            tuyến tần số dựa trên kết quả đo đạc mới nhất từ phòng thí nghiệm tiêu chuẩn Anechoic.
+                        </p>
+                        <p>
+                            <strong>Đo lường và Kiểm định:</strong> Các thông số về độ nhạy (Sensitivity) và đáp tuyến tần số
+                            (Frequency Response) được đo đạc trong môi trường phòng tiêu âm tiêu chuẩn (Free-field condition),
+                            sử dụng thiết bị đo lường chuyên dụng Audio Precision và microphone đo lường được hiệu chuẩn Class
+                            1. Công suất định mức (RMS Power Handling) được xác định thông qua quy trình kiểm tra IEC 60268-5,
+                            sử dụng tín hiệu nhiễu hồng (Pink Noise) với hệ số đỉnh (Crest Factor) là 6dB trong thời gian liên
+                            tục 2 giờ.
+                        </p>
+                        <p>
+                            <strong>Chính sách Bảo hành và Hỗ trợ:</strong> Sản phẩm được bảo hành chính hãng 24 tháng đối với
+                            các lỗi kỹ thuật do nhà sản xuất. Phạm vi bảo hành bao gồm củ loa (Driver) và mạch phân tần
+                            (Crossover). Để nhận được hỗ trợ kỹ thuật và dịch vụ bảo hành, vui lòng liên hệ Trung tâm Dịch vụ
+                            Khách hàng của TD Classic hoặc các đại lý ủy quyền chính thức kèm theo hóa đơn mua hàng hợp lệ.
+                        </p>
+                        <?php
+                    }
+                    ?>
+                </div>
+                <div class="mt-12 pt-8 text-center opacity-40" style="border-top: 1px solid rgba(255,255,255,0.05);">
+                    <p>Mã tài liệu: DOC-GEN-2025-V2.1 | Bản quyền © <?php echo date('Y'); ?> TD Classic Audio. Mọi quyền
+                        được bảo lưu.</p>
                 </div>
             </div>
-        </div>
-
-        <!-- Specifications Modal -->
-        <div class="modal fade" id="specsModal" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Thông số kỹ thuật - <?php the_title(); ?></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                                        <div class="modal-body">
-                        <div class="specifications-content">
-                            <div class="specs-grid">
-                                <!-- Basic Information -->
-                                <div class="spec-category">
-                                    <h6>Thông số cơ bản</h6>
-                                    <div class="spec-item">
-                                        <span class="spec-label">Thương hiệu:</span>
-                                        <span class="spec-value">TD Classic</span>
-                                    </div>
-                                    <?php 
-                                    $product_model = get_post_meta(get_the_ID(), '_product_model', true);
-                                    if ($product_model) :
-                                    ?>
-                                    <div class="spec-item">
-                                        <span class="spec-label">Model:</span>
-                                        <span class="spec-value"><?php echo esc_html($product_model); ?></span>
-                                    </div>
-                                    <?php endif; ?>
-                                    
-                                    <?php 
-                                    $product_weight = get_post_meta(get_the_ID(), '_product_weight', true);
-                                    if ($product_weight) :
-                                    ?>
-                                    <div class="spec-item">
-                                        <span class="spec-label">Trọng lượng:</span>
-                                        <span class="spec-value"><?php echo esc_html($product_weight); ?></span>
-                                    </div>
-                                    <?php endif; ?>
-                                </div>
-                                
-                                <!-- Custom Technical Specifications -->
-                                <?php 
-                                $custom_specs = get_post_meta(get_the_ID(), '_custom_specifications', true);
-                                if ($custom_specs) :
-                                    $specs_array = json_decode($custom_specs, true);
-                                    if ($specs_array && is_array($specs_array) && count($specs_array) > 0) :
-                                ?>
-                                <div class="spec-category">
-                                    <h6>Thông số kỹ thuật</h6>
-                                    <?php foreach ($specs_array as $spec) : ?>
-                                        <div class="spec-item">
-                                            <span class="spec-label"><?php echo esc_html($spec['label']); ?>:</span>
-                                            <span class="spec-value"><?php echo esc_html($spec['value']); ?></span>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                                <?php endif; endif; ?>
-
-                                <!-- Warranty & Support -->
-                                <div class="spec-category">
-                                    <h6>Bảo hành & Hỗ trợ</h6>
-                                    <div class="spec-item">
-                                        <span class="spec-label">Bảo hành:</span>
-                                        <span class="spec-value">12-24 tháng chính hãng</span>
-                                    </div>
-                                    <div class="spec-item">
-                                        <span class="spec-label">Hỗ trợ kỹ thuật:</span>
-                                        <span class="spec-value">24/7</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Additional Description -->
-                            <?php 
-                            $additional_specs = get_post_meta(get_the_ID(), '_product_specifications', true);
-                            if ($additional_specs) :
-                            ?>
-                            <div class="additional-description">
-                                <h6>Thông tin bổ sung</h6>
-                                <div class="description-content">
-                                    <?php echo wp_kses_post($additional_specs); ?>
-                                </div>
-                            </div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary specs-contact-btn" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#consultationModal">Liên hệ tư vấn</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Consultation & Quote Modal -->
-        <div class="modal fade" id="consultationModal" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content consultation-modal-content">
-                    <!-- Enhanced Header -->
-                    <div class="modal-header consultation-header">
-                        <div class="header-content">
-                            <div class="header-icon">
-                                <i class="fas fa-headset"></i>
-                            </div>
-                            <div class="header-text">
-                                <h4 class="modal-title mb-1">Tư vấn & Báo giá miễn phí</h4>
-                                <p class="product-name mb-0"><?php the_title(); ?></p>
-                            </div>
-                        </div>
-                        <button type="button" class="btn-close consultation-close" data-bs-dismiss="modal" aria-label="Close">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                                        <div class="modal-body consultation-body">
-                        <!-- Enhanced Intro Section -->
-                        <div class="consultation-intro-enhanced">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <div class="intro-content-enhanced">
-                                        <h5 class="intro-title">
-                                            <i class="fas fa-star text-warning me-2"></i>
-                                            Tư vấn miễn phí từ chuyên gia
-                                        </h5>
-                                        <p class="intro-description">
-                                            Đội ngũ kỹ sư âm thanh với <strong>10+ năm kinh nghiệm</strong> sẽ tư vấn giải pháp tối ưu cho dự án của bạn
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="intro-features">
-                                        <div class="feature-badge">
-                                            <i class="fas fa-clock text-primary"></i>
-                                            <span>Phản hồi 30 phút</span>
-                                        </div>
-                                        <div class="feature-badge">
-                                            <i class="fas fa-shield-alt text-success"></i>
-                                            <span>Cam kết chất lượng</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <form id="consultationForm" class="consultation-form-enhanced">
-                                                        <input type="hidden" name="product_id" value="<?php echo get_the_ID(); ?>">
-                            <input type="hidden" name="product_name" value="<?php the_title(); ?>">
-                            
-                            <!-- Personal Information Section -->
-                            <div class="form-section mb-4">
-                                <h6 class="section-title">
-                                    <i class="fas fa-user me-2"></i>
-                                    Thông tin liên hệ
-                                </h6>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control enhanced-input" id="consultName" name="customer_name" placeholder="Nhập họ và tên" required>
-                                            <label for="consultName">
-                                                <i class="fas fa-user me-1"></i>
-                                                Họ và tên *
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="tel" class="form-control enhanced-input" id="consultPhone" name="customer_phone" placeholder="Nhập số điện thoại" required>
-                                            <label for="consultPhone">
-                                                <i class="fas fa-phone me-1"></i>
-                                                Số điện thoại *
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="email" class="form-control enhanced-input" id="consultEmail" name="customer_email" placeholder="Nhập email">
-                                            <label for="consultEmail">
-                                                <i class="fas fa-envelope me-1"></i>
-                                                Email
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control enhanced-input" id="consultCompany" name="company_name" placeholder="Nhập tên công ty">
-                                            <label for="consultCompany">
-                                                <i class="fas fa-building me-1"></i>
-                                                Công ty/Tổ chức
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Details Section -->
-                            <div class="form-section mb-4">
-                                <h6 class="section-title">
-                                    <i class="fas fa-project-diagram me-2"></i>
-                                    Chi tiết dự án
-                                </h6>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="projectType" class="form-label enhanced-label">
-                                            <i class="fas fa-building me-1"></i>
-                                            Loại dự án
-                                        </label>
-                                        <div class="select-wrapper">
-                                            <select class="form-control enhanced-select" id="projectType" name="project_type">
-                                                <option value="">Chọn loại dự án</option>
-                                                <option value="home">🏠 Gia đình/Cá nhân</option>
-                                                <option value="office">🏢 Văn phòng</option>
-                                                <option value="restaurant">🍽️ Nhà hàng/Cafe</option>
-                                                <option value="hotel">🏨 Khách sạn/Resort</option>
-                                                <option value="retail">🏪 Cửa hàng/Showroom</option>
-                                                <option value="mall">🏬 Trung tâm thương mại</option>
-                                                <option value="other">📋 Khác</option>
-                                            </select>
-                                            <i class="fas fa-chevron-down select-arrow"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="projectBudget" class="form-label enhanced-label">
-                                            <i class="fas fa-dollar-sign me-1"></i>
-                                            Ngân sách dự kiến
-                                        </label>
-                                        <div class="select-wrapper">
-                                            <select class="form-control enhanced-select" id="projectBudget" name="project_budget">
-                                                <option value="">Chọn mức ngân sách</option>
-                                                <option value="under-50m">💰 Dưới 50 triệu</option>
-                                                <option value="50m-100m">💰 50 - 100 triệu</option>
-                                                <option value="100m-500m">💰 100 - 500 triệu</option>
-                                                <option value="500m-1b">💰 500 triệu - 1 tỷ</option>
-                                                <option value="over-1b">💰 Trên 1 tỷ</option>
-                                                <option value="discuss">💬 Thảo luận trực tiếp</option>
-                                            </select>
-                                            <i class="fas fa-chevron-down select-arrow"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="form-floating">
-                                        <textarea class="form-control enhanced-textarea" id="consultAddress" name="project_address" placeholder="Nhập địa chỉ dự án" style="height: 80px;"></textarea>
-                                        <label for="consultAddress">
-                                            <i class="fas fa-map-marker-alt me-1"></i>
-                                            Địa chỉ dự án
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Consultation Needs Section -->
-                            <div class="form-section mb-4">
-                                <h6 class="section-title">
-                                    <i class="fas fa-tasks me-2"></i>
-                                    Nhu cầu tư vấn
-                                </h6>
-                                <div class="consultation-options-enhanced">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <div class="need-card">
-                                                <input class="need-checkbox" type="checkbox" id="needQuote" name="needs[]" value="quote">
-                                                <label class="need-label" for="needQuote">
-                                                    <div class="need-icon">
-                                                        <i class="fas fa-calculator"></i>
-                                                    </div>
-                                                    <div class="need-content">
-                                                        <h6 class="need-title">Báo giá chi tiết</h6>
-                                                        <p class="need-desc">Nhận báo giá chính xác cho dự án</p>
-                                                    </div>
-                                                    <div class="need-check">
-                                                        <i class="fas fa-check"></i>
-                                                    </div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="need-card">
-                                                <input class="need-checkbox" type="checkbox" id="needDesign" name="needs[]" value="design">
-                                                <label class="need-label" for="needDesign">
-                                                    <div class="need-icon">
-                                                        <i class="fas fa-drafting-compass"></i>
-                                                    </div>
-                                                    <div class="need-content">
-                                                        <h6 class="need-title">Thiết kế hệ thống</h6>
-                                                        <p class="need-desc">Tư vấn thiết kế âm thanh tối ưu</p>
-                                                    </div>
-                                                    <div class="need-check">
-                                                        <i class="fas fa-check"></i>
-                                                    </div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="need-card">
-                                                <input class="need-checkbox" type="checkbox" id="needInstall" name="needs[]" value="install">
-                                                <label class="need-label" for="needInstall">
-                                                    <div class="need-icon">
-                                                        <i class="fas fa-tools"></i>
-                                                    </div>
-                                                    <div class="need-content">
-                                                        <h6 class="need-title">Tư vấn lắp đặt</h6>
-                                                        <p class="need-desc">Hướng dẫn lắp đặt chuyên nghiệp</p>
-                                                    </div>
-                                                    <div class="need-check">
-                                                        <i class="fas fa-check"></i>
-                                                    </div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="need-card">
-                                                <input class="need-checkbox" type="checkbox" id="needDemo" name="needs[]" value="demo">
-                                                <label class="need-label" for="needDemo">
-                                                    <div class="need-icon">
-                                                        <i class="fas fa-play-circle"></i>
-                                                    </div>
-                                                    <div class="need-content">
-                                                        <h6 class="need-title">Demo sản phẩm</h6>
-                                                        <p class="need-desc">Trải nghiệm sản phẩm trực tiếp</p>
-                                                    </div>
-                                                    <div class="need-check">
-                                                        <i class="fas fa-check"></i>
-                                                    </div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mt-3">
-                                    <div class="form-floating">
-                                        <textarea class="form-control enhanced-textarea" id="projectNote" name="project_note" placeholder="Mô tả chi tiết về dự án" style="height: 100px;"></textarea>
-                                        <label for="projectNote">
-                                            <i class="fas fa-edit me-1"></i>
-                                            Mô tả chi tiết dự án
-                                        </label>
-                                    </div>
-                                    <small class="form-text text-muted mt-1">
-                                        Ví dụ: không gian, yêu cầu âm thanh, thời gian triển khai...
-                                    </small>
-                                </div>
-                            </div>
-
-                            <!-- Enhanced Promise Section -->
-                            <div class="consultation-promise-enhanced">
-                                <div class="promise-header">
-                                    <h6 class="promise-title">
-                                        <i class="fas fa-shield-alt me-2"></i>
-                                        Cam kết của chúng tôi
-                                    </h6>
-                                    </div>
-                                <div class="promise-grid">
-                                    <div class="promise-item-enhanced">
-                                        <div class="promise-icon">
-                                            <i class="fas fa-clock"></i>
-                                    </div>
-                                        <div class="promise-content">
-                                            <h6>Phản hồi nhanh</h6>
-                                            <p>Trong vòng 30 phút</p>
-                                        </div>
-                                    </div>
-                                    <div class="promise-item-enhanced">
-                                        <div class="promise-icon">
-                                            <i class="fas fa-user-graduate"></i>
-                                        </div>
-                                        <div class="promise-content">
-                                            <h6>Chuyên gia tư vấn</h6>
-                                            <p>10+ năm kinh nghiệm</p>
-                                        </div>
-                                    </div>
-                                    <div class="promise-item-enhanced">
-                                        <div class="promise-icon">
-                                            <i class="fas fa-gift"></i>
-                                        </div>
-                                        <div class="promise-content">
-                                            <h6>Miễn phí khảo sát</h6>
-                                            <p>Tận nơi cho dự án lớn</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                                        <!-- Simple Modal Footer -->
-                    <div class="modal-footer consultation-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-1"></i>
-                            Đóng
-                        </button>
-                        <button type="button" class="btn btn-success btn-lg" id="submitConsultation">
-                            <i class="fas fa-paper-plane me-2"></i>
-                            Gửi yêu cầu tư vấn
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </section>
 
     <?php endwhile; ?>
 </main>
 
+<!-- Image Gallery Script -->
 <script>
-// Add JavaScript for consultation button functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const consultationBtn = document.querySelector('.contact-consultation-btn');
-    if (consultationBtn) {
-        consultationBtn.addEventListener('click', function() {
-            const consultationModal = new bootstrap.Modal(document.getElementById('consultationModal'));
-            consultationModal.show();
-        });
-    }
-    // Thumbnail -> main image swap (mobile gallery)
-    const mainImg = document.getElementById('mainProductImage');
-    const thumbBtns = document.querySelectorAll('.thumb-item');
-    if (mainImg && thumbBtns.length) {
-        thumbBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const url = this.getAttribute('data-image');
-                if (url) {
-                    mainImg.setAttribute('src', url);
-                    document.querySelectorAll('.thumb-item.active').forEach(el => el.classList.remove('active'));
-                    this.classList.add('active');
-                }
-            });
-        });
-    }
-    
-    // Add nonce for AJAX security
-    window.consultationNonce = '<?php echo wp_create_nonce("consultation_nonce"); ?>';
-});
+    // Toggle description expand/collapse
+    function toggleDescription() {
+        const shortDesc = document.getElementById('shortDesc');
+        const fullDesc = document.getElementById('fullDesc');
+        const toggleBtn = document.getElementById('toggleDescBtn');
+        const toggleIcon = toggleBtn.querySelector('.toggle-icon');
 
-// Product filtering and search functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Products Grid filtering
-    const filterItems = document.querySelectorAll('.products-grid-section .filter-tab');
-    const productCards = document.querySelectorAll('.products-grid-section .product-card');
-    const searchInput = document.getElementById('related-product-search');
-    
-    // Filter functionality
-    if (filterItems.length > 0) {
-        filterItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const filter = this.dataset.filter;
-                
-                // Update active filter
-                filterItems.forEach(f => f.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Filter products
-                productCards.forEach(card => {
-                    const cardParent = card.parentElement || card;
-                    if (filter === 'all' || card.dataset.filter === filter || card.classList.contains('category-' + filter)) {
-                        cardParent.style.display = 'block';
-                        setTimeout(() => {
-                            cardParent.style.opacity = '1';
-                            cardParent.style.transform = 'translateY(0)';
-                        }, 10);
-                    } else {
-                        cardParent.style.opacity = '0';
-                        cardParent.style.transform = 'translateY(20px)';
-                        setTimeout(() => cardParent.style.display = 'none', 300);
-                    }
-                });
-            });
-        });
+        if (fullDesc.style.display === 'none') {
+            shortDesc.style.display = 'none';
+            fullDesc.style.display = 'block';
+            toggleBtn.innerHTML = 'Ẩn bớt <span class="toggle-icon">↑</span>';
+        } else {
+            shortDesc.style.display = 'block';
+            fullDesc.style.display = 'none';
+            toggleBtn.innerHTML = 'Xem thêm <span class="toggle-icon">↓</span>';
+        }
     }
-    
-    // Search functionality
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase().trim();
-            
-            productCards.forEach(card => {
-                const cardParent = card.parentElement || card;
-                const title = card.dataset.title || '';
-                const content = card.textContent.toLowerCase();
-                
-                if (searchTerm === '' || title.includes(searchTerm) || content.includes(searchTerm)) {
-                    cardParent.style.display = 'block';
-                    setTimeout(() => {
-                        cardParent.style.opacity = '1';
-                        cardParent.style.transform = 'translateY(0)';
-                    }, 10);
-                } else {
-                    cardParent.style.opacity = '0';
-                    cardParent.style.transform = 'translateY(20px)';
-                    setTimeout(() => cardParent.style.display = 'none', 300);
-                }
-            });
+
+    // Image gallery logic with fade transition
+    function changeImage(element, src) {
+        const mainImg = document.getElementById('mainImage');
+        if (!mainImg) return;
+
+        // Fade out
+        mainImg.style.opacity = '0';
+
+        setTimeout(() => {
+            mainImg.src = src;
+            // Fade in
+            mainImg.style.opacity = '1';
+        }, 300);
+
+        // Update active state for thumbnails
+        document.querySelectorAll('.thumb').forEach(el => {
+            el.classList.remove('active');
+            el.style.borderColor = 'rgba(255,255,255,0.2)';
+            el.style.opacity = '0.5';
         });
+        element.classList.add('active');
+        element.style.borderColor = '#C5A059';
+        element.style.opacity = '1';
     }
-    
-    // Solution cards hover effects
-    const solutionCards = document.querySelectorAll('.solution-card');
-    solutionCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-8px)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-    
-    // Article cards animation on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // Observe article cards
-    const articleCards = document.querySelectorAll('.article-card');
-    articleCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'all 0.6s ease';
-        observer.observe(card);
-    });
-    
-    // Stats counter animation
-    const statNumbers = document.querySelectorAll('.stat-number');
-    const statsObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = entry.target;
-                const finalNumber = target.textContent.replace(/[^0-9]/g, '');
-                const suffix = target.textContent.replace(/[0-9]/g, '');
-                
-                if (finalNumber) {
-                    animateCounter(target, 0, parseInt(finalNumber), suffix, 2000);
-                }
-                statsObserver.unobserve(target);
-            }
-        });
-    }, observerOptions);
-    
-    statNumbers.forEach(stat => {
-        statsObserver.observe(stat);
-    });
-    
-    function animateCounter(element, start, end, suffix, duration) {
-        const range = end - start;
-        const increment = range / (duration / 16);
-        let current = start;
-        
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= end) {
-                current = end;
-                clearInterval(timer);
-            }
-            element.textContent = Math.floor(current) + suffix;
-        }, 16);
-    }
-});
 </script>
 
-<?php
-// Enqueue enhanced consultation modal styles
-wp_enqueue_style('consultation-modal-enhanced', get_template_directory_uri() . '/assets/css/consultation-modal-enhanced.css', array(), '1.0.0');
-?>
-
-<?php get_footer(); ?> 
+<?php get_footer(); ?>

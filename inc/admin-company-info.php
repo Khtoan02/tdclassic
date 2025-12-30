@@ -680,3 +680,4 @@ function tdclassic_display_contact_block($show_icon = true, $echo = true) {
     }
 }
 
+

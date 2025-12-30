@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
+
 <head>
     <meta name="google-site-verification" content="35TfiXUHMlaZi3kdFlm-4Zg0SJIPBriGjPDah-BkYmo" />
     <meta charset="<?php bloginfo('charset'); ?>">
@@ -9,11 +10,11 @@
 </head>
 
 <body <?php body_class(); ?>>
-<?php wp_body_open(); ?>
+    <?php wp_body_open(); ?>
 
     <!-- === START HEADER SECTION === -->
     <header class="header-wrapper" id="main-header">
-        
+
         <!-- Top Bar -->
         <?php get_template_part('template-parts/header/top-bar'); ?>
 
@@ -21,13 +22,15 @@
         <nav class="main-nav w-full">
             <div class="max-w-[1500px] mx-auto px-6 h-full">
                 <div class="flex items-center justify-between h-full">
-                    
+
                     <!-- Mobile Trigger & Actions -->
                     <div class="flex items-center gap-3 lg:hidden">
-                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>" class="w-10 h-10 flex items-center justify-center text-white text-lg rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all">
+                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>"
+                            class="w-10 h-10 flex items-center justify-center text-white text-lg rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all">
                             <i class="fa-solid fa-phone"></i>
                         </a>
-                        <button id="mob-menu-trigger" class="w-10 h-10 flex items-center justify-center text-white text-xl rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all">
+                        <button id="mob-menu-trigger"
+                            class="w-10 h-10 flex items-center justify-center text-white text-xl rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all">
                             <i class="fa-solid fa-bars-staggered"></i>
                         </button>
                     </div>
@@ -40,7 +43,7 @@
                             $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
                             if ($logo) {
                                 // Logo: Mobile h-10 (40px), Desktop md:h-12 (48px) để đồng bộ
-                                echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="h-10 md:h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity">';
+                                echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="header-logo-img h-10 md:h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity">';
                             }
                         } else {
                             // Fallback to text logo
@@ -51,39 +54,43 @@
 
                     <!-- DESKTOP MENU -->
                     <div class="hidden lg:flex items-center space-x-1 h-full">
-                        <a href="<?php echo esc_url(home_url('/')); ?>" class="nav-link text-xs font-bold uppercase tracking-widest text-white">
+                        <a href="<?php echo esc_url(home_url('/')); ?>"
+                            class="nav-link text-xs font-bold uppercase tracking-widest text-white">
                             Trang chủ
                         </a>
-                        
+
                         <!-- MEGA MENU (SẢN PHẨM) -->
-                         <?php get_template_part('template-parts/header/mega-menu-product'); ?>
+                        <?php get_template_part('template-parts/header/mega-menu-product'); ?>
 
                         <!-- DROPDOWN MENU (TIN TỨC) -->
                         <?php
                         $news_categories = tdclassic_get_news_categories();
-                        if (!empty($news_categories)) :
-                        ?>
-                        <div class="has-dropdown h-full flex items-center group relative">
-                            <a href="<?php echo esc_url(home_url('/tin-tuc')); ?>" class="nav-link text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1 group-hover:text-white cursor-pointer h-full">
-                                Tin tức
-                                <i class="fa-solid fa-chevron-down text-[8px] opacity-50 group-hover:opacity-100 transition-opacity mt-px"></i>
-                            </a>
-                            
-                            <!-- Dropdown Content -->
-                            <div class="dropdown-wrapper">
-                                <?php foreach ($news_categories as $news_cat) : ?>
-                                <a href="<?php echo esc_url($news_cat['url']); ?>" class="dropdown-item">
-                                    <?php echo esc_html($news_cat['name']); ?>
-                                    <?php if ($news_cat['count'] > 0) : ?>
-                                    <span class="text-gray-500 text-xs ml-2">(<?php echo $news_cat['count']; ?>)</span>
-                                    <?php endif; ?>
+                        if (!empty($news_categories)):
+                            ?>
+                            <div class="has-dropdown h-full flex items-center group relative">
+                                <a href="<?php echo esc_url(home_url('/tin-tuc')); ?>"
+                                    class="nav-link text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1 group-hover:text-white cursor-pointer h-full">
+                                    Tin tức
+                                    <i
+                                        class="fa-solid fa-chevron-down text-[8px] opacity-50 group-hover:opacity-100 transition-opacity mt-px"></i>
                                 </a>
-                                <?php endforeach; ?>
+
+                                <!-- Dropdown Content -->
+                                <div class="dropdown-wrapper">
+                                    <?php foreach ($news_categories as $news_cat): ?>
+                                        <a href="<?php echo esc_url($news_cat['url']); ?>" class="dropdown-item">
+                                            <?php echo esc_html($news_cat['name']); ?>
+                                            <?php if ($news_cat['count'] > 0): ?>
+                                                <span class="text-gray-500 text-xs ml-2">(<?php echo $news_cat['count']; ?>)</span>
+                                            <?php endif; ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
-                        </div>
                         <?php endif; ?>
 
-                        <a href="<?php echo esc_url(home_url('/lien-he')); ?>" class="nav-link text-xs font-bold uppercase tracking-widest text-gray-400">
+                        <a href="<?php echo esc_url(home_url('/lien-he')); ?>"
+                            class="nav-link text-xs font-bold uppercase tracking-widest text-gray-400">
                             Liên hệ
                         </a>
                     </div>
@@ -92,10 +99,14 @@
                     <div class="flex items-center gap-2 md:gap-4">
                         <!-- Removed Search Button as requested -->
 
-                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>" class="hidden md:flex glass-btn-luxury px-6 py-2.5 rounded-full items-center gap-3 group transition-all duration-300 hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-white group-hover:text-[#D4AF37] transition-colors">Tư vấn</span>
+                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>"
+                            class="hidden md:flex glass-btn-luxury px-6 py-2.5 rounded-full items-center gap-3 group transition-all duration-300 hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10">
+                            <span
+                                class="text-[10px] font-bold uppercase tracking-widest text-white group-hover:text-[#D4AF37] transition-colors">Tư
+                                vấn</span>
                             <!-- Giữ nguyên chấm xanh (Green dot) thể hiện trạng thái Online/Sẵn sàng -->
-                            <div class="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]"></div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]">
+                            </div>
                         </a>
                     </div>
                 </div>

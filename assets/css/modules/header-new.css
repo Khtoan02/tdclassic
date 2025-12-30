@@ -5,7 +5,7 @@
 
 /* --- CORE VARIABLES --- */
 :root {
-    --header-bg: #050505; 
+    --header-bg: #050505;
     --glass-border-color: rgba(255, 255, 255, 0.1);
     --mega-menu-bg: #0a0a0a;
     --accent-blue: #3b82f6;
@@ -24,41 +24,47 @@ body {
 }
 
 /* --- HEADER STRUCTURE --- */
-    /* --- HEADER STRUCTURE --- */
-    .header-wrapper {
-        position: relative;
-        width: 100%;
-        z-index: 9999;
-        background-color: var(--header-bg);
-        border-bottom: 1px solid var(--glass-border-color);
-        transition: all 0.3s ease;
+/* --- HEADER STRUCTURE --- */
+.header-wrapper {
+    position: relative;
+    width: 100%;
+    z-index: 9999;
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--glass-border-color);
+    transition: all 0.3s ease;
+}
+
+/* Sticky Header Logic */
+.header-wrapper.sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    animation: slideDown 0.35s ease-out;
+}
+
+.header-wrapper.sticky-header.scrolled {
+    background-color: rgba(5, 5, 5, 0.85);
+    /* Tăng độ trong suốt khi scroll */
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
     }
-    
-    /* Sticky Header Logic */
-    .header-wrapper.sticky-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        animation: slideDown 0.35s ease-out;
+
+    to {
+        transform: translateY(0);
     }
-    
-    .header-wrapper.sticky-header.scrolled {
-        background-color: rgba(5, 5, 5, 0.85); /* Tăng độ trong suốt khi scroll */
-        backdrop-filter: blur(12px);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-        border-bottom-color: rgba(255, 255, 255, 0.05);
-    }
-    
-    @keyframes slideDown {
-        from { transform: translateY(-100%); }
-        to { transform: translateY(0); }
-    }
+}
 
 .top-bar {
     height: 40px;
-    background: rgba(255,255,255,0.03);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .main-nav {
@@ -67,7 +73,9 @@ body {
 }
 
 @media (min-width: 1024px) {
-    .main-nav { height: 90px; }
+    .main-nav {
+        height: 90px;
+    }
 }
 
 /* --- NAV LINKS --- */
@@ -83,7 +91,7 @@ body {
 
 .nav-link:hover {
     color: white;
-    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* --- SUPER MEGA MENU (SẢN PHẨM) --- */
@@ -101,7 +109,9 @@ body {
 }
 
 @media (min-width: 1024px) {
-    .mega-menu-wrapper { display: block; }
+    .mega-menu-wrapper {
+        display: block;
+    }
 }
 
 .has-mega-menu:hover .mega-menu-wrapper {
@@ -114,7 +124,7 @@ body {
 .mega-menu-content {
     background: var(--mega-menu-bg);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
     height: 500px;
     display: flex;
 }
@@ -128,7 +138,7 @@ body {
     background: #0a0a0a;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-top: none;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
@@ -189,7 +199,8 @@ body {
     position: relative;
 }
 
-.mm-tab-item:hover, .mm-tab-item.active {
+.mm-tab-item:hover,
+.mm-tab-item.active {
     color: white;
     background: rgba(255, 255, 255, 0.05);
 }
@@ -247,20 +258,20 @@ body {
     gap: 20px;
     scroll-behavior: smooth;
     padding-bottom: 20px;
-    scrollbar-width: none; 
+    scrollbar-width: none;
     -ms-overflow-style: none;
     align-items: flex-start;
     cursor: grab;
     user-select: none;
 }
 
-.panel-slider-container.active { 
-    cursor: grabbing; 
-    scroll-behavior: auto; 
+.panel-slider-container.active {
+    cursor: grabbing;
+    scroll-behavior: auto;
 }
 
-.panel-slider-container::-webkit-scrollbar { 
-    display: none; 
+.panel-slider-container::-webkit-scrollbar {
+    display: none;
 }
 
 .slider-btn {
@@ -283,21 +294,21 @@ body {
     transition: all 0.3s ease;
 }
 
-.slider-wrapper:hover .slider-btn { 
-    opacity: 1; 
+.slider-wrapper:hover .slider-btn {
+    opacity: 1;
 }
 
-.slider-btn:hover { 
-    background: white; 
-    color: black; 
+.slider-btn:hover {
+    background: white;
+    color: black;
 }
 
-.slider-btn.prev { 
-    left: 0; 
+.slider-btn.prev {
+    left: 0;
 }
 
-.slider-btn.next { 
-    right: 0; 
+.slider-btn.next {
+    right: 0;
 }
 
 .mini-product {
@@ -314,8 +325,8 @@ body {
     pointer-events: none;
 }
 
-.mini-product.clickable { 
-    pointer-events: auto; 
+.mini-product.clickable {
+    pointer-events: auto;
 }
 
 .mini-product:hover {
@@ -333,8 +344,8 @@ body {
     pointer-events: none;
 }
 
-.mini-product:hover img { 
-    opacity: 1; 
+.mini-product:hover img {
+    opacity: 1;
 }
 
 /* Featured Image - Chiều cao bằng với sidebar (list danh mục) */
@@ -355,15 +366,15 @@ body {
     transition: transform 0.7s ease;
 }
 
-.panel-featured:hover img { 
-    transform: scale(1.05); 
+.panel-featured:hover img {
+    transform: scale(1.05);
 }
 
 /* --- MOBILE MENU STYLES --- */
 .mobile-menu-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
     z-index: 10000;
     opacity: 0;
@@ -371,9 +382,9 @@ body {
     transition: all 0.3s ease;
 }
 
-.mobile-menu-overlay.open { 
-    opacity: 1; 
-    visibility: visible; 
+.mobile-menu-overlay.open {
+    opacity: 1;
+    visibility: visible;
 }
 
 .mobile-drawer {
@@ -387,13 +398,13 @@ body {
     z-index: 10001;
     transform: translateX(-100%);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    border-right: 1px solid rgba(255,255,255,0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
 }
 
-.mobile-menu-overlay.open .mobile-drawer { 
-    transform: translateX(0); 
+.mobile-menu-overlay.open .mobile-drawer {
+    transform: translateX(0);
 }
 
 .mob-link {
@@ -401,15 +412,18 @@ body {
     align-items: center;
     width: 100%;
     padding: 20px 24px;
-    font-size: 15px !important; /* Force kích thước 15px cho tất cả */
-    font-weight: 800 !important; /* Force độ đậm 800 cho tất cả */
+    font-size: 15px !important;
+    /* Force kích thước 15px cho tất cả */
+    font-weight: 800 !important;
+    /* Force độ đậm 800 cho tất cả */
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: #d1d5db;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     text-decoration: none;
     transition: all 0.3s ease;
-    line-height: normal; /* Reset line-height để tránh lệch */
+    line-height: normal;
+    /* Reset line-height để tránh lệch */
 }
 
 /* Đảm bảo text bên trong (nếu nằm trong thẻ span) cũng nhận style y hệt */
@@ -420,7 +434,7 @@ body {
     color: inherit;
 }
 
-.mob-link:hover { 
+.mob-link:hover {
     color: #D4AF37;
     background: rgba(212, 175, 55, 0.05);
     padding-left: 30px;
@@ -435,11 +449,11 @@ body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
 }
 
-.mob-accordion-content.open { 
-    max-height: 500px; 
+.mob-accordion-content.open {
+    max-height: 500px;
 }
 
 .mob-sub-link {
@@ -454,29 +468,47 @@ body {
 .mob-sub-link:hover {
     color: white;
     border-left-color: var(--accent-blue);
-    background: rgba(255,255,255,0.02);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 /* --- BUTTONS & LOGO --- */
 .glass-btn-luxury {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
     text-decoration: none;
 }
 
 .glass-btn-luxury:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.3);
-    box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
     transform: translateY(-1px);
 }
 
 .logo-placeholder {
-    max-height: 50px; 
+    max-height: 50px;
     width: auto;
     object-fit: contain;
 }
 
+/* --- LOGO FIX --- */
+.header-logo-img {
+    max-height: 48px;
+    width: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .header-logo-img {
+        max-height: 40px;
+    }
+}
+
+.header-logo-mobile {
+    max-height: 32px;
+    width: auto;
+    object-fit: contain;
+}
