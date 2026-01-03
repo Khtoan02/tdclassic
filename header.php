@@ -24,7 +24,7 @@
                 <div class="flex items-center justify-between h-full">
 
                     <!-- Mobile Trigger & Actions -->
-                    <div class="flex items-center gap-3 lg:hidden">
+                    <div class="flex items-center gap-3 lg:hidden py-4">
                         <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>"
                             class="w-10 h-10 flex items-center justify-center text-white text-lg rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all">
                             <i class="fa-solid fa-phone"></i>
@@ -58,6 +58,11 @@
                             class="nav-link text-xs font-bold uppercase tracking-widest text-white">
                             Trang chủ
                         </a>
+                        <a href="<?php echo esc_url(home_url('/gioi-thieu/')); ?>"
+                            class="nav-link text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors">
+                            Giới thiệu
+                        </a>
+
 
                         <!-- MEGA MENU (SẢN PHẨM) -->
                         <?php get_template_part('template-parts/header/mega-menu-product'); ?>

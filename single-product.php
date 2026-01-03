@@ -80,7 +80,7 @@ get_header();
                             <span class="font-sans text-xs tracking-[0.3em] uppercase" style="color: #C5A059;">Professional
                                 Audio</span>
                         </div>
-                        <h1 class="font-serif text-2xl md:text-3xl lg:text-4xl text-white mb-4 leading-tight">
+                        <h1 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white mb-4 leading-tight">
                             <?php the_title(); ?>
                             <br>
                             <span class="text-lg md:text-xl lg:text-2xl"
@@ -94,21 +94,21 @@ get_header();
                                 <span class="block text-[10px] uppercase tracking-wider mb-1" style="color: #666666;">Power
                                     (RMS)</span>
                                 <span
-                                    class="font-serif text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_power', true) ?: '450W'); ?></span>
+                                    class="font-sans font-bold text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_power', true) ?: '450W'); ?></span>
                             </div>
                             <div class="h-10" style="width: 1px; background: rgba(255,255,255,0.1);"></div>
                             <div>
                                 <span class="block text-[10px] uppercase tracking-wider mb-1"
                                     style="color: #666666;">Sensitivity</span>
                                 <span
-                                    class="font-serif text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_sensitivity', true) ?: '98dB'); ?></span>
+                                    class="font-sans font-bold text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_sensitivity', true) ?: '98dB'); ?></span>
                             </div>
                             <div class="h-10" style="width: 1px; background: rgba(255,255,255,0.1);"></div>
                             <div>
                                 <span class="block text-[10px] uppercase tracking-wider mb-1"
                                     style="color: #666666;">Response</span>
                                 <span
-                                    class="font-serif text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_response', true) ?: '50Hz-20kHz'); ?></span>
+                                    class="font-sans font-bold text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_response', true) ?: '50Hz-20kHz'); ?></span>
                             </div>
                         </div>
 
@@ -183,7 +183,7 @@ get_header();
         <section class="py-24" style="background-color: #050505;">
             <div class="container mx-auto px-6 md:px-12 max-w-4xl">
                 <div class="text-center mb-16">
-                    <h2 class="font-serif text-3xl text-white">Thông Số Kỹ Thuật</h2>
+                    <h2 class="font-sans font-bold text-3xl text-white">Thông Số Kỹ Thuật</h2>
                     <p class="font-sans text-xs mt-2 uppercase tracking-widest" style="color: #666666;">Technical
                         Specifications</p>
                 </div>
@@ -216,7 +216,7 @@ get_header();
         <section class="py-24" style="background-color: #151515; border-top: 1px solid rgba(255,255,255,0.05);">
             <div class="container mx-auto px-6 md:px-12">
                 <div class="flex justify-between items-end mb-12">
-                    <h3 class="font-serif text-2xl text-white">Sản Phẩm Tương Tự</h3>
+                    <h3 class="font-sans font-bold text-2xl text-white">Sản Phẩm Tương Tự</h3>
                     <a href="<?php echo esc_url(home_url('/san-pham/')); ?>"
                         class="text-xs uppercase tracking-widest transition-colors" style="color: #C5A059;"
                         onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#C5A059';">Xem tất cả</a>
@@ -267,7 +267,7 @@ get_header();
                                         <?php endif; ?>
                                     </div>
                                     <div class="flex-grow flex flex-col justify-between">
-                                        <h4 class="text-white font-serif text-sm md:text-base line-clamp-2"
+                                        <h4 class="text-white font-sans font-bold text-sm md:text-base line-clamp-2"
                                             style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                             <?php the_title(); ?>
                                         </h4>

@@ -1,1473 +1,345 @@
 <?php
 /**
  * The template for displaying all single posts
+ *
+ * @package TD_Classic
  */
 
-get_header(); 
+get_header(); ?>
 
-// Increment view count
-if (have_posts()) {
-    while (have_posts()) {
-        the_post();
-        $post_id = get_the_ID();
-        $views_count = get_post_meta($post_id, 'post_views_count', true);
-        $views_count = $views_count ? $views_count : 0;
-        update_post_meta($post_id, 'post_views_count', $views_count + 1);
-    }
-    rewind_posts();
-}
-?>
-
-<main id="main" class="site-main single-post-page">
-    <!-- Hero Section with Post Title -->
-    <section class="post-hero-section">
-        <div class="post-hero-background">
-            <?php if (has_post_thumbnail()) : ?>
-                <div class="post-hero-image" style="background-image: url('<?php echo get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>');"></div>
-            <?php endif; ?>
-            <div class="post-hero-overlay"></div>
-            <div class="tech-grid-pattern"></div>
-        </div>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="post-hero-content text-center">
-                        <div class="post-categories">
-                            <?php
-                            $categories = get_the_category();
-                            if ($categories) {
-                                foreach ($categories as $category) {
-                                    echo '<a href="' . get_category_link($category->term_id) . '" class="category-badge">' . $category->name . '</a>';
-                                }
-                            }
-                            ?>
-                        </div>
-                        <h1 class="post-hero-title"><?php the_title(); ?></h1>
-                        <div class="post-meta-info">
-                            <div class="meta-item">
-                                <i class="fas fa-user"></i>
-                                <span><?php the_author(); ?></span>
-                            </div>
-                            <div class="meta-divider">•</div>
-                            <div class="meta-item">
-                                <i class="fas fa-calendar-alt"></i>
-                                <span><?php echo get_the_date('d/m/Y'); ?></span>
-                            </div>
-                            <div class="meta-divider">•</div>
-                            <div class="meta-item">
-                                <i class="fas fa-clock"></i>
-                                <span><?php echo estimated_reading_time(get_the_content()); ?> phút đọc</span>
-                            </div>
-                            <div class="meta-divider">•</div>
-                            <div class="meta-item">
-                                <i class="fas fa-eye"></i>
-                                <span><?php echo get_post_meta(get_the_ID(), 'post_views_count', true) ?: 0; ?> lượt xem</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Content Section with 3-Column Layout -->
-    <section class="post-content-section">
-        <div class="row">
-            <!-- Left Sidebar: Fixed (Outside Container) -->
-            <div class="col-lg-3">
-                <aside class="left-sidebar fixed-sidebar">
-                    <!-- Menu: Article Content -->
-                    <div class="sidebar-widget toc-widget">
-                        <h3 class="widget-title">
-                            <i class="fas fa-list-ul"></i>
-                            NỘI DUNG BÀI VIẾT
-                        </h3>
-                        <div class="toc-content" id="toc-content">
-                            <!-- Auto-generated TOC will be inserted here -->
-                        </div>
-                    </div>
-
-                    <!-- Author Information -->
-                    <div class="sidebar-widget author-widget">
-                        <h3 class="widget-title">
-                            <i class="fas fa-user"></i>
-                            TÁC GIẢ
-                        </h3>
-                        <div class="author-info-compact">
-                            <div class="author-avatar">
-                                <?php echo get_avatar(get_the_author_meta('ID'), 80); ?>
-                            </div>
-                            <h4 class="author-name"><?php the_author(); ?></h4>
-                            <p class="author-description"><?php the_author_meta('description'); ?></p>
-                        </div>
-                    </div>
-
-                    <!-- Share Article -->
-                    <div class="sidebar-widget share-widget">
-                        <h3 class="widget-title">
-                            <i class="fas fa-share-alt"></i>
-                            CHIA SẺ BÀI VIẾT
-                        </h3>
-                            <!-- Social sharing removed as requested -->
-                    </div>
-                </aside>
-            </div>
-
-            <!-- Main Content: Inside Container -->
-            <div class="col-lg-6">
-                <div class="main-content-wrapper">
-                    <div class="container">
-                        <article class="post-content-wrapper">
-                            <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-                                
-                                <!-- Post Excerpt -->
-                                <?php if (has_excerpt()) : ?>
-                                    <div class="post-excerpt">
-                                        <?php the_excerpt(); ?>
-                                    </div>
-                                <?php endif; ?>
-
-                                <!-- Post Content -->
-                                <div class="post-content">
-                                    <?php the_content(); ?>
-                                </div>
-
-                                <!-- Post Tags -->
-                                <?php
-                                $tags = get_the_tags();
-                                if ($tags) :
-                                ?>
-                                    <div class="post-tags">
-                                        <i class="fas fa-tags"></i>
-                                        <?php
-                                        foreach ($tags as $tag) {
-                                            echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag-item">#' . $tag->name . '</a>';
-                                        }
-                                        ?>
-                                    </div>
-                                <?php endif; ?>
-
-                                <!-- Author Box -->
-                                <div class="author-box">
-                                    <div class="author-avatar">
-                                        <?php echo get_avatar(get_the_author_meta('ID'), 100); ?>
-                                    </div>
-                                    <div class="author-info">
-                                        <h4>Về tác giả</h4>
-                                        <h5><?php the_author(); ?></h5>
-                                        <p><?php the_author_meta('description'); ?></p>
-                                        <div class="author-social">
-                                            <?php if (get_the_author_meta('facebook')) : ?>
-                                                <a href="<?php the_author_meta('facebook'); ?>" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                                            <?php endif; ?>
-                                            <?php if (get_the_author_meta('twitter')) : ?>
-                                                <a href="<?php the_author_meta('twitter'); ?>" target="_blank"><i class="fab fa-twitter"></i></a>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            <?php endwhile; endif; ?>
-                        </article>
-
-                        <!-- Related Posts -->
-                        <div class="related-posts-section">
-                            <h3 class="section-title">
-                                <span class="title-text">Bài viết liên quan</span>
-                                <span class="title-line"></span>
-                            </h3>
-                            <div class="related-posts-grid">
-                                <?php
-                                $related_posts = new WP_Query(array(
-                                    'post_type' => 'post',
-                                    'posts_per_page' => 3,
-                                    'post__not_in' => array($post_id),
-                                    'category__in' => wp_get_post_categories($post_id),
-                                    'orderby' => 'rand'
-                                ));
-
-                                if ($related_posts->have_posts()) :
-                                    while ($related_posts->have_posts()) : $related_posts->the_post();
-                                ?>
-                                    <article class="related-post-card">
-                                        <?php if (has_post_thumbnail()) : ?>
-                                            <div class="related-post-image">
-                                                <a href="<?php the_permalink(); ?>">
-                                                    <img src="<?php the_post_thumbnail_url('medium'); ?>" alt="<?php the_title(); ?>">
-                                                </a>
-                                            </div>
-                                        <?php endif; ?>
-                                        <div class="related-post-content">
-                                            <div class="related-post-meta">
-                                                <span class="meta-date">
-                                                    <i class="fas fa-calendar-alt"></i>
-                                                    <?php echo get_the_date('d/m/Y'); ?>
-                                                </span>
-                                            </div>
-                                            <h4 class="related-post-title">
-                                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                            </h4>
-                                        </div>
-                                    </article>
-                                <?php
-                                    endwhile;
-                                    wp_reset_postdata();
-                                endif;
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Sidebar: Fixed (Outside Container) -->
-            <div class="col-lg-3">
-                <aside class="right-sidebar fixed-sidebar">
-                    <!-- Latest Articles Widget -->
-                    <div class="sidebar-widget latest-articles-widget">
-                        <h3 class="widget-title">
-                            <i class="fas fa-newspaper"></i>
-                            BÀI VIẾT MỚI NHẤT
-                        </h3>
-                        <div class="latest-articles-list">
-                            <?php
-                            $latest_posts = new WP_Query(array(
-                                'post_type' => 'post',
-                                'posts_per_page' => 3,
-                                'post__not_in' => array($post_id),
-                                'orderby' => 'date',
-                                'order' => 'DESC'
-                            ));
-
-                            if ($latest_posts->have_posts()) :
-                                while ($latest_posts->have_posts()) : $latest_posts->the_post();
-                            ?>
-                                <div class="latest-article-item">
-                                    <div class="latest-article-info">
-                                        <span class="article-date">
-                                            <i class="fas fa-clock"></i>
-                                            <?php echo get_the_date('d/m/Y'); ?>
-                                        </span>
-                                        <h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
-                                        
-                                    </div>
-                                </div>
-                            <?php
-                                endwhile;
-                                wp_reset_postdata();
-                            endif;
-                            ?>
-                        </div>
-                    </div>
-
-                    <!-- Categories Widget -->
-                    <div class="sidebar-widget categories-widget">
-                        <h3 class="widget-title">
-                            <i class="fas fa-folder-open"></i>
-                            DANH MỤC
-                        </h3>
-                        <ul class="categories-list">
-                            <?php
-                            $categories = get_categories(array(
-                                'orderby' => 'count',
-                                'order' => 'DESC',
-                                'number' => 10
-                            ));
-
-                            foreach ($categories as $category) {
-                                echo '<li>';
-                                echo '<a href="' . get_category_link($category->term_id) . '">';
-                                echo '<span class="category-name">' . $category->name . '</span>';
-                                echo '<span class="category-count">' . $category->count . '</span>';
-                                echo '</a>';
-                                echo '</li>';
-                            }
-                            ?>
-                        </ul>
-                    </div>
-
-                    <!-- Newsletter Widget -->
-                    <div class="sidebar-widget newsletter-widget">
-                        <h3 class="widget-title">
-                            <i class="fas fa-envelope"></i>
-                            ĐĂNG KÝ NHẬN TIN
-                        </h3>
-                        <p>Nhận thông tin mới nhất về sản phẩm và khuyến mãi</p>
-                        <form class="newsletter-form">
-                            <input type="email" placeholder="Email của bạn" required>
-                            <button type="submit">
-                                <i class="fas fa-paper-plane"></i>
-                                Đăng ký
-                            </button>
-                        </form>
-                    </div>
-                </aside>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action Section -->
-    <section class="post-cta-section">
-        <div class="container">
-            <div class="cta-wrapper">
-                <div class="cta-background">
-                    <div class="cta-pattern"></div>
-                </div>
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-                        <div class="cta-content">
-                            <h2 class="cta-title">Cần tư vấn về giải pháp âm thanh?</h2>
-                            <p class="cta-description">
-                                Đội ngũ chuyên gia của TD Classic sẵn sàng lắng nghe và tư vấn giải pháp phù hợp nhất với nhu cầu của bạn
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="cta-actions">
-                            <a href="<?php echo home_url('/lien-he'); ?>" class="btn-cta-primary">
-                                <i class="fas fa-headphones"></i>
-                                <span>Liên hệ tư vấn</span>
-                            </a>
-                            <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>" class="btn-cta-secondary">
-                                <i class="fas fa-phone"></i>
-                                <span>Hotline: <?php echo esc_html(tdclassic_get_company_phone()); ?></span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</main>
+<!-- Load Fonts & Icons specific to this design -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Manrope:wght@200;300;400;500;600;700&display=swap"
+    rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
-/* Single Post Page Styles - Optimized UI */
-.single-post-page {
-    background-color: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-/* Post Hero Section - Optimized */
-.post-hero-section {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #000 100%);
-    color: #fff;
-    padding: 100px 0 60px;
-    position: relative;
-    overflow: hidden;
-}
-
-.post-hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-}
-
-.post-hero-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0.2;
-}
-
-.post-hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.tech-grid-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-}
-
-@keyframes gridMove {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(40px, 40px); }
-}
-
-.post-hero-content {
-    position: relative;
-    z-index: 10;
-}
-
-.post-categories {
-    margin-bottom: 1.5rem;
-}
-
-.category-badge {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
-    padding: 0.5rem 1.2rem;
-    border-radius: 25px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    text-decoration: none;
-    margin: 0 0.4rem 0.4rem 0;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.category-badge:hover {
-    background: #fff;
-    color: #000;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.post-hero-title {
-    font-size: 3.2rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    line-height: 1.1;
-    color: #fff;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.post-meta-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.2rem;
-    font-size: 0.95rem;
-}
-
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #ccc;
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-}
-
-.meta-item i {
-    color: #fff;
-    font-size: 1rem;
-}
-
-.meta-divider {
-    display: none;
-}
-
-/* Post Content Section - Optimized 3-Column Layout */
-.post-content-section {
-    padding: 60px 0;
-    background-color: #fafafa;
-}
-
-/* Main Content Wrapper */
-
-/* Fixed Sidebars - Optimized */
-.fixed-sidebar {
-    position: sticky;
-    top: 20px;
-    max-height: calc(100vh - 100px);
-    scrollbar-width: thin;
-    scrollbar-color: #ccc transparent;
-}
-
-.fixed-sidebar::-webkit-scrollbar {
-    width: 4px;
-}
-
-.fixed-sidebar::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.fixed-sidebar::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 2px;
-}
-
-.left-sidebar,
-.right-sidebar {
-    padding: 0 15px;
-    max-width: 350px;
-    width: 100%;
-}
-
-.right-sidebar {
-    float: left;
-}
-
-.left-sidebar {
-    float: right;
-}
-
-/* Sidebar Widgets - Modern Design */
-.sidebar-widget {
-    background: #fff;
-    border-radius: 16px;
-    padding: 1.4rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    border: 1px solid #f0f0f0;
-    transition: all 0.3s ease;
-}
-
-.sidebar-widget:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-}
-
-.widget-title {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #000;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid #f0f0f0;
-}
-
-.widget-title i {
-    color: #666;
-    font-size: 1.1rem;
-}
-
-.widget-subtitle {
-    font-size: 0.75rem;
-    color: #999;
-    font-weight: 400;
-    margin-left: auto;
-    background: #f8f9fa;
-    padding: 0.3rem 0.6rem;
-    border-radius: 12px;
-}
-
-/* Table of Contents Widget - Enhanced */
-
-.toc-content ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.toc-content li {
-    margin-bottom: 0.6rem;
-}
-
-.toc-content a {
-    color: #555;
-    text-decoration: none;
-    font-size: 0.9rem;
-    display: block;
-    padding: 0.6rem 0.6rem;
-    border-left: 3px solid transparent;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    background: #fafafa;
-}
-
-.toc-content a:hover,
-.toc-content a.active {
-    color: #000;
-    border-left-color: #000;
-    background: #f0f0f0;
-    transform: translateX(5px);
-}
-
-.toc-content ul ul {
-    margin-top: 0.4rem;
-}
-
-/* Author Widget - Compact & Modern */
-.author-info-compact {
-    text-align: center;
-}
-
-.author-info-compact .author-avatar img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    margin-bottom: 1rem;
-    border: 3px solid #f0f0f0;
-    transition: all 0.3s ease;
-}
-
-.author-info-compact .author-avatar img:hover {
-    border-color: #000;
-    transform: scale(1.05);
-}
-
-.author-name {
-    color: #000;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.author-description {
-    color: #666;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    margin: 0;
-}
-
-/* Share Widget - Grid Layout */
-/* Latest Articles Widget - Enhanced */
-.latest-article-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    margin-bottom: 1.2rem;
-    padding-bottom: 1.2rem;
-    border-bottom: 1px solid #f0f0f0;
-    transition: all 0.3s ease;
-}
-
-.latest-article-item:hover {
-    background: #fafafa;
-    border-radius: 8px;
-    padding: 0.8rem;
-    margin: 0 -0.8rem 1.2rem -0.8rem;
-}
-
-.latest-article-item:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: none;
-}
-
-.latest-article-thumb {
-    flex-shrink: 0;
-}
-
-.latest-article-thumb img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-}
-
-.latest-article-item:hover .latest-article-thumb img {
-    transform: scale(1.1);
-}
-
-.latest-article-info h4 {
-    margin-bottom: 0.4rem;
-}
-
-.latest-article-info h4 a {
-    color: #000;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    line-height: 1.4;
-    transition: color 0.3s ease;
-}
-
-.latest-article-info h4 a:hover {
-    color: #666;
-}
-
-.article-date {
-    color: #999;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-
-/* Categories Widget - Modern List */
-.categories-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.categories-list li {
-    margin-bottom: 0.6rem;
-}
-
-.categories-list a {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0.8rem;
-    background: #fafafa;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #555;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.categories-list a:hover {
-    background: #000;
-    color: #fff;
-    transform: translateX(5px);
-    border-color: #000;
-}
-
-.category-count {
-    background: #fff;
-    color: #000;
-    padding: 0.2rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.categories-list a:hover .category-count {
-    background: #fff;
-    color: #000;
-}
-
-/* Newsletter Widget - Enhanced Form */
-.newsletter-widget p {
-    color: #666;
-    margin-bottom: 1.3rem;
-    font-size: 0.85rem;
-    line-height: 1.5;
-}
-
-.newsletter-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.newsletter-form input {
-    padding: 0.8rem 1rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    background: #fafafa;
-}
-
-.newsletter-form input:focus {
-    outline: none;
-    border-color: #000;
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
-}
-
-.newsletter-form button {
-    padding: 0.8rem 1.2rem;
-    background: #000;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.newsletter-form button:hover {
-    background: #333;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Main Content Area - Enhanced */
-.post-content-wrapper {
-    background: #fff;
-    border-radius: 16px;
-    padding: 2.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    margin-bottom: 2.5rem;
-    border: 1px solid #f0f0f0;
-}
-
-.post-excerpt {
-    font-size: 1.1rem;
-    color: #555;
-    line-height: 1.7;
-    padding: 1.8rem;
-    background: #fafafa;
-    border-left: 4px solid #000;
-    margin-bottom: 2rem;
-    border-radius: 0 8px 8px 0;
-}
-
-.post-content {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: #333;
-}
-
-.post-content h1,
-.post-content h2,
-.post-content h3,
-.post-content h4,
-.post-content h5,
-.post-content h6 {
-    margin-bottom: 1rem;
-    font-weight: 700;
-    color: #000;
-}
-
-.post-content h2 {
-    font-size: 1.8rem;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 0.5rem;
-}
-
-.post-content h3 {
-    font-size: 1.4rem;
-}
-
-.post-content p {
-    margin-bottom: 1.3rem;
-}
-
-.post-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    margin: 1.5rem 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* WordPress Caption Styles - Responsive Images */
-.post-content .wp-caption,
-.post-content figure {
-    max-width: 100% !important;
-    width: 100% !important;
-    margin: 1.5rem 0;
-    text-align: center;
-}
-
-.post-content .wp-caption img,
-.post-content figure img {
-    max-width: 100% !important;
-    width: 100% !important;
-    height: auto !important;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin: 0;
-}
-
-.post-content .wp-caption-text,
-.post-content figcaption {
-    font-size: 0.9rem;
-    color: #666;
-    font-style: italic;
-    margin-top: 0.8rem;
-    padding: 0 1rem;
-    line-height: 1.4;
-}
-
-/* Override inline styles for WordPress captions */
-.post-content .wp-caption[style*="width"] {
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-.post-content .wp-caption img[style*="width"] {
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-.post-content blockquote {
-    background: #fafafa;
-    border-left: 4px solid #000;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    font-style: italic;
-    border-radius: 0 8px 8px 0;
-    color: #555;
-}
-
-.post-content ul,
-.post-content ol {
-    margin-bottom: 1.3rem;
-    padding-left: 1.5rem;
-}
-
-.post-content li {
-    margin-bottom: 0.5rem;
-}
-
-/* Post Tags - Enhanced */
-.post-tags {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #f0f0f0;
-    flex-wrap: wrap;
-}
-
-.post-tags i {
-    color: #666;
-    font-size: 1.1rem;
-}
-
-.tag-item {
-    display: inline-block;
-    background: #f0f0f0;
-    color: #555;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.tag-item:hover {
-    background: #000;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Author Box - Enhanced */
-.author-box {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 2.5rem;
-    padding: 1.8rem;
-    background: #fafafa;
-    border-radius: 12px;
-    border: 1px solid #f0f0f0;
-}
-
-.author-avatar img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.author-info h4 {
-    color: #666;
-    font-size: 0.85rem;
-    margin-bottom: 0.4rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.author-info h5 {
-    color: #000;
-    font-size: 1.1rem;
-    margin-bottom: 0.8rem;
-}
-
-.author-info p {
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.author-social {
-    display: flex;
-    gap: 0.8rem;
-}
-
-.author-social a {
-    width: 32px;
-    height: 32px;
-    background: #000;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-}
-
-.author-social a:hover {
-    background: #333;
-    transform: translateY(-2px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Related Posts - Enhanced */
-.related-posts-section {
-    margin-bottom: 2.5rem;
-}
-
-.section-title {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.title-text {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #000;
-}
-
-.title-line {
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(45deg, #000, #666);
-    border-radius: 1px;
-}
-
-.related-posts-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-}
-
-.related-post-card {
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    border: 1px solid #f0f0f0;
-}
-
-.related-post-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.related-post-image {
-    height: 160px;
-    overflow: hidden;
-}
-
-.related-post-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.related-post-card:hover .related-post-image img {
-    transform: scale(1.1);
-}
-
-.related-post-content {
-    padding: 1.3rem;
-}
-
-.related-post-meta {
-    margin-bottom: 0.5rem;
-}
-
-.meta-date {
-    color: #666;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-
-.related-post-title {
-    margin: 0;
-}
-
-.related-post-title a {
-    color: #000;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.4;
-    transition: color 0.3s ease;
-}
-
-.related-post-title a:hover {
-    color: #666;
-}
-
-/* CTA Section - Enhanced */
-.post-cta-section {
-    padding: 80px 0;
-    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
-    color: #fff;
-    position: relative;
-    overflow: hidden;
-}
-
-.cta-wrapper {
-    position: relative;
-    z-index: 10;
-}
-
-.cta-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-}
-
-.cta-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 40px 40px;
-    animation: patternMove 20s linear infinite;
-}
-
-@keyframes patternMove {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(40px, 40px); }
-}
-
-.cta-content {
-    position: relative;
-    z-index: 10;
-}
-
-.cta-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.cta-description {
-    font-size: 1.1rem;
-    color: #ccc;
-    line-height: 1.6;
-}
-
-.cta-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    position: relative;
-    z-index: 10;
-}
-
-.btn-cta-primary,
-.btn-cta-secondary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.8rem;
-    padding: 1rem 2rem;
-    text-decoration: none;
-    border-radius: 30px;
-    font-weight: 600;
-    transition: all 0.4s ease;
-}
-
-.btn-cta-primary {
-    background: #fff;
-    color: #000;
-}
-
-.btn-cta-primary:hover {
-    background: #f0f0f0;
-    color: #000;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
-}
-
-.btn-cta-secondary {
-    background: transparent;
-    color: #fff;
-    border: 1px solid #fff;
-}
-
-.btn-cta-secondary:hover {
-    background: #fff;
-    color: #000;
-    transform: translateY(-3px);
-}
-
-/* Responsive Design - Optimized */
-@media (max-width: 1199px) {
-    .left-sidebar,
-    .right-sidebar {
-        padding: 0 10px;
-        max-width: 320px;
+    /* Ensure background is void */
+    body {
+        background-color: #050505;
+        color: #E5E5E5;
     }
-    
-    .sidebar-widget {
-        padding: 1.5rem;
-    }
-    
-    .main-content-wrapper {
-        padding: 0 15px;
-    }
-    
-    .post-hero-title {
-        font-size: 2.8rem;
-    }
-}
 
-@media (max-width: 991px) {
-    .left-sidebar,
-    .right-sidebar {
-        position: relative;
+    /* Custom Styles from Design */
+    .noise {
+        position: fixed;
         top: 0;
-        max-height: none;
-        margin-top: 2rem;
-        padding: 0 15px;
-        max-width: 300px;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0.03;
+        background: url('https://grainy-gradients.vercel.app/noise.svg');
     }
-    
-    .fixed-sidebar {
-        position: relative;
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* Reading Progress Bar - Adjusted for main header */
+    #progress-bar {
+        position: fixed;
         top: 0;
-        max-height: none;
+        left: 0;
+        height: 2px;
+        background: #C5A059;
+        z-index: 9999;
+        width: 0%;
+        transition: width 0.1s;
     }
-    
-    .related-posts-grid {
-        grid-template-columns: 1fr;
+
+    /* Entry Content Typography */
+    .drop-cap::first-letter {
+        float: left;
+        font-family: 'Manrope', sans-serif;
+        font-weight: 800;
+        font-size: 4rem;
+        line-height: 0.8;
+        padding-right: 0.5rem;
+        padding-top: 0.1rem;
+        color: #C5A059;
     }
-    
-    .post-content-wrapper {
+
+    .entry-content h2 {
+        margin-top: 3rem;
+        margin-bottom: 1.5rem;
+        font-family: 'Manrope', sans-serif;
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: #fff;
+        border-left: 2px solid #C5A059;
+        padding-left: 1.5rem;
+    }
+
+    .entry-content p {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+        font-weight: 300;
+        color: #ccc;
+        font-family: 'Manrope', sans-serif;
+    }
+
+    .entry-content ul {
+        margin-bottom: 1.5rem;
+        list-style: none;
+    }
+
+    .entry-content li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #ccc;
+        font-family: 'Manrope', sans-serif;
+    }
+
+    .entry-content li::before {
+        content: "•";
+        color: #C5A059;
+        position: absolute;
+        left: 0;
+        font-weight: bold;
+    }
+
+    .quote-box {
+        border-top: 1px solid rgba(197, 160, 89, 0.3);
+        border-bottom: 1px solid rgba(197, 160, 89, 0.3);
         padding: 2rem;
-    }
-    
-    .main-content-wrapper {
-        padding: 0 15px;
-    }
-    
-    .post-hero-title {
-        font-size: 2.4rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .post-hero-section {
-        padding: 80px 0 50px;
-    }
-    
-    .post-hero-title {
-        font-size: 2rem;
-    }
-    
-    .post-meta-info {
-        font-size: 0.85rem;
-        gap: 0.8rem;
-    }
-    
-    .post-content-wrapper {
-        padding: 1.5rem;
-    }
-    
-    .author-box {
-        flex-direction: column;
+        margin: 3rem 0;
         text-align: center;
+        font-family: 'Manrope', sans-serif;
+        font-style: italic;
+        font-size: 1.25rem;
+        color: #C5A059;
     }
-    
-    .cta-title {
-        font-size: 2rem;
-    }
-    
-    .sidebar-widget {
-        padding: 1.5rem;
-    }
-    
-    .main-content-wrapper {
-        padding: 0 10px;
-    }
-    
-    /* Ẩn sidebar trên tablet */
-    .left-sidebar,
-    .right-sidebar {
-        display: none;
-    }
-    
-    /* Mở rộng nội dung chính khi ẩn sidebar */
-    .col-lg-6 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-    
-    .post-excerpt {
-        padding: 1.5rem;
-        font-size: 1rem;
-    }
-    
-    .related-posts-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-}
 
-@media (max-width: 480px) {
-    .post-hero-section {
-        padding: 60px 0 40px;
+    .dense-text {
+        text-align: justify;
+        text-justify: inter-word;
     }
-    
-    .post-hero-title {
-        font-size: 1.8rem;
-    }
-    
-    .post-content-wrapper {
-        padding: 1rem;
-    }
-    
-    .share-buttons-compact {
-        grid-template-columns: 1fr;
-    }
-    
-    .sidebar-widget {
-        padding: 1rem;
-    }
-    
-    .main-content-wrapper {
-        padding: 0 5px;
-    }
-    
-    /* Ẩn sidebar trên điện thoại */
-    .left-sidebar,
-    .right-sidebar {
-        display: none;
-    }
-    
-    /* Mở rộng nội dung chính khi ẩn sidebar */
-    .col-lg-6 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-    
-    .post-excerpt {
-        padding: 1.2rem;
-        font-size: 0.95rem;
-    }
-    
-    .author-box {
-        padding: 1.2rem;
-    }
-    
-    .cta-title {
-        font-size: 1.8rem;
-    }
-    
-    .btn-cta-primary,
-    .btn-cta-secondary {
-        padding: 0.8rem 1.5rem;
-        font-size: 0.9rem;
-    }
-}
 </style>
 
-<script>
-// Table of Contents Generator
-document.addEventListener('DOMContentLoaded', function() {
-    const postContent = document.querySelector('.post-content');
-    const tocContent = document.getElementById('toc-content');
-    
-    if (postContent && tocContent) {
-        const headings = postContent.querySelectorAll('h2, h3');
-        
-        if (headings.length > 0) {
-            const tocList = document.createElement('ul');
-            
-            headings.forEach((heading, index) => {
-                // Add ID to heading for anchor link
-                const headingId = 'heading-' + index;
-                heading.id = headingId;
-                
-                // Create TOC item
-                const tocItem = document.createElement('li');
-                const tocLink = document.createElement('a');
-                tocLink.href = '#' + headingId;
-                tocLink.textContent = heading.textContent;
-                
-                tocItem.appendChild(tocLink);
-                tocList.appendChild(tocItem);
-            });
-            
-            tocContent.appendChild(tocList);
-            
-            // Smooth scroll to anchor
-            tocContent.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    
-                    if (targetElement) {
-                        const offsetTop = targetElement.offsetTop - 100;
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
-            // Highlight active section on scroll
-            window.addEventListener('scroll', function() {
-                let current = '';
-                headings.forEach(heading => {
-                    const rect = heading.getBoundingClientRect();
-                    if (rect.top <= 150) {
-                        current = heading.id;
-                    }
-                });
-                
-                tocContent.querySelectorAll('a').forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-        } else {
-            tocContent.innerHTML = '<p style="color: #999;">Không có mục lục</p>';
+<div class="noise"></div>
+<div id="progress-bar"></div>
+
+<main id="main" class="site-main bg-void text-gray-200 font-sans">
+
+    <?php
+    while (have_posts()):
+        the_post();
+
+        // Get Categories
+        $categories = get_the_category();
+        $cat_name = $categories ? $categories[0]->name : 'Tin tức';
+
+        // Get Featured Image
+        $feat_img = get_the_post_thumbnail_url(get_the_ID(), 'full');
+
+        // Fallback Image
+        if (!$feat_img) {
+            $feat_img = 'https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=1600&auto=format&fit=crop';
         }
-    }
-});
 
+        // Calculate Read Time (approx 200 words per min)
+        $content = get_post_field('post_content', get_the_ID());
+        $word_count = str_word_count(strip_tags($content));
+        $read_time = ceil($word_count / 200) . ' min read';
 
-function copyLink() {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-        alert('Đã sao chép link bài viết!');
-    });
-}
+        // Author Data
+        $author_id = get_the_author_meta('ID');
+        $author_name = get_the_author();
+        $author_desc = get_the_author_meta('description') ?: 'Chuyên gia set-up hệ thống âm thanh Bar/Lounge hàng đầu miền Bắc. Người theo đuổi triết lý "Âm thanh sạch" và là linh hồn kỹ thuật đằng sau các dự án Signature của TD Classic.';
+        $author_avatar = get_avatar_url($author_id, array('size' => 400));
+        ?>
 
-// Newsletter Form
-document.querySelector('.newsletter-form')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Cảm ơn bạn đã đăng ký nhận tin!');
-    this.reset();
-});
+        <!-- ARTICLE HERO -->
+        <section class="pt-32 pb-16 bg-void relative">
+            <div class="container mx-auto px-6 md:px-12 max-w-4xl text-center">
+                <div class="inline-flex items-center gap-3 mb-6">
+                    <span
+                        class="bg-gold/10 text-gold text-[10px] font-bold uppercase px-3 py-1 tracking-widest border border-gold/20 rounded-full"><?php echo esc_html($cat_name); ?></span>
+                    <span
+                        class="text-gray-500 text-[10px] font-sans uppercase tracking-widest"><?php echo get_the_date('d M Y'); ?>
+                        • <?php echo esc_html($read_time); ?></span>
+                </div>
+
+                <h1 class="font-sans font-bold text-3xl md:text-5xl lg:text-6xl text-white mb-8 leading-tight">
+                    <?php the_title(); ?>
+                </h1>
+
+                <?php if (has_excerpt()): ?>
+                    <p
+                        class="font-sans text-gray-400 text-sm md:text-lg font-light leading-relaxed max-w-2xl mx-auto mb-12 italic">
+                        "<?php echo get_the_excerpt(); ?>"
+                    </p>
+                <?php endif; ?>
+
+                <div class="flex items-center justify-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-surface border border-white/10 overflow-hidden">
+                        <img src="<?php echo esc_url($author_avatar); ?>" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-left">
+                        <p class="text-white text-xs font-bold font-sans"><?php echo esc_html($author_name); ?></p>
+                        <p class="text-gold text-[10px] uppercase tracking-widest">TD Classic Expert</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED IMAGE -->
+        <div class="container mx-auto px-4 md:px-12 max-w-6xl mb-16">
+            <div class="aspect-video w-full overflow-hidden relative border border-white/5 group">
+                <img src="<?php echo esc_url($feat_img); ?>"
+                    class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000">
+                <?php if (get_post_meta(get_the_ID(), '_thumbnail_caption', true)): ?>
+                    <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent">
+                        <p class="text-gray-400 text-[10px] text-center italic">
+                            <?php echo get_post_meta(get_the_ID(), '_thumbnail_caption', true); ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- ARTICLE CONTENT -->
+        <article class="bg-void pb-24">
+            <div
+                class="container mx-auto px-6 md:px-12 max-w-3xl article-content font-sans text-base md:text-lg entry-content">
+                <?php
+                // Filter content to add drop-cap to first paragraph automatically if desired, 
+                // or just rely on CSS :first-of-type (which we added in <style>)
+                // CSS solution: .entry-content p:first-of-type::first-letter
+                the_content();
+                ?>
+            </div>
+        </article>
+
+        <!-- AUTHOR BIO -->
+        <section class="bg-metal py-16 border-t border-white/5">
+            <div class="container mx-auto px-6 md:px-12 max-w-3xl">
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+                    <div class="w-24 h-24 rounded-full bg-surface border-2 border-gold overflow-hidden flex-shrink-0">
+                        <img src="<?php echo esc_url($author_avatar); ?>" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center md:text-left">
+                        <h4 class="text-white font-sans font-bold text-xl mb-2"><?php echo esc_html($author_name); ?></h4>
+                        <p class="text-gold text-xs uppercase tracking-widest mb-4">TD Classic Expert •
+                            <?php echo esc_html($read_time); ?> Writer
+                        </p>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">
+                            <?php echo esc_html($author_desc); ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RELATED ARTICLES (Read Next) -->
+        <section class="py-24 bg-void border-t border-white/5">
+            <div class="container mx-auto px-6 md:px-12">
+                <div class="text-center mb-16">
+                    <span class="font-sans text-gold text-xs tracking-cinematic uppercase">Đừng bỏ lỡ</span>
+                    <h2 class="font-sans font-bold text-3xl text-white mt-4">Bài Viết Liên Quan</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <?php
+                    $related_query = new WP_Query(array(
+                        'post_type' => 'post',
+                        'posts_per_page' => 3,
+                        'post__not_in' => array(get_the_ID()),
+                        'orderby' => 'rand'
+                    ));
+
+                    if ($related_query->have_posts()):
+                        while ($related_query->have_posts()):
+                            $related_query->the_post();
+                            $rel_cats = get_the_category();
+                            $rel_cat = $rel_cats ? $rel_cats[0]->name : 'Tin tức';
+                            $rel_img = get_the_post_thumbnail_url(get_the_ID(), 'medium_large') ?: 'https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=600&auto=format&fit=crop';
+                            ?>
+                            <article class="group cursor-pointer">
+                                <a href="<?php the_permalink(); ?>">
+                                    <div class="aspect-[3/2] bg-surface overflow-hidden mb-4 relative border border-white/5">
+                                        <img src="<?php echo esc_url($rel_img); ?>"
+                                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                    </div>
+                                    <div class="text-gold text-[10px] font-bold uppercase tracking-widest mb-2">
+                                        <?php echo esc_html($rel_cat); ?>
+                                    </div>
+                                    <h3
+                                        class="font-sans font-bold text-lg text-white group-hover:text-gold transition-colors leading-snug">
+                                        <?php the_title(); ?>
+                                    </h3>
+                                </a>
+                            </article>
+                            <?php
+                        endwhile;
+                        wp_reset_postdata();
+                    endif;
+                    ?>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTNOTES & LEGAL (Standardized) -->
+        <section class="py-20 bg-void border-t border-white/5 text-gray-600 font-sans text-[10px] leading-relaxed">
+            <div class="container mx-auto px-6 md:px-12 max-w-5xl">
+                <div class="dense-text space-y-6 opacity-70">
+                    <p>
+                        Thông tin được cung cấp trong trang Tạp chí này nhằm mục đích chia sẻ kiến thức và kinh nghiệm chung
+                        về lĩnh vực âm thanh. TD Classic không chịu trách nhiệm pháp lý cho việc áp dụng các kỹ thuật hoặc
+                        hướng dẫn này vào các trường hợp cụ thể mà không có sự tư vấn trực tiếp từ chuyên gia. Các thông số
+                        kỹ thuật và phương pháp được đề cập dựa trên các thử nghiệm và kinh nghiệm thực tế của đội ngũ kỹ
+                        thuật TD Classic tại thời điểm viết bài và có thể thay đổi tùy thuộc vào điều kiện môi trường, thiết
+                        bị cụ thể và các yếu tố ngoại cảnh khác.
+                    </p>
+                    <p>
+                        <strong>Bản quyền nội dung:</strong> Toàn bộ nội dung bài viết, hình ảnh (trừ các hình ảnh minh họa
+                        từ nguồn mở được trích dẫn) và video trên trang này thuộc bản quyền của Công ty Cổ phần Công nghệ
+                        TAVA Việt Nam. Nghiêm cấm mọi hành vi sao chép, phát hành lại hoặc sử dụng cho mục đích thương mại
+                        mà không có sự đồng ý bằng văn bản của TD Classic. Việc trích dẫn nội dung phải ghi rõ nguồn và dẫn
+                        đường link gốc.
+                    </p>
+                    <p>
+                        <strong>Tuyên bố miễn trừ:</strong> Các bài viết về dự án mang tính chất tham khảo (Case Study).
+                        Hiệu quả âm thanh thực tế của các giải pháp tương tự có thể khác biệt tùy thuộc vào kiến trúc, vật
+                        liệu tiêu âm và quy mô của từng công trình. TD Classic khuyến nghị khách hàng liên hệ trực tiếp để
+                        được khảo sát và tư vấn giải pháp "may đo" chính xác nhất. Chúng tôi bảo lưu quyền chỉnh sửa hoặc gỡ
+                        bỏ các nội dung đã đăng tải mà không cần thông báo trước.
+                    </p>
+                </div>
+
+                <div class="mt-12 pt-8 border-t border-white/5 text-center opacity-40">
+                    <p>Mã tài liệu: DOC-JOURNAL-DETAIL-<?php echo date('Y'); ?> | Bản quyền © <?php echo date('Y'); ?> TD
+                        Classic Audio. Mọi quyền được bảo lưu.</p>
+                </div>
+            </div>
+        </section>
+
+    <?php endwhile; ?>
+
+</main>
+
+<script>
+    lucide.createIcons();
+
+    // Scroll Progress Bar
+    window.onscroll = function () {
+        let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        let scrolled = (winScroll / height) * 100;
+        let bar = document.getElementById("progress-bar");
+        if (bar) bar.style.width = scrolled + "%";
+    };
 </script>
 
 <?php
-// Helper function for reading time
-function estimated_reading_time($content) {
-    $word_count = str_word_count(strip_tags($content));
-    $reading_time = ceil($word_count / 200);
-    return max(1, $reading_time);
-}
-?>
-
-<?php get_footer(); ?> 
+get_footer();

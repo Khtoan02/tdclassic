@@ -32,6 +32,8 @@ $news_categories = tdclassic_get_news_categories();
         <!-- Mobile Links Scrollable -->
         <div class="flex-1 overflow-y-auto py-6">
             <a href="<?php echo esc_url(home_url('/')); ?>" class="mob-link">Trang chủ</a>
+            <a href="<?php echo esc_url(home_url('/gioi-thieu/')); ?>" class="mob-link">Giới thiệu</a>
+
 
             <!-- Accordion: Sản phẩm - Dynamic -->
             <?php if (!empty($mega_categories)): ?>
@@ -64,6 +66,7 @@ $news_categories = tdclassic_get_news_categories();
                     </div>
                 </div>
             <?php endif; ?>
+
 
             <a href="<?php echo esc_url(home_url('/lien-he')); ?>" class="mob-link">Liên hệ</a>
         </div>

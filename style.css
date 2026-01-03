@@ -6750,3 +6750,42 @@ html {
 }
 
 /* ================= END LUXURY PRODUCT CATEGORY STYLES ================= */
+
+/* =========================================
+   GLOBAL UTILITIES & EFFECTS (Optimized)
+   ========================================= */
+
+/* NOISE TEXTURE */
+.noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.03;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
+}
+
+/* HIDE SCROLLBAR */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ZOOM EFFECT */
+.zoom-img {
+    transition: transform 0.7s ease;
+}
+.group:hover .zoom-img {
+    transform: scale(1.05);
+}
+
+/* BASE TYPOGRAPHY OVERRIDE (If needed for Manrope global) */
+.font-sans-global {
+    font-family: 'Manrope', sans-serif;
+}
