@@ -16,37 +16,242 @@ get_header();
     <div class="noise"></div>
 
     <!-- 1. HERO SECTION -->
-    <section
-        class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-void border-b border-white/5">
-        <div class="absolute inset-0 opacity-40">
-            <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=1600&auto=format&fit=crop"
-                class="w-full h-full object-cover" decoding="sync" fetchpriority="high">
-            <div class="absolute inset-0 bg-gradient-to-t from-void via-void/80 to-transparent"></div>
-        </div>
+    <!-- Custom Animations & Slider Styles -->
+    <style>
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes progressLoading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .animate-slow-zoom {
+            animation: slowZoom 20s linear infinite alternate;
+        }
+        .animate-fade-up-1 { animation: fadeUp 0.8s ease-out forwards; opacity: 0; }
+        .animate-fade-up-2 { animation: fadeUp 0.8s ease-out 0.2s forwards; opacity: 0; }
+        .animate-fade-up-3 { animation: fadeUp 0.8s ease-out 0.4s forwards; opacity: 0; }
+        .animate-fade-up-4 { animation: fadeUp 0.8s ease-out 0.6s forwards; opacity: 0; }
+        
+        /* Slider Classes */
+        .hero-slide {
+            transition: opacity 1.2s ease-in-out;
+            opacity: 0; 
+            z-index: 0;
+            pointer-events: none;
+        }
+        .hero-slide.active {
+            opacity: 1;
+            z-index: 1;
+            pointer-events: auto;
+        }
+        
+        /* Progress Bar */
+        .slide-progress-bar {
+            height: 2px;
+            background: rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .slide-progress-fill {
+            height: 100%;
+            background: #D4AF37;
+            width: 0;
+        }
+        .slide-progress-fill.running {
+            animation: progressLoading 5s linear infinite;
+        }
+        
+        /* Premium Button */
+        .btn-gold {
+            background: linear-gradient(45deg, #D4AF37, #F2D06B);
+            color: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-gold::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        .btn-gold:hover::after {
+            left: 100%;
+        }
+        .nav-btn {
+            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #D4AF37;
+            border-color: #D4AF37;
+            color: black;
+        }
+    </style>
 
-        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
-            <div class="flex justify-center mb-8">
-                <div class="border border-gold/30 px-6 py-2 rounded-full bg-black/50 backdrop-blur-sm">
-                    <span class="font-sans text-gold text-xs tracking-[0.3em] uppercase">Vietnam Professional
-                        Audio</span>
-                </div>
+    <!-- 1. HERO SECTION (Premium Cinematic - Aligned) -->
+    <section class="relative w-full bg-black group overflow-hidden h-[85vh] md:h-auto md:aspect-[21/9]">
+        
+        <!-- SLIDER BACKGROUNDS -->
+        <div id="hero-slider-container" class="absolute inset-0 w-full h-full">
+            <!-- Slide 1 -->
+            <div class="hero-slide active absolute inset-0 w-full h-full">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1920&auto=format&fit=crop"
+                    class="w-full h-full object-cover animate-slow-zoom" alt="Stage Light">
+            </div>
+            <!-- Slide 2 -->
+            <div class="hero-slide absolute inset-0 w-full h-full">
+                <img src="https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=1920&auto=format&fit=crop"
+                    class="w-full h-full object-cover animate-slow-zoom" alt="Technology">
+            </div>
+            <!-- Slide 3 -->
+            <div class="hero-slide absolute inset-0 w-full h-full">
+                <img src="https://images.unsplash.com/photo-1470222557941-b682485a77c2?q=80&w=1920&auto=format&fit=crop"
+                    class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="Live Event">
             </div>
 
-            <h1 class="font-serif text-6xl md:text-8xl lg:text-9xl text-white leading-none mb-8 tracking-wide">
-                TD CLASSIC
-            </h1>
-
-            <p class="font-sans text-gray-400 text-base md:text-xl font-light leading-relaxed max-w-3xl mx-auto mb-12">
-                Kiến tạo chuẩn mực âm thanh chuyên nghiệp. Sự kết hợp hoàn hảo giữa kỹ thuật chính xác Châu Âu và sự
-                thấu hiểu thị hiếu người Việt.
-            </p>
-
-            <a href="#dna"
-                class="inline-flex items-center gap-2 text-gold font-sans text-xs font-bold uppercase tracking-widest border-b border-gold pb-1 hover:text-white hover:border-white transition-all">
-                Khám phá hành trình <i data-lucide="arrow-down" class="w-4 h-4"></i>
-            </a>
+            <!-- Premium Gradient Overlay (Smoother transition) -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 pointer-events-none z-10"></div>
         </div>
+
+        <!-- HERO CONTENT (Strict Container Alignment) -->
+        <div class="absolute inset-0 z-20 flex items-end">
+            <div class="container mx-auto px-6 md:px-12 pb-16 md:pb-20 relative">
+                
+                <!-- Content Group -->
+                <div class="max-w-4xl relative">
+                    
+                    <!-- Eyebrow -->
+                    <div class="flex items-center gap-4 mb-6 animate-fade-up-1">
+                        <div class="w-12 h-[1px] bg-gold"></div>
+                        <span class="font-sans text-gold text-[10px] md:text-sm tracking-[0.3em] font-bold uppercase drop-shadow-md">Professional Audio Systems</span>
+                    </div>
+
+                    <!-- Main Title (Massive & Tight) -->
+                    <h1 class="animate-fade-up-2 font-serif text-5xl md:text-7xl lg:text-9xl text-white leading-[0.9] mb-8 tracking-tighter drop-shadow-2xl">
+                        The Art <br class="md:hidden"> of Sound
+                    </h1>
+
+                    <!-- Description -->
+                    <p class="animate-fade-up-3 font-sans text-gray-300 text-sm md:text-xl font-light leading-relaxed max-w-2xl mb-10 drop-shadow-lg opacity-90 border-l border-white/20 pl-6">
+                        TD Classic định nghĩa lại trải nghiệm âm thanh chuyên nghiệp. <br class="hidden md:block">
+                        Kiệt tác kỹ thuật Châu Âu, tinh chỉnh cho tâm hồn Việt.
+                    </p>
+
+                    <!-- Status / Scroll Indicator -->
+                    <div class="animate-fade-up-4 flex items-center gap-4">
+                        <div class="h-1 w-20 bg-gold rounded-full"></div>
+                    </div>
+                </div>
+
+                <!-- DECORATIVE STAR (Aligned to Container Right) -->
+                <div class="absolute bottom-20 right-6 md:right-12 z-20 hidden md:block animate-pulse-slow">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor" class="text-white/10 rotate-12">
+                        <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVIGATION ARROWS (Floating Cleanly) -->
+        <button onclick="prevSlide()" class="hidden md:flex absolute top-1/2 left-0 z-30 w-24 h-full items-center justify-center text-white/10 hover:text-white/60 transition-colors duration-500 group -translate-y-1/2">
+            <i data-lucide="chevron-left" class="w-20 h-20 stroke-[0.5] transform group-hover:-translate-x-2 transition-transform duration-500"></i>
+        </button>
+
+        <button onclick="nextSlide()" class="hidden md:flex absolute top-1/2 right-0 z-30 w-24 h-full items-center justify-center text-white/10 hover:text-white/60 transition-colors duration-500 group -translate-y-1/2">
+            <i data-lucide="chevron-right" class="w-20 h-20 stroke-[0.5] transform group-hover:translate-x-2 transition-transform duration-500"></i>
+        </button>
+
     </section>
+
+    <script>
+        // Professional Slider Logic
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const slideFill = document.getElementById('slide-fill');
+        const currentEl = document.getElementById('slide-current');
+        const totalSlides = slides.length;
+        let slideInterval;
+        let isAutoPlaying = true;
+
+        function updateSliderUI(index) {
+            // Update Number
+            currentEl.textContent = '0' + (index + 1);
+            
+            // Reset Animation
+            slideFill.classList.remove('running');
+            void slideFill.offsetWidth; // trigger reflow
+            if(isAutoPlaying) slideFill.classList.add('running');
+            else slideFill.style.width = '100%'; // Full if paused manually
+        }
+
+        function showSlide(index) {
+            // Handle Wrap
+            if (index >= totalSlides) currentSlide = 0;
+            else if (index < 0) currentSlide = totalSlides - 1;
+            else currentSlide = index;
+
+            // Toggle Classes
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlide);
+            });
+            
+            updateSliderUI(currentSlide);
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            resetAutoPlay(); // Interaction stops auto for a moment or permanently? Let's just reset timer
+            showSlide(currentSlide - 1);
+        }
+        
+        // Wrapper for Next button to reset timer too
+        const manualNext = () => {
+             resetAutoPlay();
+             nextSlide();
+        }
+        
+        // Override the onclicks in HTML for cleaner logic if needed, but direct calls work fine
+        // Note: HTML onclicks call functions. We need to make sure Next button calls manualNext or similar if we want to reset.
+        // Let's just update the functions called by buttons.
+
+        function resetAutoPlay() {
+            clearInterval(slideInterval);
+            isAutoPlaying = true; // restart
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function initSlider() {
+            if(slides.length === 0) return;
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        document.addEventListener('DOMContentLoaded', initSlider);
+
+        // Update button onclicks dynamically to use the reset logic
+        document.querySelector('button[onclick="nextSlide()"]').onclick = () => {
+            clearInterval(slideInterval);
+            nextSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        };
+        document.querySelector('button[onclick="prevSlide()"]').onclick = () => {
+            clearInterval(slideInterval);
+            showSlide(currentSlide - 1);
+            slideInterval = setInterval(nextSlide, 5000);
+        };
+    </script>
 
     <!-- 2. BRAND DNA -->
     <section id="dna" class="py-32 bg-metal relative overflow-hidden">
@@ -63,7 +268,7 @@ get_header();
                 <div class="w-full md:w-1/2 relative group">
                     <div class="absolute -top-4 -left-4 w-24 h-24 border-t border-l border-gold/30"></div>
                     <div
-                        class="aspect-[4/3] overflow-hidden filter grayscale hover:grayscale-0 transition-all duration-1000">
+                        class="aspect-[4/3] overflow-hidden transition-all duration-1000">
                         <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
                             alt="Sứ mệnh âm thanh" loading="lazy">
@@ -89,7 +294,7 @@ get_header();
                 <div class="w-full md:w-1/2 relative group">
                     <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b border-r border-gold/30"></div>
                     <div
-                        class="aspect-[4/3] overflow-hidden filter grayscale hover:grayscale-0 transition-all duration-1000">
+                        class="aspect-[4/3] overflow-hidden transition-all duration-1000">
                         <img src="https://tdclassic.vn/wp-content/uploads/2025/10/2-HE-THONG-AM-THANH-GOM-NHUNG-GI.jpg"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
                             alt="Tầm nhìn" loading="lazy">
@@ -141,74 +346,128 @@ get_header();
         </div>
     </section>
 
-    <!-- 3. CATEGORY OVERVIEW -->
+    <!-- 3. CATEGORY OVERVIEW (Dynamic from Admin Images) -->
+    <?php
+    // Define Category Sections & Fetch Dynamic Images
+    $sections = [
+        [
+            'id' => 'mixer',
+            'bg' => 'bg-metal',
+            'cat_slug' => 'mixer',
+            'cat_num' => '01',
+            'short_title' => 'Bàn Trộn',
+            'title' => 'Bàn Trộn Âm Thanh',
+            'desc' => 'Trái tim của hệ thống live sound. Bàn trộn TD Classic cung cấp khả năng mix nhạc cụ và giọng hát chính xác, với Preamp độ ồn thấp và EQ âm nhạc cao cấp.',
+            'specs' => ['• Preamp chất lượng cao', '• Tích hợp Effects chuyên nghiệp', '• Kết nối USB/Bluetooth linh hoạt'],
+            'img' => '', // Will be dynamic
+            'reverse' => false
+        ],
+        [
+            'id' => 'speakers',
+            'bg' => 'bg-void',
+            'cat_slug' => 'professional-speaker',
+            'cat_num' => '02',
+            'short_title' => 'Loa Pro', 
+            'title' => 'Loa Chuyên Nghiệp',
+            'desc' => 'Dòng loa biểu diễn đỉnh cao. Củ loa Neodymium tái tạo trung âm dày, treble tơi nhuyễn. Phù hợp cho sự kiện, hội trường và các không gian giải trí cao cấp.',
+            'specs' => ['• Công suất cực đại lớn', '• Góc phủ âm tối ưu', '• Linh kiện nhập khẩu Châu Âu'],
+            'img' => '',
+            'reverse' => true
+        ],
+        [
+            'id' => 'amps',
+            'bg' => 'bg-metal',
+            'cat_slug' => 'amplifier',
+            'cat_num' => '03',
+            'short_title' => 'Khuếch Đại', 
+            'title' => 'Thiết Bị Khuếch Đại',
+            'desc' => 'Sức mạnh tiềm ẩn. Dòng cục đẩy công suất TD Classic đảm bảo sự ổn định và uy lực cho toàn bộ hệ thống loa, hoạt động bền bỉ 24/7.',
+            'specs' => ['• Mạch công suất hiệu suất cao', '• Nguồn xuyến ổn định', '• Hệ thống bảo vệ toàn diện'],
+            'img' => '',
+            'reverse' => false
+        ],
+        [
+            'id' => 'processor',
+            'bg' => 'bg-void',
+            'cat_slug' => 'signal-processor',
+            'cat_num' => '04',
+            'short_title' => 'Bộ Xử Lý', 
+            'title' => 'Bộ Xử Lý Tín Hiệu',
+            'desc' => 'Bộ não thông minh. Các thiết bị DSP, Crossover và Equalizer giúp tinh chỉnh chi tiết từng dải tần, tối ưu hóa không gian âm học.',
+            'specs' => ['• Chip DSP 32-bit/64-bit', '• Giao diện điều khiển trực quan', '• Xử lý độ trễ cực thấp'],
+            'img' => '',
+            'reverse' => true
+        ],
+        [
+            'id' => 'mics',
+            'bg' => 'bg-metal',
+            'cat_slug' => 'microphone',
+            'cat_num' => '05',
+            'short_title' => 'Micro', 
+            'title' => 'Microphone',
+            'desc' => 'Bắt trọn cảm xúc. Micro không dây và có dây với độ nhạy cao, khả năng chống hú tốt và tái tạo giọng hát trung thực, ấm áp.',
+            'specs' => ['• Sóng UHF ổn định', '• Củ mic độ nhạy cao', '• Thiết kế sang trọng, bền bỉ'],
+            'img' => '',
+            'reverse' => false
+        ],
+        [
+            'id' => 'power',
+            'bg' => 'bg-void',
+            'cat_slug' => 'quan-ly-nguon',
+            'cat_num' => '06',
+            'short_title' => 'Q.Lý Nguồn', 
+            'title' => 'Quản Lý Nguồn',
+            'desc' => 'An toàn tuyệt đối. Thiết bị quản lý nguồn giúp bật tắt hệ thống theo trình tự, bảo vệ thiết bị khỏi sốc điện và các sự cố lưới điện.',
+            'specs' => ['• Aptomat bảo vệ quá tải', '• Lọc nhiễu nguồn điện', '• Hiển thị điện áp thời gian thực'],
+            'img' => '',
+            'reverse' => true
+        ],
+    ];
+
+    // Dynamic Image Fetching Logic
+    foreach ($sections as &$sec) {
+        $term = get_term_by('slug', $sec['cat_slug'], 'product_cat');
+        if ($term && !is_wp_error($term)) {
+            $thumbnail_id = get_term_meta($term->term_id, 'thumbnail_id', true);
+            if ($thumbnail_id) {
+                // Get Image URL (Use 'large' to ensure high quality for both grid and banner)
+                $image_url = wp_get_attachment_image_url($thumbnail_id, 'large'); 
+                if ($image_url) {
+                    $sec['img'] = $image_url;
+                }
+            }
+        }
+        // Fallback if no admin image found
+        if (empty($sec['img'])) {
+             // Fallback to a placeholder or keep empty (which might default to placeholder in loop if logic added)
+             $sec['img'] = 'https://placehold.co/600x400/1a1a1a/D4AF37?text=' . urlencode($sec['title']);
+        }
+    }
+    unset($sec);
+    ?>
+
     <section id="overview" class="py-24 bg-void">
         <div class="container mx-auto px-6 md:px-12">
             <div class="text-center mb-16">
                 <span class="font-sans text-gold text-xs tracking-cinematic uppercase">Tổng quan danh mục</span>
                 <h2 class="font-sans font-bold text-3xl md:text-5xl text-white mb-6">Hệ Sinh Thái Sản Phẩm</h2>
             </div>
+            
+            <!-- Dynamic Grid Loop -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <a href="#speakers"
+                <?php foreach ($sections as $grid_item): ?>
+                <a href="#<?php echo esc_attr($grid_item['id']); ?>"
                     class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://tdclassic.vn/wp-content/uploads/2025/09/unnamed.png"
-                        class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+                    <img src="<?php echo esc_url($grid_item['img']); ?>"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700"
                         loading="lazy">
                     <div class="absolute bottom-4 left-0 w-full text-center">
                         <p class="font-sans font-bold text-white text-lg group-hover:text-gold transition-colors">
-                            Speakers</p>
+                            <?php echo esc_html($grid_item['short_title']); ?>
+                        </p>
                     </div>
                 </a>
-                <a href="#subs"
-                    class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://images.unsplash.com/photo-1564510714747-69c3bc1fab41?q=80&w=600&auto=format&fit=crop"
-                        class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
-                        loading="lazy">
-                    <div class="absolute bottom-4 left-0 w-full text-center">
-                        <p class="font-sans font-bold text-white text-lg group-hover:text-gold transition-colors">
-                            Subwoofers</p>
-                    </div>
-                </a>
-                <a href="#mics"
-                    class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://tdclassic.vn/wp-content/uploads/2025/09/tdclassic-micro.png"
-                        class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
-                        loading="lazy">
-                    <div class="absolute bottom-4 left-0 w-full text-center">
-                        <p class="font-sans font-bold text-white text-lg group-hover:text-gold transition-colors">
-                            Microphones</p>
-                    </div>
-                </a>
-                <a href="#amps"
-                    class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://tdclassic.vn/wp-content/uploads/2025/09/unnamed-2.png"
-                        class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
-                        loading="lazy">
-                    <div class="absolute bottom-4 left-0 w-full text-center">
-                        <p class="font-sans font-bold text-white text-lg group-hover:text-gold transition-colors">
-                            Amplifiers</p>
-                    </div>
-                </a>
-                <a href="#mixer"
-                    class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://tdclassic.vn/wp-content/uploads/2025/06/TD-Classic-About-us-02.jpg"
-                        class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
-                        loading="lazy">
-                    <div class="absolute bottom-4 left-0 w-full text-center">
-                        <p class="font-sans font-bold text-white text-lg group-hover:text-gold transition-colors">
-                            Processors</p>
-                    </div>
-                </a>
-                <a href="#accessories"
-                    class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://tdclassic.vn/wp-content/uploads/2025/09/unnamed-1-e1757874053770.png"
-                        class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
-                        loading="lazy">
-                    <div class="absolute bottom-4 left-0 w-full text-center">
-                        <p class="font-sans font-bold text-white text-lg group-hover:text-gold transition-colors">
-                            Accessories</p>
-                    </div>
-                </a>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
@@ -216,76 +475,7 @@ get_header();
     <!-- 4. PRODUCT SECTIONS (DYNAMIC & CHECKED ZIGZAG) -->
 
     <?php
-    // Helper function to render component (optional, but using inline for simplicity)
-    $sections = [
-        [
-            'id' => 'speakers',
-            'bg' => 'bg-metal',
-            'cat_slug' => 'professional-speaker',
-            'cat_num' => '01',
-            'title' => 'Loa Full Range & Array',
-            'desc' => 'Dòng loa biểu diễn chuyên nghiệp. Củ loa Neodymium tái tạo trung âm dày, treble tơi nhuyễn. Thùng gỗ Bạch Dương Baltic chịu lực cao, phù hợp cho các sự kiện ngoài trời lẫn không gian Bar/Lounge sang trọng.',
-            'specs' => ['• Công suất cực đại lên tới 2400W', '• Góc phủ âm rộng 100° x 70°', '• Phân tần linh kiện Đức'],
-            'img' => 'https://images.unsplash.com/photo-1595433211516-795325883d6e?q=80&w=1200&auto=format&fit=crop',
-            'reverse' => false // Text Left, Image Right
-        ],
-        [
-            'id' => 'subs',
-            'bg' => 'bg-void',
-            'cat_slug' => 'subwoofer',
-            'cat_num' => '02',
-            'title' => 'Siêu Trầm Subwoofers',
-            'desc' => 'Uy lực và sâu lắng. Dải trầm xuống tới 30Hz, tái tạo tiếng Kick Drum chắc gọn và tiếng Bass Synth rung chuyển không gian.',
-            'specs' => ['• Củ loa Bass 18" - 21" Coil lớn', '• Thiết kế hầm hố cộng hưởng', '• Áp lực âm thanh (SPL) cực đại 138dB'],
-            'img' => 'https://images.unsplash.com/photo-1564510714747-69c3bc1fab41?q=80&w=1200&auto=format&fit=crop',
-            'reverse' => true // Image Left, Text Right
-        ],
-        [
-            'id' => 'mics',
-            'bg' => 'bg-metal',
-            'cat_slug' => 'microphone',
-            'cat_num' => '03',
-            'title' => 'Microphones Không Dây',
-            'desc' => 'Cầu nối của cảm xúc. Micro TD Classic sở hữu độ nhạy cao, khả năng bắt giọng chi tiết và công nghệ sóng UHF True Diversity ổn định tuyệt đối.',
-            'specs' => ['• 200 kênh tần số lựa chọn', '• Tự ngắt khi không sử dụng (Auto-Mute)', '• Phạm vi hoạt động 100m'],
-            'img' => 'https://images.unsplash.com/photo-1558507652-2d9626c4e67a?q=80&w=1200&auto=format&fit=crop',
-            'reverse' => false // Text Left, Image Right
-        ],
-        [
-            'id' => 'amps',
-            'bg' => 'bg-void',
-            'cat_slug' => 'amplifier',
-            'cat_num' => '04',
-            'title' => 'Cục Đẩy Công Suất',
-            'desc' => 'Trái tim của hệ thống. Dòng cục đẩy (Amplifier) TD Classic được thiết kế để hoạt động liên tục với hiệu suất cao.',
-            'specs' => ['• Mạch công suất Class D / Class H tiên tiến', '• Biến áp xuyến đồng nguyên chất 100%', '• Hệ thống bảo vệ quá nhiệt, quá tải thông minh'],
-            'img' => 'https://images.unsplash.com/photo-1629822601704-58a36f455138?q=80&w=1200&auto=format&fit=crop',
-            'reverse' => true // Image Left, Text Right
-        ],
-        [
-            'id' => 'mixer',
-            'bg' => 'bg-metal',
-            'cat_slug' => 'mixer',
-            'cat_num' => '05',
-            'title' => 'Vang Số & Mixer',
-            'desc' => 'Bộ não xử lý trung tâm. Các thiết bị xử lý tín hiệu (DSP) của TD Classic sử dụng chip 32-bit cho khả năng xử lý âm thanh chi tiết, mượt mà.',
-            'specs' => ['• Chip xử lý DSP Analog Devices / Yamaha', '• Điều chỉnh chi tiết qua phần mềm máy tính', '• Tích hợp Bluetooth chuẩn AptX HD'],
-            'img' => 'https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=1200&auto=format&fit=crop',
-            'reverse' => false // Text Left, Image Right
-        ],
-        [
-            'id' => 'accessories',
-            'bg' => 'bg-void',
-            'cat_slug' => 'accessory',
-            'cat_num' => '06',
-            'title' => 'Phụ Kiện Âm Thanh',
-            'desc' => 'Sự hoàn hảo nằm trong chi tiết. Hệ thống dây dẫn tín hiệu, giắc kết nối, tủ máy và chân loa của TD Classic đều đạt chuẩn Pro Audio.',
-            'specs' => ['• Dây dẫn lõi đồng tinh khiết 99.99%', '• Đầu giắc mạ vàng chống oxy hóa', '• Tủ máy ABS chống sốc, bảo vệ thiết bị'],
-            'img' => 'https://images.unsplash.com/photo-1599558231221-a47734185123?q=80&w=1200&auto=format&fit=crop',
-            'reverse' => true // Image Left, Text Right
-        ],
-    ];
-
+    // $sections is already defined and enriched above.
     foreach ($sections as $sec):
         // Using FLEX ROW REVERSE for Robust Zigzag (Compatible with Tailwind CDN)
         // If Reverse=True (Image Left, Text Right) -> Use flex-row
@@ -305,7 +495,7 @@ get_header();
                     <!-- Image Wrapper (Always First in DOM for Mobile Stack Image-Top) -->
                     <div class="w-full md:w-1/2 relative h-[400px] bg-void overflow-hidden group border border-white/5">
                         <img src="<?php echo esc_url($sec['img']); ?>"
-                            class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                             alt="Cover" loading="lazy">
                     </div>
 
@@ -360,7 +550,7 @@ get_header();
                                         <a href="<?php the_permalink(); ?>">
                                             <?php if (has_post_thumbnail()): ?>
                                                 <img src="<?php the_post_thumbnail_url('medium_large'); ?>"
-                                                    class="w-full h-full object-cover zoom-img grayscale hover:grayscale-0"
+                                                    class="w-full h-full object-cover zoom-img"
                                                     loading="lazy">
                                             <?php else: ?>
                                                 <div class="w-full h-full flex items-center justify-center bg-gray-800 text-gray-600">No
@@ -450,7 +640,7 @@ get_header();
                     <div class="w-full md:w-1/2 relative group">
                         <div class="absolute -top-4 -left-4 w-16 h-16 border-t border-l border-gold/50"></div>
                         <img src="https://images.unsplash.com/photo-1570752321219-41822a21a761?q=80&w=800&auto=format&fit=crop"
-                            class="w-full grayscale group-hover:grayscale-0 transition-all duration-1000"
+                            class="w-full transition-all duration-1000"
                             loading="lazy">
                     </div>
                     <div class="w-full md:w-1/2">
@@ -486,7 +676,7 @@ get_header();
                     <div class="w-full md:w-1/2 relative group">
                         <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b border-r border-gold/50"></div>
                         <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800&auto=format&fit=crop"
-                            class="w-full grayscale group-hover:grayscale-0 transition-all duration-1000"
+                            class="w-full transition-all duration-1000"
                             loading="lazy">
                     </div>
                     <div class="w-full md:w-1/2">
@@ -522,7 +712,7 @@ get_header();
                     <div class="w-full md:w-1/2 relative group">
                         <div class="absolute -top-4 -left-4 w-16 h-16 border-t border-l border-gold/50"></div>
                         <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=800&auto=format&fit=crop"
-                            class="w-full grayscale group-hover:grayscale-0 transition-all duration-1000"
+                            class="w-full transition-all duration-1000"
                             loading="lazy">
                     </div>
                     <div class="w-full md:w-1/2">
