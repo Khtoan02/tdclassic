@@ -103,19 +103,23 @@ get_header();
         
         <!-- SLIDER BACKGROUNDS -->
         <div id="hero-slider-container" class="absolute inset-0 w-full h-full">
-            <!-- Slide 1 -->
             <div class="hero-slide active absolute inset-0 w-full h-full">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1920&auto=format&fit=crop"
+                <img src="https://p19-dreamina-sign-sg.ibyteimg.com/tos-alisg-i-wopfjsm1ax-sg/e83b75eb10a34de1a8334161739e5838~tplv-wopfjsm1ax-aigc_resize:4096:4096.webp?lk3s=43402efa&x-expires=1769040000&x-signature=2KI%2FjKcCubh88%2FfHTGD6pgg62zw%3D&format=.webp"
+                    class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="Live Event">
+            </div>
+            <!-- Slide 1 -->
+            <div class="hero-slide absolute inset-0 w-full h-full">
+                <img src="https://p16-dreamina-sign-sg.ibyteimg.com/tos-alisg-i-wopfjsm1ax-sg/3b601e4021fb407ea2a6dc92f8e46cc6~tplv-wopfjsm1ax-aigc_resize:4096:4096.webp?lk3s=43402efa&x-expires=1769040000&x-signature=i5Pr8Gmzow5agjWUo%2BzumgIm%2FbU%3D&format=.webp"
                     class="w-full h-full object-cover animate-slow-zoom" alt="Stage Light">
             </div>
             <!-- Slide 2 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=1920&auto=format&fit=crop"
+                <img src="https://p16-dreamina-sign-sg.ibyteimg.com/tos-alisg-i-wopfjsm1ax-sg/1c4b9d079dd442a6bf9668eb46a46239~tplv-wopfjsm1ax-aigc_resize:4096:4096.webp?lk3s=43402efa&x-expires=1769040000&x-signature=5%2BFaJ7MheTLsaMyvLCvPvQduvjg%3D&format=.webp"
                     class="w-full h-full object-cover animate-slow-zoom" alt="Technology">
             </div>
             <!-- Slide 3 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="https://images.unsplash.com/photo-1470222557941-b682485a77c2?q=80&w=1920&auto=format&fit=crop"
+                <img src="https://p16-dreamina-sign-sg.ibyteimg.com/tos-alisg-i-wopfjsm1ax-sg/fce21480ad3b448b8e2c727231b779bf~tplv-wopfjsm1ax-aigc_resize:4096:4096.webp?lk3s=43402efa&x-expires=1769040000&x-signature=bCahpm9%2BEI7mdwEjIJHoPGfMFYk%3D&format=.webp"
                     class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="Live Event">
             </div>
 
@@ -353,27 +357,44 @@ get_header();
     
     $mega_categories = tdclassic_get_mega_menu_categories(10); // Fetch up to 10 categories
     $sections = [];
+    $merge_slugs = ['quan-ly-nguon', 'phu-kien'];
+    $merged_added = false;
+    $display_index = 0; // Track visual index for alternating bg
 
     if (!empty($mega_categories)) {
-        foreach ($mega_categories as $index => $cat) {
-            $is_even = ($index % 2 == 0);
+        foreach ($mega_categories as $cat) {
+            
+            // Handle Merged Sections (Power & Accessories)
+            if (in_array($cat['slug'], $merge_slugs)) {
+                if ($merged_added) continue; // Skip if already added
+                
+                // Create Combined Section Data
+                $cat['name'] = 'Q.Lý Nguồn & Phụ Kiện';
+                $cat['description'] = 'Hệ thống quản lý nguồn điện an toàn và các phụ kiện kết nối chuyên dụng, đảm bảo sự ổn định tuyệt đối cho dàn âm thanh.';
+                $cat['slug'] = 'quan-ly-nguon'; // Use Power Management as primary slug for products
+                $merged_added = true;
+            }
+
+            $is_even = ($display_index % 2 == 0);
             
             // Build Section Data
             $sections[] = [
                 'id' => $cat['slug'],
-                'bg' => $is_even ? 'bg-metal' : 'bg-void', // Alternate Backgrounds
+                'bg' => $is_even ? 'bg-metal' : 'bg-void',
                 'cat_slug' => $cat['slug'],
-                'cat_num' => sprintf('%02d', $index + 1), // 01, 02, 03...
-                'short_title' => $cat['name'], // Use cat name for short title too
+                'cat_num' => sprintf('%02d', $display_index + 1),
+                'short_title' => $cat['name'],
                 'title' => $cat['name'],
                 'desc' => $cat['description'] ? $cat['description'] : 'Khám phá các sản phẩm ' . strtolower($cat['name']) . ' chất lượng cao từ TD Classic.',
-                'specs' => ['• Chất lượng âm thanh chuyên nghiệp', '• Thiết kế bền bỉ, sang trọng', '• Bảo hành chính hãng'], // Default generic specs if not customizable per cat yet
+                'specs' => ['• Chất lượng âm thanh chuyên nghiệp', '• Thiết kế bền bỉ, sang trọng', '• Bảo hành chính hãng'],
                 'img' => !empty($cat['image_url']) ? $cat['image_url'] : 'https://placehold.co/600x400/1a1a1a/D4AF37?text=' . urlencode($cat['name']),
-                'reverse' => !$is_even // Toggle layout: False (Left) -> True (Right) -> False...
+                'reverse' => !$is_even
             ];
+            
+            $display_index++;
         }
     } else {
-        // Fallback or Empty State (Optional)
+        // Fallback or Empty State
         $sections = []; 
     }
     ?>
