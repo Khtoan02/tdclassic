@@ -90,7 +90,7 @@ get_header();
                     <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b border-r border-gold/30"></div>
                     <div
                         class="aspect-[4/3] overflow-hidden filter grayscale hover:grayscale-0 transition-all duration-1000">
-                        <img src="https://images.unsplash.com/photo-1478737270239-2f02b77ac6d5?q=80&w=1200&auto=format&fit=crop"
+                        <img src="https://tdclassic.vn/wp-content/uploads/2025/10/2-HE-THONG-AM-THANH-GOM-NHUNG-GI.jpg"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
                             alt="Tầm nhìn" loading="lazy">
                     </div>
@@ -151,7 +151,7 @@ get_header();
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 <a href="#speakers"
                     class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://images.unsplash.com/photo-1595433211516-795325883d6e?q=80&w=600&auto=format&fit=crop"
+                    <img src="https://tdclassic.vn/wp-content/uploads/2025/09/unnamed.png"
                         class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                         loading="lazy">
                     <div class="absolute bottom-4 left-0 w-full text-center">
@@ -171,7 +171,7 @@ get_header();
                 </a>
                 <a href="#mics"
                     class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://images.unsplash.com/photo-1558507652-2d9626c4e67a?q=80&w=600&auto=format&fit=crop"
+                    <img src="https://tdclassic.vn/wp-content/uploads/2025/09/tdclassic-micro.png"
                         class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                         loading="lazy">
                     <div class="absolute bottom-4 left-0 w-full text-center">
@@ -181,7 +181,7 @@ get_header();
                 </a>
                 <a href="#amps"
                     class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://images.unsplash.com/photo-1629822601704-58a36f455138?q=80&w=600&auto=format&fit=crop"
+                    <img src="https://tdclassic.vn/wp-content/uploads/2025/09/unnamed-2.png"
                         class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                         loading="lazy">
                     <div class="absolute bottom-4 left-0 w-full text-center">
@@ -191,7 +191,7 @@ get_header();
                 </a>
                 <a href="#mixer"
                     class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=600&auto=format&fit=crop"
+                    <img src="https://tdclassic.vn/wp-content/uploads/2025/06/TD-Classic-About-us-02.jpg"
                         class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                         loading="lazy">
                     <div class="absolute bottom-4 left-0 w-full text-center">
@@ -201,7 +201,7 @@ get_header();
                 </a>
                 <a href="#accessories"
                     class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
-                    <img src="https://images.unsplash.com/photo-1599558231221-a47734185123?q=80&w=600&auto=format&fit=crop"
+                    <img src="https://tdclassic.vn/wp-content/uploads/2025/09/unnamed-1-e1757874053770.png"
                         class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                         loading="lazy">
                     <div class="absolute bottom-4 left-0 w-full text-center">
