@@ -348,102 +348,34 @@ get_header();
 
     <!-- 3. CATEGORY OVERVIEW (Dynamic from Admin Images) -->
     <?php
-    // Define Category Sections & Fetch Dynamic Images
-    $sections = [
-        [
-            'id' => 'mixer',
-            'bg' => 'bg-metal',
-            'cat_slug' => 'mixer',
-            'cat_num' => '01',
-            'short_title' => 'Bàn Trộn',
-            'title' => 'Bàn Trộn Âm Thanh',
-            'desc' => 'Trái tim của hệ thống live sound. Bàn trộn TD Classic cung cấp khả năng mix nhạc cụ và giọng hát chính xác, với Preamp độ ồn thấp và EQ âm nhạc cao cấp.',
-            'specs' => ['• Preamp chất lượng cao', '• Tích hợp Effects chuyên nghiệp', '• Kết nối USB/Bluetooth linh hoạt'],
-            'img' => '', // Will be dynamic
-            'reverse' => false
-        ],
-        [
-            'id' => 'speakers',
-            'bg' => 'bg-void',
-            'cat_slug' => 'professional-speaker',
-            'cat_num' => '02',
-            'short_title' => 'Loa Pro', 
-            'title' => 'Loa Chuyên Nghiệp',
-            'desc' => 'Dòng loa biểu diễn đỉnh cao. Củ loa Neodymium tái tạo trung âm dày, treble tơi nhuyễn. Phù hợp cho sự kiện, hội trường và các không gian giải trí cao cấp.',
-            'specs' => ['• Công suất cực đại lớn', '• Góc phủ âm tối ưu', '• Linh kiện nhập khẩu Châu Âu'],
-            'img' => '',
-            'reverse' => true
-        ],
-        [
-            'id' => 'amps',
-            'bg' => 'bg-metal',
-            'cat_slug' => 'amplifier',
-            'cat_num' => '03',
-            'short_title' => 'Khuếch Đại', 
-            'title' => 'Thiết Bị Khuếch Đại',
-            'desc' => 'Sức mạnh tiềm ẩn. Dòng cục đẩy công suất TD Classic đảm bảo sự ổn định và uy lực cho toàn bộ hệ thống loa, hoạt động bền bỉ 24/7.',
-            'specs' => ['• Mạch công suất hiệu suất cao', '• Nguồn xuyến ổn định', '• Hệ thống bảo vệ toàn diện'],
-            'img' => '',
-            'reverse' => false
-        ],
-        [
-            'id' => 'processor',
-            'bg' => 'bg-void',
-            'cat_slug' => 'signal-processor',
-            'cat_num' => '04',
-            'short_title' => 'Bộ Xử Lý', 
-            'title' => 'Bộ Xử Lý Tín Hiệu',
-            'desc' => 'Bộ não thông minh. Các thiết bị DSP, Crossover và Equalizer giúp tinh chỉnh chi tiết từng dải tần, tối ưu hóa không gian âm học.',
-            'specs' => ['• Chip DSP 32-bit/64-bit', '• Giao diện điều khiển trực quan', '• Xử lý độ trễ cực thấp'],
-            'img' => '',
-            'reverse' => true
-        ],
-        [
-            'id' => 'mics',
-            'bg' => 'bg-metal',
-            'cat_slug' => 'microphone',
-            'cat_num' => '05',
-            'short_title' => 'Micro', 
-            'title' => 'Microphone',
-            'desc' => 'Bắt trọn cảm xúc. Micro không dây và có dây với độ nhạy cao, khả năng chống hú tốt và tái tạo giọng hát trung thực, ấm áp.',
-            'specs' => ['• Sóng UHF ổn định', '• Củ mic độ nhạy cao', '• Thiết kế sang trọng, bền bỉ'],
-            'img' => '',
-            'reverse' => false
-        ],
-        [
-            'id' => 'power',
-            'bg' => 'bg-void',
-            'cat_slug' => 'quan-ly-nguon',
-            'cat_num' => '06',
-            'short_title' => 'Q.Lý Nguồn', 
-            'title' => 'Quản Lý Nguồn',
-            'desc' => 'An toàn tuyệt đối. Thiết bị quản lý nguồn giúp bật tắt hệ thống theo trình tự, bảo vệ thiết bị khỏi sốc điện và các sự cố lưới điện.',
-            'specs' => ['• Aptomat bảo vệ quá tải', '• Lọc nhiễu nguồn điện', '• Hiển thị điện áp thời gian thực'],
-            'img' => '',
-            'reverse' => true
-        ],
-    ];
+    // Define Category Sections & Fetch Dynamic Images via Mega Menu Logic
+    // This ensures consistency: Homepage sections will match Header Menu categories exactly.
+    
+    $mega_categories = tdclassic_get_mega_menu_categories(10); // Fetch up to 10 categories
+    $sections = [];
 
-    // Dynamic Image Fetching Logic
-    foreach ($sections as &$sec) {
-        $term = get_term_by('slug', $sec['cat_slug'], 'product_cat');
-        if ($term && !is_wp_error($term)) {
-            $thumbnail_id = get_term_meta($term->term_id, 'thumbnail_id', true);
-            if ($thumbnail_id) {
-                // Get Image URL (Use 'large' to ensure high quality for both grid and banner)
-                $image_url = wp_get_attachment_image_url($thumbnail_id, 'large'); 
-                if ($image_url) {
-                    $sec['img'] = $image_url;
-                }
-            }
+    if (!empty($mega_categories)) {
+        foreach ($mega_categories as $index => $cat) {
+            $is_even = ($index % 2 == 0);
+            
+            // Build Section Data
+            $sections[] = [
+                'id' => $cat['slug'],
+                'bg' => $is_even ? 'bg-metal' : 'bg-void', // Alternate Backgrounds
+                'cat_slug' => $cat['slug'],
+                'cat_num' => sprintf('%02d', $index + 1), // 01, 02, 03...
+                'short_title' => $cat['name'], // Use cat name for short title too
+                'title' => $cat['name'],
+                'desc' => $cat['description'] ? $cat['description'] : 'Khám phá các sản phẩm ' . strtolower($cat['name']) . ' chất lượng cao từ TD Classic.',
+                'specs' => ['• Chất lượng âm thanh chuyên nghiệp', '• Thiết kế bền bỉ, sang trọng', '• Bảo hành chính hãng'], // Default generic specs if not customizable per cat yet
+                'img' => !empty($cat['image_url']) ? $cat['image_url'] : 'https://placehold.co/600x400/1a1a1a/D4AF37?text=' . urlencode($cat['name']),
+                'reverse' => !$is_even // Toggle layout: False (Left) -> True (Right) -> False...
+            ];
         }
-        // Fallback if no admin image found
-        if (empty($sec['img'])) {
-             // Fallback to a placeholder or keep empty (which might default to placeholder in loop if logic added)
-             $sec['img'] = 'https://placehold.co/600x400/1a1a1a/D4AF37?text=' . urlencode($sec['title']);
-        }
+    } else {
+        // Fallback or Empty State (Optional)
+        $sections = []; 
     }
-    unset($sec);
     ?>
 
     <section id="overview" class="py-24 bg-void">
