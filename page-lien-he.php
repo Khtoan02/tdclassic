@@ -164,8 +164,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                             nốt nhạc.
                         </p>
                         <p class="font-sans text-gray-400 text-sm leading-relaxed text-justify">
-                            Với đội ngũ kỹ sư âm thanh giàu kinh nghiệm và hệ thống showroom, kho hàng trải dài khắp
-                            Việt Nam,
+                            Với đội ngũ kỹ sư âm thanh giàu kinh nghiệm và hệ thống showroom chuyên nghiệp,
                             TD Classic tự hào là đối tác tin cậy của những thương hiệu hàng đầu trong và ngoài nước.
                         </p>
                     </div>
@@ -204,105 +203,81 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                 <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"></div>
             </div>
 
-            <!-- SHOWROOM HIGHLIGHT -->
-            <div class="max-w-4xl mx-auto mb-12">
-                <div class="bg-void border-2 border-gold/30 p-8 md:p-10 relative overflow-hidden group">
-                    <div
-                        class="absolute -right-8 -top-8 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-all">
-                    </div>
-                    <div
-                        class="absolute top-6 right-6 bg-gold text-black px-4 py-1 text-xs font-bold uppercase tracking-wider">
-                        Trải nghiệm thực tế
-                    </div>
-                    <div class="relative z-10">
-                        <div class="flex items-start gap-4 mb-4">
-                            <div class="w-14 h-14 border-2 border-gold flex items-center justify-center flex-shrink-0">
-                                <i data-lucide="building-2" class="w-7 h-7 text-gold"></i>
+            <!-- LOCATIONS GRID (Equal Hierarchy) -->
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
+                
+                <!-- Văn Phòng & Showroom Hải Phòng -->
+                <div class="bg-void border border-gold/30 p-8 relative overflow-hidden group hover:-translate-y-2 transition-all duration-300">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-all"></div>
+                    
+                    <div class="relative z-10 h-full flex flex-col">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 border-2 border-gold flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="building-2" class="w-6 h-6 text-gold"></i>
                             </div>
                             <div>
-                                <h3 class="font-sans font-bold text-2xl text-white mb-2">Showroom Trưng Bày Chính</h3>
-                                    Lô BT36-06 Khu đô thị (KĐT) thương mại & nhà ở công nhân Tràng Duệ, Phường An Dương, TP Hải Phòng, Việt Nam
-                                </p>
-                                <div class="flex flex-wrap gap-4 text-xs">
-                                    <div class="flex items-center gap-2 text-gold">
-                                        <i data-lucide="check-circle" class="w-4 h-4"></i>
-                                        <span class="font-sans">Phòng Demo Chuyên Nghiệp</span>
-                                    </div>
-                                    <div class="flex items-center gap-2 text-gold">
-                                        <i data-lucide="check-circle" class="w-4 h-4"></i>
-                                        <span class="font-sans">Tư Vấn 1-1 Miễn Phí</span>
-                                    </div>
-                                    <div class="flex items-center gap-2 text-gold">
-                                        <i data-lucide="check-circle" class="w-4 h-4"></i>
-                                        <span class="font-sans">Trưng Bày Đầy Đủ Sản Phẩm</span>
-                                    </div>
-                                </div>
+                                <h3 class="font-sans font-bold text-xl text-white">Văn Phòng & Showroom</h3>
+                                <p class="text-gold text-xs font-bold uppercase tracking-wider">Hải Phòng (Trụ sở chính)</p>
                             </div>
+                        </div>
+                        
+                        <div class="space-y-4 mb-8 flex-1">
+                            <p class="font-sans text-gray-400 text-sm leading-relaxed">
+                                Lô BT36-06 Khu đô thị (KĐT) thương mại & nhà ở công nhân Tràng Duệ, Phường An Dương, TP Hải Phòng, Việt Nam
+                            </p>
+                            <div class="flex flex-wrap gap-3 text-xs">
+                                <span class="bg-white/5 text-gray-300 px-3 py-1 rounded-full border border-white/10">Trưng bày sản phẩm</span>
+                                <span class="bg-white/5 text-gray-300 px-3 py-1 rounded-full border border-white/10">Tư vấn kỹ thuật</span>
+                                <span class="bg-white/5 text-gray-300 px-3 py-1 rounded-full border border-white/10">Demo 1-1</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-white/10">
+                             <div class="text-xs text-gray-500 font-sans mb-1">Hotline:</div>
+                             <div class="text-white font-serif text-lg"><?php echo esc_html($primary_phone); ?></div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- OFFICES GRID -->
-            <div class="mb-12">
-                <h3 class="font-sans font-bold text-xl text-white mb-6 text-center">Văn Phòng Đại Diện</h3>
-                <div class="flex justify-center">
-                    <!-- Hà Nội Office -->
-                    <div class="location-card bg-surface border border-white/10 p-6 hover:shadow-xl max-w-md w-full">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 border border-white/20 flex items-center justify-center">
-                                <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
+                <!-- Văn Phòng Hà Nội -->
+                <div class="bg-void border border-gold/30 p-8 relative overflow-hidden group hover:-translate-y-2 transition-all duration-300">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-all"></div>
+                    
+                    <div class="absolute top-6 right-6 bg-gold text-black px-4 py-1 text-xs font-bold uppercase tracking-wider">
+                        Chi nhánh
+                    </div>
+
+                    <div class="relative z-10 h-full flex flex-col">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 border-2 border-gold flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="briefcase" class="w-6 h-6 text-gold"></i>
                             </div>
-                            <h4 class="font-sans font-bold text-lg text-white">Văn Phòng Hà Nội</h4>
+                            <div>
+                                <h3 class="font-sans font-bold text-xl text-white">Văn Phòng Hà Nội</h3>
+                                <p class="text-gold text-xs font-bold uppercase tracking-wider">Khu vực Phía Bắc</p>
+                            </div>
                         </div>
-                        <p class="font-sans text-sm text-gray-400 mb-3">
-                            Lô 5 - TT7 - Khu đấu giá Tứ Hiệp, Thanh Trì, Hà Nội
-                        </p>
-                        <div class="text-xs text-gray-500 font-sans">
-                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i>
-                            Hotline: <?php echo esc_html($primary_phone); ?>
+                        
+                        <div class="space-y-4 mb-8 flex-1">
+                            <p class="font-sans text-gray-400 text-sm leading-relaxed">
+                                Lô 5 - TT7 - Khu đấu giá Tứ Hiệp, Thanh Trì, Hà Nội
+                            </p>
+                            <div class="flex flex-wrap gap-3 text-xs">
+                                <span class="bg-white/5 text-gray-300 px-3 py-1 rounded-full border border-white/10">Văn phòng đại diện</span>
+                                <span class="bg-white/5 text-gray-300 px-3 py-1 rounded-full border border-white/10">Tiếp nhận dự án</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-white/10">
+                             <div class="text-xs text-gray-500 font-sans mb-1">Hotline:</div>
+                             <div class="text-white font-serif text-lg"><?php echo esc_html($primary_phone); ?></div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
-            <!-- WAREHOUSE SECTION -->
-            <div class="max-w-4xl mx-auto">
-                <h3 class="font-sans font-bold text-xl text-white mb-6 text-center">Hệ Thống Kho Hàng & Logistics</h3>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <!-- Warehouse 01 -->
-                    <div class="bg-void/50 border border-white/5 p-6">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-10 h-10 bg-gold/10 border border-gold/30 flex items-center justify-center">
-                                <i data-lucide="warehouse" class="w-5 h-5 text-gold"></i>
-                            </div>
-                            <h4 class="font-sans font-bold text-white">Kho Số 01</h4>
-                        </div>
-                        <p class="font-sans text-sm text-gray-400">
-                            Số 10 Đường Cầu Bính, Sở Dầu, Hồng Bàng, Hải Phòng
-                        </p>
-                        <div class="mt-3 text-xs text-gray-500">
-                            <span class="text-gold">●</span> Kho chính - Sẵn hàng 24/7
-                        </div>
-                    </div>
 
-                    <!-- Warehouse 02 -->
-                    <div class="bg-void/50 border border-white/5 p-6">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-10 h-10 bg-gold/10 border border-gold/30 flex items-center justify-center">
-                                <i data-lucide="warehouse" class="w-5 h-5 text-gold"></i>
-                            </div>
-                            <h4 class="font-sans font-bold text-white">Kho Số 02</h4>
-                        </div>
-                        <p class="font-sans text-sm text-gray-400">
-                            Lô 35B+36+37A Khu Văn Tràng II, An Lão, Hải Phòng
-                        </p>
-                        <div class="mt-3 text-xs text-gray-500">
-                            <span class="text-gold">●</span> Kho dự phòng - Sản phẩm số lượng lớn
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -519,14 +494,13 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                     <button onclick="showLocation('showroom')" data-location="showroom"
                         class="location-tab active bg-gold text-black px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white">
                         <i data-lucide="building-2" class="w-4 h-4 inline mr-2"></i>
-                        Showroom An Dương
+                        Văn Phòng & Showroom HP
                     </button>
                     <button onclick="showLocation('hanoi')" data-location="hanoi"
                         class="location-tab bg-surface text-gray-400 px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-void hover:text-white">
                         <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
-                        VP Hà Nội
+                        Văn Phòng Hà Nội
                     </button>
-
                 </div>
 
                 <!-- Location Content Containers -->
@@ -542,16 +516,15 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                                 </div>
                                 <div
                                     class="absolute top-4 right-4 bg-gold text-black px-3 py-1 text-[10px] font-bold uppercase tracking-widest">
-                                    Trải nghiệm
+                                    Trụ sở chính
                                 </div>
 
                                 <div class="relative z-10">
                                     <div class="w-12 h-12 border-2 border-gold flex items-center justify-center mb-4">
                                         <i data-lucide="building-2" class="w-6 h-6 text-gold"></i>
                                     </div>
-                                    <h3 class="font-sans font-bold text-xl text-white mb-2">Showroom Trưng Bày</h3>
-                                    <p class="text-xs text-gold uppercase tracking-wider mb-6 font-sans">Địa điểm chính
-                                    </p>
+                                    <h3 class="font-sans font-bold text-xl text-white mb-2">Văn Phòng & Showroom</h3>
+                                    <p class="text-xs text-gold uppercase tracking-wider mb-6 font-sans">Hải Phòng</p>
 
                                     <div class="space-y-4 mb-6">
                                         <div class="flex items-start gap-3">
