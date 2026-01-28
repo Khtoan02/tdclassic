@@ -300,33 +300,23 @@
                 
                 <!-- CỘT 1: SẢN PHẨM -->
                 <div class="footer-col">
-                    <h3 class="footer-heading">Danh mục sản phẩm</h3>
-                    <ul class="product-links">
-                        <li><a href="<?php echo home_url('/product-category/professional-speaker/'); ?>">Loa chuyên nghiệp</a></li>
-                        <li><a href="<?php echo home_url('/product-category/amplifier/'); ?>">Thiết bị khuếch đại</a></li>
-                        <li><a href="<?php echo home_url('/product-category/audio-mixer/'); ?>">Bàn trộn âm thanh</a></li>
-                        <li><a href="<?php echo home_url('/product-category/signal-processor/'); ?>">Bộ xử lý tín hiệu</a></li>
-                        <li><a href="<?php echo home_url('/product-category/microphone/'); ?>">Microphone</a></li>
-                        <li><a href="<?php echo home_url('/product-category/resource-management/'); ?>">Quản lý nguồn</a></li>
-                    </ul>
-                    
-                    <div style="margin-top: 40px;">
-                        <h3 class="footer-heading" style="margin-bottom: 15px;">Liên hệ nhanh</h3>
-                        <div class="contact-info-block">
-                            <p style="color: #fff; font-size: 18px; font-weight: bold; margin-bottom: 5px;"><?php tdclassic_display_phone(); ?></p>
-                            <p><?php tdclassic_display_email(); ?></p>
-                        </div>
-                        
-                        <!-- Chứng nhận chuyển lên đây -->
-                        <div class="footer-certs">
-                             <a href="https://www.dmca.com/Protection/Status.aspx?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2&refurl=https://tdclassic.vn/" title="DMCA.com Protection Status" class="dmca-badge cert-tooltip" target="_blank" data-tooltip="Bảo vệ bản quyền DMCA">
-                                <img src="https://images.dmca.com/Badges/DMCA_badge_grn_60w.png?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" alt="DMCA.com Protection Status" />
-                            </a>
-                            <a href="#" class="fake-goods-badge cert-tooltip" data-tooltip="Cam kết 100% Chính hãng">
-                                <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" style="height: 32px; width: auto;" />
-                            </a>
-                        </div>
+                <!-- CỘT 1: LIÊN HỆ -->
+                <div class="footer-col">
+                    <h3 class="footer-heading" style="margin-bottom: 20px;">Liên hệ nhanh</h3>
+                    <div class="contact-info-block">
+                        <p style="color: #fff; font-size: 18px; font-weight: bold; margin-bottom: 5px;"><?php tdclassic_display_phone(); ?></p>
+                        <p><?php tdclassic_display_email(); ?></p>
                     </div>
+                    
+                    <div class="footer-certs">
+                            <a href="https://www.dmca.com/Protection/Status.aspx?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2&refurl=https://tdclassic.vn/" title="DMCA.com Protection Status" class="dmca-badge cert-tooltip" target="_blank" data-tooltip="Bảo vệ bản quyền DMCA">
+                            <img src="https://images.dmca.com/Badges/DMCA_badge_grn_60w.png?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" alt="DMCA.com Protection Status" />
+                        </a>
+                        <a href="#" class="fake-goods-badge cert-tooltip" data-tooltip="Cam kết 100% Chính hãng">
+                            <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" style="height: 32px; width: auto;" />
+                        </a>
+                    </div>
+                </div>
                 </div>
 
                 <!-- CỘT 2: HỆ THỐNG VĂN PHÒNG -->
