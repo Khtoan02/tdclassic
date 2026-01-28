@@ -223,6 +223,61 @@
             opacity: 1;
         }
 
+        /* Tooltip Styles */
+        .cert-tooltip {
+            position: relative;
+        }
+        
+        .cert-tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid #444;
+            pointer-events: none;
+            z-index: 20;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .cert-tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: 115%; /* Slight float up effect */
+        }
+        
+        .cert-tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: 110%; /* Arrow position */
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #444; /* Match border color */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 19;
+        }
+
+        .cert-tooltip:hover::before {
+            opacity: 1;
+            visibility: visible;
+            bottom: 105%;
+        }
+
         /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
             .footer-brand { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -264,10 +319,10 @@
                         
                         <!-- Chứng nhận chuyển lên đây -->
                         <div class="footer-certs">
-                             <a href="//www.dmca.com/Protection/Status.aspx?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" title="DMCA.com Protection Status" class="dmca-badge" target="_blank">
+                             <a href="https://www.dmca.com/Protection/Status.aspx?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2&refurl=https://tdclassic.vn/" title="DMCA.com Protection Status" class="dmca-badge cert-tooltip" target="_blank" data-tooltip="Bảo vệ bản quyền DMCA">
                                 <img src="https://images.dmca.com/Badges/DMCA_badge_grn_60w.png?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" alt="DMCA.com Protection Status" />
                             </a>
-                            <a href="/" title="Nói không với hàng giả" class="fake-goods-badge">
+                            <a href="#" class="fake-goods-badge cert-tooltip" data-tooltip="Cam kết 100% Chính hãng">
                                 <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" style="height: 32px; width: auto;" />
                             </a>
                         </div>
@@ -284,7 +339,7 @@
                             SHOWROOM TRƯNG BÀY
                         </div>
                         <div class="highlight-address">
-                            111A tổ 3 Thị trấn An Dương, Huyện An Dương, Thành phố Hải Phòng
+                            Lô BT36-06 Khu đô thị (KĐT) thương mại & nhà ở công nhân Tràng Duệ, Phường An Dương, TP Hải Phòng, Việt Nam
                         </div>
                     </div>
 
@@ -292,16 +347,8 @@
                     <h3 class="footer-heading">Văn phòng đại diện</h3>
                     <div class="office-list">
                         <div class="office-item">
-                            <span class="office-title">Văn phòng Hải Phòng</span>
-                            <span class="office-addr">Số 10 Đường Cầu Bính, Sở Dầu, Hồng Bàng, Hải Phòng</span>
-                        </div>
-                        <div class="office-item">
                             <span class="office-title">Văn phòng Hà Nội</span>
                             <span class="office-addr">Lô 5 - TT7 - Khu đấu giá Tứ Hiệp, Thanh Trì, Hà Nội</span>
-                        </div>
-                        <div class="office-item">
-                            <span class="office-title">Văn phòng TP. Hồ Chí Minh</span>
-                            <span class="office-addr">Toà nhà Phúc Tấn Nguyên, 400 Nguyễn Thị Thập, P. Tân Quy, Quận 7</span>
                         </div>
                     </div>
                 </div>

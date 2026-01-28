@@ -221,8 +221,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                             </div>
                             <div>
                                 <h3 class="font-sans font-bold text-2xl text-white mb-2">Showroom Trưng Bày Chính</h3>
-                                <p class="font-sans text-gray-400 text-sm mb-4">
-                                    111A tổ 3 Thị trấn An Dương, Huyện An Dương, Thành phố Hải Phòng
+                                    Lô BT36-06 Khu đô thị (KĐT) thương mại & nhà ở công nhân Tràng Duệ, Phường An Dương, TP Hải Phòng, Việt Nam
                                 </p>
                                 <div class="flex flex-wrap gap-4 text-xs">
                                     <div class="flex items-center gap-2 text-gold">
@@ -247,26 +246,9 @@ $primary_email = !empty($emails) ? $emails[0] : '';
             <!-- OFFICES GRID -->
             <div class="mb-12">
                 <h3 class="font-sans font-bold text-xl text-white mb-6 text-center">Văn Phòng Đại Diện</h3>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <!-- Hải Phòng Office -->
-                    <div class="location-card bg-surface border border-white/10 p-6 hover:shadow-xl">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 border border-white/20 flex items-center justify-center">
-                                <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
-                            </div>
-                            <h4 class="font-sans font-bold text-lg text-white">Văn Phòng Hải Phòng</h4>
-                        </div>
-                        <p class="font-sans text-sm text-gray-400 mb-3">
-                            Số 10 Đường Cầu Bính, Sở Dầu, Hồng Bàng, Hải Phòng
-                        </p>
-                        <div class="text-xs text-gray-500 font-sans">
-                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i>
-                            Hotline: <?php echo esc_html($primary_phone); ?>
-                        </div>
-                    </div>
-
+                <div class="flex justify-center">
                     <!-- Hà Nội Office -->
-                    <div class="location-card bg-surface border border-white/10 p-6 hover:shadow-xl">
+                    <div class="location-card bg-surface border border-white/10 p-6 hover:shadow-xl max-w-md w-full">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="w-10 h-10 border border-white/20 flex items-center justify-center">
                                 <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
@@ -275,23 +257,6 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                         </div>
                         <p class="font-sans text-sm text-gray-400 mb-3">
                             Lô 5 - TT7 - Khu đấu giá Tứ Hiệp, Thanh Trì, Hà Nội
-                        </p>
-                        <div class="text-xs text-gray-500 font-sans">
-                            <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i>
-                            Hotline: <?php echo esc_html($primary_phone); ?>
-                        </div>
-                    </div>
-
-                    <!-- TP.HCM Office -->
-                    <div class="location-card bg-surface border border-white/10 p-6 hover:shadow-xl">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 border border-white/20 flex items-center justify-center">
-                                <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
-                            </div>
-                            <h4 class="font-sans font-bold text-lg text-white">Văn Phòng TP. HCM</h4>
-                        </div>
-                        <p class="font-sans text-sm text-gray-400 mb-3">
-                            Toà nhà Phúc Tấn Nguyên, 400 Nguyễn Thị Thập, P. Tân Quy, Quận 7
                         </p>
                         <div class="text-xs text-gray-500 font-sans">
                             <i data-lucide="phone" class="w-3 h-3 inline mr-1"></i>
@@ -556,21 +521,12 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                         <i data-lucide="building-2" class="w-4 h-4 inline mr-2"></i>
                         Showroom An Dương
                     </button>
-                    <button onclick="showLocation('haiphong')" data-location="haiphong"
-                        class="location-tab bg-surface text-gray-400 px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-void hover:text-white">
-                        <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
-                        VP Hải Phòng
-                    </button>
                     <button onclick="showLocation('hanoi')" data-location="hanoi"
                         class="location-tab bg-surface text-gray-400 px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-void hover:text-white">
                         <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
                         VP Hà Nội
                     </button>
-                    <button onclick="showLocation('hcm')" data-location="hcm"
-                        class="location-tab bg-surface text-gray-400 px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-void hover:text-white">
-                        <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
-                        VP TP.HCM
-                    </button>
+
                 </div>
 
                 <!-- Location Content Containers -->
@@ -601,7 +557,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                                         <div class="flex items-start gap-3">
                                             <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-1"></i>
                                             <p class="text-sm text-gray-300 font-sans leading-relaxed">
-                                                111A tổ 3 Thị trấn An Dương, Huyện An Dương, Thành phố Hải Phòng
+                                            Lô BT36-06 Khu đô thị (KĐT) thương mại & nhà ở công nhân Tràng Duệ, Phường An Dương, TP Hải Phòng, Việt Nam
                                             </p>
                                         </div>
                                         <div class="flex items-center gap-3">
@@ -639,57 +595,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                         </div>
                     </div>
 
-                    <!-- HẢI PHÒNG OFFICE LOCATION -->
-                    <div id="location-haiphong" class="location-content hidden">
-                        <div class="grid lg:grid-cols-5 gap-8">
-                            <!-- Location Info Card -->
-                            <div class="lg:col-span-2 bg-surface border border-white/10 p-8 relative">
-                                <div class="w-12 h-12 border border-white/20 flex items-center justify-center mb-4">
-                                    <i data-lucide="briefcase" class="w-6 h-6 text-gold"></i>
-                                </div>
-                                <h3 class="font-sans font-bold text-xl text-white mb-2">Văn Phòng Hải Phòng</h3>
-                                <p class="text-xs text-gray-500 uppercase tracking-wider mb-6 font-sans">Office &
-                                    Warehouse</p>
 
-                                <div class="space-y-4 mb-6">
-                                    <div class="flex items-start gap-3">
-                                        <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-1"></i>
-                                        <p class="text-sm text-gray-300 font-sans leading-relaxed">
-                                            Số 10 Đường Cầu Bính, Sở Dầu, Hồng Bàng, Hải Phòng
-                                        </p>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <i data-lucide="phone" class="w-4 h-4 text-gold flex-shrink-0"></i>
-                                        <a href="tel:<?php echo esc_attr(str_replace(' ', '', $primary_phone)); ?>"
-                                            class="text-sm text-white hover:text-gold transition-colors">
-                                            <?php echo esc_html($primary_phone); ?>
-                                        </a>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <i data-lucide="package" class="w-4 h-4 text-gold flex-shrink-0"></i>
-                                        <span class="text-sm text-gray-400">Kho hàng số 01</span>
-                                    </div>
-                                </div>
-
-                                <a href="https://maps.google.com/?q=Số+10+Đường+Cầu+Bính+Hải+Phòng" target="_blank"
-                                    class="inline-flex items-center gap-2 border border-gold text-gold px-6 py-3 font-sans text-sm font-bold uppercase tracking-wider hover:bg-gold hover:text-black transition-all duration-300 group/btn">
-                                    <i data-lucide="navigation"
-                                        class="w-4 h-4 group-hover/btn:rotate-45 transition-transform"></i>
-                                    Chỉ đường
-                                </a>
-                            </div>
-
-                            <!-- Map -->
-                            <div
-                                class="lg:col-span-3 bg-void border border-white/10 overflow-hidden relative h-[450px]">
-                                <div class="absolute inset-0 bg-void/20 pointer-events-none z-10"></div>
-                                <iframe class="w-full h-full"
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3728.2!2d106.682!3d20.863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7b0e4b5c8c8f%3A0x1234567890abcdef!2zU-G7kSAxMCDEkMaw4budbmcgQ-G6p3UgQsOtbmgsIFPhu58gROG6p3UsIEjhu5NuZyBCw6BuZywgSOG6o2kgUGjDsm5n!5e0!3m2!1svi!2s!4v1620000000000!5m2!1svi!2s"
-                                    style="border:0;" allowfullscreen="" loading="lazy">
-                                </iframe>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- HÀ NỘI OFFICE LOCATION -->
                     <div id="location-hanoi" class="location-content hidden">
@@ -744,58 +650,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                         </div>
                     </div>
 
-                    <!-- TP.HCM OFFICE LOCATION -->
-                    <div id="location-hcm" class="location-content hidden">
-                        <div class="grid lg:grid-cols-5 gap-8">
-                            <!-- Location Info Card -->
-                            <div class="lg:col-span-2 bg-surface border border-white/10 p-8 relative">
-                                <div class="w-12 h-12 border border-white/20 flex items-center justify-center mb-4">
-                                    <i data-lucide="briefcase" class="w-6 h-6 text-gold"></i>
-                                </div>
-                                <h3 class="font-sans font-bold text-xl text-white mb-2">Văn Phòng TP. HCM</h3>
-                                <p class="text-xs text-gray-500 uppercase tracking-wider mb-6 font-sans">Representative
-                                    Office</p>
 
-                                <div class="space-y-4 mb-6">
-                                    <div class="flex items-start gap-3">
-                                        <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-1"></i>
-                                        <p class="text-sm text-gray-300 font-sans leading-relaxed">
-                                            Toà nhà Phúc Tấn Nguyên, 400 Nguyễn Thị Thập, P. Tân Quy, Quận 7, TP. Hồ Chí
-                                            Minh
-                                        </p>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <i data-lucide="phone" class="w-4 h-4 text-gold flex-shrink-0"></i>
-                                        <a href="tel:<?php echo esc_attr(str_replace(' ', '', $primary_phone)); ?>"
-                                            class="text-sm text-white hover:text-gold transition-colors">
-                                            <?php echo esc_html($primary_phone); ?>
-                                        </a>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <i data-lucide="users" class="w-4 h-4 text-gold flex-shrink-0"></i>
-                                        <span class="text-sm text-gray-400">Tư vấn & Hỗ trợ khu vực phía Nam</span>
-                                    </div>
-                                </div>
-
-                                <a href="https://maps.google.com/?q=400+Nguyễn+Thị+Thập+Quận+7+TP+HCM" target="_blank"
-                                    class="inline-flex items-center gap-2 border border-gold text-gold px-6 py-3 font-sans text-sm font-bold uppercase tracking-wider hover:bg-gold hover:text-black transition-all duration-300 group/btn">
-                                    <i data-lucide="navigation"
-                                        class="w-4 h-4 group-hover/btn:rotate-45 transition-transform"></i>
-                                    Chỉ đường
-                                </a>
-                            </div>
-
-                            <!-- Map -->
-                            <div
-                                class="lg:col-span-3 bg-void border border-white/10 overflow-hidden relative h-[450px]">
-                                <div class="absolute inset-0 bg-void/20 pointer-events-none z-10"></div>
-                                <iframe class="w-full h-full"
-                                    src="https://maps.google.com/maps?q=400+Nguy%E1%BB%85n+Th%E1%BB%8B+Th%E1%BA%ADp,+T%C3%A2n+Quy,+Qu%E1%BA%ADn+7,+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh&output=embed"
-                                    style="border:0;" allowfullscreen="" loading="lazy">
-                                </iframe>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>
