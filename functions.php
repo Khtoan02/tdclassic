@@ -200,7 +200,7 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
 
     foreach ($products as $product) {
         $product_id = $product->ID;
-        $product_obj = wc_get_product($product_id);
+        $product_obj = function_exists('wc_get_product') ? wc_get_product($product_id) : null;
 
         // Get product image
         $image_id = get_post_thumbnail_id($product_id);
@@ -208,7 +208,7 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
         if ($image_id) {
             $image_url = wp_get_attachment_image_url($image_id, 'medium');
         } else {
-            $image_url = wc_placeholder_img_src('medium');
+            $image_url = function_exists('wc_placeholder_img_src') ? wc_placeholder_img_src('medium') : '';
         }
 
         // Get product price
@@ -451,7 +451,7 @@ add_filter('woocommerce_locate_template', 'tdclassic_woocommerce_locate_template
 function tdclassic_woocommerce_locate_template($template, $template_name, $template_path)
 {
     // Force use of custom taxonomy-product_cat.php
-    if ($template_name === 'archive-product.php' && (is_product_category() || is_product_tag() || is_tax('product_cat'))) {
+    if ($template_name === 'archive-product.php' && ((function_exists('is_product_category') && is_product_category()) || (function_exists('is_product_tag') && is_product_tag()) || is_tax('product_cat'))) {
         $custom_template = get_template_directory() . '/woocommerce/taxonomy-product_cat.php';
         if (file_exists($custom_template)) {
             return $custom_template;
@@ -465,7 +465,7 @@ add_filter('template_include', 'tdclassic_force_taxonomy_template', 99);
 function tdclassic_force_taxonomy_template($template)
 {
     // Check if this is a product category page
-    if (is_product_category() || is_tax('product_cat')) {
+    if ((function_exists('is_product_category') && is_product_category()) || is_tax('product_cat')) {
         $custom_template = get_template_directory() . '/woocommerce/taxonomy-product_cat.php';
         if (file_exists($custom_template)) {
             return $custom_template;
@@ -622,7 +622,7 @@ function tdclassic_load_more_products()
             $query->the_post();
             global $product;
             if (!$product) {
-                $product = wc_get_product(get_the_ID());
+                $product = function_exists('wc_get_product') ? wc_get_product(get_the_ID()) : null;
             }
             $product_specs = get_post_meta(get_the_ID(), '_product_specs', true);
             $product_badge = get_post_meta(get_the_ID(), '_product_badge', true);
@@ -1774,6 +1774,7 @@ function tdclassic_email_config_page()
 
         <?php
         // Enqueue admin email test script
+        $theme_version = wp_get_theme()->get('Version');
         wp_enqueue_script('tdclassic-admin-email', get_template_directory_uri() . '/assets/js/admin/admin-email.js', array('jquery'), $theme_version, true);
         wp_localize_script('tdclassic-admin-email', 'tdclassicEmailTest', array(
             'nonce' => wp_create_nonce('tdclassic_test_email')

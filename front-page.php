@@ -104,22 +104,22 @@ get_header();
         <!-- SLIDER BACKGROUNDS -->
         <div id="hero-slider-container" class="absolute inset-0 w-full h-full">
             <div class="hero-slide active absolute inset-0 w-full h-full">
-                <img src="https://p19-dreamina-sign-sg.ibyteimg.com/tos-alisg-i-wopfjsm1ax-sg/e83b75eb10a34de1a8334161739e5838~tplv-wopfjsm1ax-aigc_resize:4096:4096.webp?lk3s=43402efa&x-expires=1769040000&x-signature=2KI%2FjKcCubh88%2FfHTGD6pgg62zw%3D&format=.webp"
+                <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover-scaled.webp"
                     class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="Live Event">
             </div>
             <!-- Slide 1 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="https://p16-dreamina-sign-sg.ibyteimg.com/tos-alisg-i-wopfjsm1ax-sg/3b601e4021fb407ea2a6dc92f8e46cc6~tplv-wopfjsm1ax-aigc_resize:4096:4096.webp?lk3s=43402efa&x-expires=1769040000&x-signature=i5Pr8Gmzow5agjWUo%2BzumgIm%2FbU%3D&format=.webp"
+                <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover_02-scaled.webp"
                     class="w-full h-full object-cover animate-slow-zoom" alt="Stage Light">
             </div>
             <!-- Slide 2 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="https://p16-dreamina-sign-sg.ibyteimg.com/tos-alisg-i-wopfjsm1ax-sg/1c4b9d079dd442a6bf9668eb46a46239~tplv-wopfjsm1ax-aigc_resize:4096:4096.webp?lk3s=43402efa&x-expires=1769040000&x-signature=5%2BFaJ7MheTLsaMyvLCvPvQduvjg%3D&format=.webp"
+                <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover_03-scaled.webp"
                     class="w-full h-full object-cover animate-slow-zoom" alt="Technology">
             </div>
             <!-- Slide 3 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="https://p16-dreamina-sign-sg.ibyteimg.com/tos-alisg-i-wopfjsm1ax-sg/fce21480ad3b448b8e2c727231b779bf~tplv-wopfjsm1ax-aigc_resize:4096:4096.webp?lk3s=43402efa&x-expires=1769040000&x-signature=bCahpm9%2BEI7mdwEjIJHoPGfMFYk%3D&format=.webp"
+                <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover_01-scaled.webp"
                     class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="Live Event">
             </div>
 
@@ -592,7 +592,7 @@ get_header();
                 <div class="flex flex-col md:flex-row gap-12 items-center">
                     <div class="w-full md:w-1/2 relative group">
                         <div class="absolute -top-4 -left-4 w-16 h-16 border-t border-l border-gold/50"></div>
-                        <img src="https://images.unsplash.com/photo-1570752321219-41822a21a761?q=80&w=800&auto=format&fit=crop"
+                        <img src="https://tdclassic.vn/wp-content/uploads/2025/10/3-HE-THONG-AM-THANH-GOM-NHUNG-GI.jpg"
                             class="w-full transition-all duration-1000"
                             loading="lazy">
                     </div>
