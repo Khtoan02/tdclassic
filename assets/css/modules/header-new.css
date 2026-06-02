@@ -603,6 +603,46 @@
     pointer-events: none;
 }
 
+/* Category-specific Single Panel Bottom Mega Menu */
+.bottom-mega-wrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 9996; /* Just below main mega menu */
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transform-origin: top;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background-color: transparent;
+}
+
+.has-bottom-mega:hover .bottom-mega-wrapper {
+    max-height: 500px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.bottom-mega-content {
+    background: rgba(9, 9, 9, 0.99); /* Sleek graphite glass backdrop */
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95);
+    height: 440px;
+    display: flex;
+    padding: 30px 40px;
+    gap: 40px;
+    transform: translateY(-15px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.has-bottom-mega:hover .bottom-mega-wrapper .bottom-mega-content {
+    transform: translateY(0);
+}
+
 /* ==========================================================================
    DESKTOP MEDIA QUERY OVERRIDES (PREVENTS ANY RENDER ON BIG SCREEN)
    ========================================================================== */
