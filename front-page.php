@@ -167,12 +167,12 @@ get_header();
         </div>
 
         <!-- NAVIGATION ARROWS (Floating Cleanly) -->
-        <button onclick="prevSlide()" class="hidden md:flex absolute top-1/2 left-0 z-30 w-24 h-full items-center justify-center text-white/10 hover:text-white/60 transition-colors duration-500 group -translate-y-1/2">
-            <i data-lucide="chevron-left" class="w-20 h-20 stroke-[0.5] transform group-hover:-translate-x-2 transition-transform duration-500"></i>
+        <button onclick="prevSlide()" class="flex absolute top-1/2 left-4 md:left-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+            <i class="fa-solid fa-chevron-left text-sm md:text-lg transform group-hover:-translate-x-0.5 transition-transform duration-300"></i>
         </button>
 
-        <button onclick="nextSlide()" class="hidden md:flex absolute top-1/2 right-0 z-30 w-24 h-full items-center justify-center text-white/10 hover:text-white/60 transition-colors duration-500 group -translate-y-1/2">
-            <i data-lucide="chevron-right" class="w-20 h-20 stroke-[0.5] transform group-hover:translate-x-2 transition-transform duration-500"></i>
+        <button onclick="nextSlide()" class="flex absolute top-1/2 right-4 md:right-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+            <i class="fa-solid fa-chevron-right text-sm md:text-lg transform group-hover:translate-x-0.5 transition-transform duration-300"></i>
         </button>
 
     </section>
