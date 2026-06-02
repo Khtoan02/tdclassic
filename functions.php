@@ -61,6 +61,7 @@ function tdclassic_defer_scripts($tag, $handle)
         'bootstrap-js',
         'font-awesome',
         'lucide-icons',
+        'cloudflare-turnstile',
         'tdclassic-main',
         'tdclassic-mega-menu',
         'tdclassic-carousel',
@@ -317,7 +318,7 @@ function tdclassic_scripts()
     wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;700;800&family=Cormorant+Garamond:ital,wght@1,300;1,500&family=Cinzel:wght@400;500;600;700&family=Manrope:wght@200;300;400;500;600;700&display=swap', array(), null);
 
     // Lucide Icons
-    wp_enqueue_script('lucide-icons', 'https://unpkg.com/lucide@latest', array(), null, false);
+    wp_enqueue_script('lucide-icons', 'https://unpkg.com/lucide@0.400.0/dist/umd/lucide.min.js', array(), '0.400.0', true);
 
     // ===== CSS MODULES - Load on all pages =====
     // Header CSS - New design - Load on all pages
@@ -372,10 +373,7 @@ function tdclassic_scripts()
     wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', array(), '5.3.0', true);
 
     // Main theme script - Load globally (header, footer, common features)
-    // Helper utilities (load before main.js)
-    wp_enqueue_script('tdclassic-helpers', get_template_directory_uri() . '/assets/js/utils/helpers.js', array(), $theme_version, true);
-
-    wp_enqueue_script('tdclassic-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap-js', 'tdclassic-helpers'), $theme_version, true);
+    wp_enqueue_script('tdclassic-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap-js'), $theme_version, true);
 
     // Mega Menu JS - Load globally for new header design
     wp_enqueue_script('tdclassic-mega-menu', get_template_directory_uri() . '/assets/js/modules/mega-menu.js', array('tdclassic-main'), $theme_version, true);
@@ -402,6 +400,11 @@ function tdclassic_scripts()
     // Partner slider - Load on pages that use it
     if (is_front_page() || is_page_template('page-doi-tac.php')) {
         wp_enqueue_script('tdclassic-partner-slider', get_template_directory_uri() . '/assets/js/components/partner-slider.js', array('tdclassic-main'), $theme_version, true);
+    }
+
+    // Cloudflare Turnstile API Script
+    if (is_page_template('page-lien-he.php') || is_singular('product') || is_front_page()) {
+        wp_enqueue_script('cloudflare-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, true);
     }
 
     // Comment reply script
@@ -444,7 +447,25 @@ function tdclassic_add_tailwind()
     </script>
     <?php
 }
+// Restore Tailwind JIT CDN for full database and dynamic compatibility
 add_action('wp_head', 'tdclassic_add_tailwind', 10);
+
+/**
+ * Preload LCP (Largest Contentful Paint) images dynamically in head for optimal PageSpeed
+ */
+function tdclassic_preload_lcp_images()
+{
+    if (is_front_page()) {
+        $front_hero_url = 'https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover-scaled.webp';
+        echo '<link rel="preload" href="' . esc_url($front_hero_url) . '" as="image" fetchpriority="high">' . "\n";
+    } elseif (is_singular('product')) {
+        $product_img_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+        if ($product_img_url) {
+            echo '<link rel="preload" href="' . esc_url($product_img_url) . '" as="image" fetchpriority="high">' . "\n";
+        }
+    }
+}
+add_action('wp_head', 'tdclassic_preload_lcp_images', 1);
 
 // Force WooCommerce to use custom product category template
 add_filter('woocommerce_locate_template', 'tdclassic_woocommerce_locate_template', 10, 3);
@@ -1857,22 +1878,52 @@ function tdclassic_handle_contact_form()
         wp_send_json_error('Security check failed');
     }
 
+    // Verify Cloudflare Turnstile Spam Protection
+    $secret_key = get_option('tdclassic_turnstile_secret_key', '1x0000000000000000000000000000000AA');
+    $token = isset($_POST['cf-turnstile-response']) ? sanitize_text_field($_POST['cf-turnstile-response']) : '';
+
+    if (empty($token)) {
+        wp_send_json_error('Vui lòng hoàn thành xác thực bảo mật (Turnstile).');
+    }
+
+    $response = wp_remote_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', array(
+        'body' => array(
+            'secret' => $secret_key,
+            'response' => $token,
+            'remoteip' => $_SERVER['REMOTE_ADDR']
+        )
+    ));
+
+    if (is_wp_error($response)) {
+        wp_send_json_error('Không thể kết nối đến máy chủ bảo mật. Vui lòng thử lại.');
+    }
+
+    $response_body = json_decode(wp_remote_retrieve_body($response), true);
+    if (empty($response_body['success'])) {
+        wp_send_json_error('Xác thực bảo mật không thành công. Bạn bị nghi ngờ là robot.');
+    }
+
     // Sanitize form data
     $name = sanitize_text_field($_POST['contact_name']);
-    $email = sanitize_email($_POST['contact_email']);
+    $email = isset($_POST['contact_email']) ? sanitize_email($_POST['contact_email']) : '';
     $phone = sanitize_text_field($_POST['contact_phone']);
-    $company = sanitize_text_field($_POST['contact_company']);
-    $subject = sanitize_text_field($_POST['contact_subject']);
+    $company = isset($_POST['contact_company']) ? sanitize_text_field($_POST['contact_company']) : '';
+    
+    // Handle interest categories
+    $interests = isset($_POST['contact_interests']) ? (array)$_POST['contact_interests'] : array();
+    $interests_sanitized = array_map('sanitize_text_field', $interests);
+    $subject = !empty($interests_sanitized) ? 'Quan tâm: ' . implode(', ', $interests_sanitized) : 'Yêu cầu liên hệ mới';
+    
     $message = sanitize_textarea_field($_POST['contact_message']);
     $newsletter = isset($_POST['contact_newsletter']) ? 1 : 0;
 
-    // Validate required fields
-    if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-        wp_send_json_error('Vui lòng điền đầy đủ thông tin bắt buộc.');
+    // Validate required fields (Only Name, Phone, Message are required in form)
+    if (empty($name) || empty($phone) || empty($message)) {
+        wp_send_json_error('Vui lòng điền đầy đủ họ tên, số điện thoại và nội dung cần tư vấn.');
     }
 
-    // Validate email
-    if (!is_email($email)) {
+    // Validate email if provided
+    if (!empty($email) && !is_email($email)) {
         wp_send_json_error('Email không hợp lệ.');
     }
 

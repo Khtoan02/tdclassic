@@ -4,6 +4,8 @@
  * The template for displaying the contact page
  */
 
+get_header();
+
 // Get company information
 $addresses = tdclassic_get_company_addresses();
 $phones = tdclassic_get_company_phones();
@@ -12,116 +14,100 @@ $primary_phone = !empty($phones) ? $phones[0] : '';
 $secondary_phone = !empty($phones) && count($phones) > 1 ? $phones[1] : '';
 $primary_email = !empty($emails) ? $emails[0] : '';
 ?>
-<!DOCTYPE html>
-<html <?php language_attributes(); ?> class="scroll-smooth">
 
-<head>
-    <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php wp_head(); ?>
+<!-- Tailwind and Global Styles loaded via functions.php -->
+<style>
+    /* Input Field Animation */
+    .input-group {
+        position: relative;
+        margin-bottom: 2rem;
+    }
 
-    <!-- Tailwind and Global Styles loaded via functions.php -->
-    <style>
-        /* Global styles moved to style.css */
+    .input-field {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #333;
+        padding: 1rem 0;
+        color: white;
+        font-family: 'Manrope', sans-serif;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+    }
 
-        /* Input Field Animation */
-        .input-group {
-            position: relative;
-            margin-bottom: 2rem;
-        }
+    .input-field:focus {
+        outline: none;
+        border-bottom-color: #C5A059;
+    }
 
-        .input-field {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #333;
-            padding: 1rem 0;
-            color: white;
-            font-family: 'Manrope', sans-serif;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
+    .input-label {
+        position: absolute;
+        top: 1rem;
+        left: 0;
+        color: #666;
+        font-size: 0.875rem;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
 
-        .input-field:focus {
-            outline: none;
-            border-bottom-color: #C5A059;
-        }
+    .input-field:focus~.input-label,
+    .input-field:not(:placeholder-shown)~.input-label {
+        top: -0.75rem;
+        font-size: 0.75rem;
+        color: #C5A059;
+    }
 
-        .input-label {
-            position: absolute;
-            top: 1rem;
-            left: 0;
-            color: #666;
-            font-size: 0.875rem;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
+    /* Checkbox styling */
+    input[type="checkbox"] {
+        appearance: none;
+        width: 1rem;
+        height: 1rem;
+        border: 1px solid #666;
+        border-radius: 2px;
+        background: transparent;
+        cursor: pointer;
+        position: relative;
+    }
 
-        .input-field:focus~.input-label,
-        .input-field:not(:placeholder-shown)~.input-label {
-            top: -0.75rem;
-            font-size: 0.75rem;
-            color: #C5A059;
-        }
+    input[type="checkbox"]:checked {
+        background: #C5A059;
+        border-color: #C5A059;
+    }
 
-        /* Checkbox styling */
-        input[type="checkbox"] {
-            appearance: none;
-            width: 1rem;
-            height: 1rem;
-            border: 1px solid #666;
-            border-radius: 2px;
-            background: transparent;
-            cursor: pointer;
-            position: relative;
-        }
+    input[type="checkbox"]:checked::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: black;
+        font-size: 0.75rem;
+    }
 
-        input[type="checkbox"]:checked {
-            background: #C5A059;
-            border-color: #C5A059;
-        }
+    /* Location Card Hover Effect */
+    .location-card {
+        transition: all 0.3s ease;
+    }
 
-        input[type="checkbox"]:checked::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: black;
-            font-size: 0.75rem;
-        }
+    .location-card:hover {
+        transform: translateY(-4px);
+        border-color: #C5A059 !important;
+    }
 
-        /* Location Card Hover Effect */
-        .location-card {
-            transition: all 0.3s ease;
-        }
+    /* Location Content Display */
+    .location-content {
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
 
-        .location-card:hover {
-            transform: translateY(-4px);
-            border-color: #C5A059 !important;
-        }
+    .location-content.hidden {
+        display: none;
+    }
+</style>
 
-        /* Location Content Display */
-        .location-content {
-            opacity: 1;
-            transition: opacity 0.3s ease;
-        }
-
-        .location-content.hidden {
-            display: none;
-        }
-    </style>
-</head>
-
-<body class="antialiased selection:bg-gold selection:text-black">
-
-    <?php wp_body_open(); ?>
-
-    <div class="noise"></div>
-
-    <?php get_header(); ?>
+<div class="noise"></div>
 
     <!-- HERO HEADER -->
     <section class="pt-40 pb-20 bg-void relative overflow-hidden">
@@ -454,6 +440,16 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                                 <label for="message" class="input-label">Nội dung cần tư vấn *</label>
                             </div>
 
+                            <!-- Cloudflare Turnstile -->
+                            <?php 
+                            $site_key = get_option('tdclassic_turnstile_site_key', '1x00000000000000000000AA'); 
+                            if (!empty($site_key)) :
+                            ?>
+                                <div class="cf-turnstile-wrapper flex justify-center mb-6">
+                                    <div class="cf-turnstile" data-sitekey="<?php echo esc_attr($site_key); ?>" data-theme="dark"></div>
+                                </div>
+                            <?php endif; ?>
+
                             <div class="pt-4">
                                 <button type="submit"
                                     class="w-full bg-gold hover:bg-white text-black font-serif font-bold uppercase tracking-[0.2em] py-4 transition-all duration-300 flex items-center justify-center gap-2 group">
@@ -630,8 +626,6 @@ $primary_email = !empty($emails) ? $emails[0] : '';
         </div>
     </section>
 
-    <?php get_footer(); ?>
-
     <script>
         lucide.createIcons();
 
@@ -706,7 +700,4 @@ $primary_email = !empty($emails) ? $emails[0] : '';
         });
     </script>
 
-    <?php wp_footer(); ?>
-</body>
-
-</html>
+    <?php get_footer(); ?>

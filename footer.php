@@ -381,7 +381,6 @@
 <?php wp_footer(); ?>
 
 <!-- Lucide Icons -->
-<script src="https://unpkg.com/lucide@latest"></script>
 <script>
     // Initialize Lucide icons
     if (typeof lucide !== 'undefined') {

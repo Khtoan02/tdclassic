@@ -471,6 +471,8 @@ function td_classic_add_admin_menu() {
 function td_classic_settings_init() {
     register_setting('td_classic_settings', 'tdclassic_hotline');
     register_setting('td_classic_settings', 'tdclassic_zalo');
+    register_setting('td_classic_settings', 'tdclassic_turnstile_site_key');
+    register_setting('td_classic_settings', 'tdclassic_turnstile_secret_key');
     
     add_settings_section(
         'td_classic_contact_section',
@@ -494,6 +496,29 @@ function td_classic_settings_init() {
         'td_classic_settings',
         'td_classic_contact_section'
     );
+
+    add_settings_section(
+        'td_classic_security_section',
+        'Bảo mật & Chống Spam (Cloudflare Turnstile)',
+        'td_classic_security_section_callback',
+        'td_classic_settings'
+    );
+
+    add_settings_field(
+        'tdclassic_turnstile_site_key',
+        'Turnstile Site Key',
+        'tdclassic_turnstile_site_key_render',
+        'td_classic_settings',
+        'td_classic_security_section'
+    );
+
+    add_settings_field(
+        'tdclassic_turnstile_secret_key',
+        'Turnstile Secret Key',
+        'tdclassic_turnstile_secret_key_render',
+        'td_classic_settings',
+        'td_classic_security_section'
+    );
 }
 
 function tdclassic_hotline_render() {
@@ -508,8 +533,24 @@ function tdclassic_zalo_render() {
     echo '<p class="description">Số Zalo hiển thị trên trang sản phẩm</p>';
 }
 
+function tdclassic_turnstile_site_key_render() {
+    $value = get_option('tdclassic_turnstile_site_key', '');
+    echo '<input type="text" name="tdclassic_turnstile_site_key" value="' . esc_attr($value) . '" class="regular-text" placeholder="1x00000000000000000000AA" />';
+    echo '<p class="description">Site Key được cung cấp bởi Cloudflare Turnstile. Sử dụng 1x00000000000000000000AA làm Testing Key.</p>';
+}
+
+function tdclassic_turnstile_secret_key_render() {
+    $value = get_option('tdclassic_turnstile_secret_key', '');
+    echo '<input type="password" name="tdclassic_turnstile_secret_key" value="' . esc_attr($value) . '" class="regular-text" placeholder="1x0000000000000000000000000000000AA" />';
+    echo '<p class="description">Secret Key được cung cấp bởi Cloudflare Turnstile. Sử dụng 1x0000000000000000000000000000000AA làm Testing Key.</p>';
+}
+
 function td_classic_contact_section_callback() {
     echo '<p>Cấu hình thông tin liên hệ hiển thị trên trang sản phẩm</p>';
+}
+
+function td_classic_security_section_callback() {
+    echo '<p>Cấu hình khóa Cloudflare Turnstile để bảo vệ các Form liên hệ trên website.</p>';
 }
 
 function td_classic_options_page() {
