@@ -540,7 +540,8 @@
     background-color: #090909; /* Sleek graphite dark layer creating architectural depth */
     border-top: 1px solid rgba(255, 255, 255, 0.02);
     border-bottom: 1px solid rgba(197, 160, 89, 0.12); /* Subtle gold bottom line */
-    padding: 11px 0;
+    padding: 0;
+    position: relative;
     transition: all 0.35s ease;
 }
 

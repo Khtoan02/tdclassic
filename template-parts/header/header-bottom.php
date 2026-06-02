@@ -135,7 +135,7 @@ if ($is_fallback) {
     <div class="max-w-[1700px] mx-auto px-6 md:px-12">
         
         <!-- Mobile/Tablet Horizontal Swipeable Categories Bar -->
-        <div class="flex lg:hidden overflow-x-auto whitespace-nowrap scrollbar-none gap-5 py-0.5 justify-start items-center" id="mobile-bottom-cats">
+        <div class="flex lg:hidden overflow-x-auto whitespace-nowrap scrollbar-none gap-5 py-3 justify-start items-center" id="mobile-bottom-cats">
             <?php foreach ($bottom_categories as $cat) : ?>
                 <a href="<?php echo esc_url($cat['url']); ?>" 
                    class="bottom-cat-link text-[10px] font-semibold uppercase tracking-wider text-gray-400 hover:text-gold active:text-gold transition-colors inline-block select-none">
@@ -145,7 +145,7 @@ if ($is_fallback) {
         </div>
 
         <!-- Desktop Luxury Fixed Row with Dedicated Mega Menus per Category -->
-        <div class="hidden lg:flex justify-center items-center gap-7 h-full py-0.5">
+        <div class="hidden lg:flex justify-center items-center gap-7 h-full">
             <?php 
             $count = count($bottom_categories);
             $i = 0;
@@ -156,7 +156,7 @@ if ($is_fallback) {
                 $products = $is_fallback ? $cat['products'] : tdclassic_get_products_by_category($cat['slug'], 6);
                 $featured_image = !empty($cat['image_url']) ? $cat['image_url'] : 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop';
             ?>
-                <div class="has-bottom-mega h-full flex items-center group py-1.5">
+                <div class="has-bottom-mega h-full flex items-center group py-3">
                     <a href="<?php echo esc_url($cat['url']); ?>" 
                        class="bottom-cat-link relative text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-gold transition-all duration-300 select-none">
                         <?php echo esc_html($cat['name']); ?>
