@@ -1,4 +1,9 @@
-@import "tailwindcss";
+@import "tailwindcss/theme";
+@import "tailwindcss/utilities";
+
+@source "../db-content.txt";
+@source "../../**/*.php";
+@source "../../assets/js/**/*.js";
 
 @theme {
   --font-serif: "Cinzel", serif;

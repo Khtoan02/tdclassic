@@ -218,6 +218,29 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
             $price = $product_obj->get_price_html();
         }
 
+        // Get short description
+        $excerpt = $product->post_excerpt;
+        if (empty($excerpt)) {
+            $excerpt = wp_strip_all_tags(wp_trim_words($product->post_content, 12));
+        } else {
+            $excerpt = wp_strip_all_tags(wp_trim_words($excerpt, 12));
+        }
+
+        // Get key specs
+        $power = get_post_meta($product_id, '_product_power', true);
+        $sensitivity = get_post_meta($product_id, '_product_sensitivity', true);
+        $response = get_post_meta($product_id, '_product_response', true);
+        
+        $specs_arr = array();
+        if (!empty($power)) $specs_arr[] = "CS: " . $power;
+        if (!empty($sensitivity)) $specs_arr[] = $sensitivity;
+        if (!empty($response)) $specs_arr[] = $response;
+        
+        $specs = implode(' • ', $specs_arr);
+        if (empty($specs)) {
+            $specs = 'Hi-End Professional Audio';
+        }
+
         $formatted_products[] = array(
             'id' => $product_id,
             'title' => get_the_title($product_id),
@@ -225,6 +248,8 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
             'image_url' => $image_url,
             'price' => $price,
             'price_raw' => $product_obj ? $product_obj->get_price() : 0,
+            'desc' => $excerpt,
+            'specs' => $specs,
         );
     }
 
@@ -240,8 +265,8 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
  */
 function tdclassic_get_mega_menu_categories($limit = 10)
 {
-    // Use unified function with hide_empty=true and include_image=true
-    return tdclassic_get_product_categories($limit, true, true);
+    // Use unified function with hide_empty=false and include_image=true
+    return tdclassic_get_product_categories($limit, false, true);
 }
 
 /**
@@ -308,8 +333,11 @@ function tdclassic_scripts()
     // Bootstrap CSS
     wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css', array(), '5.3.0');
 
+    // Static compiled Tailwind CSS (Replacement for heavy JIT CDN - Preflight Disabled & Database-aware!)
+    wp_enqueue_style('tdclassic-tailwind', get_template_directory_uri() . '/assets/css/dist/tailwind.min.css', array('bootstrap-css'), $theme_version);
+
     // Theme stylesheet (base styles)
-    wp_enqueue_style('tdclassic-style', get_stylesheet_uri(), array('bootstrap-css'), $theme_version);
+    wp_enqueue_style('tdclassic-style', get_stylesheet_uri(), array('bootstrap-css', 'tdclassic-tailwind'), $theme_version);
 
     // Font Awesome 6.4.0 (Updated)
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
@@ -447,8 +475,8 @@ function tdclassic_add_tailwind()
     </script>
     <?php
 }
-// Restore Tailwind JIT CDN for full database and dynamic compatibility
-add_action('wp_head', 'tdclassic_add_tailwind', 10);
+// Disable Tailwind JIT CDN in production for maximum performance (replaced by static compiled tailwind.min.css)
+// add_action('wp_head', 'tdclassic_add_tailwind', 10);
 
 /**
  * Preload LCP (Largest Contentful Paint) images dynamically in head for optimal PageSpeed
@@ -2597,3 +2625,19 @@ function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1)
 
     return $final_posts;
 }
+
+/**
+ * Automatically export all published post/page contents to a text file
+ * for Tailwind CSS static compiler to scan for dynamic classes.
+ */
+function tdclassic_auto_dump_db_content()
+{
+    global $wpdb;
+    $contents = $wpdb->get_col("SELECT post_content FROM {$wpdb->posts} WHERE post_status = 'publish'");
+    if (!empty($contents)) {
+        $dump_file = get_template_directory() . '/assets/db-content.txt';
+        file_put_contents($dump_file, implode(PHP_EOL, $contents));
+    }
+}
+add_action('save_post', 'tdclassic_auto_dump_db_content');
+add_action('delete_post', 'tdclassic_auto_dump_db_content');
