@@ -4,11 +4,11 @@
  */
 
 :root {
-    --header-bg: rgba(5, 5, 5, 0.9);
-    --header-border: rgba(255, 255, 255, 0.05);
-    --gold: #C5A059;
-    --gold-glow: rgba(197, 160, 89, 0.35);
-    --gray-text: #9A9A9A;
+    --td-header-bg: rgba(5, 5, 5, 0.9);
+    --td-header-border: rgba(255, 255, 255, 0.05);
+    --td-gold: #C5A059;
+    --td-gold-glow: rgba(197, 160, 89, 0.35);
+    --td-gray-text: #9A9A9A;
 }
 
 /* Header Container & Sticky Animation */
@@ -17,7 +17,7 @@
     width: 100%;
     z-index: 9999;
     background-color: #050505;
-    border-bottom: 1px solid var(--header-border);
+    border-bottom: 1px solid var(--td-header-border);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -56,7 +56,7 @@
 .top-bar-link {
     font-size: 10.5px;
     letter-spacing: 0.15em;
-    color: var(--gray-text);
+    color: var(--td-gray-text);
     transition: all 0.3s ease;
 }
 
@@ -75,8 +75,8 @@
 }
 
 .nav-link:hover {
-    color: var(--gold);
-    text-shadow: 0 0 10px var(--gold-glow);
+    color: var(--td-gold);
+    text-shadow: 0 0 10px var(--td-gold-glow);
 }
 
 .nav-link::after {
@@ -86,8 +86,8 @@
     left: 50%;
     width: 0;
     height: 2px;
-    background: var(--gold);
-    box-shadow: 0 0 10px var(--gold);
+    background: var(--td-gold);
+    box-shadow: 0 0 10px var(--td-gold);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     transform: translateX(-50%);
 }
@@ -126,7 +126,7 @@
 .dropdown-item {
     display: block;
     padding: 12px 24px;
-    color: var(--gray-text);
+    color: var(--td-gray-text);
     font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.05em;
@@ -139,7 +139,7 @@
 .dropdown-item:hover {
     color: #fff;
     background: rgba(197, 160, 89, 0.05);
-    border-left-color: var(--gold);
+    border-left-color: var(--td-gold);
     padding-left: 28px;
 }
 
@@ -197,7 +197,7 @@
 .mm-tab-item {
     padding: 16px 32px;
     cursor: pointer;
-    color: var(--gray-text);
+    color: var(--td-gray-text);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     align-items: center;
@@ -222,8 +222,8 @@
     top: 0;
     height: 100%;
     width: 3px;
-    background: var(--gold);
-    box-shadow: 0 0 10px var(--gold);
+    background: var(--td-gold);
+    box-shadow: 0 0 10px var(--td-gold);
 }
 
 /* Mega Menu Panels */
@@ -287,7 +287,7 @@
     border-radius: 50%;
     background: rgba(5, 5, 5, 0.85);
     border: 1px solid rgba(197, 160, 89, 0.2);
-    color: var(--gold);
+    color: var(--td-gold);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -303,9 +303,9 @@
 }
 
 .slider-btn:hover {
-    background: var(--gold);
+    background: var(--td-gold);
     color: #000;
-    box-shadow: 0 0 15px var(--gold);
+    box-shadow: 0 0 15px var(--td-gold);
 }
 
 .slider-btn.prev { left: -10px; }
@@ -449,7 +449,7 @@
 }
 
 #close-mob-menu:hover {
-    color: var(--gold);
+    color: var(--td-gold);
     transform: rotate(90deg);
 }
 
@@ -472,7 +472,7 @@
 
 .mob-link:hover,
 .mob-link:active {
-    color: var(--gold);
+    color: var(--td-gold);
     background: rgba(197, 160, 89, 0.03);
     padding-left: 28px;
 }
@@ -480,12 +480,12 @@
 /* Accordion Controls */
 .mob-accordion-btn i {
     font-size: 9px;
-    color: var(--gray-text);
+    color: var(--td-gray-text);
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .mob-accordion-btn:hover i {
-    color: var(--gold);
+    color: var(--td-gold);
 }
 
 /* Accordion Content Panel with Smooth Slide */
@@ -505,7 +505,7 @@
 .mob-sub-link {
     display: block;
     padding: 10px 24px 10px 40px;
-    color: var(--gray-text);
+    color: var(--td-gray-text);
     font-family: var(--font-sans), sans-serif;
     font-size: 12.5px;
     font-weight: 500;
@@ -546,7 +546,7 @@
 
 /* Category item links */
 .bottom-cat-link {
-    color: var(--gray-text);
+    color: var(--td-gray-text);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     text-decoration: none;
     cursor: pointer;
@@ -554,7 +554,7 @@
 
 .bottom-cat-link:hover {
     color: #fff;
-    text-shadow: 0 0 12px var(--gold-glow);
+    text-shadow: 0 0 12px var(--td-gold-glow);
 }
 
 /* Gold Underline hover effect for desktop categories */
@@ -566,8 +566,8 @@
         left: 50%;
         width: 0;
         height: 1.5px;
-        background: var(--gold);
-        box-shadow: 0 0 8px var(--gold);
+        background: var(--td-gold);
+        box-shadow: 0 0 8px var(--td-gold);
         transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         transform: translateX(-50%);
     }
