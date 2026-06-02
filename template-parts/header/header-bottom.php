@@ -164,7 +164,7 @@ if ($is_fallback) {
                     
                     <!-- Dedicated Single-panel Mega Menu for this category -->
                     <div class="bottom-mega-wrapper">
-                        <div class="bottom-mega-content w-full max-w-[1700px] mx-auto p-0 flex">
+                        <div class="bottom-mega-content w-full max-w-[1700px] mx-auto p-8 gap-10 flex">
                             
                             <!-- Products Slider -->
                             <div class="slider-wrapper flex-1">

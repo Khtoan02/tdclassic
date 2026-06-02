@@ -299,7 +299,7 @@ get_header();
                     <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b border-r border-gold/30"></div>
                     <div
                         class="aspect-[4/3] overflow-hidden transition-all duration-1000">
-                        <img src="https://tdclassic.vn/wp-content/uploads/2025/10/2-HE-THONG-AM-THANH-GOM-NHUNG-GI.jpg"
+                        <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover_02-scaled.webp"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
                             alt="Tầm nhìn" loading="lazy">
                     </div>
