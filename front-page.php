@@ -167,95 +167,15 @@ get_header();
         </div>
 
         <!-- NAVIGATION ARROWS (Floating Cleanly) -->
-        <button onclick="prevSlide()" class="flex absolute top-1/2 left-4 md:left-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+        <button id="hero-prev-btn" aria-label="Slide trước" class="flex absolute top-1/2 left-4 md:left-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             <i class="fa-solid fa-chevron-left text-sm md:text-lg transform group-hover:-translate-x-0.5 transition-transform duration-300"></i>
         </button>
 
-        <button onclick="nextSlide()" class="flex absolute top-1/2 right-4 md:right-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+        <button id="hero-next-btn" aria-label="Slide kế tiếp" class="flex absolute top-1/2 right-4 md:right-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             <i class="fa-solid fa-chevron-right text-sm md:text-lg transform group-hover:translate-x-0.5 transition-transform duration-300"></i>
         </button>
 
     </section>
-
-    <script>
-        // Professional Slider Logic
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.hero-slide');
-        const slideFill = document.getElementById('slide-fill');
-        const currentEl = document.getElementById('slide-current');
-        const totalSlides = slides.length;
-        let slideInterval;
-        let isAutoPlaying = true;
-
-        function updateSliderUI(index) {
-            // Update Number
-            currentEl.textContent = '0' + (index + 1);
-            
-            // Reset Animation
-            slideFill.classList.remove('running');
-            void slideFill.offsetWidth; // trigger reflow
-            if(isAutoPlaying) slideFill.classList.add('running');
-            else slideFill.style.width = '100%'; // Full if paused manually
-        }
-
-        function showSlide(index) {
-            // Handle Wrap
-            if (index >= totalSlides) currentSlide = 0;
-            else if (index < 0) currentSlide = totalSlides - 1;
-            else currentSlide = index;
-
-            // Toggle Classes
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === currentSlide);
-            });
-            
-            updateSliderUI(currentSlide);
-        }
-
-        function nextSlide() {
-            showSlide(currentSlide + 1);
-        }
-
-        function prevSlide() {
-            resetAutoPlay(); // Interaction stops auto for a moment or permanently? Let's just reset timer
-            showSlide(currentSlide - 1);
-        }
-        
-        // Wrapper for Next button to reset timer too
-        const manualNext = () => {
-             resetAutoPlay();
-             nextSlide();
-        }
-        
-        // Override the onclicks in HTML for cleaner logic if needed, but direct calls work fine
-        // Note: HTML onclicks call functions. We need to make sure Next button calls manualNext or similar if we want to reset.
-        // Let's just update the functions called by buttons.
-
-        function resetAutoPlay() {
-            clearInterval(slideInterval);
-            isAutoPlaying = true; // restart
-            slideInterval = setInterval(nextSlide, 5000);
-        }
-
-        function initSlider() {
-            if(slides.length === 0) return;
-            slideInterval = setInterval(nextSlide, 5000);
-        }
-
-        document.addEventListener('DOMContentLoaded', initSlider);
-
-        // Update button onclicks dynamically to use the reset logic
-        document.querySelector('button[onclick="nextSlide()"]').onclick = () => {
-            clearInterval(slideInterval);
-            nextSlide();
-            slideInterval = setInterval(nextSlide, 5000);
-        };
-        document.querySelector('button[onclick="prevSlide()"]').onclick = () => {
-            clearInterval(slideInterval);
-            showSlide(currentSlide - 1);
-            slideInterval = setInterval(nextSlide, 5000);
-        };
-    </script>
 
     <!-- 2. BRAND DNA -->
     <section id="dna" class="py-32 bg-metal relative overflow-hidden">
@@ -681,20 +601,7 @@ get_header();
 
 </div>
 
-<script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
 
-    // Smooth Scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-</script>
 
 <?php
 get_footer();

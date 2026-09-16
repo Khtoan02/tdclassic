@@ -103,6 +103,69 @@
                 this.style.transform = 'translateY(100%)';
             });
         }
+
+        // Hero Cinematic Slider
+        const slides = document.querySelectorAll('.hero-slide');
+        if (slides.length > 0) {
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            let slideInterval = null;
+
+            function showSlide(index) {
+                if (index >= totalSlides) currentSlide = 0;
+                else if (index < 0) currentSlide = totalSlides - 1;
+                else currentSlide = index;
+
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === currentSlide);
+                });
+            }
+
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+
+            function prevSlide() {
+                showSlide(currentSlide - 1);
+            }
+
+            function startAutoPlay() {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+
+            // Bind navigation buttons
+            const nextBtn = document.getElementById('hero-next-btn');
+            const prevBtn = document.getElementById('hero-prev-btn');
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    nextSlide();
+                    startAutoPlay();
+                });
+            }
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    prevSlide();
+                    startAutoPlay();
+                });
+            }
+
+            // Expose globally for backward compatibility
+            window.nextSlide = function() {
+                nextSlide();
+                startAutoPlay();
+            };
+            window.prevSlide = function() {
+                prevSlide();
+                startAutoPlay();
+            };
+
+            startAutoPlay();
+        }
     }
 
     // Initialize on DOM ready
