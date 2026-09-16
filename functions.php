@@ -561,10 +561,6 @@ function tdclassic_force_taxonomy_template($template)
         }
     }
 
-    // Debug for admin
-    if (current_user_can('administrator')) {
-        echo '<!-- TEMPLATE BEING USED: ' . $template . ' -->';
-    }
     return $template;
 }
 
@@ -2065,9 +2061,13 @@ function tdclassic_contact_messages_page()
 
     // Handle message deletion
     if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('Bạn không có quyền thực hiện thao tác này.', 'tdclassic'));
+        }
         $id = intval($_GET['id']);
+        check_admin_referer('tdclassic_delete_message_' . $id);
         $wpdb->delete($table_name, array('id' => $id), array('%d'));
-        echo '<div class="notice notice-success"><p>Tin nhắn đã được xóa thành công!</p></div>';
+        echo '<div class="notice notice-success is-dismissible"><p>Tin nhắn đã được xóa thành công!</p></div>';
     }
 
     // Get messages with pagination
@@ -2149,7 +2149,7 @@ function tdclassic_contact_messages_page()
                                     class="button button-small">
                                     Trả lời
                                 </a>
-                                <a href="<?php echo admin_url('admin.php?page=contact-messages&action=delete&id=' . $message->id); ?>"
+                                <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=contact-messages&action=delete&id=' . $message->id), 'tdclassic_delete_message_' . $message->id)); ?>"
                                     class="button button-small button-link-delete"
                                     data-confirm-delete="Bạn có chắc chắn muốn xóa tin nhắn này?">
                                     Xóa
@@ -2651,20 +2651,4 @@ function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1)
     }
 
     return $final_posts;
-}
-
-/**
- * Automatically export all published post/page contents to a text file
- * for Tailwind CSS static compiler to scan for dynamic classes.
- */
-function tdclassic_auto_dump_db_content()
-{
-    global $wpdb;
-    $contents = $wpdb->get_col("SELECT post_content FROM {$wpdb->posts} WHERE post_status = 'publish'");
-    if (!empty($contents)) {
-        $dump_file = get_template_directory() . '/assets/db-content.txt';
-        file_put_contents($dump_file, implode(PHP_EOL, $contents));
-    }
-}
-add_action('save_post', 'tdclassic_auto_dump_db_content');
-add_action('delete_post', 'tdclassic_auto_dump_db_content');
+}

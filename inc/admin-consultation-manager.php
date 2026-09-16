@@ -337,12 +337,16 @@ class TD_Classic_Consultation_Manager {
         
         // Handle status update
         if (isset($_POST['update_status']) && isset($_POST['consultation_id'])) {
+            if (!current_user_can('manage_options')) {
+                wp_die(__('Bạn không có quyền thực hiện thao tác này.', 'tdclassic'));
+            }
+            check_admin_referer('tdclassic_update_consultation_status', 'tdclassic_status_nonce');
             $wpdb->update(
                 $table_name,
                 array('status' => sanitize_text_field($_POST['status'])),
                 array('id' => intval($_POST['consultation_id']))
             );
-            echo '<div class="notice notice-success"><p>Cập nhật trạng thái thành công!</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p>Cập nhật trạng thái thành công!</p></div>';
         }
         
         // Get consultations
@@ -505,6 +509,7 @@ class TD_Classic_Consultation_Manager {
             html += '</table>';
             
             html += '<form method="post" style="margin-top: 20px;">';
+            html += '<input type="hidden" name="tdclassic_status_nonce" value="<?php echo esc_attr(wp_create_nonce("tdclassic_update_consultation_status")); ?>">';
             html += '<input type="hidden" name="consultation_id" value="' + id + '">';
             html += '<label for="status">Cập nhật trạng thái:</label> ';
             html += '<select name="status" id="status">';
@@ -539,10 +544,14 @@ class TD_Classic_Consultation_Manager {
      */
     public function consultation_settings_page() {
         if (isset($_POST['save_settings'])) {
+            if (!current_user_can('manage_options')) {
+                wp_die(__('Bạn không có quyền thực hiện thao tác này.', 'tdclassic'));
+            }
+            check_admin_referer('tdclassic_save_consultation_settings', 'tdclassic_settings_nonce');
             update_option('td_consultation_admin_email', sanitize_email($_POST['admin_email']));
             update_option('td_consultation_company_name', sanitize_text_field($_POST['company_name']));
             update_option('td_consultation_email_template', wp_kses_post($_POST['email_template']));
-            echo '<div class="notice notice-success"><p>Cài đặt đã được lưu!</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p>Cài đặt đã được lưu!</p></div>';
         }
         
         $admin_email = get_option('td_consultation_admin_email', get_option('admin_email'));
@@ -554,6 +563,7 @@ class TD_Classic_Consultation_Manager {
             <h1>Cấu hình Email tư vấn</h1>
             
             <form method="post">
+                <?php wp_nonce_field('tdclassic_save_consultation_settings', 'tdclassic_settings_nonce'); ?>
                 <table class="form-table">
                     <tr>
                         <th scope="row">Email nhận thông báo</th>
