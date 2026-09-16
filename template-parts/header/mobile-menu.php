@@ -82,9 +82,6 @@ $news_categories = tdclassic_get_news_categories();
                 </div>
             <?php endif; ?>
 
-            <a href="<?php echo esc_url(home_url('/du-an')); ?>" class="mob-link">Dự án</a>
-            <a href="<?php echo esc_url(home_url('/dai-ly')); ?>" class="mob-link">Đại lý</a>
-            <a href="<?php echo esc_url(home_url('/ho-so-nang-luc')); ?>" class="mob-link">Hồ sơ năng lực</a>
             <a href="<?php echo esc_url(home_url('/lien-he')); ?>" class="mob-link">Liên hệ</a>
         </div>
 

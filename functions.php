@@ -97,12 +97,6 @@ require_once get_template_directory() . '/inc/auto-create-pages.php';
  */
 function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $include_image = true)
 {
-    $transient_key = 'tdclassic_cats_' . md5($limit . '_' . ($hide_empty ? '1' : '0') . '_' . ($include_image ? '1' : '0'));
-    $cached = get_transient($transient_key);
-    if ($cached !== false) {
-        return $cached;
-    }
-
     // Lấy danh mục "Chưa phân loại" để loại bỏ
     $uncategorized_term = get_term_by('slug', 'uncategorized', 'product_cat');
     $exclude_ids = array();
@@ -174,7 +168,6 @@ function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $incl
         );
     }
 
-    set_transient($transient_key, $formatted_categories, 12 * HOUR_IN_SECONDS);
     return $formatted_categories;
 }
 
@@ -186,12 +179,6 @@ function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $incl
  */
 function tdclassic_get_products_by_category($category_slug, $limit = 8)
 {
-    $transient_key = 'tdclassic_prods_' . md5($category_slug . '_' . $limit);
-    $cached = get_transient($transient_key);
-    if ($cached !== false) {
-        return $cached;
-    }
-
     $args = array(
         'post_type' => 'product',
         'posts_per_page' => $limit,
@@ -262,26 +249,8 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
         );
     }
 
-    set_transient($transient_key, $formatted_products, 12 * HOUR_IN_SECONDS);
     return $formatted_products;
 }
-
-/**
- * Flush theme transients on content updates
- */
-function tdclassic_flush_theme_transients()
-{
-    global $wpdb;
-    $wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_tdclassic_%' OR option_name LIKE '_transient_timeout_tdclassic_%'");
-}
-add_action('save_post_product', 'tdclassic_flush_theme_transients');
-add_action('edited_product_cat', 'tdclassic_flush_theme_transients');
-add_action('create_product_cat', 'tdclassic_flush_theme_transients');
-add_action('delete_product_cat', 'tdclassic_flush_theme_transients');
-add_action('save_post', 'tdclassic_flush_theme_transients');
-add_action('delete_post', 'tdclassic_flush_theme_transients');
-add_action('edited_category', 'tdclassic_flush_theme_transients');
-add_action('create_category', 'tdclassic_flush_theme_transients');
 
 /**
  * Get product categories for Mega Menu with featured image
@@ -441,9 +410,6 @@ function tdclassic_scripts()
 
         // Counter module
         wp_enqueue_script('tdclassic-counter', get_template_directory_uri() . '/assets/js/modules/counter.js', array('tdclassic-main'), $theme_version, true);
-
-        // Front page specific JS
-        wp_enqueue_script('tdclassic-front-page', get_template_directory_uri() . '/assets/js/modules/front-page.js', array('tdclassic-carousel', 'tdclassic-counter'), $theme_version, true);
     }
 
     // Product JS - Only on product pages
@@ -789,6 +755,30 @@ function tdclassic_load_more_news()
             );
         }
         wp_reset_postdata();
+    }
+
+    // 2. Remote Posts (if available)
+    if (function_exists('get_posts_from_main_site')) {
+        // Create dummy variable for reference parameter to avoid Fatal Error
+        $dummy_total_remote = 1;
+        $remote_posts = get_posts_from_main_site($posts_per_page, $paged, $dummy_total_remote);
+
+        if (!empty($remote_posts)) {
+            foreach ($remote_posts as $remote_post) {
+                $combined_posts[] = array(
+                    'origin' => 'remote',
+                    'title' => isset($remote_post['title']) ? $remote_post['title'] : '',
+                    'link' => isset($remote_post['link']) ? $remote_post['link'] : '#',
+                    'image' => isset($remote_post['image']) ? $remote_post['image'] : '',
+                    'date' => isset($remote_post['date']) ? $remote_post['date'] : '',
+                    'raw_date' => isset($remote_post['raw_date']) ? $remote_post['raw_date'] : '',
+                    'excerpt' => isset($remote_post['excerpt']) ? $remote_post['excerpt'] : '',
+                    'category_slug' => 'tin-tuc',
+                    'category_name' => 'TavaLED',
+                    'read_time' => '3 min read'
+                );
+            }
+        }
     }
 
     // Sort combined
@@ -2306,6 +2296,135 @@ function tdclassic_get_project_thumb_url($post_id = null, $size = 'project-thumb
     }
     // Placeholder mặc định theo phong cách TD Classic
     return get_template_directory_uri() . '/assets/images/project-placeholder.jpg';
+}
+
+/* --- CODE LẤY TIN (DÀNH CHO LOCALHOST / TIN TỨC) --- */
+/**
+ * Lấy bài viết từ site chính TavaLED thông qua REST API.
+ *
+ * @param int  $quantity     Số bài trên mỗi trang.
+ * @param int  $page         Trang hiện tại (phục vụ phân trang).
+ * @param int  $total_pages  (tham chiếu) Tổng số trang lấy từ header API.
+ *
+ * @return array Danh sách bài viết đã được chuẩn hoá.
+ */
+function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1)
+{
+    $quantity = max(1, (int) $quantity);
+    $page = max(1, (int) $page);
+    $total_pages = 1;
+
+    // 1. Nếu đang làm giao diện, có thể bật cache để nhẹ server hơn
+    // $cache_key    = 'db_main_posts_' . $quantity . '_page_' . $page;
+    // $cached_posts = get_transient($cache_key);
+    // if (false !== $cached_posts) {
+    //     $total_pages = isset($cached_posts['total_pages']) ? (int) $cached_posts['total_pages'] : 1;
+    //     return isset($cached_posts['items']) ? $cached_posts['items'] : [];
+    // }
+
+    $api_url = add_query_arg(
+        array(
+            '_embed' => 1,
+            'per_page' => $quantity,
+            'page' => $page,
+        ),
+        'https://tavaled.vn/wp-json/wp/v2/posts'
+    );
+
+    // QUAN TRỌNG: Thêm 'sslverify' => false để tránh lỗi trên Localhost
+    $response = wp_remote_get(
+        $api_url,
+        array(
+            'timeout' => 15,
+            'sslverify' => false,
+        )
+    );
+
+    if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
+        // Mẹo: In lỗi ra để xem nếu không lấy được tin
+        // echo '<pre>'; print_r($response); echo '</pre>';
+        return array();
+    }
+
+    $posts_data = json_decode(wp_remote_retrieve_body($response), true);
+    $total_pages = (int) wp_remote_retrieve_header($response, 'x-wp-totalpages');
+    if ($total_pages < 1) {
+        $total_pages = 1;
+    }
+
+    $final_posts = array();
+
+    if (!empty($posts_data) && is_array($posts_data)) {
+        foreach ($posts_data as $post) {
+            // Ảnh đại diện
+            $thumbnail = isset($post['_embedded']['wp:featuredmedia'][0]['source_url'])
+                ? $post['_embedded']['wp:featuredmedia'][0]['source_url']
+                : 'https://via.placeholder.com/400x250?text=TavaLED';
+
+            // Ngày đăng
+            $raw_date = isset($post['date']) ? $post['date'] : '';
+            $date = $raw_date ? date_i18n('d/m/Y', strtotime($raw_date)) : '';
+
+            // Tác giả (nếu có _embed)
+            $author_name = '';
+            if (isset($post['_embedded']['author'][0]['name'])) {
+                $author_name = $post['_embedded']['author'][0]['name'];
+            }
+
+            // Nội dung & thời gian đọc ước lượng
+            $content_rendered = isset($post['content']['rendered']) ? $post['content']['rendered'] : '';
+            $content_text = wp_strip_all_tags($content_rendered);
+            $word_count = !empty($content_text) ? str_word_count($content_text) : 0;
+            $reading_time = max(1, (int) ceil($word_count / 200));
+
+            // Meta description (ưu tiên từ plugin SEO, fallback sang excerpt / content)
+            $meta_description = '';
+            // Yoast SEO thường lưu ở yoast_head_json.description
+            if (isset($post['yoast_head_json']['description']) && !empty($post['yoast_head_json']['description'])) {
+                $meta_description = wp_strip_all_tags($post['yoast_head_json']['description']);
+            } elseif (isset($post['excerpt']['rendered']) && !empty($post['excerpt']['rendered'])) {
+                $meta_description = wp_trim_words(wp_strip_all_tags($post['excerpt']['rendered']), 120, '...');
+            } elseif (!empty($content_text)) {
+                $meta_description = wp_trim_words($content_text, 120, '...');
+            }
+
+            // Category chính (nếu có _embed terms)
+            $main_category = '';
+            if (isset($post['_embedded']['wp:term'][0]) && is_array($post['_embedded']['wp:term'][0])) {
+                foreach ($post['_embedded']['wp:term'][0] as $term) {
+                    if (isset($term['name'])) {
+                        $main_category = $term['name'];
+                        break;
+                    }
+                }
+            }
+
+            $final_posts[] = array(
+                'title' => isset($post['title']['rendered']) ? $post['title']['rendered'] : '',
+                'link' => isset($post['link']) ? $post['link'] : '',
+                'excerpt' => isset($post['excerpt']['rendered']) ? wp_trim_words(wp_strip_all_tags($post['excerpt']['rendered']), 120, '...') : '',
+                'image' => $thumbnail,
+                'date' => $date,
+                'raw_date' => $raw_date,
+                'author' => $author_name,
+                'reading_time' => $reading_time,
+                'main_category' => $main_category,
+                'meta_description' => $meta_description,
+            );
+        }
+
+        // Dev xong nếu muốn có thể bật cache lại cho nhẹ server
+        // set_transient(
+        //     $cache_key,
+        //     array(
+        //         'items'       => $final_posts,
+        //         'total_pages' => $total_pages,
+        //     ),
+        //     600 // Cache 10 phút
+        // );
+    }
+
+    return $final_posts;
 }
 
 
