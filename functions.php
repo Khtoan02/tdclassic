@@ -1360,27 +1360,27 @@ add_action('init', 'tdclassic_cleanup_head');
 function handle_contact_form()
 {
     // Check nonce
-    if (!wp_verify_nonce($_POST['nonce'], 'contact_form_nonce')) {
-        wp_die('Security check failed');
+    if (empty($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'contact_form_nonce')) {
+        wp_send_json_error('Mã bảo mật không hợp lệ. Vui lòng tải lại trang.');
     }
 
     // Sanitize form data
-    $name = sanitize_text_field($_POST['contact_name']);
-    $email = sanitize_email($_POST['contact_email']);
-    $phone = sanitize_text_field($_POST['contact_phone']);
-    $company = sanitize_text_field($_POST['contact_company']);
-    $subject = sanitize_text_field($_POST['contact_subject']);
-    $message = sanitize_textarea_field($_POST['contact_message']);
+    $name = isset($_POST['contact_name']) ? sanitize_text_field($_POST['contact_name']) : '';
+    $email = isset($_POST['contact_email']) ? sanitize_email($_POST['contact_email']) : '';
+    $phone = isset($_POST['contact_phone']) ? sanitize_text_field($_POST['contact_phone']) : '';
+    $company = isset($_POST['contact_company']) ? sanitize_text_field($_POST['contact_company']) : '';
+    $subject = isset($_POST['contact_subject']) ? sanitize_text_field($_POST['contact_subject']) : '';
+    $message = isset($_POST['contact_message']) ? sanitize_textarea_field($_POST['contact_message']) : '';
     $newsletter = isset($_POST['contact_newsletter']) ? 1 : 0;
 
     // Validate required fields
     if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-        wp_die('Vui lòng điền đầy đủ thông tin bắt buộc.');
+        wp_send_json_error('Vui lòng điền đầy đủ thông tin bắt buộc.');
     }
 
     // Validate email
     if (!is_email($email)) {
-        wp_die('Email không hợp lệ.');
+        wp_send_json_error('Địa chỉ email không hợp lệ.');
     }
 
     // Prepare email content
@@ -1408,30 +1408,28 @@ function handle_contact_form()
     // Send email
     $sent = wp_mail($to, $email_subject, $email_body, $headers);
 
-    if ($sent) {
-        // Save to database (optional)
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'contact_messages';
+    // Save to database regardless of mail sending status for lead retention
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'contact_messages';
 
-        $wpdb->insert(
-            $table_name,
-            array(
-                'name' => $name,
-                'email' => $email,
-                'phone' => $phone,
-                'company' => $company,
-                'subject' => $subject,
-                'message' => $message,
-                'newsletter' => $newsletter,
-                'created_at' => current_time('mysql')
-            ),
-            array('%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s')
-        );
+    $wpdb->insert(
+        $table_name,
+        array(
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'company' => $company,
+            'subject' => $subject,
+            'message' => $message,
+            'newsletter' => $newsletter,
+            'created_at' => current_time('mysql')
+        ),
+        array('%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s')
+    );
 
-        wp_die('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.');
-    } else {
-        wp_die('Có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại sau.');
-    }
+    wp_send_json_success(array(
+        'message' => 'Cảm ơn bạn đã liên hệ! TD Classic sẽ phản hồi bạn trong thời gian sớm nhất.'
+    ));
 }
 add_action('wp_ajax_handle_contact_form', 'handle_contact_form');
 add_action('wp_ajax_nopriv_handle_contact_form', 'handle_contact_form');
