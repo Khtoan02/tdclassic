@@ -1643,6 +1643,23 @@ a:hover {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
+@media (max-width: 768px) {
+  #back-to-top {
+    bottom: 20px;
+    right: 16px;
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
+    background: rgba(10, 10, 10, 0.85);
+    border: 1px solid rgba(197, 160, 89, 0.4);
+    color: #C5A059;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 90;
+  }
+}
+
 /* Scroll Animations */
 .fade-in {
   opacity: 0;

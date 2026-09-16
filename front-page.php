@@ -135,25 +135,25 @@ get_header();
                 <div class="max-w-4xl relative">
                     
                     <!-- Eyebrow -->
-                    <div class="flex items-center gap-4 mb-6 animate-fade-up-1">
-                        <div class="w-12 h-[1px] bg-gold"></div>
-                        <span class="font-sans text-gold text-[10px] md:text-sm tracking-[0.3em] font-bold uppercase drop-shadow-md">Professional Audio Systems</span>
+                    <div class="flex items-center gap-3 md:gap-4 mb-3 md:mb-6 animate-fade-up-1">
+                        <div class="w-8 md:w-12 h-[1px] bg-gold"></div>
+                        <span class="font-sans text-gold text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-bold uppercase drop-shadow-md">Professional Audio Systems</span>
                     </div>
 
                     <!-- Main Title (Massive & Tight) -->
-                    <h1 class="animate-fade-up-2 font-serif text-5xl md:text-7xl lg:text-9xl text-white leading-[0.9] mb-8 tracking-tighter drop-shadow-2xl">
-                        The Art <br class="md:hidden"> of Sound
+                    <h1 class="animate-fade-up-2 font-serif text-4xl sm:text-6xl md:text-7xl lg:text-9xl text-white leading-[1.05] md:leading-[0.9] mb-4 md:mb-8 tracking-tight md:tracking-tighter drop-shadow-2xl">
+                        The Art <br class="sm:hidden"> of Sound
                     </h1>
 
                     <!-- Description -->
-                    <p class="animate-fade-up-3 font-sans text-gray-300 text-sm md:text-xl font-light leading-relaxed max-w-2xl mb-10 drop-shadow-lg opacity-90 border-l border-white/20 pl-6">
-                        TD Classic định nghĩa lại trải nghiệm âm thanh chuyên nghiệp. <br class="hidden md:block">
+                    <p class="animate-fade-up-3 font-sans text-gray-200 text-sm sm:text-base md:text-xl font-light leading-relaxed max-w-2xl mb-6 md:mb-10 drop-shadow-lg opacity-95 border-l-2 border-gold/40 pl-4 md:pl-6">
+                        TD Classic định nghĩa lại trải nghiệm âm thanh chuyên nghiệp. <br class="hidden sm:block">
                         Kiệt tác kỹ thuật Châu Âu, tinh chỉnh cho tâm hồn Việt.
                     </p>
 
                     <!-- Status / Scroll Indicator -->
                     <div class="animate-fade-up-4 flex items-center gap-4">
-                        <div class="h-1 w-20 bg-gold rounded-full"></div>
+                        <div class="h-1 w-16 md:w-20 bg-gold rounded-full"></div>
                     </div>
                 </div>
 
@@ -268,47 +268,47 @@ get_header();
             </div>
 
             <!-- Block 1: Sứ Mệnh (Mission) - Flex Logic -->
-            <div class="flex flex-col md:flex-row gap-16 items-center mb-32">
+            <div class="flex flex-col md:flex-row gap-8 md:gap-16 items-center mb-16 md:mb-32">
                 <div class="w-full md:w-1/2 relative group">
-                    <div class="absolute -top-4 -left-4 w-24 h-24 border-t border-l border-gold/30"></div>
+                    <div class="absolute -top-4 -left-4 w-20 sm:w-24 h-20 sm:h-24 border-t border-l border-gold/30 pointer-events-none"></div>
                     <div
-                        class="aspect-[4/3] overflow-hidden transition-all duration-1000">
+                        class="aspect-[4/3] overflow-hidden rounded-lg transition-all duration-1000">
                         <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
                             alt="Sứ mệnh âm thanh" loading="lazy">
                     </div>
                 </div>
-                <div class="w-full md:w-1/2 lg:pl-12">
+                <div class="w-full md:w-1/2 lg:pl-12 relative">
                     <span
-                        class="text-6xl font-serif text-white/5 absolute -translate-y-10 -translate-x-4">Mission</span>
-                    <h3 class="text-3xl font-sans font-bold text-white mb-6 relative z-10">Sứ Mệnh Kiến Tạo</h3>
-                    <p class="font-sans text-gray-400 font-light leading-relaxed text-lg mb-6 text-justify">
+                        class="text-4xl sm:text-6xl font-serif text-white/5 absolute -translate-y-8 sm:-translate-y-10 -translate-x-2 sm:-translate-x-4 select-none pointer-events-none">Mission</span>
+                    <h3 class="text-2xl sm:text-3xl font-sans font-bold text-white mb-4 sm:mb-6 relative z-10">Sứ Mệnh Kiến Tạo</h3>
+                    <p class="font-sans text-gray-300 font-light leading-relaxed text-sm sm:text-base mb-6 text-left md:text-justify">
                         Sứ mệnh của TD Classic không dừng lại ở việc sản xuất thiết bị. Chúng tôi khao khát <strong>xóa
                             nhòa ranh giới</strong> giữa âm thanh tái tạo và âm thanh thực tế. Mỗi sản phẩm ra đời là
                         kết quả của hàng ngàn giờ nghiên cứu để mang lại rung cảm chân thật nhất cho người nghe.
                     </p>
-                    <div class="flex items-center gap-4 text-gold text-sm font-sans tracking-widest uppercase">
-                        <span>Trung thực</span> <span class="w-1 h-1 bg-gold rounded-full"></span> <span>Cảm xúc</span>
+                    <div class="flex items-center gap-3 sm:gap-4 text-gold text-xs sm:text-sm font-sans tracking-widest uppercase">
+                        <span>Trung thực</span> <span class="w-1.5 h-1.5 bg-gold rounded-full"></span> <span>Cảm xúc</span>
                     </div>
                 </div>
             </div>
 
             <!-- Block 2: Tầm Nhìn (Vision) - Flex Logic Reversed -->
-            <div class="flex flex-col md:flex-row-reverse gap-16 items-center mb-32">
+            <div class="flex flex-col md:flex-row-reverse gap-8 md:gap-16 items-center mb-16 md:mb-32">
                 <div class="w-full md:w-1/2 relative group">
-                    <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b border-r border-gold/30"></div>
+                    <div class="absolute -bottom-4 -right-4 w-20 sm:w-24 h-20 sm:h-24 border-b border-r border-gold/30 pointer-events-none"></div>
                     <div
-                        class="aspect-[4/3] overflow-hidden transition-all duration-1000">
+                        class="aspect-[4/3] overflow-hidden rounded-lg transition-all duration-1000">
                         <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover_02-scaled.webp"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
                             alt="Tầm nhìn" loading="lazy">
                     </div>
                 </div>
-                <div class="w-full md:w-1/2 lg:pr-12 text-left md:text-right">
+                <div class="w-full md:w-1/2 lg:pr-12 text-left md:text-right relative">
                     <span
-                        class="text-6xl font-serif text-white/5 absolute -translate-y-10 right-auto md:right-0 md:left-auto left-0 translate-x-0 md:translate-x-12">Vision</span>
-                    <h3 class="text-3xl font-sans font-bold text-white mb-6 relative z-10">Tầm Nhìn Vươn Xa</h3>
-                    <p class="font-sans text-gray-400 font-light leading-relaxed text-lg mb-6 text-justify md:text-right"
+                        class="text-4xl sm:text-6xl font-serif text-white/5 absolute -translate-y-8 sm:-translate-y-10 right-auto md:right-0 md:left-auto left-0 translate-x-0 md:translate-x-12 select-none pointer-events-none">Vision</span>
+                    <h3 class="text-2xl sm:text-3xl font-sans font-bold text-white mb-4 sm:mb-6 relative z-10">Tầm Nhìn Vươn Xa</h3>
+                    <p class="font-sans text-gray-300 font-light leading-relaxed text-sm sm:text-base mb-6 text-left md:text-right"
                         dir="auto">
                         Định vị trở thành biểu tượng <strong>số 1 về Pro Audio</strong> tại Việt Nam. TD Classic hướng
                         tới việc xây dựng một hệ sinh thái âm thanh toàn diện, nơi công nghệ phục vụ nghệ thuật, và chất
@@ -318,30 +318,30 @@ get_header();
             </div>
 
             <!-- Block 3: Giá Trị Cốt Lõi -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-void p-8 border border-white/5 hover:border-gold/50 transition-colors group">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8">
+                <div class="bg-[#111111] p-6 sm:p-8 rounded-xl border border-white/10 hover:border-gold/50 transition-all duration-300 group">
                     <i data-lucide="gem"
-                        class="w-10 h-10 text-gold mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="font-sans font-bold text-xl text-white mb-4">Tinh Hoa (Craftsmanship)</h4>
-                    <p class="font-sans text-gray-500 text-sm leading-relaxed">
+                        class="w-8 h-8 sm:w-10 sm:h-10 text-gold mb-4 sm:mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="font-sans font-bold text-lg sm:text-xl text-white mb-3 group-hover:text-gold transition-colors">Tinh Hoa (Craftsmanship)</h4>
+                    <p class="font-sans text-gray-300 text-sm leading-relaxed">
                         Sự tỉ mỉ trong từng mối hàn, từng lớp sơn. Chúng tôi coi mỗi sản phẩm là một tác phẩm nghệ thuật
                         cần được hoàn thiện thủ công kết hợp công nghệ chính xác.
                     </p>
                 </div>
-                <div class="bg-void p-8 border border-white/5 hover:border-gold/50 transition-colors group">
+                <div class="bg-[#111111] p-6 sm:p-8 rounded-xl border border-white/10 hover:border-gold/50 transition-all duration-300 group">
                     <i data-lucide="users"
-                        class="w-10 h-10 text-gold mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="font-sans font-bold text-xl text-white mb-4">Con Người (People)</h4>
-                    <p class="font-sans text-gray-500 text-sm leading-relaxed">
+                        class="w-8 h-8 sm:w-10 sm:h-10 text-gold mb-4 sm:mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="font-sans font-bold text-lg sm:text-xl text-white mb-3 group-hover:text-gold transition-colors">Con Người (People)</h4>
+                    <p class="font-sans text-gray-300 text-sm leading-relaxed">
                         Đội ngũ kỹ sư R&D và kỹ thuật viên không chỉ giỏi chuyên môn mà còn có đôi tai thẩm âm tinh tế,
                         thấu hiểu nhu cầu khắt khe của khách hàng.
                     </p>
                 </div>
-                <div class="bg-void p-8 border border-white/5 hover:border-gold/50 transition-colors group">
+                <div class="bg-[#111111] p-6 sm:p-8 rounded-xl border border-white/10 hover:border-gold/50 transition-all duration-300 group">
                     <i data-lucide="map"
-                        class="w-10 h-10 text-gold mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="font-sans font-bold text-xl text-white mb-4">Quy Mô (Scale)</h4>
-                    <p class="font-sans text-gray-500 text-sm leading-relaxed">
+                        class="w-8 h-8 sm:w-10 sm:h-10 text-gold mb-4 sm:mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
+                    <h4 class="font-sans font-bold text-lg sm:text-xl text-white mb-3 group-hover:text-gold transition-colors">Quy Mô (Scale)</h4>
+                    <p class="font-sans text-gray-300 text-sm leading-relaxed">
                         Mạng lưới phân phối trải rộng 3 miền. Hệ thống Showroom tiêu chuẩn Lab. Hàng ngàn dự án đã được
                         lắp đặt và vận hành ổn định.
                     </p>

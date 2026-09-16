@@ -78,30 +78,32 @@
 
 /* ===== MOBILE OPTIMIZATION (768px and below) ===== */
 @media (max-width: 768px) {
-  /* Typography - compact mobile baseline */
-  body { font-size: 10px; line-height: 1.4; }
-  h1 { font-size: 14px !important; }
-  h2 { font-size: 12px !important; }
-  h3 { font-size: 10px !important; }
-  h4 { font-size: 9px !important; }
-  h5 { font-size: 8px !important; }
-  h6 { font-size: 7px !important; }
-  p { font-size: 10px !important; margin-bottom: 6px; }
-  a { font-size: 10px !important; }
+  /* Typography - readable modern baseline */
+  body { font-size: 15px; line-height: 1.6; }
+  h1 { font-size: 1.85rem; line-height: 1.2; }
+  h2 { font-size: 1.5rem; line-height: 1.25; }
+  h3 { font-size: 1.25rem; line-height: 1.3; }
+  h4 { font-size: 1.1rem; line-height: 1.35; }
+  h5 { font-size: 0.95rem; }
+  h6 { font-size: 0.85rem; }
+  p { font-size: 14px; line-height: 1.65; margin-bottom: 10px; }
+  a { font-size: 14px; }
   
-  /* Buttons and form elements */
+  /* Buttons and form elements - Touch friendly */
   .btn, button, input[type="submit"], input[type="button"] {
-    font-size: 9px !important;
-    padding: 6px 10px;
+    font-size: 13px;
+    padding: 8px 16px;
+    min-height: 40px;
   }
   
+  /* Inputs: 16px to prevent iOS auto-zoom */
   input, textarea, select {
-    font-size: 9px !important;
-    padding: 6px 8px;
+    font-size: 16px !important;
+    padding: 8px 12px;
   }
   
-  label { font-size: 8px !important; }
-  .text-muted, small { font-size: 7px !important; }
+  label { font-size: 12px; }
+  .text-muted, small { font-size: 12px; }
 
   /* Product Images - Unified optimization */
   .product-image-container,
@@ -147,7 +149,7 @@
   [class*="products-grid"],
   [class*="woocommerce"] ul.products {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6px !important;
+    gap: 12px !important;
   }
 
   /* Product Cards */
@@ -156,8 +158,7 @@
   .product-card,
   .product-card-inner,
   .modern-product-card,
-  .product-card-wrapper { margin-bottom: 6px; width: 100%; }
-  
+  .product-card-wrapper { margin-bottom: 8px; width: 100%; }
   
   /* Force aspect ratio for iPhone */
   .product-image-container,
@@ -165,48 +166,48 @@
   .modern-product-card .product-image-container,
   .product-card-wrapper .product-image-container {
     aspect-ratio: 1/1 !important;
-    min-height: 120px !important;
+    min-height: 140px !important;
   }
   
   /* Optimize product content for compact display */
-  .product-content { padding: 6px 0 !important; }
+  .product-content { padding: 8px 0 !important; }
   
-  .product-title { font-size: 9px !important; line-height: 1.2 !important; margin-bottom: 6px !important; height: 24px !important; overflow: hidden !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; line-clamp: 2 !important; -webkit-box-orient: vertical !important; }
+  .product-title { font-size: 13px !important; line-height: 1.35 !important; margin-bottom: 6px !important; height: auto !important; min-height: 36px; overflow: hidden !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; line-clamp: 2 !important; -webkit-box-orient: vertical !important; }
   
   .product-features { display: flex !important; flex-wrap: wrap !important; gap: 4px !important; margin: 0 !important; }
   
-  .feature-item { font-size: 8px !important; padding: 2px 6px !important; background: #f8f9fa !important; border-radius: 10px !important; display: flex !important; align-items: center !important; gap: 4px !important; flex: 1 !important; min-width: 0 !important; }
+  .feature-item { font-size: 10px !important; padding: 2px 6px !important; background: rgba(255,255,255,0.05) !important; border-radius: 6px !important; display: flex !important; align-items: center !important; gap: 4px !important; flex: 1 !important; min-width: 0 !important; }
   
-  .feature-item i { font-size: 8px !important; color: #28a745 !important; }
+  .feature-item i { font-size: 10px !important; color: var(--td-gold, #C5A059) !important; }
   
-  .feature-item span { font-size: 8px !important; font-weight: 500 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+  .feature-item span { font-size: 10px !important; font-weight: 500 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
 
   /* Product Content */
   .product-title,
   .woocommerce ul.products li.product .woocommerce-loop-product__title,
   .product-title a,
-  .woocommerce-loop-product__title { font-size: 9px !important; line-height: 1.2; margin-bottom: 4px; }
+  .woocommerce-loop-product__title { font-size: 13px !important; line-height: 1.35; margin-bottom: 6px; }
 
   .product-price,
   .woocommerce ul.products li.product .price,
-  .price { font-size: 9px !important; }
+  .price { font-size: 13px !important; font-weight: 700; color: var(--td-gold, #C5A059); }
 
   .product-meta,
-  .meta-item { font-size: 8px !important; }
+  .meta-item { font-size: 11px !important; }
 
   /* Product Card Hover Effects */
   .product-card-wrapper:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
   }
 
   /* WooCommerce Specific */
   .woocommerce .button,
   .woocommerce button.button,
-  .woocommerce input.button { font-size: 9px !important; padding: 6px 10px; }
+  .woocommerce input.button { font-size: 13px !important; padding: 8px 14px; min-height: 40px; }
 
   .woocommerce form .form-row input.input-text,
-  .woocommerce form .form-row textarea { font-size: 9px !important; padding: 6px 8px; }
+  .woocommerce form .form-row textarea { font-size: 16px !important; padding: 8px 12px; }
 
   /* Footer Layout - 2 columns */
   .footer-content {
@@ -216,20 +217,20 @@
     grid-template-columns: 1fr !important;
   }
 
-  .footer-accordions { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  .footer-accordions { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
 
-  .footer-item-title { font-size: 9px !important; margin-bottom: 6px; }
+  .footer-item-title { font-size: 14px !important; margin-bottom: 8px; font-weight: 700; }
 
-  .footer-links a { font-size: 8px !important; }
+  .footer-links a { font-size: 13px !important; }
 
-  .footer-main { padding: 16px 0 !important; }
+  .footer-main { padding: 24px 0 !important; }
 
   /* Header Optimization */
   .header-left .navbar-brand:not(.main-header .navbar-brand) {
     font-size: 1.2rem !important;
   }
 
-  .navbar-nav .nav-link:not(.main-header .navbar-nav .nav-link) { font-size: 9px !important; padding: 4px 6px; }
+  .navbar-nav .nav-link:not(.main-header .navbar-nav .nav-link) { font-size: 13px !important; padding: 6px 10px; }
 
   .navbar-toggler {
     display: none !important;
@@ -239,12 +240,12 @@
   .hero-section h1,
   .section-title,
   .section-header h2,
-  .title-text { font-size: 12px !important; }
+  .title-text { font-size: 1.5rem !important; }
 
-  .hero-section p { font-size: 8px !important; }
+  .hero-section p { font-size: 14px !important; }
 
   /* Form Optimization */
-  .form-group { margin-bottom: 6px; }
+  .form-group { margin-bottom: 10px; }
 
   .form-control,
   input[type="text"],
@@ -252,147 +253,110 @@
   input[type="tel"],
   input[type="password"],
   textarea,
-  select { font-size: 9px !important; padding: 6px 8px; margin-bottom: 6px; }
+  select { font-size: 16px !important; padding: 8px 12px; margin-bottom: 8px; }
 
   .form-label,
-  label { font-size: 8px !important; margin-bottom: 4px; }
+  label { font-size: 12px !important; margin-bottom: 4px; }
 
   .form-submit,
-  .submit-btn { font-size: 9px !important; padding: 6px 12px; width: 100%; }
+  .submit-btn { font-size: 13px !important; padding: 10px 16px; width: 100%; min-height: 44px; }
 
-  /* Spacing Optimization */
-  .container { padding-left: 8px; padding-right: 8px; }
+  /* Spacing Optimization - Comfortable mobile breathing room */
+  .container { padding-left: 16px; padding-right: 16px; }
 
-  .section { padding: 12px 0; }
+  .section { padding: 20px 0; }
 
-  .py-5 { padding-top: 16px !important; padding-bottom: 16px !important; }
+  .card { margin-bottom: 12px; }
 
-  .my-5 { margin-top: 16px !important; margin-bottom: 16px !important; }
-
-  .card { margin-bottom: 10px; }
-
-  .card-body { padding: 8px; }
-
-  /* Tables */
-  table { font-size: 8px !important; }
-
-  th, td { padding: 4px 6px; }
-
-  .table-responsive {
-    overflow-x: auto;
-  }
-
-  /* Icons */
-  .icon { font-size: 10px !important; width: 14px; height: 14px; }
-
-  .icon-sm { font-size: 8px !important; width: 10px; height: 10px; }
-
-  .icon-lg { font-size: 12px !important; width: 16px; height: 16px; }
-
-  /* Utility Classes */
-  .text-sm { font-size: 8px !important; }
-  .text-md { font-size: 9px !important; }
-  .text-lg { font-size: 10px !important; }
-
-  .p-1 { padding: 2px !important; }
-  .p-2 { padding: 4px !important; }
-  .p-3 { padding: 6px !important; }
-  .p-4 { padding: 8px !important; }
-  .p-5 { padding: 10px !important; }
-
-  .m-1 { margin: 2px !important; }
-  .m-2 { margin: 4px !important; }
-  .m-3 { margin: 6px !important; }
-  .m-4 { margin: 8px !important; }
-  .m-5 { margin: 10px !important; }
+  .card-body { padding: 12px; }
 
   /* Custom Components */
-  .hero-title { font-size: 12px !important; }
-  .hero-subtitle { font-size: 0.75rem !important; }
-  .feature-slide h3 { font-size: 0.83rem !important; }
-  .feature-slide p { font-size: 0.58rem !important; }
-  .products-cta h2 { font-size: 1.33rem !important; }
+  .hero-title { font-size: 1.75rem !important; }
+  .hero-subtitle { font-size: 1rem !important; }
+  .feature-slide h3 { font-size: 1.15rem !important; }
+  .feature-slide p { font-size: 0.9rem !important; }
+  .products-cta h2 { font-size: 1.5rem !important; }
 
   .filter-tabs .filter-tab {
-    font-size: 0.8rem !important;
-    padding: 0.33rem 0.67rem;
+    font-size: 12px !important;
+    padding: 6px 14px;
   }
 
   .filter-search input {
-    font-size: 0.8rem !important;
+    font-size: 14px !important;
   }
 
   .card-title,
   .box-title {
-    font-size: 1rem !important;
+    font-size: 1.15rem !important;
   }
 
   .card-text,
   .box-text {
-    font-size: 0.87rem !important;
+    font-size: 0.95rem !important;
   }
 
   .nav-link,
   .menu-item a,
   .footer-links a,
   .sidebar a {
-    font-size: 0.87rem !important;
+    font-size: 13px !important;
   }
 
   .widget-title {
-    font-size: 1rem !important;
+    font-size: 1.1rem !important;
   }
 
   .widget-content {
-    font-size: 0.87rem !important;
+    font-size: 0.95rem !important;
   }
 
   /* Comments and Content */
-  .comment-author { font-size: 0.87rem !important; }
-  .comment-content { font-size: 0.8rem !important; }
-  .comment-date { font-size: 0.73rem !important; }
+  .comment-author { font-size: 0.95rem !important; }
+  .comment-content { font-size: 0.9rem !important; }
+  .comment-date { font-size: 0.8rem !important; }
 
   .breadcrumb,
   .breadcrumb-item {
-    font-size: 0.73rem !important;
+    font-size: 0.8rem !important;
   }
 
   .pagination .page-link {
-    font-size: 0.87rem !important;
-    padding: 0.33rem 0.67rem;
+    font-size: 0.9rem !important;
+    padding: 6px 12px;
   }
 
   /* Alerts and Modals */
   .alert {
-    font-size: 0.87rem !important;
-    padding: 0.67rem;
+    font-size: 0.9rem !important;
+    padding: 10px 14px;
   }
 
   .alert-heading {
-    font-size: 1rem !important;
+    font-size: 1.1rem !important;
   }
 
   .modal-title {
-    font-size: 1.33rem !important;
+    font-size: 1.35rem !important;
   }
 
   .modal-body {
-    font-size: 0.87rem !important;
+    font-size: 0.95rem !important;
   }
 
   .modal-footer .btn {
-    font-size: 0.87rem !important;
+    font-size: 0.95rem !important;
   }
 }
 
 /* ===== SMALL MOBILE OPTIMIZATION (480px and below) ===== */
 @media (max-width: 480px) {
-  body { font-size: 10px; }
-  h1 { font-size: 13px !important; }
-  h2 { font-size: 11px !important; }
-  h3 { font-size: 10px !important; }
-  p { font-size: 10px !important; }
-  .btn, button { font-size: 8px !important; padding: 4px 8px; }
+  body { font-size: 14px; }
+  h1 { font-size: 1.65rem; }
+  h2 { font-size: 1.35rem; }
+  h3 { font-size: 1.15rem; }
+  p { font-size: 13.5px; }
+  .btn, button { font-size: 12px; padding: 8px 12px; }
 }
 
 /* ===== iOS/iPhone SPECIFIC OPTIMIZATION ===== */
