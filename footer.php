@@ -298,8 +298,6 @@
             <!-- 2. MAIN GRID -->
             <div class="footer-grid">
                 
-                <!-- CỘT 1: SẢN PHẨM -->
-                <div class="footer-col">
                 <!-- CỘT 1: LIÊN HỆ -->
                 <div class="footer-col">
                     <h3 class="footer-heading" style="margin-bottom: 20px;">Liên hệ nhanh</h3>
@@ -316,7 +314,6 @@
                             <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" style="height: 32px; width: auto;" />
                         </a>
                     </div>
-                </div>
                 </div>
 
                 <!-- CỘT 2: HỆ THỐNG VĂN PHÒNG -->
