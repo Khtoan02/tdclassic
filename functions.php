@@ -278,6 +278,10 @@ add_action('save_post_product', 'tdclassic_flush_theme_transients');
 add_action('edited_product_cat', 'tdclassic_flush_theme_transients');
 add_action('create_product_cat', 'tdclassic_flush_theme_transients');
 add_action('delete_product_cat', 'tdclassic_flush_theme_transients');
+add_action('save_post', 'tdclassic_flush_theme_transients');
+add_action('delete_post', 'tdclassic_flush_theme_transients');
+add_action('edited_category', 'tdclassic_flush_theme_transients');
+add_action('create_category', 'tdclassic_flush_theme_transients');
 
 /**
  * Get product categories for Mega Menu with featured image
