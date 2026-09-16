@@ -148,20 +148,19 @@
   // Sticky Header Logic
   function initStickyHeader() {
     var header = $('.header-wrapper');
-    var lastScrollTop = 0;
-    
-    $(window).scroll(function(event){
-       var st = $(this).scrollTop();
-       
-       // Add scrolled class for background effect
-       if (st > 50) {
-         header.addClass('sticky-header scrolled');
-       } else {
-         header.removeClass('sticky-header scrolled');
-       }
-       
-       lastScrollTop = st;
-    });
+    if (!header.length) return;
+
+    function handleScroll() {
+      var st = $(window).scrollTop();
+      if (st > 40) {
+        header.addClass('scrolled');
+      } else {
+        header.removeClass('scrolled');
+      }
+    }
+
+    $(window).on('scroll', handleScroll);
+    handleScroll(); // Execute once on init
   }
 
   // Call on page load

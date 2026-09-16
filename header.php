@@ -23,12 +23,8 @@
             <div class="max-w-[1700px] mx-auto px-6 md:px-12 h-full">
                 <div class="flex items-center justify-between h-full py-4 lg:py-0">
 
-                    <!-- Mobile Trigger Menu Trigger -->
-                    <div class="flex items-center gap-4 lg:hidden">
-                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>"
-                            class="w-10 h-10 flex items-center justify-center text-white text-base rounded-full border border-white/10 bg-white/5 hover:bg-white/20 transition-all">
-                            <i class="fa-solid fa-phone text-xs"></i>
-                        </a>
+                    <!-- Mobile Trigger Menu -->
+                    <div class="flex items-center lg:hidden">
                         <button id="mob-menu-trigger"
                             class="w-10 h-10 flex items-center justify-center text-white text-base rounded-full border border-white/10 bg-white/5 hover:bg-white/20 transition-all"
                             aria-label="Mở trình đơn di động">
@@ -72,7 +68,7 @@
                             ?>
                              <div class="has-dropdown h-full flex items-center group relative">
                                  <a href="<?php echo esc_url(home_url('/tin-tuc')); ?>"
-                                     class="nav-link text-xs font-semibold uppercase tracking-widest <?php echo (is_home() || is_singular('post') || is_category()) ? 'active text-gold' : 'text-gray-400'; ?> flex items-center gap-1.5 group-hover:text-white cursor-pointer h-full">
+                                     class="nav-link text-xs font-semibold uppercase tracking-widest <?php echo (is_home() || is_singular('post') || is_category() || is_page('tin-tuc') || is_page_template('page-tin-tuc.php')) ? 'active text-gold' : 'text-gray-400'; ?> flex items-center gap-1.5 group-hover:text-white cursor-pointer h-full">
                                      Tin tức
                                      <i class="fa-solid fa-chevron-down text-[8px] opacity-50 group-hover:opacity-100 transition-opacity mt-px"></i>
                                  </a>
@@ -97,8 +93,15 @@
                         </a>
                     </div>
 
-                    <!-- Right Interactions (Online Support Badge) -->
+                    <!-- Right Interactions (Online Support Badge & Mobile Call) -->
                     <div class="flex items-center gap-4">
+                        <!-- Mobile Call Button (Centered Logo Balance) -->
+                        <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>"
+                            class="w-10 h-10 flex lg:hidden items-center justify-center text-white text-base rounded-full border border-white/10 bg-white/5 hover:bg-white/20 transition-all"
+                            aria-label="Gọi điện thoại tư vấn">
+                            <i class="fa-solid fa-phone text-xs text-gold"></i>
+                        </a>
+
                         <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>"
                             class="hidden md:flex glass-btn-luxury px-6 py-2.5 rounded-full items-center gap-3 group transition-all">
                             <span class="text-[10px] font-bold uppercase tracking-widest text-white group-hover:text-gold transition-colors">Tư vấn ngay</span>
@@ -120,3 +123,5 @@
     <!-- === MOBILE MENU DRAWER (RESPONSIVE) === -->
     <?php get_template_part('template-parts/header/mobile-menu'); ?>
     <!-- === END MOBILE MENU === -->
+
+    <div id="content" class="site-content">

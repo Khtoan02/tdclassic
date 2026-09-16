@@ -179,6 +179,12 @@ function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $incl
  */
 function tdclassic_get_products_by_category($category_slug, $limit = 8)
 {
+    $cache_key = 'td_mega_cat_prod_' . md5($category_slug . '_' . $limit);
+    $cached = get_transient($cache_key);
+    if ($cached !== false) {
+        return $cached;
+    }
+
     $args = array(
         'post_type' => 'product',
         'posts_per_page' => $limit,
@@ -249,6 +255,7 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
         );
     }
 
+    set_transient($cache_key, $formatted_products, HOUR_IN_SECONDS * 6);
     return $formatted_products;
 }
 

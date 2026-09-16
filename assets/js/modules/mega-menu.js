@@ -65,9 +65,11 @@
             let isDown = false;
             let startX;
             let scrollLeft;
+            let hasDragged = false;
 
             container.addEventListener('mousedown', (e) => {
                 isDown = true;
+                hasDragged = false;
                 container.classList.add('active');
                 startX = e.pageX - container.offsetLeft;
                 scrollLeft = container.scrollLeft;
@@ -85,11 +87,23 @@
 
             container.addEventListener('mousemove', (e) => {
                 if (!isDown) return;
-                e.preventDefault();
                 const x = e.pageX - container.offsetLeft;
                 const walk = (x - startX) * 2;
+                if (Math.abs(walk) > 5) {
+                    hasDragged = true;
+                    e.preventDefault();
+                }
                 container.scrollLeft = scrollLeft - walk;
             });
+
+            // Prevent opening links if user was dragging
+            container.addEventListener('click', (e) => {
+                if (hasDragged) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    hasDragged = false;
+                }
+            }, true);
         });
     }
 
@@ -115,6 +129,13 @@
         closeMobMenu.addEventListener('click', closeMobileMenuFunc);
         mobMenuOverlay.addEventListener('click', (e) => {
             if (e.target === mobMenuOverlay) {
+                closeMobileMenuFunc();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobMenuOverlay.classList.contains('open')) {
                 closeMobileMenuFunc();
             }
         });

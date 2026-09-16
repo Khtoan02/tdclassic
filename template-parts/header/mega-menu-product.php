@@ -137,7 +137,7 @@ if ($is_fallback) {
 ?>
 <div class="has-mega-menu h-full flex items-center group">
     <a href="<?php echo esc_url(home_url('/san-pham')); ?>" 
-       class="nav-link text-xs font-semibold uppercase tracking-widest <?php echo (is_post_type_archive('product') || is_singular('product') || is_tax('product_cat') || is_page('san-pham')) ? 'active text-gold' : 'text-gray-400'; ?> flex items-center gap-1.5 group-hover:text-gold cursor-pointer h-full">
+       class="nav-link text-xs font-semibold uppercase tracking-widest <?php echo (is_post_type_archive('product') || is_singular('product') || is_tax('product_cat') || is_tax('product_category') || is_page('san-pham') || is_page_template('page-san-pham.php')) ? 'active text-gold' : 'text-gray-400'; ?> flex items-center gap-1.5 group-hover:text-gold cursor-pointer h-full">
         Sản phẩm
         <i class="fa-solid fa-chevron-down text-[8px] opacity-50 group-hover:opacity-100 transition-opacity mt-px"></i>
     </a>

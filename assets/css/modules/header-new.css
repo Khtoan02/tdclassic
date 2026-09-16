@@ -26,7 +26,17 @@
     top: 0;
     left: 0;
     width: 100%;
-    animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* WordPress Admin Bar Compatibility */
+.admin-bar .header-wrapper.sticky-header {
+    top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+    .admin-bar .header-wrapper.sticky-header {
+        top: 46px;
+    }
 }
 
 .header-wrapper.sticky-header.scrolled {
@@ -35,15 +45,6 @@
     -webkit-backdrop-filter: blur(16px) saturate(120%);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
     border-bottom-color: rgba(197, 160, 89, 0.15);
-}
-
-@keyframes slideDown {
-    from {
-        transform: translateY(-100%);
-    }
-    to {
-        transform: translateY(0);
-    }
 }
 
 /* Top Bar Styling */
@@ -308,8 +309,8 @@
     box-shadow: 0 0 15px var(--td-gold);
 }
 
-.slider-btn.prev { left: -10px; }
-.slider-btn.next { right: -10px; }
+.slider-btn.prev { left: 8px; }
+.slider-btn.next { right: 8px; }
 
 /* Luxury Product Card Inside Mega Menu */
 .mini-product {
@@ -498,7 +499,7 @@
 }
 
 .mob-accordion-content.open {
-    max-height: 450px; /* Accommodate longer category listings */
+    max-height: 1200px; /* Accommodate longer category listings without clipping */
 }
 
 /* Submenu Links */
@@ -655,5 +656,32 @@
         opacity: 0 !important;
         visibility: hidden !important;
         pointer-events: none !important;
+    }
+}
+
+/* ==========================================================================
+   PAGE STICKY SUB-BARS OFFSET (PREVENTS COVERING BY FIXED HEADER)
+   ========================================================================== */
+.sticky-bar,
+.sticky.top-0 {
+    top: 104px !important;
+}
+
+@media (max-width: 1023px) {
+    .sticky-bar,
+    .sticky.top-0 {
+        top: 96px !important;
+    }
+}
+
+.admin-bar .sticky-bar,
+.admin-bar .sticky.top-0 {
+    top: 136px !important;
+}
+
+@media screen and (max-width: 782px) {
+    .admin-bar .sticky-bar,
+    .admin-bar .sticky.top-0 {
+        top: 142px !important;
     }
 }
