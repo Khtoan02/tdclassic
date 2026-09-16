@@ -165,28 +165,6 @@ get_header(); ?>
                 wp_reset_postdata();
             }
 
-            // 2. Remote Posts (TavaLED) - Preserved
-            $total_pages_remote = 1;
-            if (function_exists('get_posts_from_main_site')) {
-                $remote_posts = get_posts_from_main_site($posts_per_page, $paged, $total_pages_remote);
-                if (!empty($remote_posts)) {
-                    foreach ($remote_posts as $remote_post) {
-                        $combined_posts[] = array(
-                            'origin' => 'remote',
-                            'title' => isset($remote_post['title']) ? $remote_post['title'] : '',
-                            'link' => isset($remote_post['link']) ? $remote_post['link'] : '#',
-                            'image' => isset($remote_post['image']) ? $remote_post['image'] : '',
-                            'date' => isset($remote_post['date']) ? $remote_post['date'] : '',
-                            'raw_date' => isset($remote_post['raw_date']) ? $remote_post['raw_date'] : '',
-                            'excerpt' => isset($remote_post['excerpt']) ? $remote_post['excerpt'] : '',
-                            'category_slug' => 'tin-tuc', // Default for remote
-                            'category_name' => 'TavaLED',
-                            'read_time' => '3 min read'
-                        );
-                    }
-                }
-            }
-
             // Sort
             usort($combined_posts, function ($a, $b) {
                 return strtotime($b['raw_date']) - strtotime($a['raw_date']);

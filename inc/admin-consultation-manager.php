@@ -21,7 +21,8 @@ add_action('admin_enqueue_scripts', 'tdclassic_enqueue_consultation_admin_script
 class TD_Classic_Consultation_Manager {
     
     public function __construct() {
-        add_action('init', array($this, 'create_consultations_table'));
+        add_action('admin_init', array($this, 'create_consultations_table'));
+        add_action('after_switch_theme', array($this, 'create_consultations_table'));
         add_action('wp_ajax_submit_consultation', array($this, 'handle_consultation_submission'));
         add_action('wp_ajax_nopriv_submit_consultation', array($this, 'handle_consultation_submission'));
         add_action('admin_menu', array($this, 'add_consultation_admin_menu'));
@@ -87,6 +88,13 @@ class TD_Classic_Consultation_Manager {
      * Create consultations table
      */
     public function create_consultations_table() {
+        $current_db_version = get_option('tdclassic_consultations_db_ver', '');
+        $target_db_version = '1.0.0';
+
+        if ($current_db_version === $target_db_version) {
+            return;
+        }
+
         global $wpdb;
         
         $table_name = $wpdb->prefix . 'td_consultations';
@@ -114,6 +122,8 @@ class TD_Classic_Consultation_Manager {
         
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
+
+        update_option('tdclassic_consultations_db_ver', $target_db_version);
     }
     
     /**

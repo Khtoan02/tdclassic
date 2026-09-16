@@ -791,30 +791,6 @@ function tdclassic_load_more_news()
         wp_reset_postdata();
     }
 
-    // 2. Remote Posts (if available)
-    if (function_exists('get_posts_from_main_site')) {
-        // Create dummy variable for reference parameter to avoid Fatal Error
-        $dummy_total_remote = 1;
-        $remote_posts = get_posts_from_main_site($posts_per_page, $paged, $dummy_total_remote);
-
-        if (!empty($remote_posts)) {
-            foreach ($remote_posts as $remote_post) {
-                $combined_posts[] = array(
-                    'origin' => 'remote',
-                    'title' => isset($remote_post['title']) ? $remote_post['title'] : '',
-                    'link' => isset($remote_post['link']) ? $remote_post['link'] : '#',
-                    'image' => isset($remote_post['image']) ? $remote_post['image'] : '',
-                    'date' => isset($remote_post['date']) ? $remote_post['date'] : '',
-                    'raw_date' => isset($remote_post['raw_date']) ? $remote_post['raw_date'] : '',
-                    'excerpt' => isset($remote_post['excerpt']) ? $remote_post['excerpt'] : '',
-                    'category_slug' => 'tin-tuc',
-                    'category_name' => 'TavaLED',
-                    'read_time' => '3 min read'
-                );
-            }
-        }
-    }
-
     // Sort combined
     usort($combined_posts, function ($a, $b) {
         $time_a = !empty($a['raw_date']) ? strtotime($a['raw_date']) : 0;
@@ -1463,6 +1439,14 @@ add_action('wp_ajax_nopriv_handle_contact_form', 'handle_contact_form');
 // Create contact messages table
 function create_contact_messages_table()
 {
+    // Chỉ chạy khi chưa khởi tạo bảng hoặc có bản nâng cấp version, tránh dbDelta chạy mỗi request
+    $current_db_version = get_option('tdclassic_contact_messages_db_ver', '');
+    $target_db_version = '1.0.0';
+
+    if ($current_db_version === $target_db_version) {
+        return;
+    }
+
     global $wpdb;
 
     $table_name = $wpdb->prefix . 'contact_messages';
@@ -1484,213 +1468,15 @@ function create_contact_messages_table()
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
+
+    update_option('tdclassic_contact_messages_db_ver', $target_db_version);
 }
-add_action('after_setup_theme', 'create_contact_messages_table');
+add_action('after_switch_theme', 'create_contact_messages_table');
+add_action('admin_init', 'create_contact_messages_table');
 
 // Font Awesome - Now enqueued in tdclassic_scripts() function above
 // Removed duplicate enqueue function
-
-// Weather API Handler (Optional - for real weather data)
-function handle_weather_api()
-{
-    if (!isset($_GET['lat']) || !isset($_GET['lon'])) {
-        wp_die('Missing coordinates');
-    }
-
-    $lat = sanitize_text_field($_GET['lat']);
-    $lon = sanitize_text_field($_GET['lon']);
-
-    // Replace with your OpenWeatherMap API key
-    $api_key = get_option('openweather_api_key', '');
-
-    if (empty($api_key)) {
-        wp_die('Weather API key not configured');
-    }
-
-    $url = "https://api.openweathermap.org/data/2.5/weather?lat={$lat}&lon={$lon}&appid={$api_key}&units=metric&lang=vi";
-
-    $response = wp_remote_get($url);
-
-    if (is_wp_error($response)) {
-        wp_die('Weather API request failed');
-    }
-
-    $body = wp_remote_retrieve_body($response);
-    $data = json_decode($body, true);
-
-    if (!$data || $data['cod'] != 200) {
-        wp_die('Weather API error');
-    }
-
-    $weather_data = array(
-        'temp' => round($data['main']['temp']),
-        'description' => $data['weather'][0]['description'],
-        'icon' => $data['weather'][0]['icon']
-    );
-
-    wp_send_json($weather_data);
-}
-add_action('wp_ajax_get_weather', 'handle_weather_api');
-add_action('wp_ajax_nopriv_get_weather', 'handle_weather_api');
-
-// Add weather API key setting to admin
-function tdclassic_add_weather_settings()
-{
-    add_settings_section(
-        'tdclassic_weather_section',
-        'Weather API Settings',
-        function () {
-            echo '<p>Configure weather API for header weather widget.</p>';
-        },
-        'general'
-    );
-
-    add_settings_field(
-        'openweather_api_key',
-        'OpenWeatherMap API Key',
-        function () {
-            $api_key = get_option('openweather_api_key', '');
-            echo '<input type="text" id="openweather_api_key" name="openweather_api_key" value="' . esc_attr($api_key) . '" class="regular-text" />';
-            echo '<p class="description">Get your free API key from <a href="https://openweathermap.org/api" target="_blank">OpenWeatherMap</a></p>';
-        },
-        'general',
-        'tdclassic_weather_section'
-    );
-
-    register_setting('general', 'openweather_api_key');
-}
-add_action('admin_init', 'tdclassic_add_weather_settings');
-
-// Enqueue weather API URL for JavaScript
-function tdclassic_localize_scripts()
-{
-    wp_localize_script('tdclassic-script', 'tdclassic_ajax', array(
-        'ajax_url' => admin_url('admin-ajax.php'),
-        'nonce' => wp_create_nonce('weather_nonce')
-    ));
-}
-// Disabled to avoid injecting inline JS for weather in simplified header
-// add_action('wp_enqueue_scripts', 'tdclassic_localize_scripts');
-
-// Projects CSS - Now handled in tdclassic_scripts() function above
-// Removed duplicate enqueue function
-
-// Add weather API configuration to JavaScript
-function tdclassic_weather_config()
-{
-    $api_key = get_option('openweather_api_key', '');
-    ?>
-    <script type="text/javascript">
-        var tdWeatherConfig = {
-            apiKey: '<?php echo esc_js($api_key); ?>',
-            endpoint: 'https://api.openweathermap.org/data/2.5/weather'
-        };
-    </script>
-    <?php
-}
-// Disabled inline weather config for simplified header
-// add_action('wp_head', 'tdclassic_weather_config');
-
-// Create sample product categories if none exist (disabled for WooCommerce)
-/*
-function tdclassic_create_sample_product_categories() {
-    // Check if product categories already exist
-    $existing_categories = get_terms(array(
-        'taxonomy' => 'product_category',
-        'hide_empty' => false
-    ));
-    
-    if (empty($existing_categories)) {
-        // Create sample categories
-        $sample_categories = array(
-            'web-development' => 'Phát triển Web',
-            'mobile-app' => 'Ứng dụng Mobile',
-            'design-services' => 'Thiết kế Đồ họa',
-            'digital-marketing' => 'Digital Marketing',
-            'consulting' => 'Tư vấn CNTT',
-            'hosting-domain' => 'Hosting & Domain'
-        );
-        
-        foreach ($sample_categories as $slug => $name) {
-            if (!term_exists($slug, 'product_category')) {
-                wp_insert_term($name, 'product_category', array('slug' => $slug));
-            }
-        }
-        
-        // Create sample products with categories
-        tdclassic_create_sample_products();
-    }
-}
-add_action('init', 'tdclassic_create_sample_product_categories');
-*/
-
-// Create sample products (disabled for WooCommerce)
-/*
-function tdclassic_create_sample_products() {
-    // Check if products already exist
-    $existing_products = get_posts(array(
-        'post_type' => 'product',
-        'posts_per_page' => 1,
-        'post_status' => 'publish'
-    ));
-    
-    if (empty($existing_products)) {
-        $sample_products = array(
-            array(
-                'title' => 'Thiết kế Website responsive',
-                'content' => 'Dịch vụ thiết kế website chuyên nghiệp, responsive trên mọi thiết bị.',
-                'category' => 'web-development'
-            ),
-            array(
-                'title' => 'Ứng dụng Mobile iOS/Android',
-                'content' => 'Phát triển ứng dụng mobile native cho iOS và Android.',
-                'category' => 'mobile-app'
-            ),
-            array(
-                'title' => 'Thiết kế Logo & Brand Identity',
-                'content' => 'Thiết kế logo và bộ nhận diện thương hiệu chuyên nghiệp.',
-                'category' => 'design-services'
-            ),
-            array(
-                'title' => 'Digital Marketing Strategy',
-                'content' => 'Xây dựng chiến lược marketing số toàn diện cho doanh nghiệp.',
-                'category' => 'digital-marketing'
-            )
-        );
-        
-        foreach ($sample_products as $product_data) {
-            $product_id = wp_insert_post(array(
-                'post_title' => $product_data['title'],
-                'post_content' => $product_data['content'],
-                'post_type' => 'product',
-                'post_status' => 'publish'
-            ));
-            
-            if ($product_id && !is_wp_error($product_id)) {
-                // Assign category to product
-                wp_set_post_terms($product_id, $product_data['category'], 'product_category');
-            }
-        }
-    }
-}
-*/
-
-/**
- * Product assets - Now handled in tdclassic_scripts() function above
- * Removed duplicate enqueue function
- */
-
-/**
- * Override WooCommerce product tabs template
- */
-function tdclassic_override_product_tabs_template($template, $template_name, $template_path)
-{
-    if ($template_name === 'single-product/tabs/tabs.php') {
-        $template = get_template_directory() . '/woocommerce/single-product/tabs/custom-product-tabs.php';
-    }
-    return $template;
-}
-add_filter('wc_get_template', 'tdclassic_override_product_tabs_template', 10, 3);
+// End contact messages table setup
 
 /**
  * Email Configuration Settings
@@ -2524,131 +2310,4 @@ function tdclassic_get_project_thumb_url($post_id = null, $size = 'project-thumb
     return get_template_directory_uri() . '/assets/images/project-placeholder.jpg';
 }
 
-/* --- CODE LẤY TIN (DÀNH CHO LOCALHOST / TIN TỨC) --- */
-/**
- * Lấy bài viết từ site chính TavaLED thông qua REST API.
- *
- * @param int  $quantity     Số bài trên mỗi trang.
- * @param int  $page         Trang hiện tại (phục vụ phân trang).
- * @param int  $total_pages  (tham chiếu) Tổng số trang lấy từ header API.
- *
- * @return array Danh sách bài viết đã được chuẩn hoá.
- */
-function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1)
-{
-    $quantity = max(1, (int) $quantity);
-    $page = max(1, (int) $page);
-    $total_pages = 1;
-
-    // 1. Nếu đang làm giao diện, có thể bật cache để nhẹ server hơn
-    // $cache_key    = 'db_main_posts_' . $quantity . '_page_' . $page;
-    // $cached_posts = get_transient($cache_key);
-    // if (false !== $cached_posts) {
-    //     $total_pages = isset($cached_posts['total_pages']) ? (int) $cached_posts['total_pages'] : 1;
-    //     return isset($cached_posts['items']) ? $cached_posts['items'] : [];
-    // }
-
-    $api_url = add_query_arg(
-        array(
-            '_embed' => 1,
-            'per_page' => $quantity,
-            'page' => $page,
-        ),
-        'https://tavaled.vn/wp-json/wp/v2/posts'
-    );
-
-    // QUAN TRỌNG: Thêm 'sslverify' => false để tránh lỗi trên Localhost
-    $response = wp_remote_get(
-        $api_url,
-        array(
-            'timeout' => 15,
-            'sslverify' => false,
-        )
-    );
-
-    if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
-        // Mẹo: In lỗi ra để xem nếu không lấy được tin
-        // echo '<pre>'; print_r($response); echo '</pre>';
-        return array();
-    }
-
-    $posts_data = json_decode(wp_remote_retrieve_body($response), true);
-    $total_pages = (int) wp_remote_retrieve_header($response, 'x-wp-totalpages');
-    if ($total_pages < 1) {
-        $total_pages = 1;
-    }
-
-    $final_posts = array();
-
-    if (!empty($posts_data) && is_array($posts_data)) {
-        foreach ($posts_data as $post) {
-            // Ảnh đại diện
-            $thumbnail = isset($post['_embedded']['wp:featuredmedia'][0]['source_url'])
-                ? $post['_embedded']['wp:featuredmedia'][0]['source_url']
-                : 'https://via.placeholder.com/400x250?text=TavaLED';
-
-            // Ngày đăng
-            $raw_date = isset($post['date']) ? $post['date'] : '';
-            $date = $raw_date ? date_i18n('d/m/Y', strtotime($raw_date)) : '';
-
-            // Tác giả (nếu có _embed)
-            $author_name = '';
-            if (isset($post['_embedded']['author'][0]['name'])) {
-                $author_name = $post['_embedded']['author'][0]['name'];
-            }
-
-            // Nội dung & thời gian đọc ước lượng
-            $content_rendered = isset($post['content']['rendered']) ? $post['content']['rendered'] : '';
-            $content_text = wp_strip_all_tags($content_rendered);
-            $word_count = !empty($content_text) ? str_word_count($content_text) : 0;
-            $reading_time = max(1, (int) ceil($word_count / 200));
-
-            // Meta description (ưu tiên từ plugin SEO, fallback sang excerpt / content)
-            $meta_description = '';
-            // Yoast SEO thường lưu ở yoast_head_json.description
-            if (isset($post['yoast_head_json']['description']) && !empty($post['yoast_head_json']['description'])) {
-                $meta_description = wp_strip_all_tags($post['yoast_head_json']['description']);
-            } elseif (isset($post['excerpt']['rendered']) && !empty($post['excerpt']['rendered'])) {
-                $meta_description = wp_trim_words(wp_strip_all_tags($post['excerpt']['rendered']), 120, '...');
-            } elseif (!empty($content_text)) {
-                $meta_description = wp_trim_words($content_text, 120, '...');
-            }
-
-            // Category chính (nếu có _embed terms)
-            $main_category = '';
-            if (isset($post['_embedded']['wp:term'][0]) && is_array($post['_embedded']['wp:term'][0])) {
-                foreach ($post['_embedded']['wp:term'][0] as $term) {
-                    if (isset($term['name'])) {
-                        $main_category = $term['name'];
-                        break;
-                    }
-                }
-            }
-
-            $final_posts[] = array(
-                'title' => isset($post['title']['rendered']) ? $post['title']['rendered'] : '',
-                'link' => isset($post['link']) ? $post['link'] : '',
-                'excerpt' => isset($post['excerpt']['rendered']) ? wp_trim_words(wp_strip_all_tags($post['excerpt']['rendered']), 120, '...') : '',
-                'image' => $thumbnail,
-                'date' => $date,
-                'raw_date' => $raw_date,
-                'author' => $author_name,
-                'reading_time' => $reading_time,
-                'main_category' => $main_category,
-                'meta_description' => $meta_description,
-            );
-        }
-
-        // Dev xong nếu muốn có thể bật cache lại cho nhẹ server
-        // set_transient(
-        //     $cache_key,
-        //     array(
-        //         'items'       => $final_posts,
-        //         'total_pages' => $total_pages,
-        //     ),
-        //     600 // Cache 10 phút
-        // );
-    }
-
-    return $final_posts;
-}
+
