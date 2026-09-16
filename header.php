@@ -21,7 +21,7 @@
         <!-- Main Premium Navigation Bar -->
         <nav class="main-nav w-full relative">
             <div class="max-w-[1700px] mx-auto px-6 md:px-12 h-full">
-                <div class="flex items-center justify-between h-full py-4 lg:py-0">
+                <div class="flex items-center justify-between h-full py-2.5 sm:py-3 lg:py-2">
 
                     <!-- Mobile Trigger Menu -->
                     <div class="flex items-center lg:hidden">
@@ -33,16 +33,16 @@
                     </div>
 
                     <!-- LOGO AREA (Luxury Shine & Zoom) -->
-                    <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center group select-none">
+                    <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center justify-center group select-none py-1">
                         <?php
                         $custom_logo_id = get_theme_mod('custom_logo');
                         if ($custom_logo_id) {
                             $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
                             if ($logo) {
-                                echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="h-10 md:h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300">';
+                                echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="h-12 sm:h-14 lg:h-16 xl:h-20 max-h-[50px] sm:max-h-[58px] lg:max-h-[68px] xl:max-h-[78px] w-auto object-contain opacity-95 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-105">';
                             }
                         } else {
-                            echo '<span class="text-xl font-bold uppercase tracking-widest text-white font-serif">' . esc_html(get_bloginfo('name')) . '</span>';
+                            echo '<span class="text-2xl lg:text-3xl font-bold uppercase tracking-widest text-white font-serif">' . esc_html(get_bloginfo('name')) . '</span>';
                         }
                         ?>
                     </a>

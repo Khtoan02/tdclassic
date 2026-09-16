@@ -34,8 +34,12 @@
 }
 
 @media screen and (max-width: 782px) {
+    #wpadminbar {
+        position: fixed !important;
+        top: 0 !important;
+    }
     .admin-bar .header-wrapper.sticky-header {
-        top: 46px;
+        top: 46px !important;
     }
 }
 
@@ -538,12 +542,19 @@
    HEADER BOTTOM (PRODUCT CATEGORIES BAR)
    ========================================================================== */
 .header-bottom-wrapper {
-    background-color: #090909; /* Sleek graphite dark layer creating architectural depth */
-    border-top: 1px solid rgba(255, 255, 255, 0.02);
-    border-bottom: 1px solid rgba(197, 160, 89, 0.12); /* Subtle gold bottom line */
+    background-color: rgba(9, 9, 9, 0.96); /* Sleek graphite dark layer creating architectural depth */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.14); /* Subtle gold bottom line */
     padding: 0;
     position: relative;
     transition: all 0.35s ease;
+}
+
+.header-wrapper.sticky-header.scrolled .header-bottom-wrapper {
+    background-color: rgba(7, 7, 7, 0.92);
+    border-bottom-color: rgba(197, 160, 89, 0.22);
 }
 
 /* Category item links */

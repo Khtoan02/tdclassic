@@ -17,10 +17,10 @@ $news_categories = tdclassic_get_news_categories();
             if ($custom_logo_id) {
                 $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
                 if ($logo) {
-                    echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="header-logo-mobile h-8 w-auto object-contain">';
+                    echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="header-logo-mobile h-11 sm:h-12 w-auto object-contain">';
                 }
             } else {
-                echo '<span class="text-lg font-bold text-white uppercase tracking-widest font-serif">' . esc_html(get_bloginfo('name')) . '</span>';
+                echo '<span class="text-xl font-bold text-white uppercase tracking-widest font-serif">' . esc_html(get_bloginfo('name')) . '</span>';
             }
             ?>
             <button id="close-mob-menu" class="text-gray-400 hover:text-white p-2" aria-label="Đóng trình đơn">

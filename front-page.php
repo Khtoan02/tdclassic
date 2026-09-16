@@ -99,7 +99,7 @@ get_header();
     </style>
 
     <!-- 1. HERO SECTION (Premium Cinematic - Aligned) -->
-    <section class="relative w-full bg-black group overflow-hidden h-[85vh] md:h-auto md:aspect-[21/9]">
+    <section class="relative w-full bg-black group overflow-hidden min-h-[580px] h-[90vh] md:h-auto md:aspect-[21/9]">
         
         <!-- SLIDER BACKGROUNDS -->
         <div id="hero-slider-container" class="absolute inset-0 w-full h-full">
@@ -129,7 +129,7 @@ get_header();
 
         <!-- HERO CONTENT (Strict Container Alignment) -->
         <div class="absolute inset-0 z-20 flex items-end">
-            <div class="container mx-auto px-6 md:px-12 pb-16 md:pb-20 relative">
+            <div class="container mx-auto px-6 md:px-12 pb-12 sm:pb-16 md:pb-20 pt-28 md:pt-0 relative">
                 
                 <!-- Content Group -->
                 <div class="max-w-4xl relative">

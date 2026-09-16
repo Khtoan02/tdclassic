@@ -135,10 +135,10 @@ if ($is_fallback) {
     <div class="max-w-[1700px] mx-auto px-6 md:px-12">
         
         <!-- Mobile/Tablet Horizontal Swipeable Categories Bar -->
-        <div class="flex lg:hidden overflow-x-auto whitespace-nowrap scrollbar-none gap-2.5 py-2.5 justify-start items-center" id="mobile-bottom-cats">
+        <div class="flex lg:hidden overflow-x-auto whitespace-nowrap scrollbar-none gap-2 py-2 justify-start items-center touch-pan-x" id="mobile-bottom-cats">
             <?php foreach ($bottom_categories as $cat) : ?>
                 <a href="<?php echo esc_url($cat['url']); ?>" 
-                   class="bottom-cat-link text-xs font-semibold uppercase tracking-wider text-gray-300 hover:text-gold active:text-gold transition-all inline-block select-none px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-gold/30 hover:bg-gold/10 shrink-0">
+                   class="bottom-cat-link text-xs font-medium tracking-wider text-gray-300 hover:text-gold active:text-gold transition-all inline-block select-none px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-gold/40 hover:bg-gold/10 shrink-0">
                     <?php echo esc_html($cat['name']); ?>
                 </a>
             <?php endforeach; ?>
