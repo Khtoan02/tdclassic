@@ -44,10 +44,6 @@ function tdclassic_resource_hints($urls, $relation_type)
             'href' => 'https://cdn.jsdelivr.net',
             'crossorigin' => 'anonymous',
         );
-        $urls[] = array(
-            'href' => 'https://cdn.tailwindcss.com',
-            'crossorigin' => 'anonymous',
-        );
     }
     return $urls;
 }
@@ -508,7 +504,7 @@ function tdclassic_add_tailwind()
 /**
  * Preload LCP (Largest Contentful Paint) images dynamically in head for optimal PageSpeed
  */
-function tdclassic_preload_lcp_images()
+function tdclassic_preload_lcp_head()
 {
     if (is_front_page()) {
         $front_hero_url = 'https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover-scaled.webp';
@@ -520,7 +516,7 @@ function tdclassic_preload_lcp_images()
         }
     }
 }
-add_action('wp_head', 'tdclassic_preload_lcp_images', 1);
+add_action('wp_head', 'tdclassic_preload_lcp_head', 1);
 
 // Force WooCommerce to use custom product category template
 add_filter('woocommerce_locate_template', 'tdclassic_woocommerce_locate_template', 10, 3);
