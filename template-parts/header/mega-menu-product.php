@@ -5,6 +5,14 @@
  * Displays Name, Short Description, and Specs (No price displayed!)
  */
 
+$cache_key = 'tdclassic_mega_menu_html';
+$cached_html = get_transient($cache_key);
+if ($cached_html !== false) {
+    echo $cached_html;
+    return;
+}
+ob_start();
+
 // Retrieve WooCommerce product categories
 $mega_categories = tdclassic_get_mega_menu_categories(10);
 $is_fallback = empty($mega_categories);
@@ -230,3 +238,8 @@ if ($is_fallback) {
         </div>
     </div>
 </div>
+<?php
+$html = ob_get_clean();
+set_transient($cache_key, $html, 12 * HOUR_IN_SECONDS);
+echo $html;
+?>

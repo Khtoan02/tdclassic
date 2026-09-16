@@ -477,33 +477,20 @@ get_header();
                         phẩm nổi bật (Vuốt để xem)</h3>
                     <div class="flex overflow-x-auto gap-6 pb-8 snap-x no-scrollbar">
                         <?php
-                        $args = array(
-                            'post_type' => 'product',
-                            'posts_per_page' => 6,
-                            'tax_query' => array(
-                                array(
-                                    'taxonomy' => 'product_cat',
-                                    'field' => 'slug',
-                                    'terms' => $sec['cat_slug']
-                                )
-                            )
-                        );
-                        $query = new WP_Query($args);
+                        $products = tdclassic_get_products_by_category($sec['cat_slug'], 6);
 
-                        if ($query->have_posts()):
-                            while ($query->have_posts()):
-                                $query->the_post();
-                                global $product;
-                                $price = $product ? $product->get_price_html() : '';
+                        if (!empty($products)):
+                            foreach ($products as $prod):
                                 ?>
                                 <!-- Item -->
                                 <div
                                     class="min-w-[280px] md:min-w-[320px] snap-start bg-<?php echo ($sec['bg'] === 'bg-metal') ? 'void' : 'metal'; ?> p-4 border border-white/5 group hover:border-gold/50 transition-all">
                                     <div class="aspect-square bg-surface overflow-hidden mb-4 relative">
-                                        <a href="<?php the_permalink(); ?>">
-                                            <?php if (has_post_thumbnail()): ?>
-                                                <img src="<?php the_post_thumbnail_url('medium_large'); ?>"
+                                        <a href="<?php echo esc_url($prod['url']); ?>">
+                                            <?php if (!empty($prod['image_url'])): ?>
+                                                <img src="<?php echo esc_url($prod['image_url']); ?>"
                                                     class="w-full h-full object-cover zoom-img"
+                                                    alt="<?php echo esc_attr($prod['title']); ?>"
                                                     loading="lazy">
                                             <?php else: ?>
                                                 <div class="w-full h-full flex items-center justify-center bg-gray-800 text-gray-600">No
@@ -512,22 +499,16 @@ get_header();
                                         </a>
                                     </div>
                                     <h4 class="text-white font-sans font-bold text-lg truncate"><a
-                                            href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+                                            href="<?php echo esc_url($prod['url']); ?>"><?php echo esc_html($prod['title']); ?></a></h4>
                                     <p class="text-xs text-gray-500 mb-2 truncate">
-                                        <?php
-                                        $cats = get_the_terms(get_the_ID(), 'product_cat');
-                                        if ($cats && !is_wp_error($cats)) {
-                                            echo esc_html($cats[0]->name);
-                                        }
-                                        ?>
+                                        <?php echo esc_html($sec['title']); ?>
                                     </p>
                                     <p class="text-gold text-xs tracking-wider">
-                                        <?php echo $price ? $price : 'Liên hệ'; ?>
+                                        <?php echo !empty($prod['price']) ? $prod['price'] : 'Liên hệ'; ?>
                                     </p>
                                 </div>
                                 <?php
-                            endwhile;
-                            wp_reset_postdata();
+                            endforeach;
                         else:
                             ?>
                             <div class="p-8 text-gray-500 italic">Đang cập nhật sản phẩm cho danh mục này...</div>

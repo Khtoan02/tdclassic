@@ -101,6 +101,12 @@ require_once get_template_directory() . '/inc/auto-create-pages.php';
  */
 function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $include_image = true)
 {
+    $transient_key = 'tdclassic_cats_' . md5($limit . '_' . ($hide_empty ? '1' : '0') . '_' . ($include_image ? '1' : '0'));
+    $cached = get_transient($transient_key);
+    if ($cached !== false) {
+        return $cached;
+    }
+
     // Lấy danh mục "Chưa phân loại" để loại bỏ
     $uncategorized_term = get_term_by('slug', 'uncategorized', 'product_cat');
     $exclude_ids = array();
@@ -172,6 +178,7 @@ function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $incl
         );
     }
 
+    set_transient($transient_key, $formatted_categories, 12 * HOUR_IN_SECONDS);
     return $formatted_categories;
 }
 
@@ -183,6 +190,12 @@ function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $incl
  */
 function tdclassic_get_products_by_category($category_slug, $limit = 8)
 {
+    $transient_key = 'tdclassic_prods_' . md5($category_slug . '_' . $limit);
+    $cached = get_transient($transient_key);
+    if ($cached !== false) {
+        return $cached;
+    }
+
     $args = array(
         'post_type' => 'product',
         'posts_per_page' => $limit,
@@ -253,8 +266,22 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
         );
     }
 
+    set_transient($transient_key, $formatted_products, 12 * HOUR_IN_SECONDS);
     return $formatted_products;
 }
+
+/**
+ * Flush theme transients on content updates
+ */
+function tdclassic_flush_theme_transients()
+{
+    global $wpdb;
+    $wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_tdclassic_%' OR option_name LIKE '_transient_timeout_tdclassic_%'");
+}
+add_action('save_post_product', 'tdclassic_flush_theme_transients');
+add_action('edited_product_cat', 'tdclassic_flush_theme_transients');
+add_action('create_product_cat', 'tdclassic_flush_theme_transients');
+add_action('delete_product_cat', 'tdclassic_flush_theme_transients');
 
 /**
  * Get product categories for Mega Menu with featured image

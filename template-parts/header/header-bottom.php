@@ -5,6 +5,14 @@
  * Upgraded: Hovering over any category on desktop triggers a dedicated, single-panel Mega Menu with products!
  */
 
+$cache_key = 'tdclassic_header_bottom_html';
+$cached_html = get_transient($cache_key);
+if ($cached_html !== false) {
+    echo $cached_html;
+    return;
+}
+ob_start();
+
 // Retrieve WooCommerce product categories
 $bottom_categories = tdclassic_get_mega_menu_categories(12);
 $is_fallback = empty($bottom_categories);
@@ -223,3 +231,8 @@ if ($is_fallback) {
 
     </div>
 </div>
+<?php
+$html = ob_get_clean();
+set_transient($cache_key, $html, 12 * HOUR_IN_SECONDS);
+echo $html;
+?>
