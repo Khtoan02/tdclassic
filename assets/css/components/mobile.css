@@ -78,30 +78,32 @@
 
 /* ===== MOBILE OPTIMIZATION (768px and below) ===== */
 @media (max-width: 768px) {
-  /* Typography - compact mobile baseline */
-  body { font-size: 10px; line-height: 1.4; }
-  h1 { font-size: 14px !important; }
-  h2 { font-size: 12px !important; }
-  h3 { font-size: 10px !important; }
-  h4 { font-size: 9px !important; }
-  h5 { font-size: 8px !important; }
-  h6 { font-size: 7px !important; }
-  p { font-size: 10px !important; margin-bottom: 6px; }
-  a { font-size: 10px !important; }
+  /* Typography - readable standard mobile baseline (Dark Luxury) */
+  body { font-size: 15px; line-height: 1.6; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.4rem; }
+  h3 { font-size: 1.15rem; }
+  h4 { font-size: 1rem; }
+  h5 { font-size: 0.9rem; }
+  h6 { font-size: 0.8rem; }
+  p { font-size: 14px; margin-bottom: 8px; }
+  a { font-size: 14px; }
   
-  /* Buttons and form elements */
+  /* Buttons and form elements - Touch friendly, min 44px height */
   .btn, button, input[type="submit"], input[type="button"] {
-    font-size: 9px !important;
-    padding: 6px 10px;
+    font-size: 14px;
+    padding: 10px 18px;
+    min-height: 44px;
   }
   
+  /* Inputs: 16px to prevent iOS auto-zoom */
   input, textarea, select {
-    font-size: 9px !important;
-    padding: 6px 8px;
+    font-size: 16px !important;
+    padding: 10px 12px;
   }
   
-  label { font-size: 8px !important; }
-  .text-muted, small { font-size: 7px !important; }
+  label { font-size: 13px; }
+  .text-muted, small { font-size: 12px; }
 
   /* Product Images - Unified optimization */
   .product-image-container,
@@ -169,44 +171,44 @@
   }
   
   /* Optimize product content for compact display */
-  .product-content { padding: 6px 0 !important; }
+  .product-content { padding: 8px 0; }
   
-  .product-title { font-size: 9px !important; line-height: 1.2 !important; margin-bottom: 6px !important; height: 24px !important; overflow: hidden !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; line-clamp: 2 !important; -webkit-box-orient: vertical !important; }
+  .product-title { font-size: 13px !important; line-height: 1.35 !important; margin-bottom: 6px; height: auto !important; min-height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; }
   
-  .product-features { display: flex !important; flex-wrap: wrap !important; gap: 4px !important; margin: 0 !important; }
+  .product-features { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; }
   
-  .feature-item { font-size: 8px !important; padding: 2px 6px !important; background: #f8f9fa !important; border-radius: 10px !important; display: flex !important; align-items: center !important; gap: 4px !important; flex: 1 !important; min-width: 0 !important; }
+  .feature-item { font-size: 11px; padding: 3px 8px; background: rgba(255,255,255,0.05); border-radius: 6px; display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
   
-  .feature-item i { font-size: 8px !important; color: #28a745 !important; }
+  .feature-item i { font-size: 11px; color: var(--gold, #C5A059); }
   
-  .feature-item span { font-size: 8px !important; font-weight: 500 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+  .feature-item span { font-size: 11px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Product Content */
   .product-title,
   .woocommerce ul.products li.product .woocommerce-loop-product__title,
   .product-title a,
-  .woocommerce-loop-product__title { font-size: 9px !important; line-height: 1.2; margin-bottom: 4px; }
+  .woocommerce-loop-product__title { font-size: 13px !important; line-height: 1.35; margin-bottom: 6px; }
 
   .product-price,
   .woocommerce ul.products li.product .price,
-  .price { font-size: 9px !important; }
+  .price { font-size: 13px; font-weight: 700; color: var(--gold, #C5A059); }
 
   .product-meta,
-  .meta-item { font-size: 8px !important; }
+  .meta-item { font-size: 11px; }
 
   /* Product Card Hover Effects */
   .product-card-wrapper:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   }
 
   /* WooCommerce Specific */
   .woocommerce .button,
   .woocommerce button.button,
-  .woocommerce input.button { font-size: 9px !important; padding: 6px 10px; }
+  .woocommerce input.button { font-size: 14px; padding: 10px 16px; min-height: 44px; }
 
   .woocommerce form .form-row input.input-text,
-  .woocommerce form .form-row textarea { font-size: 9px !important; padding: 6px 8px; }
+  .woocommerce form .form-row textarea { font-size: 16px !important; padding: 10px 12px; }
 
   /* Footer Layout - 2 columns */
   .footer-content {
@@ -218,18 +220,18 @@
 
   .footer-accordions { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
 
-  .footer-item-title { font-size: 9px !important; margin-bottom: 6px; }
+  .footer-item-title { font-size: 14px; margin-bottom: 8px; font-weight: 700; }
 
-  .footer-links a { font-size: 8px !important; }
+  .footer-links a { font-size: 13px; }
 
-  .footer-main { padding: 16px 0 !important; }
+  .footer-main { padding: 24px 0; }
 
   /* Header Optimization */
   .header-left .navbar-brand:not(.main-header .navbar-brand) {
-    font-size: 1.2rem !important;
+    font-size: 1.2rem;
   }
 
-  .navbar-nav .nav-link:not(.main-header .navbar-nav .nav-link) { font-size: 9px !important; padding: 4px 6px; }
+  .navbar-nav .nav-link:not(.main-header .navbar-nav .nav-link) { font-size: 13px; padding: 8px 12px; }
 
   .navbar-toggler {
     display: none !important;
@@ -239,12 +241,12 @@
   .hero-section h1,
   .section-title,
   .section-header h2,
-  .title-text { font-size: 12px !important; }
+  .title-text { font-size: 1.35rem; }
 
-  .hero-section p { font-size: 8px !important; }
+  .hero-section p { font-size: 14px; }
 
-  /* Form Optimization */
-  .form-group { margin-bottom: 6px; }
+  /* Form Optimization - min 16px font to prevent iOS Safari auto-zoom */
+  .form-group { margin-bottom: 12px; }
 
   .form-control,
   input[type="text"],
@@ -252,13 +254,13 @@
   input[type="tel"],
   input[type="password"],
   textarea,
-  select { font-size: 9px !important; padding: 6px 8px; margin-bottom: 6px; }
+  select { font-size: 16px !important; padding: 10px 14px; margin-bottom: 10px; min-height: 44px; }
 
   .form-label,
-  label { font-size: 8px !important; margin-bottom: 4px; }
+  label { font-size: 13px; margin-bottom: 6px; display: inline-block; }
 
   .form-submit,
-  .submit-btn { font-size: 9px !important; padding: 6px 12px; width: 100%; }
+  .submit-btn { font-size: 14px; padding: 12px 20px; width: 100%; min-height: 44px; }
 
   /* Spacing Optimization */
   .container { padding-left: 8px; padding-right: 8px; }
@@ -387,12 +389,12 @@
 
 /* ===== SMALL MOBILE OPTIMIZATION (480px and below) ===== */
 @media (max-width: 480px) {
-  body { font-size: 10px; }
-  h1 { font-size: 13px !important; }
-  h2 { font-size: 11px !important; }
-  h3 { font-size: 10px !important; }
-  p { font-size: 10px !important; }
-  .btn, button { font-size: 8px !important; padding: 4px 8px; }
+  body { font-size: 14px; }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.1rem; }
+  p { font-size: 13.5px; }
+  .btn, button { font-size: 13px; padding: 10px 14px; min-height: 44px; }
 }
 
 /* ===== iOS/iPhone SPECIFIC OPTIMIZATION ===== */
