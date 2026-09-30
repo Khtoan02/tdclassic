@@ -449,15 +449,6 @@ get_header();
                             </a>
                         </div>
 
-                        <!-- Warranty Badge -->
-                        <div class="mt-8 flex items-center gap-2 text-xs font-sans" style="color: #888888;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                stroke="#C5A059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                                <polyline points="9 12 11 14 15 10"></polyline>
-                            </svg>
-                            Bảo hành chính hãng 24 tháng
-                        </div>
                     </div>
                 </div>
             </div>
