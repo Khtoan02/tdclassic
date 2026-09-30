@@ -75,45 +75,92 @@ get_header();
 
     /* Product Detailed Content Typography */
     .product-entry-content {
+        font-family: inherit;
         font-size: 16px;
         line-height: 1.85;
-        color: #d6d9de;
+        color: #d6d9de !important;
     }
     @media (min-width: 768px) {
         .product-entry-content {
             font-size: 16.5px;
         }
     }
+    .product-entry-content > *:first-child {
+        margin-top: 0 !important;
+    }
     .product-entry-content p {
         margin-bottom: 1.35rem;
         text-align: left;
-        color: #d6d9de;
+        color: #d6d9de !important;
         line-height: 1.85;
     }
     .product-entry-content strong,
     .product-entry-content b {
-        color: #ffffff;
+        color: #ffffff !important;
         font-weight: 600;
     }
+    .product-entry-content em,
+    .product-entry-content i {
+        color: #e2e8f0;
+    }
+    .product-entry-content a {
+        color: #C5A059 !important;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        transition: color 0.2s ease;
+    }
+    .product-entry-content a:hover {
+        color: #e8c67e !important;
+    }
+
+    /* All Headings H1 to H6 */
+    .product-entry-content h1,
     .product-entry-content h2,
     .product-entry-content h3,
-    .product-entry-content h4 {
-        color: #ffffff;
+    .product-entry-content h4,
+    .product-entry-content h5,
+    .product-entry-content h6 {
+        color: #ffffff !important;
         font-weight: 700;
         letter-spacing: -0.015em;
     }
+    .product-entry-content h1 *,
+    .product-entry-content h2 *,
+    .product-entry-content h3 *,
+    .product-entry-content h4 *,
+    .product-entry-content h5 *,
+    .product-entry-content h6 * {
+        color: #ffffff !important;
+    }
+
+    .product-entry-content h1 {
+        font-size: 1.75rem;
+        line-height: 1.35;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    @media (min-width: 768px) {
+        .product-entry-content h1 {
+            font-size: 2.1rem;
+        }
+    }
     .product-entry-content h2 {
-        font-size: 1.65rem;
+        font-size: 1.55rem;
         line-height: 1.35;
         border-left: 4px solid #C5A059;
         padding-left: 1.15rem;
-        margin-top: 3.5rem;
-        margin-bottom: 1.5rem;
+        margin-top: 3.25rem;
+        margin-bottom: 1.35rem;
+    }
+    @media (min-width: 768px) {
+        .product-entry-content h2 {
+            font-size: 1.75rem;
+        }
     }
     .product-entry-content h3 {
         font-size: 1.25rem;
         line-height: 1.45;
-        color: #f3f4f6;
+        color: #f3f4f6 !important;
         margin-top: 2.25rem;
         margin-bottom: 1rem;
         padding-bottom: 0.4rem;
@@ -121,10 +168,19 @@ get_header();
     }
     .product-entry-content h4 {
         font-size: 1.1rem;
-        color: #e5e7eb;
+        color: #e5e7eb !important;
         margin-top: 1.75rem;
         margin-bottom: 0.75rem;
     }
+    .product-entry-content h5,
+    .product-entry-content h6 {
+        font-size: 1rem;
+        color: #e5e7eb !important;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Lists */
     .product-entry-content ul {
         list-style: none;
         padding-left: 0;
@@ -136,7 +192,7 @@ get_header();
         padding-left: 1.65rem;
         margin-bottom: 0.75rem;
         line-height: 1.75;
-        color: #cbd5e1;
+        color: #cbd5e1 !important;
     }
     .product-entry-content ul li::before {
         content: "";
@@ -153,6 +209,7 @@ get_header();
     .product-entry-content ol li p {
         margin-bottom: 0.25rem;
         display: inline;
+        color: inherit !important;
     }
     .product-entry-content ol {
         padding-left: 1.5rem;
@@ -162,8 +219,10 @@ get_header();
     .product-entry-content ol li {
         margin-bottom: 0.75rem;
         line-height: 1.75;
-        color: #cbd5e1;
+        color: #cbd5e1 !important;
     }
+
+    /* Blockquote */
     .product-entry-content blockquote {
         border-left: 3px solid #C5A059;
         padding: 1.25rem 1.75rem;
@@ -171,8 +230,10 @@ get_header();
         background: rgba(197, 160, 89, 0.03);
         border-radius: 0 8px 8px 0;
         font-style: italic;
-        color: #e5e5e5;
+        color: #e5e5e5 !important;
     }
+
+    /* Media */
     .product-entry-content img {
         max-width: 100%;
         height: auto;
@@ -182,6 +243,17 @@ get_header();
         display: block;
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
     }
+    .product-entry-content figure {
+        margin: 2.5rem 0;
+    }
+    .product-entry-content figcaption {
+        color: #9ca3af !important;
+        font-size: 0.875rem;
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+
+    /* Tables */
     .product-entry-content table {
         width: 100%;
         border-collapse: collapse;
@@ -195,14 +267,50 @@ get_header();
         padding: 12px 16px;
         border: 1px solid rgba(255, 255, 255, 0.08);
         font-size: 14.5px;
+        color: #d6d9de !important;
     }
     .product-entry-content table th {
         background: rgba(255, 255, 255, 0.04);
-        color: #ffffff;
+        color: #ffffff !important;
         font-weight: 600;
     }
     .product-entry-content table tr:hover td {
         background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Aggressive override for pasted dark inline colors & white backgrounds */
+    .product-entry-content font {
+        color: inherit !important;
+    }
+    .product-entry-content [style*="color:#0"],
+    .product-entry-content [style*="color: #0"],
+    .product-entry-content [style*="color:#1"],
+    .product-entry-content [style*="color: #1"],
+    .product-entry-content [style*="color:#2"],
+    .product-entry-content [style*="color: #2"],
+    .product-entry-content [style*="color:#3"],
+    .product-entry-content [style*="color: #3"],
+    .product-entry-content [style*="color:black"],
+    .product-entry-content [style*="color: black"],
+    .product-entry-content [style*="color:rgb(0"],
+    .product-entry-content [style*="color: rgb(0"],
+    .product-entry-content [style*="color:rgb(1"],
+    .product-entry-content [style*="color: rgb(1"],
+    .product-entry-content [style*="color:rgb(2"],
+    .product-entry-content [style*="color: rgb(2"],
+    .product-entry-content [style*="color:rgb(3"],
+    .product-entry-content [style*="color: rgb(3"],
+    .product-entry-content .has-black-color,
+    .product-entry-content .has-dark-gray-color {
+        color: inherit !important;
+    }
+    .product-entry-content [style*="background-color:#fff"],
+    .product-entry-content [style*="background-color: #fff"],
+    .product-entry-content [style*="background-color:white"],
+    .product-entry-content [style*="background-color: white"],
+    .product-entry-content [style*="background-color:rgb(255"],
+    .product-entry-content [style*="background-color: rgb(255"] {
+        background-color: transparent !important;
     }
 </style>
 
@@ -401,7 +509,24 @@ get_header();
                     if (class_exists('WC_Template_Loader')) {
                         remove_filter('the_content', array('WC_Template_Loader', 'unsupported_theme_product_content_filter'));
                     }
-                    echo apply_filters('the_content', $raw_product_content); 
+
+                    // Strip inline styles that cause black text or white boxes in dark mode
+                    $sanitized_product_content = preg_replace_callback(
+                        '/style\s*=\s*(["\'])(.*?)\1/is',
+                        function($m) {
+                            $quote = $m[1];
+                            $css = $m[2];
+                            // Remove black/dark text colors (#000, #111, #222, #333, black, dark rgb)
+                            $css = preg_replace('/color\s*:\s*(?:#(?:000(?:000)?|111(?:111)?|222(?:222)?|333(?:333)?)|black|rgb\(\s*(?:0|[1-4]?[0-9])\s*,\s*(?:0|[1-4]?[0-9])\s*,\s*(?:0|[1-4]?[0-9])\s*\))\s*;?/i', '', $css);
+                            // Remove white/light backgrounds
+                            $css = preg_replace('/background(?:-color)?\s*:\s*(?:#(?:fff(?:fff)?|eee(?:eee)?|f8f9fa)|white|rgb\(\s*25[0-5]\s*,\s*25[0-5]\s*,\s*25[0-5]\s*\))\s*;?/i', '', $css);
+                            $css = trim($css, " ;");
+                            return !empty($css) ? 'style=' . $quote . $css . $quote : '';
+                        },
+                        $raw_product_content
+                    );
+
+                    echo apply_filters('the_content', $sanitized_product_content); 
                     ?>
                 </div>
             </div>
