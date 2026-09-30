@@ -75,75 +75,134 @@ get_header();
 
     /* Product Detailed Content Typography */
     .product-entry-content {
-        font-size: 15px;
+        font-size: 16px;
         line-height: 1.85;
-        color: #d1d5db;
+        color: #d6d9de;
+    }
+    @media (min-width: 768px) {
+        .product-entry-content {
+            font-size: 16.5px;
+        }
+    }
+    .product-entry-content p {
+        margin-bottom: 1.35rem;
+        text-align: left;
+        color: #d6d9de;
+        line-height: 1.85;
+    }
+    .product-entry-content strong,
+    .product-entry-content b {
+        color: #ffffff;
+        font-weight: 600;
     }
     .product-entry-content h2,
     .product-entry-content h3,
     .product-entry-content h4 {
         color: #ffffff;
         font-weight: 700;
-        margin-top: 2.5rem;
-        margin-bottom: 1.25rem;
+        letter-spacing: -0.015em;
     }
     .product-entry-content h2 {
-        font-size: 1.75rem;
-        border-left: 3px solid #C5A059;
-        padding-left: 1rem;
+        font-size: 1.65rem;
+        line-height: 1.35;
+        border-left: 4px solid #C5A059;
+        padding-left: 1.15rem;
+        margin-top: 3.5rem;
+        margin-bottom: 1.5rem;
     }
     .product-entry-content h3 {
-        font-size: 1.35rem;
+        font-size: 1.25rem;
+        line-height: 1.45;
         color: #f3f4f6;
+        margin-top: 2.25rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
-    .product-entry-content p {
+    .product-entry-content h4 {
+        font-size: 1.1rem;
+        color: #e5e7eb;
+        margin-top: 1.75rem;
+        margin-bottom: 0.75rem;
+    }
+    .product-entry-content ul {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 1rem;
         margin-bottom: 1.5rem;
-        text-align: justify;
+    }
+    .product-entry-content ul li {
+        position: relative;
+        padding-left: 1.65rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.75;
+        color: #cbd5e1;
+    }
+    .product-entry-content ul li::before {
+        content: "";
+        position: absolute;
+        left: 0.25rem;
+        top: 0.65rem;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: #C5A059;
+        box-shadow: 0 0 8px rgba(197, 160, 89, 0.6);
+    }
+    .product-entry-content ul li p,
+    .product-entry-content ol li p {
+        margin-bottom: 0.25rem;
+        display: inline;
+    }
+    .product-entry-content ol {
+        padding-left: 1.5rem;
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .product-entry-content ol li {
+        margin-bottom: 0.75rem;
+        line-height: 1.75;
+        color: #cbd5e1;
+    }
+    .product-entry-content blockquote {
+        border-left: 3px solid #C5A059;
+        padding: 1.25rem 1.75rem;
+        margin: 2.25rem 0;
+        background: rgba(197, 160, 89, 0.03);
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+        color: #e5e5e5;
     }
     .product-entry-content img {
         max-width: 100%;
         height: auto;
-        border-radius: 8px;
+        border-radius: 10px;
         border: 1px solid rgba(255, 255, 255, 0.08);
-        margin: 2rem auto;
+        margin: 2.5rem auto;
         display: block;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-    .product-entry-content ul,
-    .product-entry-content ol {
-        margin-bottom: 1.5rem;
-        padding-left: 1.5rem;
-    }
-    .product-entry-content ul li {
-        list-style-type: disc;
-        margin-bottom: 0.5rem;
-    }
-    .product-entry-content ol li {
-        list-style-type: decimal;
-        margin-bottom: 0.5rem;
-    }
-    .product-entry-content blockquote {
-        border-left: 3px solid #C5A059;
-        padding: 1rem 1.5rem;
-        margin: 2rem 0;
-        background: rgba(255, 255, 255, 0.02);
-        font-style: italic;
-        color: #e5e5e5;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
     }
     .product-entry-content table {
         width: 100%;
         border-collapse: collapse;
-        margin: 2rem 0;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 2.5rem 0;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        overflow: hidden;
     }
     .product-entry-content table th,
     .product-entry-content table td {
-        padding: 10px 14px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 12px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 14.5px;
     }
     .product-entry-content table th {
-        background: rgba(255, 255, 255, 0.05);
-        color: #fff;
+        background: rgba(255, 255, 255, 0.04);
+        color: #ffffff;
+        font-weight: 600;
+    }
+    .product-entry-content table tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
     }
 </style>
 
@@ -327,13 +386,16 @@ get_header();
         <?php
         $raw_product_content = get_post_field('post_content', get_the_ID());
         if (!empty(trim($raw_product_content))): ?>
-        <section class="py-16 md:py-24" style="background-color: #080808; border-top: 1px solid rgba(255,255,255,0.05);">
+        <section class="py-20 md:py-28" style="background-color: #070707; border-top: 1px solid rgba(255,255,255,0.05);">
             <div class="container mx-auto px-6 md:px-12 max-w-4xl">
-                <div class="text-center mb-14">
-                    <h2 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white">Mô Tả Sản Phẩm</h2>
-                    <p class="font-sans text-xs mt-2 uppercase tracking-widest" style="color: #C5A059;">Detailed Overview & Review</p>
+                <div class="text-center mb-12">
+                    <span class="inline-block px-3 py-1 mb-3 text-[10px] font-sans font-bold tracking-[0.25em] uppercase rounded-full border border-[#C5A059]/30 bg-[#C5A059]/10 text-[#C5A059]">
+                        Bài viết chi tiết
+                    </span>
+                    <h2 class="font-sans font-bold text-3xl md:text-4xl text-white">Mô Tả Sản Phẩm</h2>
+                    <p class="font-sans text-xs mt-2 uppercase tracking-widest text-gray-500">Detailed Overview & Specifications</p>
                 </div>
-                <div class="product-entry-content">
+                <div class="product-entry-content p-6 sm:p-10 md:p-12 rounded-2xl border border-white/[0.06]" style="background-color: #0d0d0d;">
                     <?php 
                     // Safely prevent WooCommerce from hijacking the article content
                     if (class_exists('WC_Template_Loader')) {
