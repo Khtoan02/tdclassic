@@ -1,7 +1,7 @@
 <?php
 /**
  * Admin Product Specifications Management
- * Add custom fields for quick specifications display
+ * Quản lý thông số kỹ thuật sản phẩm - Hỗ trợ nhận diện & dán nhanh tự động cho TD Classic
  */
 
 // Prevent direct access
@@ -23,7 +23,7 @@ class TD_Classic_Product_Specs {
     public function add_product_specs_metabox() {
         add_meta_box(
             'td_product_specs',
-            'Thông số sản phẩm TD Classic',
+            'Bảng Thông Số Kỹ Thuật (TD Classic)',
             array($this, 'render_specs_metabox'),
             'product',
             'normal',
@@ -32,339 +32,508 @@ class TD_Classic_Product_Specs {
     }
     
     /**
-     * Render the specifications metabox
+     * Render the simplified specifications metabox with smart paste
      */
     public function render_specs_metabox($post) {
-        // Add nonce for security
         wp_nonce_field('td_product_specs_nonce', 'td_product_specs_nonce_field');
         
-        // Get existing values
-        $quick_specs = get_post_meta($post->ID, '_quick_specifications', true);
-        $full_specs = get_post_meta($post->ID, '_product_specifications', true);
-        $key_features = get_post_meta($post->ID, '_key_features', true);
-        $product_model = get_post_meta($post->ID, '_product_model', true);
-        $product_weight = get_post_meta($post->ID, '_product_weight', true);
         $custom_specs = get_post_meta($post->ID, '_custom_specifications', true);
-        
-        // Parse quick specs JSON
         $specs_array = array();
-        if ($quick_specs) {
-            $specs_array = json_decode($quick_specs, true);
-            if (!$specs_array) {
-                $specs_array = array();
-            }
-        }
-        
-        // Ensure we have at least 4 empty specs
-        while (count($specs_array) < 4) {
-            $specs_array[] = array('label' => '', 'value' => '');
-        }
-        
-        // Parse custom specs JSON
-        $custom_specs_array = array();
         if ($custom_specs) {
-            $custom_specs_array = json_decode($custom_specs, true);
-            if (!$custom_specs_array) {
-                $custom_specs_array = array();
-            }
+            $specs_array = json_decode($custom_specs, true);
+        }
+        if (!is_array($specs_array)) {
+            $specs_array = array();
         }
         
-        // Ensure we have at least 2 empty custom specs
-        while (count($custom_specs_array) < 2) {
-            $custom_specs_array[] = array('label' => '', 'value' => '');
+        // If empty, start with 3 empty rows
+        if (empty($specs_array)) {
+            $specs_array = array(
+                array('label' => '', 'value' => ''),
+                array('label' => '', 'value' => ''),
+                array('label' => '', 'value' => '')
+            );
         }
         ?>
-        
-        <div class="td-product-specs-container">
+        <div class="td-specs-metabox-wrapper">
             <style>
-                .td-product-specs-container {
-                    max-width: 100%;
+                .td-specs-metabox-wrapper {
                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
                 }
-                
-                .specs-section {
-                    background: #f9f9f9;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    padding: 20px;
-                    margin-bottom: 20px;
-                }
-                
-                .specs-section h3 {
-                    margin-top: 0;
-                    color: #333;
-                    font-size: 14px;
-                    font-weight: 600;
-                    border-bottom: 2px solid #333;
-                    padding-bottom: 10px;
-                }
-                
-                .quick-specs-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                    gap: 15px;
-                    margin-top: 15px;
-                }
-                
-                .spec-item {
+                .td-specs-toolbar {
                     display: flex;
-                    gap: 10px;
                     align-items: center;
-                    background: white;
+                    gap: 10px;
+                    margin-bottom: 14px;
+                    flex-wrap: wrap;
+                }
+                .td-btn-gold {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    background: linear-gradient(135deg, #D4AF37 0%, #b8972e 100%);
+                    color: #000;
+                    border: 1px solid #b8972e;
+                    padding: 8px 16px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 600;
+                    transition: all 0.2s;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+                }
+                .td-btn-gold:hover {
+                    background: #c5a028;
+                    color: #000;
+                    box-shadow: 0 2px 6px rgba(212,175,55,0.3);
+                }
+                .td-btn-dark {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    background: #1e293b;
+                    color: #fff;
+                    border: 1px solid #0f172a;
+                    padding: 8px 15px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 500;
+                    transition: all 0.2s;
+                }
+                .td-btn-dark:hover {
+                    background: #334155;
+                    color: #fff;
+                }
+                .td-btn-secondary {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 5px;
+                    background: #f1f5f9;
+                    color: #475569;
+                    border: 1px solid #cbd5e1;
+                    padding: 8px 14px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 500;
+                    transition: all 0.2s;
+                }
+                .td-btn-secondary:hover {
+                    background: #e2e8f0;
+                    color: #1e293b;
+                }
+                
+                /* Quick Paste Box */
+                .td-quick-paste-box {
+                    display: none;
+                    background: #f8fafc;
+                    border: 2px dashed #D4AF37;
+                    border-radius: 8px;
+                    padding: 16px;
+                    margin-bottom: 16px;
+                    animation: tdFadeIn 0.3s ease;
+                }
+                @keyframes tdFadeIn {
+                    from { opacity: 0; transform: translateY(-6px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .td-quick-paste-box textarea {
+                    width: 100%;
+                    min-height: 140px;
                     padding: 12px;
+                    border: 1px solid #cbd5e1;
                     border-radius: 6px;
-                    border: 1px solid #ddd;
+                    font-family: Consolas, Monaco, "Courier New", monospace;
+                    font-size: 13px;
+                    line-height: 1.6;
+                    box-sizing: border-box;
+                    background: #fff;
+                }
+                .td-quick-paste-box textarea:focus {
+                    border-color: #D4AF37;
+                    outline: none;
+                    box-shadow: 0 0 0 1px #D4AF37;
+                }
+                .td-quick-paste-actions {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-top: 10px;
+                    flex-wrap: wrap;
+                    gap: 10px;
                 }
                 
-                .spec-item input {
-                    flex: 1;
+                /* Table Styles */
+                .td-specs-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    background: #fff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 6px;
+                    overflow: hidden;
+                    margin-bottom: 12px;
+                }
+                .td-specs-table th {
+                    background: #f8fafc;
+                    padding: 10px 14px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: #334155;
+                    border-bottom: 1px solid #e2e8f0;
+                    text-align: left;
+                }
+                .td-specs-table td {
                     padding: 8px 12px;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    font-size: 14px;
+                    border-bottom: 1px solid #f1f5f9;
+                    vertical-align: middle;
                 }
-                
-                .spec-item input:focus {
-                    border-color: #333;
-                    box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.1);
+                .td-specs-table tr:last-child td {
+                    border-bottom: none;
+                }
+                .td-specs-table input[type="text"] {
+                    width: 100%;
+                    padding: 8px 12px;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 4px;
+                    font-size: 13px;
+                    box-sizing: border-box;
+                    transition: border-color 0.2s;
+                }
+                .td-specs-table input[type="text"]:focus {
+                    border-color: #D4AF37;
+                    box-shadow: 0 0 0 1px #D4AF37;
                     outline: none;
                 }
-                
-                .spec-label {
-                    font-weight: 600;
-                    color: #333;
-                    min-width: 80px;
-                    font-size: 13px;
-                }
-                
-                .add-spec-btn {
-                    background: #333;
-                    color: white;
-                    border: none;
-                    padding: 8px 16px;
+                .td-btn-del-spec {
+                    background: #fee2e2;
+                    color: #ef4444;
+                    border: 1px solid #fecaca;
+                    width: 28px;
+                    height: 28px;
                     border-radius: 4px;
                     cursor: pointer;
-                    font-size: 14px;
-                    margin-top: 10px;
-                }
-                
-                .add-spec-btn:hover {
-                    background: #555;
-                }
-                
-                .remove-spec-btn {
-                    background: #dc3545;
-                    color: white;
-                    border: none;
-                    width: 24px;
-                    height: 24px;
-                    border-radius: 50%;
-                    cursor: pointer;
-                    font-size: 12px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                }
-                
-                .remove-spec-btn:hover {
-                    background: #c82333;
-                }
-                
-                .full-specs-editor {
-                    margin-top: 15px;
-                }
-                
-                .key-features-editor {
-                    margin-top: 15px;
-                }
-                
-                .key-features-editor textarea {
-                    width: 100%;
-                    min-height: 120px;
-                    padding: 12px;
-                    border: 1px solid #ddd;
-                    border-radius: 6px;
-                    font-family: inherit;
                     font-size: 14px;
+                    font-weight: bold;
+                    transition: all 0.2s;
+                    margin: 0 auto;
+                }
+                .td-btn-del-spec:hover {
+                    background: #ef4444;
+                    color: #fff;
+                }
+                .td-specs-hint {
+                    color: #64748b;
+                    font-size: 12px;
                     line-height: 1.5;
                 }
-                
-                .help-text {
-                    font-size: 13px;
-                    color: #666;
-                    margin-top: 8px;
-                    font-style: italic;
-                }
             </style>
-            
-            <!-- Quick Specifications Section -->
-            
-            <!-- Key Features Section -->
-            <div class="specs-section">
-                <h3><i class="dashicons dashicons-star-filled"></i> Điểm nổi bật</h3>
-                <p class="help-text">Mỗi dòng là một điểm nổi bật. Tối đa 6 điểm.</p>
-                
-                <div class="key-features-editor">
-                    <textarea name="key_features" placeholder="Nhập các điểm nổi bật, mỗi dòng một điểm:&#10;Công nghệ âm thanh tiên tiến&#10;Thiết kế hiện đại, sang trọng&#10;Chất lượng âm thanh vượt trội&#10;Dễ dàng lắp đặt và sử dụng"><?php echo esc_textarea($key_features); ?></textarea>
-                </div>
-            </div>
-            
-            <!-- Basic Product Info Section -->
-            <div class="specs-section">
-                <h3><i class="dashicons dashicons-admin-generic"></i> Thông tin cơ bản sản phẩm</h3>
-                <p class="help-text">Thông tin cơ bản sẽ hiển thị trong modal thông số kỹ thuật.</p>
-                
-                <div class="basic-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="info-item">
-                        <label for="product_model"><strong>Model sản phẩm:</strong></label>
-                        <input type="text" id="product_model" name="product_model" value="<?php echo esc_attr($product_model); ?>" placeholder="VD: WQ15, TD-2024, ..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;" accept-charset="utf-8">
-                        <small style="color: #666; font-size: 12px;">Nhập model chính xác của sản phẩm</small>
-                    </div>
-                    <div class="info-item">
-                        <label for="product_weight"><strong>Trọng lượng:</strong></label>
-                        <input type="text" id="product_weight" name="product_weight" value="<?php echo esc_attr($product_weight); ?>" placeholder="VD: 2.5kg, 1200g, ..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;" accept-charset="utf-8">
-                        <small style="color: #666; font-size: 12px;">Bao gồm cả đơn vị đo (kg, g)</small>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Custom Technical Specifications Section -->
-            <div class="specs-section">
-                <h3><i class="dashicons dashicons-admin-tools"></i> Thông số kỹ thuật chuyên ngành</h3>
-                <p class="help-text">Các thông số kỹ thuật chuyên ngành của sản phẩm (VD: Công suất, Trở kháng, Dải tần số, ...).</p>
-                
-                <div class="custom-specs-grid" id="customSpecsGrid">
-                    <?php foreach ($custom_specs_array as $index => $spec): ?>
-                        <div class="spec-item">
-                            <span class="spec-label">Thông số <?php echo $index + 1; ?>:</span>
-                            <input type="text" 
-                                   name="custom_specs[<?php echo $index; ?>][label]" 
-                                   placeholder="Tên thông số (VD: Công suất)" 
-                                   value="<?php echo esc_attr($spec['label']); ?>">
-                            <input type="text" 
-                                   name="custom_specs[<?php echo $index; ?>][value]" 
-                                   placeholder="Giá trị (VD: 100W RMS)" 
-                                   value="<?php echo esc_attr($spec['value']); ?>">
-                            <?php if ($index >= 2): ?>
-                                <button type="button" class="remove-spec-btn" onclick="removeCustomSpec(this)">×</button>
-                            <?php endif; ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                
-                <button type="button" class="add-spec-btn" onclick="addCustomSpec()">
-                    <i class="dashicons dashicons-plus-alt"></i> Thêm thông số kỹ thuật
+            <!-- Actions Toolbar -->
+            <div class="td-specs-toolbar">
+                <button type="button" class="td-btn-gold" onclick="tdToggleQuickPaste()">
+                    <span class="dashicons dashicons-clipboard" style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;"></span>
+                    📋 Dán nhanh từ Excel / Văn bản
                 </button>
+                <button type="button" class="td-btn-dark" onclick="tdAddSpecRow()">
+                    <span class="dashicons dashicons-plus-alt2" style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;"></span>
+                    Thêm dòng
+                </button>
+                <button type="button" class="td-btn-secondary" onclick="tdClearAllSpecs()">
+                    <span class="dashicons dashicons-trash" style="font-size: 16px; width: 16px; height: 16px; line-height: 16px;"></span>
+                    Xóa hết bảng
+                </button>
+                <span class="td-specs-hint" style="margin-left: auto;">
+                    💡 Có thể dán trực tiếp (Ctrl+V) vào ô bất kỳ hoặc bấm nút dán nhanh màu vàng.
+                </span>
             </div>
 
-            <!-- Full Specifications Section -->
-            <div class="specs-section">
-                <h3><i class="dashicons dashicons-admin-page"></i> Mô tả chi tiết bổ sung</h3>
-                <p class="help-text">Mô tả chi tiết bổ sung sẽ hiển thị cuối modal thông số kỹ thuật (tùy chọn).</p>
+            <!-- Quick Paste Box (Collapsible) -->
+            <div class="td-quick-paste-box" id="tdQuickPasteBox">
+                <div style="font-weight: 600; color: #1e293b; margin-bottom: 8px; font-size: 13px;">
+                    📝 Dán văn bản thông số vào khung dưới (Tự động nhận diện Excel, Word, hoặc dấu hai chấm ":"):
+                </div>
+                <textarea id="tdPasteInput" placeholder="Ví dụ 1: Copy trực tiếp 2 cột từ Excel / Google Sheets rồi dán vào đây.
+
+Ví dụ 2: Dán văn bản theo dòng:
+Model: TD-12 Pro
+Công suất: 450W RMS
+Trở kháng: 8 Ohms
+Dải tần số: 50Hz - 20kHz
+Độ nhạy: 98 dB SPL
+Kích thước: 600 x 360 x 382 mm
+Trọng lượng: 18.5 kg"></textarea>
                 
-                <div class="full-specs-editor">
-                    <?php
-                    wp_editor(
-                        $full_specs,
-                        'product_specifications',
-                        array(
-                            'textarea_name' => 'product_specifications',
-                            'textarea_rows' => 10,
-                            'media_buttons' => false,
-                            'teeny' => true,
-                            'tinymce' => array(
-                                'toolbar1' => 'bold,italic,underline,bullist,numlist,link,unlink',
-                                'toolbar2' => '',
-                            ),
-                        )
-                    );
-                    ?>
+                <div class="td-quick-paste-actions">
+                    <div style="display: flex; gap: 15px; align-items: center; font-size: 13px; color: #334155;">
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="td_paste_mode" value="replace" checked> Thay thế toàn bộ bảng
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="td_paste_mode" value="append"> Thêm tiếp vào cuối bảng
+                        </label>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="td-btn-gold" onclick="tdExecuteQuickPaste()">
+                            ⚡ Nhận diện & Điền vào bảng
+                        </button>
+                        <button type="button" class="td-btn-secondary" onclick="tdToggleQuickPaste()">
+                            Đóng
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            <!-- Specifications Table -->
+            <table class="td-specs-table" id="tdSpecsTable">
+                <thead>
+                    <tr>
+                        <th style="width: 38%;">Tên thông số (VD: Model, Công suất, Trở kháng, Dải tần, Trọng lượng...)</th>
+                        <th style="width: 54%;">Giá trị (VD: TD-12 Pro, 450W RMS, 8 Ohms, 50Hz - 20kHz, 18.5kg...)</th>
+                        <th style="width: 8%; text-align: center;">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody id="tdSpecsTableBody">
+                    <?php foreach ($specs_array as $index => $spec): ?>
+                        <tr class="td-spec-row">
+                            <td>
+                                <input type="text" 
+                                       name="custom_specs[<?php echo $index; ?>][label]" 
+                                       placeholder="Tên thông số..." 
+                                       value="<?php echo esc_attr(isset($spec['label']) ? $spec['label'] : ''); ?>">
+                            </td>
+                            <td>
+                                <input type="text" 
+                                       name="custom_specs[<?php echo $index; ?>][value]" 
+                                       placeholder="Giá trị thông số..." 
+                                       value="<?php echo esc_attr(isset($spec['value']) ? $spec['value'] : ''); ?>">
+                            </td>
+                            <td style="text-align: center;">
+                                <button type="button" class="td-btn-del-spec" onclick="tdRemoveSpecRow(this)" title="Xóa dòng này">×</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
-        
+
         <script>
-            let specCounter = <?php echo count($specs_array); ?>;
-            let customSpecCounter = <?php echo count($custom_specs_array); ?>;
-            
-            function addQuickSpec() {
-                if (specCounter >= 6) {
-                    alert('Tối đa 6 thông số nhanh');
+            // Toggle Quick Paste Box
+            function tdToggleQuickPaste() {
+                const box = document.getElementById('tdQuickPasteBox');
+                if (box.style.display === 'none' || box.style.display === '') {
+                    box.style.display = 'block';
+                    document.getElementById('tdPasteInput').focus();
+                } else {
+                    box.style.display = 'none';
+                }
+            }
+
+            // Smart Parser for pasted text
+            function tdParsePastedSpecs(text) {
+                if (!text || typeof text !== 'string') return [];
+                const lines = text.split(/\r?\n/);
+                const results = [];
+                
+                for (let rawLine of lines) {
+                    let line = rawLine.trim();
+                    if (!line) continue;
+                    
+                    // Skip markdown table separators like |---|---|
+                    if (/^\|?[\s-:]+\|[\s-:]+\|?$/.test(line)) continue;
+                    
+                    let label = '', value = '';
+                    
+                    // 1. Check Tab-separated (Excel / Google Sheets / Word Tables)
+                    if (line.includes('\t')) {
+                        const parts = line.split('\t');
+                        label = parts[0].trim();
+                        value = parts.slice(1).join(' ').trim();
+                    }
+                    // 2. Check Pipe-separated (|)
+                    else if (line.includes('|')) {
+                        const parts = line.split('|').map(p => p.trim()).filter(p => p !== '');
+                        if (parts.length >= 2) {
+                            label = parts[0];
+                            value = parts.slice(1).join(' - ');
+                        }
+                    }
+                    // 3. Check Colon (: or Asian colon ：)
+                    else if (line.includes(':') || line.includes('：')) {
+                        const sep = line.includes(':') ? ':' : '：';
+                        const firstColon = line.indexOf(sep);
+                        label = line.substring(0, firstColon).trim();
+                        value = line.substring(firstColon + 1).trim();
+                    }
+                    // 4. Check Dash separated with spaces (" - " or " – ")
+                    else if (/\s+[-–—]\s+/.test(line)) {
+                        const parts = line.split(/\s+[-–—]\s+/);
+                        label = parts[0].trim();
+                        value = parts.slice(1).join(' - ').trim();
+                    }
+                    // 5. Fallback: Entire line as label
+                    else {
+                        label = line;
+                        value = '';
+                    }
+                    
+                    // Strip leading bullet markers (•, -, *, 1., etc.)
+                    label = label.replace(/^[\s•\-\*]+/, '').replace(/^\d+[\.\)]\s*/, '').trim();
+                    
+                    if (label || value) {
+                        results.push({ label, value });
+                    }
+                }
+                return results;
+            }
+
+            // Populate table from parsed specs
+            function tdPopulateSpecsTable(specs, mode = 'replace') {
+                if (!specs || specs.length === 0) {
+                    alert('Không tìm thấy thông số nào từ nội dung dán!');
                     return;
                 }
                 
-                const grid = document.getElementById('quickSpecsGrid');
-                const newSpec = document.createElement('div');
-                newSpec.className = 'spec-item';
-                newSpec.innerHTML = `
-                    <span class="spec-label">Thông số ${specCounter + 1}:</span>
-                    <input type="text" name="quick_specs[${specCounter}][label]" placeholder="Tên thông số (VD: Thương hiệu)">
-                    <input type="text" name="quick_specs[${specCounter}][value]" placeholder="Giá trị (VD: TD Classic)">
-                    <button type="button" class="remove-spec-btn" onclick="removeSpec(this)">×</button>
-                `;
+                const tbody = document.getElementById('tdSpecsTableBody');
+                if (mode === 'replace') {
+                    tbody.innerHTML = '';
+                }
                 
-                grid.appendChild(newSpec);
-                specCounter++;
-            }
-            
-            function removeSpec(button) {
-                button.parentElement.remove();
-                updateSpecLabels();
-            }
-            
-            function updateSpecLabels() {
-                const specs = document.querySelectorAll('#quickSpecsGrid .spec-item');
-                specs.forEach((spec, index) => {
-                    const label = spec.querySelector('.spec-label');
-                    label.textContent = `Thông số ${index + 1}:`;
-                    
-                    const inputs = spec.querySelectorAll('input');
-                    inputs[0].name = `quick_specs[${index}][label]`;
-                    inputs[1].name = `quick_specs[${index}][value]`;
+                specs.forEach((item) => {
+                    const row = document.createElement('tr');
+                    row.className = 'td-spec-row';
+                    row.innerHTML = `
+                        <td>
+                            <input type="text" placeholder="Tên thông số..." value="${tdEscapeHtml(item.label)}">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Giá trị thông số..." value="${tdEscapeHtml(item.value)}">
+                        </td>
+                        <td style="text-align: center;">
+                            <button type="button" class="td-btn-del-spec" onclick="tdRemoveSpecRow(this)" title="Xóa dòng này">×</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
                 });
-                specCounter = specs.length;
+                
+                tdReindexRows();
             }
-            
-            // Custom specs functions
-            function addCustomSpec() {
-                if (customSpecCounter >= 8) {
-                    alert('Tối đa 8 thông số kỹ thuật');
+
+            // Execute Quick Paste from Textarea
+            function tdExecuteQuickPaste() {
+                const text = document.getElementById('tdPasteInput').value;
+                if (!text.trim()) {
+                    alert('Vui lòng dán văn bản thông số vào khung trước!');
                     return;
                 }
                 
-                const grid = document.getElementById('customSpecsGrid');
-                const newSpec = document.createElement('div');
-                newSpec.className = 'spec-item';
-                newSpec.innerHTML = `
-                    <span class="spec-label">Thông số ${customSpecCounter + 1}:</span>
-                    <input type="text" name="custom_specs[${customSpecCounter}][label]" placeholder="Tên thông số (VD: Công suất)">
-                    <input type="text" name="custom_specs[${customSpecCounter}][value]" placeholder="Giá trị (VD: 100W RMS)">
-                    <button type="button" class="remove-spec-btn" onclick="removeCustomSpec(this)">×</button>
-                `;
+                const modeInput = document.querySelector('input[name="td_paste_mode"]:checked');
+                const mode = modeInput ? modeInput.value : 'replace';
                 
-                grid.appendChild(newSpec);
-                customSpecCounter++;
+                const parsed = tdParsePastedSpecs(text);
+                if (parsed.length > 0) {
+                    tdPopulateSpecsTable(parsed, mode);
+                    document.getElementById('tdPasteInput').value = '';
+                    document.getElementById('tdQuickPasteBox').style.display = 'none';
+                } else {
+                    alert('Không nhận diện được dòng thông số nào. Vui lòng kiểm tra lại định dạng!');
+                }
             }
-            
-            function removeCustomSpec(button) {
-                button.parentElement.remove();
-                updateCustomSpecLabels();
+
+            // Add single row
+            function tdAddSpecRow() {
+                const tbody = document.getElementById('tdSpecsTableBody');
+                const rowCount = tbody.querySelectorAll('.td-spec-row').length;
+                const newRow = document.createElement('tr');
+                newRow.className = 'td-spec-row';
+                newRow.innerHTML = `
+                    <td>
+                        <input type="text" name="custom_specs[${rowCount}][label]" placeholder="Tên thông số...">
+                    </td>
+                    <td>
+                        <input type="text" name="custom_specs[${rowCount}][value]" placeholder="Giá trị thông số...">
+                    </td>
+                    <td style="text-align: center;">
+                        <button type="button" class="td-btn-del-spec" onclick="tdRemoveSpecRow(this)" title="Xóa dòng này">×</button>
+                    </td>
+                `;
+                tbody.appendChild(newRow);
+                newRow.querySelector('input').focus();
             }
-            
-            function updateCustomSpecLabels() {
-                const specs = document.querySelectorAll('#customSpecsGrid .spec-item');
-                specs.forEach((spec, index) => {
-                    const label = spec.querySelector('.spec-label');
-                    label.textContent = `Thông số ${index + 1}:`;
-                    
-                    const inputs = spec.querySelectorAll('input');
-                    inputs[0].name = `custom_specs[${index}][label]`;
-                    inputs[1].name = `custom_specs[${index}][value]`;
+
+            // Remove single row
+            function tdRemoveSpecRow(btn) {
+                const row = btn.closest('.td-spec-row');
+                const tbody = document.getElementById('tdSpecsTableBody');
+                if (tbody.querySelectorAll('.td-spec-row').length > 1) {
+                    row.remove();
+                } else {
+                    row.querySelectorAll('input').forEach(input => input.value = '');
+                }
+                tdReindexRows();
+            }
+
+            // Clear all rows
+            function tdClearAllSpecs() {
+                if (confirm('Bạn có chắc chắn muốn xóa toàn bộ bảng thông số này?')) {
+                    const tbody = document.getElementById('tdSpecsTableBody');
+                    tbody.innerHTML = `
+                        <tr class="td-spec-row">
+                            <td><input type="text" name="custom_specs[0][label]" placeholder="Tên thông số..."></td>
+                            <td><input type="text" name="custom_specs[0][value]" placeholder="Giá trị thông số..."></td>
+                            <td style="text-align: center;"><button type="button" class="td-btn-del-spec" onclick="tdRemoveSpecRow(this)">×</button></td>
+                        </tr>
+                    `;
+                }
+            }
+
+            // Re-index input names
+            function tdReindexRows() {
+                const tbody = document.getElementById('tdSpecsTableBody');
+                tbody.querySelectorAll('.td-spec-row').forEach((r, idx) => {
+                    const inputs = r.querySelectorAll('input');
+                    if (inputs.length >= 2) {
+                        inputs[0].name = `custom_specs[${idx}][label]`;
+                        inputs[1].name = `custom_specs[${idx}][value]`;
+                    }
                 });
-                customSpecCounter = specs.length;
             }
+
+            // Helper to escape HTML characters
+            function tdEscapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            }
+
+            // Direct Clipboard Paste Listener on table inputs
+            document.addEventListener('DOMContentLoaded', function() {
+                const table = document.getElementById('tdSpecsTable');
+                if (!table) return;
+                
+                table.addEventListener('paste', function(e) {
+                    const target = e.target;
+                    if (!target || target.tagName !== 'INPUT') return;
+                    
+                    const text = (e.clipboardData || window.clipboardData).getData('text');
+                    if (!text) return;
+                    
+                    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+                    // If multi-line or contains tab/colon, automatically ask to fill
+                    if (lines.length > 1 || text.includes('\t')) {
+                        const parsed = tdParsePastedSpecs(text);
+                        if (parsed.length > 1) {
+                            e.preventDefault();
+                            if (confirm(`Phát hiện bạn đang dán ${parsed.length} dòng thông số kỹ thuật.\nBạn có muốn tự động điền vào bảng không?`)) {
+                                tdPopulateSpecsTable(parsed, 'replace');
+                            }
+                        }
+                    }
+                });
+            });
         </script>
-        
         <?php
     }
     
@@ -372,80 +541,42 @@ class TD_Classic_Product_Specs {
      * Save product specifications
      */
     public function save_product_specs($post_id) {
-        // Verify nonce
         if (!isset($_POST['td_product_specs_nonce_field']) || 
             !wp_verify_nonce($_POST['td_product_specs_nonce_field'], 'td_product_specs_nonce')) {
             return;
         }
         
-        // Check if user has permission to edit
         if (!current_user_can('edit_post', $post_id)) {
             return;
         }
         
-        // Save quick specifications
-        if (isset($_POST['quick_specs'])) {
-            $quick_specs = array();
-            foreach ($_POST['quick_specs'] as $spec) {
-                if (!empty($spec['label']) && !empty($spec['value'])) {
-                    $quick_specs[] = array(
-                        'label' => sanitize_text_field($spec['label']),
-                        'value' => sanitize_text_field($spec['value'])
-                    );
-                }
-            }
-            update_post_meta($post_id, '_quick_specifications', json_encode($quick_specs, JSON_UNESCAPED_UNICODE));
-        }
-        
-        // Save key features
-        if (isset($_POST['key_features'])) {
-            update_post_meta($post_id, '_key_features', sanitize_textarea_field($_POST['key_features']));
-        }
-        
-        // Save product model
-        if (isset($_POST['product_model'])) {
-            update_post_meta($post_id, '_product_model', sanitize_text_field($_POST['product_model']));
-        }
-        
-        // Save product weight
-        if (isset($_POST['product_weight'])) {
-            update_post_meta($post_id, '_product_weight', sanitize_text_field($_POST['product_weight']));
-        }
-        
-        // Save custom specifications
-        if (isset($_POST['custom_specs'])) {
+        if (isset($_POST['custom_specs']) && is_array($_POST['custom_specs'])) {
             $custom_specs = array();
             foreach ($_POST['custom_specs'] as $spec) {
-                if (!empty($spec['label']) && !empty($spec['value'])) {
+                $label = isset($spec['label']) ? sanitize_text_field(trim($spec['label'])) : '';
+                $value = isset($spec['value']) ? sanitize_text_field(trim($spec['value'])) : '';
+                if ($label !== '' || $value !== '') {
                     $custom_specs[] = array(
-                        'label' => sanitize_text_field($spec['label']),
-                        'value' => sanitize_text_field($spec['value'])
+                        'label' => $label,
+                        'value' => $value
                     );
                 }
             }
-            update_post_meta($post_id, '_custom_specifications', json_encode($custom_specs, JSON_UNESCAPED_UNICODE));
-        }
-        
-        // Save full specifications
-        if (isset($_POST['product_specifications'])) {
-            update_post_meta($post_id, '_product_specifications', wp_kses_post($_POST['product_specifications']));
+            if (!empty($custom_specs)) {
+                update_post_meta($post_id, '_custom_specifications', json_encode($custom_specs, JSON_UNESCAPED_UNICODE));
+            } else {
+                delete_post_meta($post_id, '_custom_specifications');
+            }
+        } else {
+            delete_post_meta($post_id, '_custom_specifications');
         }
     }
     
     /**
-     * Enqueue admin scripts
+     * Enqueue admin scripts if needed
      */
     public function enqueue_admin_scripts($hook) {
-        if ('post.php' !== $hook && 'post-new.php' !== $hook) {
-            return;
-        }
-        
-        global $post_type;
-        if ('product' !== $post_type) {
-            return;
-        }
-        
-        wp_enqueue_script('td-product-specs-admin', get_template_directory_uri() . '/assets/js/admin-product-specs.js', array('jquery'), '1.0.0', true);
+        // Handled inline cleanly
     }
 }
 
@@ -567,4 +698,3 @@ function td_classic_options_page() {
     </div>
     <?php
 }
-?>

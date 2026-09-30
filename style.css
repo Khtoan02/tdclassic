@@ -1,10 +1,11 @@
 /*
-Theme Name: TD Classic® 2.4.1
-Description: Theme WordPress chuẩn mực Dark Luxury cao cấp cho thiết bị âm thanh chuyên nghiệp TD Classic.
-Version: 2.4.1
+Theme Name: TD Classic® 3.0.0
+Description: Giao diện đơn giản, tinh gọn với màu sắc chủ đạo đen, xám, trắng. Tối ưu UX/UI thông minh. 
+              Tích hợp Mobile Optimization, Product Image Square Ratio 1:1, Smart Product Specs Parser và Enhanced Front Page.
+Version: 3.0.0
 Author: Khánh Toàn
 Theme Screenshot: /wp-content/uploads/2025/09/unnamed-2.png
-Last Updated: 2026-09-16
+Last Updated: 2026-09-30
 */
 
 /* ===== CHANGELOG & NEW FEATURES ===== */
@@ -1641,23 +1642,6 @@ a:hover {
   background: #333;
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
-@media (max-width: 768px) {
-  #back-to-top {
-    bottom: 20px;
-    right: 16px;
-    width: 38px;
-    height: 38px;
-    font-size: 13px;
-    background: rgba(10, 10, 10, 0.85);
-    border: 1px solid rgba(197, 160, 89, 0.4);
-    color: #C5A059;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 90;
-  }
 }
 
 /* Scroll Animations */

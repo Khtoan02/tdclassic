@@ -44,6 +44,10 @@ function tdclassic_resource_hints($urls, $relation_type)
             'href' => 'https://cdn.jsdelivr.net',
             'crossorigin' => 'anonymous',
         );
+        $urls[] = array(
+            'href' => 'https://cdn.tailwindcss.com',
+            'crossorigin' => 'anonymous',
+        );
     }
     return $urls;
 }
@@ -179,12 +183,6 @@ function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $incl
  */
 function tdclassic_get_products_by_category($category_slug, $limit = 8)
 {
-    $cache_key = 'td_mega_cat_prod_' . md5($category_slug . '_' . $limit);
-    $cached = get_transient($cache_key);
-    if ($cached !== false) {
-        return $cached;
-    }
-
     $args = array(
         'post_type' => 'product',
         'posts_per_page' => $limit,
@@ -228,15 +226,29 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
             $excerpt = wp_strip_all_tags(wp_trim_words($excerpt, 12));
         }
 
-        // Get key specs
+        // Get key specs (check legacy or new _custom_specifications)
+        $specs_arr = array();
         $power = get_post_meta($product_id, '_product_power', true);
         $sensitivity = get_post_meta($product_id, '_product_sensitivity', true);
         $response = get_post_meta($product_id, '_product_response', true);
         
-        $specs_arr = array();
         if (!empty($power)) $specs_arr[] = "CS: " . $power;
         if (!empty($sensitivity)) $specs_arr[] = $sensitivity;
         if (!empty($response)) $specs_arr[] = $response;
+        
+        if (empty($specs_arr)) {
+            $custom_specs_json = get_post_meta($product_id, '_custom_specifications', true);
+            if (!empty($custom_specs_json)) {
+                $cs_data = json_decode($custom_specs_json, true);
+                if (is_array($cs_data)) {
+                    foreach (array_slice($cs_data, 0, 3) as $cs_item) {
+                        if (!empty($cs_item['value'])) {
+                            $specs_arr[] = (!empty($cs_item['label']) ? $cs_item['label'] . ': ' : '') . $cs_item['value'];
+                        }
+                    }
+                }
+            }
+        }
         
         $specs = implode(' • ', $specs_arr);
         if (empty($specs)) {
@@ -255,7 +267,6 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
         );
     }
 
-    set_transient($cache_key, $formatted_products, HOUR_IN_SECONDS * 6);
     return $formatted_products;
 }
 
@@ -417,6 +428,9 @@ function tdclassic_scripts()
 
         // Counter module
         wp_enqueue_script('tdclassic-counter', get_template_directory_uri() . '/assets/js/modules/counter.js', array('tdclassic-main'), $theme_version, true);
+
+        // Front page specific JS
+        wp_enqueue_script('tdclassic-front-page', get_template_directory_uri() . '/assets/js/modules/front-page.js', array('tdclassic-carousel', 'tdclassic-counter'), $theme_version, true);
     }
 
     // Product JS - Only on product pages
@@ -481,7 +495,7 @@ function tdclassic_add_tailwind()
 /**
  * Preload LCP (Largest Contentful Paint) images dynamically in head for optimal PageSpeed
  */
-function tdclassic_preload_lcp_head()
+function tdclassic_preload_lcp_images()
 {
     if (is_front_page()) {
         $front_hero_url = 'https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover-scaled.webp';
@@ -493,7 +507,7 @@ function tdclassic_preload_lcp_head()
         }
     }
 }
-add_action('wp_head', 'tdclassic_preload_lcp_head', 1);
+add_action('wp_head', 'tdclassic_preload_lcp_images', 1);
 
 // Force WooCommerce to use custom product category template
 add_filter('woocommerce_locate_template', 'tdclassic_woocommerce_locate_template', 10, 3);
@@ -534,6 +548,10 @@ function tdclassic_force_taxonomy_template($template)
         }
     }
 
+    // Debug for admin
+    if (current_user_can('administrator')) {
+        echo '<!-- TEMPLATE BEING USED: ' . $template . ' -->';
+    }
     return $template;
 }
 
@@ -1357,27 +1375,27 @@ add_action('init', 'tdclassic_cleanup_head');
 function handle_contact_form()
 {
     // Check nonce
-    if (empty($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'contact_form_nonce')) {
-        wp_send_json_error('Mã bảo mật không hợp lệ. Vui lòng tải lại trang.');
+    if (!wp_verify_nonce($_POST['nonce'], 'contact_form_nonce')) {
+        wp_die('Security check failed');
     }
 
     // Sanitize form data
-    $name = isset($_POST['contact_name']) ? sanitize_text_field($_POST['contact_name']) : '';
-    $email = isset($_POST['contact_email']) ? sanitize_email($_POST['contact_email']) : '';
-    $phone = isset($_POST['contact_phone']) ? sanitize_text_field($_POST['contact_phone']) : '';
-    $company = isset($_POST['contact_company']) ? sanitize_text_field($_POST['contact_company']) : '';
-    $subject = isset($_POST['contact_subject']) ? sanitize_text_field($_POST['contact_subject']) : '';
-    $message = isset($_POST['contact_message']) ? sanitize_textarea_field($_POST['contact_message']) : '';
+    $name = sanitize_text_field($_POST['contact_name']);
+    $email = sanitize_email($_POST['contact_email']);
+    $phone = sanitize_text_field($_POST['contact_phone']);
+    $company = sanitize_text_field($_POST['contact_company']);
+    $subject = sanitize_text_field($_POST['contact_subject']);
+    $message = sanitize_textarea_field($_POST['contact_message']);
     $newsletter = isset($_POST['contact_newsletter']) ? 1 : 0;
 
     // Validate required fields
     if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-        wp_send_json_error('Vui lòng điền đầy đủ thông tin bắt buộc.');
+        wp_die('Vui lòng điền đầy đủ thông tin bắt buộc.');
     }
 
     // Validate email
     if (!is_email($email)) {
-        wp_send_json_error('Địa chỉ email không hợp lệ.');
+        wp_die('Email không hợp lệ.');
     }
 
     // Prepare email content
@@ -1405,28 +1423,30 @@ function handle_contact_form()
     // Send email
     $sent = wp_mail($to, $email_subject, $email_body, $headers);
 
-    // Save to database regardless of mail sending status for lead retention
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'contact_messages';
+    if ($sent) {
+        // Save to database (optional)
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'contact_messages';
 
-    $wpdb->insert(
-        $table_name,
-        array(
-            'name' => $name,
-            'email' => $email,
-            'phone' => $phone,
-            'company' => $company,
-            'subject' => $subject,
-            'message' => $message,
-            'newsletter' => $newsletter,
-            'created_at' => current_time('mysql')
-        ),
-        array('%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s')
-    );
+        $wpdb->insert(
+            $table_name,
+            array(
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone,
+                'company' => $company,
+                'subject' => $subject,
+                'message' => $message,
+                'newsletter' => $newsletter,
+                'created_at' => current_time('mysql')
+            ),
+            array('%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s')
+        );
 
-    wp_send_json_success(array(
-        'message' => 'Cảm ơn bạn đã liên hệ! TD Classic sẽ phản hồi bạn trong thời gian sớm nhất.'
-    ));
+        wp_die('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.');
+    } else {
+        wp_die('Có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại sau.');
+    }
 }
 add_action('wp_ajax_handle_contact_form', 'handle_contact_form');
 add_action('wp_ajax_nopriv_handle_contact_form', 'handle_contact_form');
@@ -1434,14 +1454,6 @@ add_action('wp_ajax_nopriv_handle_contact_form', 'handle_contact_form');
 // Create contact messages table
 function create_contact_messages_table()
 {
-    // Chỉ chạy khi chưa khởi tạo bảng hoặc có bản nâng cấp version, tránh dbDelta chạy mỗi request
-    $current_db_version = get_option('tdclassic_contact_messages_db_ver', '');
-    $target_db_version = '1.0.0';
-
-    if ($current_db_version === $target_db_version) {
-        return;
-    }
-
     global $wpdb;
 
     $table_name = $wpdb->prefix . 'contact_messages';
@@ -1463,15 +1475,213 @@ function create_contact_messages_table()
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
-
-    update_option('tdclassic_contact_messages_db_ver', $target_db_version);
 }
-add_action('after_switch_theme', 'create_contact_messages_table');
-add_action('admin_init', 'create_contact_messages_table');
+add_action('after_setup_theme', 'create_contact_messages_table');
 
 // Font Awesome - Now enqueued in tdclassic_scripts() function above
 // Removed duplicate enqueue function
-// End contact messages table setup
+
+// Weather API Handler (Optional - for real weather data)
+function handle_weather_api()
+{
+    if (!isset($_GET['lat']) || !isset($_GET['lon'])) {
+        wp_die('Missing coordinates');
+    }
+
+    $lat = sanitize_text_field($_GET['lat']);
+    $lon = sanitize_text_field($_GET['lon']);
+
+    // Replace with your OpenWeatherMap API key
+    $api_key = get_option('openweather_api_key', '');
+
+    if (empty($api_key)) {
+        wp_die('Weather API key not configured');
+    }
+
+    $url = "https://api.openweathermap.org/data/2.5/weather?lat={$lat}&lon={$lon}&appid={$api_key}&units=metric&lang=vi";
+
+    $response = wp_remote_get($url);
+
+    if (is_wp_error($response)) {
+        wp_die('Weather API request failed');
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+
+    if (!$data || $data['cod'] != 200) {
+        wp_die('Weather API error');
+    }
+
+    $weather_data = array(
+        'temp' => round($data['main']['temp']),
+        'description' => $data['weather'][0]['description'],
+        'icon' => $data['weather'][0]['icon']
+    );
+
+    wp_send_json($weather_data);
+}
+add_action('wp_ajax_get_weather', 'handle_weather_api');
+add_action('wp_ajax_nopriv_get_weather', 'handle_weather_api');
+
+// Add weather API key setting to admin
+function tdclassic_add_weather_settings()
+{
+    add_settings_section(
+        'tdclassic_weather_section',
+        'Weather API Settings',
+        function () {
+            echo '<p>Configure weather API for header weather widget.</p>';
+        },
+        'general'
+    );
+
+    add_settings_field(
+        'openweather_api_key',
+        'OpenWeatherMap API Key',
+        function () {
+            $api_key = get_option('openweather_api_key', '');
+            echo '<input type="text" id="openweather_api_key" name="openweather_api_key" value="' . esc_attr($api_key) . '" class="regular-text" />';
+            echo '<p class="description">Get your free API key from <a href="https://openweathermap.org/api" target="_blank">OpenWeatherMap</a></p>';
+        },
+        'general',
+        'tdclassic_weather_section'
+    );
+
+    register_setting('general', 'openweather_api_key');
+}
+add_action('admin_init', 'tdclassic_add_weather_settings');
+
+// Enqueue weather API URL for JavaScript
+function tdclassic_localize_scripts()
+{
+    wp_localize_script('tdclassic-script', 'tdclassic_ajax', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('weather_nonce')
+    ));
+}
+// Disabled to avoid injecting inline JS for weather in simplified header
+// add_action('wp_enqueue_scripts', 'tdclassic_localize_scripts');
+
+// Projects CSS - Now handled in tdclassic_scripts() function above
+// Removed duplicate enqueue function
+
+// Add weather API configuration to JavaScript
+function tdclassic_weather_config()
+{
+    $api_key = get_option('openweather_api_key', '');
+    ?>
+    <script type="text/javascript">
+        var tdWeatherConfig = {
+            apiKey: '<?php echo esc_js($api_key); ?>',
+            endpoint: 'https://api.openweathermap.org/data/2.5/weather'
+        };
+    </script>
+    <?php
+}
+// Disabled inline weather config for simplified header
+// add_action('wp_head', 'tdclassic_weather_config');
+
+// Create sample product categories if none exist (disabled for WooCommerce)
+/*
+function tdclassic_create_sample_product_categories() {
+    // Check if product categories already exist
+    $existing_categories = get_terms(array(
+        'taxonomy' => 'product_category',
+        'hide_empty' => false
+    ));
+    
+    if (empty($existing_categories)) {
+        // Create sample categories
+        $sample_categories = array(
+            'web-development' => 'Phát triển Web',
+            'mobile-app' => 'Ứng dụng Mobile',
+            'design-services' => 'Thiết kế Đồ họa',
+            'digital-marketing' => 'Digital Marketing',
+            'consulting' => 'Tư vấn CNTT',
+            'hosting-domain' => 'Hosting & Domain'
+        );
+        
+        foreach ($sample_categories as $slug => $name) {
+            if (!term_exists($slug, 'product_category')) {
+                wp_insert_term($name, 'product_category', array('slug' => $slug));
+            }
+        }
+        
+        // Create sample products with categories
+        tdclassic_create_sample_products();
+    }
+}
+add_action('init', 'tdclassic_create_sample_product_categories');
+*/
+
+// Create sample products (disabled for WooCommerce)
+/*
+function tdclassic_create_sample_products() {
+    // Check if products already exist
+    $existing_products = get_posts(array(
+        'post_type' => 'product',
+        'posts_per_page' => 1,
+        'post_status' => 'publish'
+    ));
+    
+    if (empty($existing_products)) {
+        $sample_products = array(
+            array(
+                'title' => 'Thiết kế Website responsive',
+                'content' => 'Dịch vụ thiết kế website chuyên nghiệp, responsive trên mọi thiết bị.',
+                'category' => 'web-development'
+            ),
+            array(
+                'title' => 'Ứng dụng Mobile iOS/Android',
+                'content' => 'Phát triển ứng dụng mobile native cho iOS và Android.',
+                'category' => 'mobile-app'
+            ),
+            array(
+                'title' => 'Thiết kế Logo & Brand Identity',
+                'content' => 'Thiết kế logo và bộ nhận diện thương hiệu chuyên nghiệp.',
+                'category' => 'design-services'
+            ),
+            array(
+                'title' => 'Digital Marketing Strategy',
+                'content' => 'Xây dựng chiến lược marketing số toàn diện cho doanh nghiệp.',
+                'category' => 'digital-marketing'
+            )
+        );
+        
+        foreach ($sample_products as $product_data) {
+            $product_id = wp_insert_post(array(
+                'post_title' => $product_data['title'],
+                'post_content' => $product_data['content'],
+                'post_type' => 'product',
+                'post_status' => 'publish'
+            ));
+            
+            if ($product_id && !is_wp_error($product_id)) {
+                // Assign category to product
+                wp_set_post_terms($product_id, $product_data['category'], 'product_category');
+            }
+        }
+    }
+}
+*/
+
+/**
+ * Product assets - Now handled in tdclassic_scripts() function above
+ * Removed duplicate enqueue function
+ */
+
+/**
+ * Override WooCommerce product tabs template
+ */
+function tdclassic_override_product_tabs_template($template, $template_name, $template_path)
+{
+    if ($template_name === 'single-product/tabs/tabs.php') {
+        $template = get_template_directory() . '/woocommerce/single-product/tabs/custom-product-tabs.php';
+    }
+    return $template;
+}
+add_filter('wc_get_template', 'tdclassic_override_product_tabs_template', 10, 3);
 
 /**
  * Email Configuration Settings
@@ -1842,13 +2052,9 @@ function tdclassic_contact_messages_page()
 
     // Handle message deletion
     if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
-        if (!current_user_can('manage_options')) {
-            wp_die(__('Bạn không có quyền thực hiện thao tác này.', 'tdclassic'));
-        }
         $id = intval($_GET['id']);
-        check_admin_referer('tdclassic_delete_message_' . $id);
         $wpdb->delete($table_name, array('id' => $id), array('%d'));
-        echo '<div class="notice notice-success is-dismissible"><p>Tin nhắn đã được xóa thành công!</p></div>';
+        echo '<div class="notice notice-success"><p>Tin nhắn đã được xóa thành công!</p></div>';
     }
 
     // Get messages with pagination
@@ -1930,7 +2136,7 @@ function tdclassic_contact_messages_page()
                                     class="button button-small">
                                     Trả lời
                                 </a>
-                                <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=contact-messages&action=delete&id=' . $message->id), 'tdclassic_delete_message_' . $message->id)); ?>"
+                                <a href="<?php echo admin_url('admin.php?page=contact-messages&action=delete&id=' . $message->id); ?>"
                                     class="button button-small button-link-delete"
                                     data-confirm-delete="Bạn có chắc chắn muốn xóa tin nhắn này?">
                                     Xóa
@@ -2434,4 +2640,18 @@ function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1)
     return $final_posts;
 }
 
-
+/**
+ * Automatically export all published post/page contents to a text file
+ * for Tailwind CSS static compiler to scan for dynamic classes.
+ */
+function tdclassic_auto_dump_db_content()
+{
+    global $wpdb;
+    $contents = $wpdb->get_col("SELECT post_content FROM {$wpdb->posts} WHERE post_status = 'publish'");
+    if (!empty($contents)) {
+        $dump_file = get_template_directory() . '/assets/db-content.txt';
+        file_put_contents($dump_file, implode(PHP_EOL, $contents));
+    }
+}
+add_action('save_post', 'tdclassic_auto_dump_db_content');
+add_action('delete_post', 'tdclassic_auto_dump_db_content');

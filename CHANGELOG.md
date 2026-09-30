@@ -1,5 +1,25 @@
 # TD Classic Theme - Changelog
 
+## Version 3.0.0 - 2026-09-30
+
+### 🚀 MAJOR REDESIGN & OPTIMIZATION
+
+#### ✅ Tối Giản Hóa Quản Trị Thông Số Kỹ Thuật (Single Specs Table)
+- **Tập trung & Tinh gọn**: Loại bỏ các metabox rườm rà thừa thãi (xóa bỏ "Điểm nổi bật", "Thông tin cơ bản", "Mô tả chi tiết bổ sung").
+- **Duy nhất 1 Bảng thông số**: Quản trị chỉ gồm Mô tả sản phẩm (WordPress Editor) và 1 Bảng Thông Số Kỹ Thuật dạng Table (Tên thông số - Giá trị).
+
+#### ✅ Tính Năng Nhận Diện & Dán Nhanh Tự Động (Smart Paste Parser)
+- **Bóc tách tự động**: Hỗ trợ copy từ Excel, Google Sheets (dạng 2 cột phân cách Tab `\t`), Word, hoặc dạng văn bản `Tên: Giá trị`.
+- **Dán trực tiếp (Direct Paste)**: Nhấn `Ctrl+V` / `Cmd+V` trực tiếp vào ô bất kỳ trong bảng để tự động điền hàng loạt.
+- **Nút "Dán nhanh từ Excel / Văn bản"**: Khung nhập liệu trực quan với lựa chọn "Thay thế toàn bộ" hoặc "Thêm tiếp".
+
+#### ✅ Chuẩn Hóa Hiển Thị Public (Single-Product Frontend)
+- **Xóa bỏ Fallback tĩnh**: Loại bỏ triệt để các thông số giả lập cố định (450W / 98dB / Loa 12-inch) gây sai lệch cho các dòng sản phẩm khác (Micro, Vang số, Màn hình...).
+- **Đồng bộ dữ liệu thực**: Bảng thông số kỹ thuật ngoài Public chỉ hiển thị đúng các dòng thực tế được nhập từ Admin.
+- **Tự động ẩn thông minh**: Sản phẩm nào chưa nhập thông số thì bảng sẽ tự động ẩn đi hoàn toàn.
+
+---
+
 ## Version 1.32.8 - 2025-01-XX
 
 ### 🚀 NEW FEATURES

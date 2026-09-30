@@ -82,35 +82,43 @@ get_header();
                         </div>
                         <h1 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white mb-4 leading-tight">
                             <?php the_title(); ?>
-                            <br>
-                            <span class="text-lg md:text-xl lg:text-2xl"
-                                style="color: #666666;"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_edition', true) ?: 'Edition 2025'); ?></span>
+                            <?php 
+                            $edition = get_post_meta(get_the_ID(), '_product_edition', true);
+                            if (!empty($edition)): ?>
+                                <br>
+                                <span class="text-lg md:text-xl lg:text-2xl" style="color: #666666;"><?php echo esc_html($edition); ?></span>
+                            <?php endif; ?>
                         </h1>
 
-                        <!-- Quick Specs Row -->
-                        <div class="flex gap-6 py-6 my-8"
-                            style="border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);">
-                            <div>
-                                <span class="block text-[10px] uppercase tracking-wider mb-1" style="color: #666666;">Power
-                                    (RMS)</span>
-                                <span
-                                    class="font-sans font-bold text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_power', true) ?: '450W'); ?></span>
+                        <!-- Technical Specs Quick Highlight -->
+                        <?php
+                        $custom_specs_json = get_post_meta(get_the_ID(), '_custom_specifications', true);
+                        $product_specs = $custom_specs_json ? json_decode($custom_specs_json, true) : [];
+                        if (!is_array($product_specs)) {
+                            $product_specs = [];
+                        }
+                        $valid_specs = array_values(array_filter($product_specs, function($item) {
+                            return !empty($item['label']) || !empty($item['value']);
+                        }));
+                        $top_specs = array_slice($valid_specs, 0, 3);
+                        if (!empty($top_specs)): ?>
+                            <div class="flex flex-wrap gap-6 py-6 my-8"
+                                style="border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <?php foreach ($top_specs as $index => $ts): 
+                                    if ($index > 0): ?>
+                                        <div class="h-10 hidden sm:block" style="width: 1px; background: rgba(255,255,255,0.1);"></div>
+                                    <?php endif; ?>
+                                    <div>
+                                        <span class="block text-[10px] uppercase tracking-wider mb-1" style="color: #666666;">
+                                            <?php echo esc_html($ts['label']); ?>
+                                        </span>
+                                        <span class="font-sans font-bold text-white text-lg md:text-xl">
+                                            <?php echo esc_html($ts['value']); ?>
+                                        </span>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
-                            <div class="h-10" style="width: 1px; background: rgba(255,255,255,0.1);"></div>
-                            <div>
-                                <span class="block text-[10px] uppercase tracking-wider mb-1"
-                                    style="color: #666666;">Sensitivity</span>
-                                <span
-                                    class="font-sans font-bold text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_sensitivity', true) ?: '98dB'); ?></span>
-                            </div>
-                            <div class="h-10" style="width: 1px; background: rgba(255,255,255,0.1);"></div>
-                            <div>
-                                <span class="block text-[10px] uppercase tracking-wider mb-1"
-                                    style="color: #666666;">Response</span>
-                                <span
-                                    class="font-sans font-bold text-white text-xl"><?php echo esc_html(get_post_meta(get_the_ID(), '_product_response', true) ?: '50Hz-20kHz'); ?></span>
-                            </div>
-                        </div>
+                        <?php endif; ?>
 
                         <!-- Description -->
                         <?php
@@ -180,37 +188,32 @@ get_header();
         </section>
 
         <!-- ========== FULL SPECS TABLE ========== -->
+        <?php if (!empty($valid_specs)): ?>
         <section class="py-24" style="background-color: #050505;">
             <div class="container mx-auto px-6 md:px-12 max-w-4xl">
                 <div class="text-center mb-16">
                     <h2 class="font-sans font-bold text-3xl text-white">Thông Số Kỹ Thuật</h2>
-                    <p class="font-sans text-xs mt-2 uppercase tracking-widest" style="color: #666666;">Technical
+                    <p class="font-sans text-xs mt-2 uppercase tracking-widest" style="color: #C5A059;">Technical
                         Specifications</p>
                 </div>
                 <div style="border-top: 1px solid rgba(255,255,255,0.1);">
-                    <?php
-                    $specs = [
-                        'Model' => get_post_meta(get_the_ID(), '_product_model', true) ?: get_the_title(),
-                        'System Type' => get_post_meta(get_the_ID(), '_product_system_type', true) ?: '12-inch, 2-way, bass-reflex',
-                        'Frequency Range' => get_post_meta(get_the_ID(), '_product_frequency_range', true) ?: '50 Hz - 20 kHz (-10 dB)',
-                        'Power Rating' => get_post_meta(get_the_ID(), '_product_power_rating', true) ?: '450W / 900W / 1800W (Continuous/Program/Peak)',
-                        'Sensitivity' => get_post_meta(get_the_ID(), '_product_sensitivity', true) ?: '98 dB SPL (1W @ 1m)',
-                        'Nominal Impedance' => get_post_meta(get_the_ID(), '_product_impedance', true) ?: '8 Ohms',
-                        'Dimensions (HxWxD)' => get_post_meta(get_the_ID(), '_product_dimensions', true) ?: '600mm x 360mm x 382mm',
-                        'Weight' => get_post_meta(get_the_ID(), '_product_weight', true) ?: '18.5 Kg (40.8 lbs)',
-                    ];
-                    foreach ($specs as $label => $value): ?>
+                    <?php foreach ($valid_specs as $spec_item): 
+                        if (empty($spec_item['label']) && empty($spec_item['value'])) continue;
+                    ?>
                         <div class="grid grid-cols-2 md:grid-cols-4 py-4 px-4 hover:bg-white/5 transition-colors"
                             style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                            <div class="font-sans text-xs uppercase tracking-wide" style="color: #666666;">
-                                <?php echo esc_html($label); ?>
+                            <div class="font-sans text-xs uppercase tracking-wide font-medium" style="color: #888888;">
+                                <?php echo esc_html($spec_item['label']); ?>
                             </div>
-                            <div class="text-white font-sans text-sm md:col-span-3"><?php echo esc_html($value); ?></div>
+                            <div class="text-white font-sans text-sm md:col-span-3 font-light">
+                                <?php echo esc_html($spec_item['value']); ?>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
             </div>
         </section>
+        <?php endif; ?>
 
         <!-- ========== RELATED PRODUCTS ========== -->
         <section class="py-24" style="background-color: #151515; border-top: 1px solid rgba(255,255,255,0.05);">

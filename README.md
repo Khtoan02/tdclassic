@@ -1,8 +1,8 @@
-# TD Classic® WordPress Theme v1.32.8
+# TD Classic® WordPress Theme v3.0.0
 
-Một theme WordPress đơn giản, tinh gọn với thiết kế hiện đại sử dụng màu sắc chủ đạo đen, xám, trắng.
+Một theme WordPress đơn giản, tinh gọn với thiết kế hiện đại sử dụng màu sắc chủ đạo đen, xám, trắng kết hợp vàng kim sang trọng (Cinematic Modern Luxury).
 
-**Latest Update**: Version 1.32.8 - Mobile Optimization & Product Image Square Ratio
+**Latest Update**: Version 3.0.0 - Tối Giản Quản Trị Thông Số Kỹ Thuật, Smart Paste Parser & Chuẩn Hóa Hiển Thị Public
 
 ## Tính năng chính
 
