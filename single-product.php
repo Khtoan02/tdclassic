@@ -13,31 +13,64 @@ get_header();
 
 <style>
     /* Header Offset & Responsive Hero Spacing */
-    .product-hero-section {
-        padding-top: 135px;
-        padding-bottom: 3.5rem;
+    .td-single-hero {
+        background-color: #050505 !important;
+        background: #050505 !important;
+        background-image: none !important;
+        padding-top: 140px !important;
+        padding-bottom: 3.5rem !important;
+        color: #ffffff !important;
     }
     @media (min-width: 768px) {
-        .product-hero-section {
-            padding-top: 175px;
-            padding-bottom: 4rem;
+        .td-single-hero {
+            padding-top: 180px !important;
+            padding-bottom: 4rem !important;
         }
     }
     @media (min-width: 1024px) {
-        .product-hero-section {
+        .td-single-hero {
             /* Desktop header: Top bar 40px + Main nav ~80px + Category bar ~45px = ~165px */
-            padding-top: 215px; /* Clean, generous clearance below fixed header */
-            padding-bottom: 5rem;
+            padding-top: 220px !important; /* Clean, generous clearance below fixed header */
+            padding-bottom: 5rem !important;
         }
     }
     /* WordPress Admin Bar Compatibility */
-    .admin-bar .product-hero-section {
-        padding-top: 181px;
+    .admin-bar .td-single-hero {
+        padding-top: 186px !important;
     }
     @media (min-width: 783px) {
-        .admin-bar .product-hero-section {
-            padding-top: 247px; /* 215px + 32px admin bar */
+        .admin-bar .td-single-hero {
+            padding-top: 252px !important; /* 220px + 32px admin bar */
         }
+    }
+
+    /* Short description formatting in Hero */
+    .td-short-desc {
+        color: #d1d5db !important;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+    .td-short-desc p {
+        margin-bottom: 0.75rem;
+        color: #d1d5db !important;
+        line-height: 1.7;
+    }
+    .td-short-desc ul,
+    .td-short-desc ol {
+        margin: 0.75rem 0;
+        padding-left: 1.25rem;
+    }
+    .td-short-desc ul li {
+        list-style-type: disc;
+        margin-bottom: 0.4rem;
+        color: #9ca3af !important;
+        font-size: 0.875rem;
+    }
+    .td-short-desc ol li {
+        list-style-type: decimal;
+        margin-bottom: 0.4rem;
+        color: #9ca3af !important;
+        font-size: 0.875rem;
     }
 
     /* Product Detailed Content Typography */
@@ -114,7 +147,7 @@ get_header();
     }
 </style>
 
-<main id="main" class="site-main" style="background-color: #050505;">
+<main id="main" class="site-main" style="background-color: #050505 !important; color: #ffffff !important; min-height: 100vh;">
     <?php while (have_posts()):
         the_post(); 
         
@@ -130,7 +163,7 @@ get_header();
     ?>
 
         <!-- ========== PRODUCT HERO SECTION ========== -->
-        <section class="product-hero-section relative" style="background-color: #050505;">
+        <section class="td-single-hero relative" style="background-color: #050505 !important; background: #050505 !important; background-image: none !important;">
             <div class="container mx-auto px-6 md:px-12">
                 <div class="grid md:grid-cols-12 gap-12 items-start">
 
@@ -191,7 +224,7 @@ get_header();
                     <!-- Right: Information (5 columns) -->
                     <div class="md:col-span-5 flex flex-col justify-start">
                         <div class="mb-3 flex items-center gap-2 text-xs">
-                            <span class="font-sans text-xs tracking-[0.25em] uppercase" style="color: #C5A059;">
+                            <span class="font-sans text-xs tracking-[0.25em] uppercase font-semibold" style="color: #C5A059;">
                                 <?php
                                 $product_cats = get_the_terms(get_the_ID(), 'product_cat');
                                 if (!empty($product_cats) && !is_wp_error($product_cats)) {
@@ -205,13 +238,13 @@ get_header();
                             <span class="font-sans text-[11px] tracking-wider uppercase text-gray-500">TD Classic</span>
                         </div>
 
-                        <h1 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white mb-5 leading-tight">
+                        <h1 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white mb-5 leading-tight" style="color: #ffffff !important;">
                             <?php the_title(); ?>
                             <?php 
                             $edition = get_post_meta(get_the_ID(), '_product_edition', true);
                             if (!empty($edition)): ?>
                                 <br>
-                                <span class="text-lg md:text-xl lg:text-2xl" style="color: #666666;"><?php echo esc_html($edition); ?></span>
+                                <span class="text-lg md:text-xl lg:text-2xl" style="color: #888888;"><?php echo esc_html($edition); ?></span>
                             <?php endif; ?>
                         </h1>
 
@@ -236,35 +269,21 @@ get_header();
                             }
                         }
                         ?>
-                        <div class="mb-8 font-sans text-sm md:text-base leading-relaxed text-gray-300 border-l-2 border-[#C5A059]/60 pl-4 py-1">
+                        <div class="td-short-desc mb-8 font-sans leading-relaxed border-l-2 border-[#C5A059]/60 pl-4 py-1">
                             <?php echo wpautop(wp_kses_post($short_desc)); ?>
                         </div>
 
-                        <!-- CTA Buttons -->
-                        <div class="flex flex-col gap-4">
+                        <!-- CTA Button: Liên hệ báo giá duy nhất -->
+                        <div class="mt-2">
                             <a href="tel:<?php echo esc_attr(str_replace(' ', '', tdclassic_get_company_phone())); ?>"
-                                class="w-full text-center font-sans text-sm font-bold uppercase tracking-[0.2em] py-4 transition-all"
-                                style="background-color: #C5A059; color: #000;">
-                                Liên hệ báo giá
+                                class="w-full block text-center font-sans text-sm font-bold uppercase tracking-[0.2em] py-4 rounded-none transition-all shadow-lg hover:shadow-[0_0_25px_rgba(197,160,89,0.4)] hover:brightness-110"
+                                style="background-color: #C5A059; color: #050505;">
+                                <i class="fa-solid fa-phone mr-2 text-xs"></i> Liên hệ báo giá
                             </a>
-                            <button
-                                class="w-full border font-sans text-sm font-bold uppercase tracking-[0.2em] py-4 transition-all flex items-center justify-center gap-2 text-white"
-                                style="border-color: rgba(255,255,255,0.2);"
-                                onmouseover="this.style.borderColor='#C5A059'; this.style.color='#C5A059';"
-                                onmouseout="this.style.borderColor='rgba(255,255,255,0.2)'; this.style.color='#fff';">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                </svg>
-                                Tải Datasheet
-                            </button>
                         </div>
 
                         <!-- Warranty Badge -->
-                        <div class="mt-8 flex items-center gap-2 text-xs font-sans" style="color: #666666;">
+                        <div class="mt-8 flex items-center gap-2 text-xs font-sans" style="color: #888888;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                                 stroke="#C5A059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>

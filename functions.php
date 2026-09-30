@@ -383,8 +383,8 @@ function tdclassic_scripts()
         wp_enqueue_style('tdclassic-front-page-enhanced', get_template_directory_uri() . '/assets/css/modules/front-page-enhanced.css', array('tdclassic-front-page'), $theme_version);
     }
 
-    // Product CSS - Only on product pages
-    if (is_singular('product') || is_post_type_archive('product') || (function_exists('is_product_category') && is_product_category()) || is_page_template('page-san-pham.php')) {
+    // Product CSS - Only on product archive/category pages (Single product template has self-contained Dark Luxury design)
+    if (!is_singular('product') && (is_post_type_archive('product') || (function_exists('is_product_category') && is_product_category()) || is_page_template('page-san-pham.php'))) {
         wp_enqueue_style('tdclassic-product', get_template_directory_uri() . '/assets/css/modules/product.css', array('tdclassic-style'), $theme_version);
         wp_enqueue_style('tdclassic-product-image', get_template_directory_uri() . '/assets/css/components/product-image.css', array('tdclassic-product'), $theme_version);
         wp_enqueue_style('tdclassic-product-tabs', get_template_directory_uri() . '/assets/css/components/product-tabs.css', array('tdclassic-product'), $theme_version);

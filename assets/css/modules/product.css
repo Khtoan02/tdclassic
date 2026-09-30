@@ -50,8 +50,7 @@
 
 /* Enhanced Product Hero Section */
 .product-hero-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
-  padding: 60px 0;
+  background: #050505;
   margin-bottom: 0;
   position: relative;
   overflow: hidden;
@@ -3598,8 +3597,7 @@
 
 /* Enhanced Product Hero Section */
 .product-hero-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
-  padding: 60px 0;
+  background: #050505;
   margin-bottom: 0;
   position: relative;
   overflow: hidden;
