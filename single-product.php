@@ -1,6 +1,6 @@
 <?php
 /**
- * Single Product Template – matches design in single-product.txt
+ * Single Product Template – TD Classic 3.0.0
  * Professional Tailwind CSS layout with proper structure
  */
 get_header();
@@ -11,14 +11,128 @@ get_header();
     style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; opacity: 0.03; background: url('https://grainy-gradients.vercel.app/noise.svg');">
 </div>
 
+<style>
+    /* Header Offset & Responsive Hero Spacing */
+    .product-hero-section {
+        padding-top: 135px;
+        padding-bottom: 3.5rem;
+    }
+    @media (min-width: 768px) {
+        .product-hero-section {
+            padding-top: 175px;
+            padding-bottom: 4rem;
+        }
+    }
+    @media (min-width: 1024px) {
+        .product-hero-section {
+            /* Desktop header: Top bar 40px + Main nav ~80px + Category bar ~45px = ~165px */
+            padding-top: 215px; /* Clean, generous clearance below fixed header */
+            padding-bottom: 5rem;
+        }
+    }
+    /* WordPress Admin Bar Compatibility */
+    .admin-bar .product-hero-section {
+        padding-top: 181px;
+    }
+    @media (min-width: 783px) {
+        .admin-bar .product-hero-section {
+            padding-top: 247px; /* 215px + 32px admin bar */
+        }
+    }
+
+    /* Product Detailed Content Typography */
+    .product-entry-content {
+        font-size: 15px;
+        line-height: 1.85;
+        color: #d1d5db;
+    }
+    .product-entry-content h2,
+    .product-entry-content h3,
+    .product-entry-content h4 {
+        color: #ffffff;
+        font-weight: 700;
+        margin-top: 2.5rem;
+        margin-bottom: 1.25rem;
+    }
+    .product-entry-content h2 {
+        font-size: 1.75rem;
+        border-left: 3px solid #C5A059;
+        padding-left: 1rem;
+    }
+    .product-entry-content h3 {
+        font-size: 1.35rem;
+        color: #f3f4f6;
+    }
+    .product-entry-content p {
+        margin-bottom: 1.5rem;
+        text-align: justify;
+    }
+    .product-entry-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        margin: 2rem auto;
+        display: block;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .product-entry-content ul,
+    .product-entry-content ol {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+    }
+    .product-entry-content ul li {
+        list-style-type: disc;
+        margin-bottom: 0.5rem;
+    }
+    .product-entry-content ol li {
+        list-style-type: decimal;
+        margin-bottom: 0.5rem;
+    }
+    .product-entry-content blockquote {
+        border-left: 3px solid #C5A059;
+        padding: 1rem 1.5rem;
+        margin: 2rem 0;
+        background: rgba(255, 255, 255, 0.02);
+        font-style: italic;
+        color: #e5e5e5;
+    }
+    .product-entry-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .product-entry-content table th,
+    .product-entry-content table td {
+        padding: 10px 14px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .product-entry-content table th {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+    }
+</style>
+
 <main id="main" class="site-main" style="background-color: #050505;">
     <?php while (have_posts()):
-        the_post(); ?>
+        the_post(); 
+        
+        // Fetch technical specifications
+        $custom_specs_json = get_post_meta(get_the_ID(), '_custom_specifications', true);
+        $product_specs = $custom_specs_json ? json_decode($custom_specs_json, true) : [];
+        if (!is_array($product_specs)) {
+            $product_specs = [];
+        }
+        $valid_specs = array_values(array_filter($product_specs, function($item) {
+            return !empty($item['label']) || !empty($item['value']);
+        }));
+    ?>
 
         <!-- ========== PRODUCT HERO SECTION ========== -->
-        <section class="pt-12 pb-20 md:py-0 md:min-h-screen relative flex items-center" style="background-color: #050505;">
+        <section class="product-hero-section relative" style="background-color: #050505;">
             <div class="container mx-auto px-6 md:px-12">
-                <div class="grid md:grid-cols-12 gap-12 items-center py-12 md:py-24">
+                <div class="grid md:grid-cols-12 gap-12 items-start">
 
                     <!-- Left: Visual Gallery (7 columns) -->
                     <div class="md:col-span-7 flex flex-col justify-center relative group">
@@ -75,12 +189,23 @@ get_header();
                     </div>
 
                     <!-- Right: Information (5 columns) -->
-                    <div class="md:col-span-5 flex flex-col justify-center">
-                        <div class="mb-2">
-                            <span class="font-sans text-xs tracking-[0.3em] uppercase" style="color: #C5A059;">Professional
-                                Audio</span>
+                    <div class="md:col-span-5 flex flex-col justify-start">
+                        <div class="mb-3 flex items-center gap-2 text-xs">
+                            <span class="font-sans text-xs tracking-[0.25em] uppercase" style="color: #C5A059;">
+                                <?php
+                                $product_cats = get_the_terms(get_the_ID(), 'product_cat');
+                                if (!empty($product_cats) && !is_wp_error($product_cats)) {
+                                    echo esc_html($product_cats[0]->name);
+                                } else {
+                                    echo 'Professional Audio';
+                                }
+                                ?>
+                            </span>
+                            <span class="text-white/20">•</span>
+                            <span class="font-sans text-[11px] tracking-wider uppercase text-gray-500">TD Classic</span>
                         </div>
-                        <h1 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white mb-4 leading-tight">
+
+                        <h1 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white mb-5 leading-tight">
                             <?php the_title(); ?>
                             <?php 
                             $edition = get_post_meta(get_the_ID(), '_product_edition', true);
@@ -90,64 +215,29 @@ get_header();
                             <?php endif; ?>
                         </h1>
 
-                        <!-- Technical Specs Quick Highlight -->
+                        <!-- Short Description (Mô tả ngắn của sản phẩm) -->
                         <?php
-                        $custom_specs_json = get_post_meta(get_the_ID(), '_custom_specifications', true);
-                        $product_specs = $custom_specs_json ? json_decode($custom_specs_json, true) : [];
-                        if (!is_array($product_specs)) {
-                            $product_specs = [];
+                        $short_desc = '';
+                        if (function_exists('wc_get_product')) {
+                            $wc_prod = wc_get_product(get_the_ID());
+                            if ($wc_prod && !empty($wc_prod->get_short_description())) {
+                                $short_desc = $wc_prod->get_short_description();
+                            }
                         }
-                        $valid_specs = array_values(array_filter($product_specs, function($item) {
-                            return !empty($item['label']) || !empty($item['value']);
-                        }));
-                        $top_specs = array_slice($valid_specs, 0, 3);
-                        if (!empty($top_specs)): ?>
-                            <div class="flex flex-wrap gap-6 py-6 my-8"
-                                style="border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                <?php foreach ($top_specs as $index => $ts): 
-                                    if ($index > 0): ?>
-                                        <div class="h-10 hidden sm:block" style="width: 1px; background: rgba(255,255,255,0.1);"></div>
-                                    <?php endif; ?>
-                                    <div>
-                                        <span class="block text-[10px] uppercase tracking-wider mb-1" style="color: #666666;">
-                                            <?php echo esc_html($ts['label']); ?>
-                                        </span>
-                                        <span class="font-sans font-bold text-white text-lg md:text-xl">
-                                            <?php echo esc_html($ts['value']); ?>
-                                        </span>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-
-                        <!-- Description -->
-                        <?php
-                        $full_content = get_the_content();
-                        $plain_content = wp_strip_all_tags($full_content);
-                        $max_chars = 200;
-                        $is_truncated = mb_strlen($plain_content) > $max_chars;
-                        $short_content = $is_truncated ? mb_substr($plain_content, 0, $max_chars) . '...' : $plain_content;
-                        if (empty($plain_content)) {
-                            $short_content = 'Sự kết hợp hoàn hảo giữa sức mạnh và sự tinh tế. Sản phẩm được chế tác với các vật liệu cao cấp, mang đến chất lượng âm thanh vượt trội.';
-                            $is_truncated = false;
+                        if (empty($short_desc) && has_excerpt()) {
+                            $short_desc = get_the_excerpt();
+                        }
+                        if (empty($short_desc)) {
+                            $raw_content = wp_strip_all_tags(get_the_content());
+                            if (!empty($raw_content)) {
+                                $short_desc = wp_trim_words($raw_content, 35, '...');
+                            } else {
+                                $short_desc = 'Sản phẩm âm thanh cao cấp chính hãng từ TD Classic, thiết kế chuẩn mực và chất lượng âm thanh vượt trội.';
+                            }
                         }
                         ?>
-                        <div class="mb-10">
-                            <p id="shortDesc" class="font-sans text-sm leading-relaxed text-justify"
-                                style="color: #999999;">
-                                <?php echo esc_html($short_content); ?>
-                            </p>
-                            <?php if ($is_truncated): ?>
-                                <div id="fullDesc" class="font-sans text-sm leading-relaxed text-justify"
-                                    style="color: #999999; display: none;">
-                                    <?php echo wp_kses_post($full_content); ?>
-                                </div>
-                                <button id="toggleDescBtn" onclick="toggleDescription()"
-                                    class="mt-3 text-xs uppercase tracking-wider transition-colors" style="color: #C5A059;"
-                                    onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#C5A059';">
-                                    Xem thêm <span class="toggle-icon">↓</span>
-                                </button>
-                            <?php endif; ?>
+                        <div class="mb-8 font-sans text-sm md:text-base leading-relaxed text-gray-300 border-l-2 border-[#C5A059]/60 pl-4 py-1">
+                            <?php echo wpautop(wp_kses_post($short_desc)); ?>
                         </div>
 
                         <!-- CTA Buttons -->
@@ -187,14 +277,13 @@ get_header();
             </div>
         </section>
 
-        <!-- ========== FULL SPECS TABLE ========== -->
+        <!-- ========== 1. THÔNG SỐ KỸ THUẬT (1 BẢNG DUY NHẤT) ========== -->
         <?php if (!empty($valid_specs)): ?>
-        <section class="py-24" style="background-color: #050505;">
+        <section class="py-16 md:py-20" style="background-color: #050505; border-top: 1px solid rgba(255,255,255,0.05);">
             <div class="container mx-auto px-6 md:px-12 max-w-4xl">
-                <div class="text-center mb-16">
-                    <h2 class="font-sans font-bold text-3xl text-white">Thông Số Kỹ Thuật</h2>
-                    <p class="font-sans text-xs mt-2 uppercase tracking-widest" style="color: #C5A059;">Technical
-                        Specifications</p>
+                <div class="text-center mb-12">
+                    <h2 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white">Thông Số Kỹ Thuật</h2>
+                    <p class="font-sans text-xs mt-2 uppercase tracking-widest" style="color: #C5A059;">Technical Specifications</p>
                 </div>
                 <div style="border-top: 1px solid rgba(255,255,255,0.1);">
                     <?php foreach ($valid_specs as $spec_item): 
@@ -210,6 +299,23 @@ get_header();
                             </div>
                         </div>
                     <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+        <?php endif; ?>
+
+        <!-- ========== 2. MÔ TẢ SẢN PHẨM (BÀI VIẾT CHI TIẾT) ========== -->
+        <?php
+        $full_article = get_the_content();
+        if (!empty(trim($full_article))): ?>
+        <section class="py-16 md:py-24" style="background-color: #080808; border-top: 1px solid rgba(255,255,255,0.05);">
+            <div class="container mx-auto px-6 md:px-12 max-w-4xl">
+                <div class="text-center mb-14">
+                    <h2 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white">Mô Tả Sản Phẩm</h2>
+                    <p class="font-sans text-xs mt-2 uppercase tracking-widest" style="color: #C5A059;">Detailed Overview & Review</p>
+                </div>
+                <div class="product-entry-content">
+                    <?php the_content(); ?>
                 </div>
             </div>
         </section>
@@ -259,26 +365,34 @@ get_header();
                                             <img src="<?php the_post_thumbnail_url('medium'); ?>" alt="<?php the_title_attribute(); ?>"
                                                 class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                                         <?php else: ?>
-                                            <div class="w-full h-full flex items-center justify-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
-                                                    fill="none" stroke="#333" stroke-width="1">
-                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                                    <polyline points="21 15 16 10 5 21"></polyline>
-                                                </svg>
-                                            </div>
+                                            <div class="w-full h-full flex items-center justify-center text-xs"
+                                                style="color: #666666;">No Image</div>
                                         <?php endif; ?>
                                     </div>
                                     <div class="flex-grow flex flex-col justify-between">
-                                        <h4 class="text-white font-sans font-bold text-sm md:text-base line-clamp-2"
-                                            style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                                            <?php the_title(); ?>
-                                        </h4>
-                                        <?php $cats = get_the_terms(get_the_ID(), 'product_cat');
-                                        if ($cats && !is_wp_error($cats)): ?>
-                                            <p class="text-xs mt-2" style="color: #666666;"><?php echo esc_html($cats[0]->name); ?>
-                                            </p>
-                                        <?php endif; ?>
+                                        <div>
+                                            <span class="text-[10px] tracking-widest uppercase block mb-1"
+                                                style="color: #666666;">
+                                                <?php
+                                                $cats = get_the_terms(get_the_ID(), 'product_cat');
+                                                echo ($cats && !is_wp_error($cats)) ? esc_html($cats[0]->name) : 'Audio';
+                                                ?>
+                                            </span>
+                                            <h4 class="font-sans font-bold text-sm text-white group-hover:text-[#C5A059] transition-colors line-clamp-2">
+                                                <?php the_title(); ?>
+                                            </h4>
+                                        </div>
+                                        <div class="mt-4 pt-3 flex justify-between items-center"
+                                            style="border-top: 1px solid rgba(255,255,255,0.05);">
+                                            <span class="text-xs font-sans" style="color: #C5A059;">Xem chi tiết</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                                fill="none" stroke="#C5A059" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                class="transform group-hover:translate-x-1 transition-transform">
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                <polyline points="12 5 19 12 12 19"></polyline>
+                                            </svg>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
@@ -289,44 +403,10 @@ get_header();
             </div>
         </section>
 
-        <!-- ========== DETAILED DOCUMENTATION ========== -->
-        <section class="py-20 font-sans text-[10px] leading-relaxed"
-            style="background-color: #050505; border-top: 1px solid rgba(255,255,255,0.05); color: #666666;">
-            <div class="container mx-auto px-6 md:px-12 max-w-5xl">
-                <div class="space-y-6 opacity-70" style="text-align: justify; text-justify: inter-word;">
-                    <?php
-                    $doc = get_post_meta(get_the_ID(), '_product_documentation', true);
-                    if ($doc) {
-                        echo wp_kses_post($doc);
-                    } else {
-                        ?>
-                        <p>
-                            Thông tin được cung cấp trong tài liệu này phản ánh các thông số kỹ thuật và đặc tính hiệu suất của
-                            sản phẩm tại thời điểm xuất bản. TD Classic, tuân theo chính sách phát triển và cải tiến sản phẩm
-                            liên tục, bảo lưu quyền thay đổi thiết kế, vật liệu và thông số kỹ thuật mà không cần thông báo
-                            trước. Những thay đổi này có thể bao gồm, nhưng không giới hạn ở, việc nâng cấp linh kiện phân tần,
-                            thay đổi cấu trúc thùng loa nhằm tối ưu hóa cộng hưởng âm học, hoặc điều chỉnh các thông số đáp
-                            tuyến tần số dựa trên kết quả đo đạc mới nhất từ phòng thí nghiệm tiêu chuẩn Anechoic.
-                        </p>
-                        <p>
-                            <strong>Đo lường và Kiểm định:</strong> Các thông số về độ nhạy (Sensitivity) và đáp tuyến tần số
-                            (Frequency Response) được đo đạc trong môi trường phòng tiêu âm tiêu chuẩn (Free-field condition),
-                            sử dụng thiết bị đo lường chuyên dụng Audio Precision và microphone đo lường được hiệu chuẩn Class
-                            1. Công suất định mức (RMS Power Handling) được xác định thông qua quy trình kiểm tra IEC 60268-5,
-                            sử dụng tín hiệu nhiễu hồng (Pink Noise) với hệ số đỉnh (Crest Factor) là 6dB trong thời gian liên
-                            tục 2 giờ.
-                        </p>
-                        <p>
-                            <strong>Chính sách Bảo hành và Hỗ trợ:</strong> Sản phẩm được bảo hành chính hãng 24 tháng đối với
-                            các lỗi kỹ thuật do nhà sản xuất. Phạm vi bảo hành bao gồm củ loa (Driver) và mạch phân tần
-                            (Crossover). Để nhận được hỗ trợ kỹ thuật và dịch vụ bảo hành, vui lòng liên hệ Trung tâm Dịch vụ
-                            Khách hàng của TD Classic hoặc các đại lý ủy quyền chính thức kèm theo hóa đơn mua hàng hợp lệ.
-                        </p>
-                        <?php
-                    }
-                    ?>
-                </div>
-                <div class="mt-12 pt-8 text-center opacity-40" style="border-top: 1px solid rgba(255,255,255,0.05);">
+        <!-- Document Footer Note -->
+        <section class="py-12 border-t" style="background-color: #000; border-color: rgba(255,255,255,0.05);">
+            <div class="container mx-auto px-6 md:px-12 text-center">
+                <div class="font-sans text-[11px] uppercase tracking-widest" style="color: #444444;">
                     <p>Mã tài liệu: DOC-GEN-2025-V2.1 | Bản quyền © <?php echo date('Y'); ?> TD Classic Audio. Mọi quyền
                         được bảo lưu.</p>
                 </div>
@@ -338,39 +418,18 @@ get_header();
 
 <!-- Image Gallery Script -->
 <script>
-    // Toggle description expand/collapse
-    function toggleDescription() {
-        const shortDesc = document.getElementById('shortDesc');
-        const fullDesc = document.getElementById('fullDesc');
-        const toggleBtn = document.getElementById('toggleDescBtn');
-        const toggleIcon = toggleBtn.querySelector('.toggle-icon');
-
-        if (fullDesc.style.display === 'none') {
-            shortDesc.style.display = 'none';
-            fullDesc.style.display = 'block';
-            toggleBtn.innerHTML = 'Ẩn bớt <span class="toggle-icon">↑</span>';
-        } else {
-            shortDesc.style.display = 'block';
-            fullDesc.style.display = 'none';
-            toggleBtn.innerHTML = 'Xem thêm <span class="toggle-icon">↓</span>';
-        }
-    }
-
     // Image gallery logic with fade transition
     function changeImage(element, src) {
         const mainImg = document.getElementById('mainImage');
         if (!mainImg) return;
 
-        // Fade out
         mainImg.style.opacity = '0';
 
         setTimeout(() => {
             mainImg.src = src;
-            // Fade in
             mainImg.style.opacity = '1';
         }, 300);
 
-        // Update active state for thumbnails
         document.querySelectorAll('.thumb').forEach(el => {
             el.classList.remove('active');
             el.style.borderColor = 'rgba(255,255,255,0.2)';
