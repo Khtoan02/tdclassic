@@ -261,7 +261,7 @@ get_header();
                             $short_desc = get_the_excerpt();
                         }
                         if (empty($short_desc)) {
-                            $raw_content = wp_strip_all_tags(get_the_content());
+                            $raw_content = wp_strip_all_tags(get_post_field('post_content', get_the_ID()));
                             if (!empty($raw_content)) {
                                 $short_desc = wp_trim_words($raw_content, 35, '...');
                             } else {
@@ -325,8 +325,8 @@ get_header();
 
         <!-- ========== 2. MÔ TẢ SẢN PHẨM (BÀI VIẾT CHI TIẾT) ========== -->
         <?php
-        $full_article = get_the_content();
-        if (!empty(trim($full_article))): ?>
+        $raw_product_content = get_post_field('post_content', get_the_ID());
+        if (!empty(trim($raw_product_content))): ?>
         <section class="py-16 md:py-24" style="background-color: #080808; border-top: 1px solid rgba(255,255,255,0.05);">
             <div class="container mx-auto px-6 md:px-12 max-w-4xl">
                 <div class="text-center mb-14">
@@ -334,7 +334,13 @@ get_header();
                     <p class="font-sans text-xs mt-2 uppercase tracking-widest" style="color: #C5A059;">Detailed Overview & Review</p>
                 </div>
                 <div class="product-entry-content">
-                    <?php the_content(); ?>
+                    <?php 
+                    // Safely prevent WooCommerce from hijacking the article content
+                    if (class_exists('WC_Template_Loader')) {
+                        remove_filter('the_content', array('WC_Template_Loader', 'unsupported_theme_product_content_filter'));
+                    }
+                    echo apply_filters('the_content', $raw_product_content); 
+                    ?>
                 </div>
             </div>
         </section>
