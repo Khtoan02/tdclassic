@@ -8,6 +8,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Memory optimization for WooCommerce & Heavy Queries
+if (!defined('WP_MEMORY_LIMIT')) {
+    define('WP_MEMORY_LIMIT', '256M');
+}
+
 // LLMs.txt & Agentic Browsing Support
 require_once get_template_directory() . '/inc/llms-txt.php';
 
@@ -111,6 +116,16 @@ function tdclassic_enable_server_page_cache()
     }
 }
 add_action('send_headers', 'tdclassic_enable_server_page_cache', 1);
+
+// Auto-purge server cache when posts/terms are updated (Code tay)
+function tdclassic_purge_server_cache()
+{
+    if (!headers_sent()) {
+        header('X-LiteSpeed-Purge: *');
+    }
+}
+add_action('save_post', 'tdclassic_purge_server_cache');
+add_action('edit_terms', 'tdclassic_purge_server_cache');
 
 // Include admin product specifications
 require_once get_template_directory() . '/inc/admin-product-specs.php';

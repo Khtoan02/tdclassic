@@ -97,7 +97,7 @@ jQuery(document).ready(function($) {
         text += "- **PHP Version:** " + (h.php_version || 'N/A') + " (Memory: " + (h.php_memory_limit || 'N/A') + ", Max Execution: " + (h.max_execution_time || 'N/A') + ")\n";
         text += "- **MySQL/MariaDB:** " + (h.mysql_version || 'N/A') + " (Ping DB: " + (h.db_latency_ms || 0) + "ms)\n";
         text += "- **OPcache:** " + (h.opcache && h.opcache.enabled ? "BẬT (" + h.opcache.used_memory_mb + "MB RAM)" : "TẮT") + "\n";
-        text += "- **LiteSpeed Cache Plugin:** " + (h.litespeed_cache_plugin ? "Đã kích hoạt" : "Chưa cài/Chưa kích hoạt") + "\n";
+        text += "- **Cơ chế Cache:** " + (h.cache_mechanism || "Code tay (Native Server Header & Transients)") + "\n";
         text += "- **Loopback Ping:** " + (h.loopback_test ? h.loopback_test.status + " (" + h.loopback_test.time_ms + "ms)" : "N/A") + "\n";
         text += "- **Active Plugins (" + (h.active_plugins_count || 0) + "):** " + (h.active_plugins_list ? h.active_plugins_list.join(', ') : 'None') + "\n\n";
 

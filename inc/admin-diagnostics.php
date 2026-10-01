@@ -731,7 +731,7 @@ class TD_Classic_Diagnostics {
             'db_latency_ms'   => $db_latency_ms,
             'loopback_test'   => array('status' => $loop_status, 'time_ms' => $loop_time_ms),
             'opcache'         => array('enabled' => $opcache_enabled, 'used_memory_mb' => $opcache_memory),
-            'litespeed_cache_plugin' => in_array('litespeed-cache/litespeed-cache.php', $active_plugins),
+            'cache_mechanism' => 'Code tay (Native Server Headers & Transients)',
             'active_plugins_count'   => count($active_plugins),
             'active_plugins_list'    => $active_plugins
         );
@@ -821,13 +821,9 @@ class TD_Classic_Diagnostics {
                                     <td><code><?php echo esc_html($host_specs['server_ip']); ?></code></td>
                                 </tr>
                                 <tr>
-                                    <td>LiteSpeed Cache Plugin:</td>
+                                    <td>Cơ chế Cache:</td>
                                     <td>
-                                        <?php if ($host_specs['litespeed_cache_plugin']): ?>
-                                            <span class="td-badge td-badge-success">Đã kích hoạt</span>
-                                        <?php else: ?>
-                                            <span class="td-badge td-badge-warning">Chưa cài LiteSpeed Cache</span>
-                                        <?php endif; ?>
+                                        <span class="td-badge td-badge-success">Code Tay (Native HTTP Header & Transients)</span>
                                     </td>
                                 </tr>
                                 <tr>
