@@ -31,6 +31,9 @@ function tdclassic_minimize_wp_head()
 }
 add_action('init', 'tdclassic_minimize_wp_head');
 
+// Disable Core Speculative Loading (prevents concurrent background PHP worker exhaustion)
+add_filter('wp_speculation_rules_configuration', '__return_null');
+
 // 2. Add Preconnect/Preload Headers
 function tdclassic_resource_hints($urls, $relation_type)
 {
