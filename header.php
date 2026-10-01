@@ -92,7 +92,7 @@
                         if (!empty($news_categories)):
                             ?>
                              <div class="has-dropdown h-full flex items-center group relative">
-                                 <a href="<?php echo esc_url(home_url('/tin-tuc')); ?>"
+                                 <a href="<?php echo esc_url(home_url('/tin-tuc/')); ?>"
                                      class="nav-link text-xs font-semibold uppercase tracking-widest <?php echo (is_home() || is_singular('post') || is_category() || is_page('tin-tuc') || is_page_template('page-tin-tuc.php')) ? 'active text-gold' : 'text-gray-400'; ?> flex items-center gap-1.5 group-hover:text-white cursor-pointer h-full">
                                      Tin tức
                                      <i class="fa-solid fa-chevron-down text-[8px] opacity-50 group-hover:opacity-100 transition-opacity mt-px"></i>
@@ -112,7 +112,7 @@
                              </div>
                          <?php endif; ?>
 
-                        <a href="<?php echo esc_url(home_url('/lien-he')); ?>"
+                        <a href="<?php echo esc_url(home_url('/lien-he/')); ?>"
                             class="nav-link text-xs font-semibold uppercase tracking-widest <?php echo is_page('lien-he') ? 'active text-gold' : 'text-gray-400'; ?>">
                             Liên hệ
                         </a>

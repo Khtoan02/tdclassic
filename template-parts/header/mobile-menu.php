@@ -73,7 +73,7 @@ $news_categories = tdclassic_get_news_categories();
                             Amply Hi-End
                         </a>
                     <?php endif; ?>
-                    <a href="<?php echo esc_url(home_url('/san-pham')); ?>" class="mob-sub-link" style="color: var(--gold); border-left: 1px solid rgba(197, 160, 89, 0.2); margin-top: 4px;">
+                    <a href="<?php echo esc_url(home_url('/san-pham/')); ?>" class="mob-sub-link" style="color: var(--gold); border-left: 1px solid rgba(197, 160, 89, 0.2); margin-top: 4px;">
                         Tất cả sản phẩm <i class="fa-solid fa-arrow-right text-[8px] ml-1"></i>
                     </a>
                 </div>

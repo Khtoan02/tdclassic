@@ -389,6 +389,9 @@ function tdclassic_scripts()
     // Mega Menu JS - Minified
     wp_enqueue_script('tdclassic-mega-menu', get_template_directory_uri() . '/assets/js/modules/mega-menu.min.js', array('tdclassic-main'), $theme_version, true);
 
+    // Seamless Persistent Header & Page Transitions
+    wp_enqueue_script('tdclassic-page-transitions', get_template_directory_uri() . '/assets/js/modules/page-transitions.min.js', array(), $theme_version, true);
+
     // ===== JS MODULES - Conditional loading =====
     if (is_front_page()) {
         wp_enqueue_script('tdclassic-carousel', get_template_directory_uri() . '/assets/js/modules/carousel.min.js', array('tdclassic-main'), $theme_version, true);

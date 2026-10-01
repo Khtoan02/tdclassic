@@ -724,3 +724,44 @@
         padding-top: 252px !important;
     }
 }
+
+/* ==========================================================================
+   PERSISTENT HEADER VIEW TRANSITIONS (MPA & SPA SEAMLESS TRANSITIONS)
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+        navigation: auto;
+    }
+}
+
+#main-header {
+    view-transition-name: main-header;
+}
+
+#main-content {
+    view-transition-name: main-content;
+}
+
+::view-transition-old(main-header),
+::view-transition-new(main-header) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::view-transition-old(main-content) {
+    animation: 0.15s cubic-bezier(0.4, 0, 1, 1) both td-fade-out;
+}
+
+::view-transition-new(main-content) {
+    animation: 0.22s cubic-bezier(0, 0, 0.2, 1) 0.05s both td-fade-in;
+}
+
+@keyframes td-fade-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-4px); }
+}
+
+@keyframes td-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
