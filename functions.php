@@ -81,6 +81,34 @@ function tdclassic_defer_scripts($tag, $handle)
 }
 add_filter('script_loader_tag', 'tdclassic_defer_scripts', 10, 2);
 
+// 4. Server-Level Page Caching for LiteSpeed Web Server & Edge CDN
+function tdclassic_enable_server_page_cache()
+{
+    if (is_admin() || is_user_logged_in()) {
+        return;
+    }
+
+    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'HEAD') {
+        return;
+    }
+
+    if (function_exists('is_cart') && is_cart()) {
+        return;
+    }
+    if (function_exists('is_checkout') && is_checkout()) {
+        return;
+    }
+    if (function_exists('is_account_page') && is_account_page()) {
+        return;
+    }
+
+    if (!headers_sent()) {
+        header('X-LiteSpeed-Cache-Control: public, max-age=86400');
+        header('Cache-Control: public, max-age=3600, stale-while-revalidate=86400');
+    }
+}
+add_action('send_headers', 'tdclassic_enable_server_page_cache', 1);
+
 // Include admin product specifications
 require_once get_template_directory() . '/inc/admin-product-specs.php';
 
