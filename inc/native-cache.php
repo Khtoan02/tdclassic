@@ -72,10 +72,21 @@ class TD_Classic_Native_Cache {
         return true;
     }
 
+    private function ensure_cache_dir() {
+        if (empty($this->cache_dir)) {
+            $upload_dir = wp_upload_dir();
+            $this->cache_dir = $upload_dir['basedir'] . '/tdclassic-cache';
+        }
+        if (!is_dir($this->cache_dir)) {
+            @mkdir($this->cache_dir, 0755, true);
+        }
+    }
+
     /**
      * Get unique cache key for current request
      */
     private function get_cache_file() {
+        $this->ensure_cache_dir();
         $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
         $uri  = $_SERVER['REQUEST_URI'] ?? '/';
         $is_mobile = wp_is_mobile() ? '_mob' : '_desk';
@@ -97,9 +108,11 @@ class TD_Classic_Native_Cache {
         // 1. SERVE CACHE IF AVAILABLE & FRESH (24h)
         if (file_exists($cache_file) && (time() - filemtime($cache_file) < 86400)) {
             $cached_html = @file_get_contents($cache_file);
-            if (!empty($cached_html)) {
-                header('Content-Type: text/html; charset=UTF-8');
-                header('X-TDClassic-Cache: HIT (Code Tay)');
+            if (!empty($cached_html) && strlen($cached_html) > 1000) {
+                if (!headers_sent()) {
+                    header('Content-Type: text/html; charset=UTF-8');
+                    header('X-TDClassic-Cache: HIT (Code Tay)');
+                }
                 echo $cached_html;
                 echo "\n<!-- TD Classic Native Cache HIT: " . date('Y-m-d H:i:s', filemtime($cache_file)) . " -->";
                 exit;
@@ -116,13 +129,9 @@ class TD_Classic_Native_Cache {
     public function capture_and_save_cache($buffer) {
         // Only cache valid 200 OK HTML responses with real content
         if (strlen($buffer) > 1000 && http_response_code() === 200) {
-            if (!is_dir($this->cache_dir)) {
-                @mkdir($this->cache_dir, 0755, true);
-            }
-
+            $this->ensure_cache_dir();
             $cache_file = $this->get_cache_file();
             @file_put_contents($cache_file, $buffer);
-            header('X-TDClassic-Cache: MISS (Saved by Code Tay)');
         }
         return $buffer;
     }
@@ -131,6 +140,7 @@ class TD_Classic_Native_Cache {
      * Purge all native cache files
      */
     public function purge_cache() {
+        $this->ensure_cache_dir();
         if (is_dir($this->cache_dir)) {
             $files = glob($this->cache_dir . '/*.html');
             if ($files) {
@@ -160,6 +170,7 @@ class TD_Classic_Native_Cache {
      * Get Cache Stats (files count & total size)
      */
     public function get_stats() {
+        $this->ensure_cache_dir();
         $count = 0;
         $size_bytes = 0;
 

@@ -525,37 +525,62 @@ get_header();
                         phẩm nổi bật (Vuốt để xem)</h3>
                     <div class="flex overflow-x-auto gap-6 pb-8 snap-x no-scrollbar">
                         <?php
-                        $args = array(
-                            'post_type' => 'product',
-                            'posts_per_page' => 6,
-                            'no_found_rows' => true,
-                            'update_post_term_cache' => false,
-                            'update_post_meta_cache' => true,
-                            'tax_query' => array(
-                                array(
-                                    'taxonomy' => 'product_cat',
-                                    'field' => 'slug',
-                                    'terms' => $sec['cat_slug']
-                                )
-                            )
-                        );
-                        $query = new WP_Query($args);
+                        $transient_key = 'td_fp_cat_' . sanitize_key($sec['cat_slug']);
+                        $cached_products = get_transient($transient_key);
 
-                        if ($query->have_posts()):
-                            while ($query->have_posts()):
-                                $query->the_post();
-                                global $product;
-                                $price = $product ? $product->get_price_html() : '';
+                        if ($cached_products === false || !is_array($cached_products)) {
+                            $args = array(
+                                'post_type' => 'product',
+                                'posts_per_page' => 6,
+                                'no_found_rows' => true,
+                                'update_post_term_cache' => true,
+                                'update_post_meta_cache' => true,
+                                'tax_query' => array(
+                                    array(
+                                        'taxonomy' => 'product_cat',
+                                        'field' => 'slug',
+                                        'terms' => $sec['cat_slug']
+                                    )
+                                )
+                            );
+                            $query = new WP_Query($args);
+                            $cached_products = array();
+
+                            if ($query->have_posts()) {
+                                while ($query->have_posts()) {
+                                    $query->the_post();
+                                    global $product;
+                                    $thumb = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'medium_large') : '';
+                                    $cats = get_the_terms(get_the_ID(), 'product_cat');
+                                    $cat_name = ($cats && !is_wp_error($cats)) ? $cats[0]->name : '';
+                                    $price = $product ? $product->get_price_html() : 'Liên hệ';
+
+                                    $cached_products[] = array(
+                                        'id' => get_the_ID(),
+                                        'title' => get_the_title(),
+                                        'permalink' => get_permalink(),
+                                        'thumb' => $thumb,
+                                        'cat_name' => $cat_name,
+                                        'price' => $price
+                                    );
+                                }
+                                wp_reset_postdata();
+                            }
+                            set_transient($transient_key, $cached_products, DAY_IN_SECONDS);
+                        }
+
+                        if (!empty($cached_products)):
+                            foreach ($cached_products as $p):
                                 ?>
                                 <!-- Item -->
                                 <div
                                     class="min-w-[280px] md:min-w-[320px] snap-start bg-<?php echo ($sec['bg'] === 'bg-metal') ? 'void' : 'metal'; ?> p-4 border border-white/5 group hover:border-gold/50 transition-all">
                                     <div class="aspect-square bg-surface overflow-hidden mb-4 relative">
-                                        <a href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
-                                            <?php if (has_post_thumbnail()): ?>
-                                                <img src="<?php the_post_thumbnail_url('medium_large'); ?>"
+                                        <a href="<?php echo esc_url($p['permalink']); ?>" aria-label="<?php echo esc_attr($p['title']); ?>">
+                                            <?php if (!empty($p['thumb'])): ?>
+                                                <img src="<?php echo esc_url($p['thumb']); ?>"
                                                     class="w-full h-full object-cover zoom-img"
-                                                    alt="<?php the_title_attribute(); ?>"
+                                                    alt="<?php echo esc_attr($p['title']); ?>"
                                                     width="300" height="300"
                                                     loading="lazy">
                                             <?php else: ?>
@@ -566,22 +591,16 @@ get_header();
                                     </div>
                                     <h4 class="text-white font-sans font-bold text-lg truncate"><a
                                             class="text-white hover:text-gold transition-colors"
-                                            href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+                                            href="<?php echo esc_url($p['permalink']); ?>"><?php echo esc_html($p['title']); ?></a></h4>
                                     <p class="text-xs text-gray-400 mb-2 truncate">
-                                        <?php
-                                        $cats = get_the_terms(get_the_ID(), 'product_cat');
-                                        if ($cats && !is_wp_error($cats)) {
-                                            echo esc_html($cats[0]->name);
-                                        }
-                                        ?>
+                                        <?php echo esc_html($p['cat_name']); ?>
                                     </p>
                                     <p class="text-gold text-xs tracking-wider">
-                                        <?php echo $price ? $price : 'Liên hệ'; ?>
+                                        <?php echo $p['price'] ? $p['price'] : 'Liên hệ'; ?>
                                     </p>
                                 </div>
                                 <?php
-                            endwhile;
-                            wp_reset_postdata();
+                            endforeach;
                         else:
                             ?>
                             <div class="p-8 text-gray-400 italic">Đang cập nhật sản phẩm cho danh mục này...</div>
