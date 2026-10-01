@@ -37,16 +37,16 @@ class TD_Classic_Diagnostics {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
 
         // AJAX endpoints
-        add_action('wp_ajax_td_record_telemetry', array($this, 'ajax_record_telemetry'));
-        add_action('wp_ajax_nopriv_td_record_telemetry', array($this, 'ajax_record_telemetry'));
+        add_action('wp_ajax_tdclassic_record_telemetry', array($this, 'ajax_record_telemetry'));
+        add_action('wp_ajax_nopriv_tdclassic_record_telemetry', array($this, 'ajax_record_telemetry'));
 
-        add_action('wp_ajax_td_record_asset_error', array($this, 'ajax_record_asset_error'));
-        add_action('wp_ajax_nopriv_td_record_asset_error', array($this, 'ajax_record_asset_error'));
+        add_action('wp_ajax_tdclassic_record_asset_error', array($this, 'ajax_record_asset_error'));
+        add_action('wp_ajax_nopriv_tdclassic_record_asset_error', array($this, 'ajax_record_asset_error'));
 
-        add_action('wp_ajax_td_run_audit_page', array($this, 'ajax_run_audit_page'));
-        add_action('wp_ajax_td_clear_perf_logs', array($this, 'ajax_clear_perf_logs'));
-        add_action('wp_ajax_td_clear_error_logs', array($this, 'ajax_clear_error_logs'));
-        add_action('wp_ajax_td_export_diagnostics', array($this, 'ajax_export_diagnostics'));
+        add_action('wp_ajax_tdclassic_run_audit_page', array($this, 'ajax_run_audit_page'));
+        add_action('wp_ajax_tdclassic_clear_perf_logs', array($this, 'ajax_clear_perf_logs'));
+        add_action('wp_ajax_tdclassic_clear_error_logs', array($this, 'ajax_clear_error_logs'));
+        add_action('wp_ajax_tdclassic_export_diagnostics', array($this, 'ajax_export_diagnostics'));
 
         // Frontend Telemetry Injection
         add_action('wp_footer', array($this, 'inject_frontend_collector'), 9999);
@@ -154,7 +154,7 @@ class TD_Classic_Diagnostics {
 
         wp_localize_script('tdclassic-diagnostics-js', 'tdDiagnostics', array(
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce'    => wp_create_nonce('td_diagnostics_nonce'),
+            'nonce'    => wp_create_nonce('tdclassic_diagnostics_nonce'),
             'site_url' => home_url('/'),
             'pages_to_audit' => array(
                 array('title' => 'Trang chủ', 'url' => home_url('/')),
@@ -204,7 +204,7 @@ class TD_Classic_Diagnostics {
                         var assetUrl = target.src || target.href;
                         if (assetUrl && !assetUrl.startsWith('data:') && !assetUrl.startsWith('blob:')) {
                             var payload = (window.URLSearchParams) ? new URLSearchParams() : new FormData();
-                            payload.append('action', 'td_record_asset_error');
+                            payload.append('action', 'tdclassic_record_asset_error');
                             payload.append('target_url', assetUrl);
                             payload.append('page_url', window.location.href);
                             payload.append('error_type', target.tagName.toLowerCase() + '_load_error');
@@ -283,7 +283,7 @@ class TD_Classic_Diagnostics {
                     var isMobile = (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent)) ? 1 : 0;
 
                     var payload = (window.URLSearchParams) ? new URLSearchParams() : new FormData();
-                    payload.append('action', 'td_record_telemetry');
+                    payload.append('action', 'tdclassic_record_telemetry');
                     payload.append('url', serverMetrics.url);
                     payload.append('is_mobile', isMobile);
                     payload.append('server_time_ms', serverMetrics.server_time_ms);
@@ -457,7 +457,7 @@ class TD_Classic_Diagnostics {
      * AJAX: Run On-Demand Audit on a Single Page
      */
     public function ajax_run_audit_page() {
-        check_ajax_referer('td_diagnostics_nonce', 'nonce');
+        check_ajax_referer('tdclassic_diagnostics_nonce', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error(array('message' => 'Unauthorized'));
@@ -580,7 +580,7 @@ class TD_Classic_Diagnostics {
      * AJAX: Clear Performance Logs
      */
     public function ajax_clear_perf_logs() {
-        check_ajax_referer('td_diagnostics_nonce', 'nonce');
+        check_ajax_referer('tdclassic_diagnostics_nonce', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error();
         }
@@ -595,7 +595,7 @@ class TD_Classic_Diagnostics {
      * AJAX: Clear Error Logs
      */
     public function ajax_clear_error_logs() {
-        check_ajax_referer('td_diagnostics_nonce', 'nonce');
+        check_ajax_referer('tdclassic_diagnostics_nonce', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error();
         }
@@ -610,7 +610,7 @@ class TD_Classic_Diagnostics {
      * AJAX: Export Diagnostics Data
      */
     public function ajax_export_diagnostics() {
-        check_ajax_referer('td_diagnostics_nonce', 'nonce');
+        check_ajax_referer('tdclassic_diagnostics_nonce', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error();
         }

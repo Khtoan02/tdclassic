@@ -34,7 +34,7 @@ jQuery(document).ready(function($) {
             url: tdDiagnostics.ajax_url,
             type: 'POST',
             data: {
-                action: 'td_export_diagnostics',
+                action: 'tdclassic_export_diagnostics',
                 nonce: tdDiagnostics.nonce
             },
             success: function(res) {
@@ -136,7 +136,7 @@ jQuery(document).ready(function($) {
             url: tdDiagnostics.ajax_url,
             type: 'POST',
             data: {
-                action: 'td_export_diagnostics',
+                action: 'tdclassic_export_diagnostics',
                 nonce: tdDiagnostics.nonce
             },
             success: function(res) {
@@ -168,7 +168,7 @@ jQuery(document).ready(function($) {
             url: tdDiagnostics.ajax_url,
             type: 'POST',
             data: {
-                action: 'td_clear_perf_logs',
+                action: 'tdclassic_clear_perf_logs',
                 nonce: tdDiagnostics.nonce
             },
             success: function(res) {
@@ -191,7 +191,7 @@ jQuery(document).ready(function($) {
             url: tdDiagnostics.ajax_url,
             type: 'POST',
             data: {
-                action: 'td_clear_error_logs',
+                action: 'tdclassic_clear_error_logs',
                 nonce: tdDiagnostics.nonce
             },
             success: function(res) {
@@ -246,7 +246,7 @@ jQuery(document).ready(function($) {
                 url: tdDiagnostics.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'td_run_audit_page',
+                    action: 'tdclassic_run_audit_page',
                     nonce: tdDiagnostics.nonce,
                     url: item.url
                 },
