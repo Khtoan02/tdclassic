@@ -16,6 +16,17 @@ if (!defined('WP_MEMORY_LIMIT')) {
 // LLMs.txt & Agentic Browsing Support
 require_once get_template_directory() . '/inc/llms-txt.php';
 
+// Ensure physical static robots.txt exists to prevent timeout in Google PageSpeed & crawlers
+function tdclassic_ensure_static_robots_txt()
+{
+    $robots_file = ABSPATH . 'robots.txt';
+    if (!file_exists($robots_file) || filesize($robots_file) < 20) {
+        $content = "User-agent: *\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\nDisallow: /wp-content/uploads/wc-logs/\nDisallow: /wp-content/uploads/woocommerce_transient_files/\nDisallow: /wp-content/uploads/woocommerce_uploads/\nDisallow: /*?add-to-cart=\nDisallow: /*?*add-to-cart=\n\nSitemap: " . esc_url(home_url('/sitemap_index.xml')) . "\n";
+        @file_put_contents($robots_file, $content);
+    }
+}
+add_action('init', 'tdclassic_ensure_static_robots_txt');
+
 // === PERFORMANCE OPTIMIZATIONS ===
 
 // 1. Cleanup WP Head (Remove Emojis, Embeds, etc.)
@@ -456,7 +467,7 @@ add_action('after_setup_theme', 'tdclassic_setup');
 // Enqueue scripts and styles
 function tdclassic_scripts()
 {
-    $theme_version = '3.1.0';
+    $theme_version = '3.1.1';
 
     // Unified High-Performance Theme Bundle (Tailwind + Style + Header + Footer + Mobile)
     wp_enqueue_style('tdclassic-bundle', get_template_directory_uri() . '/assets/css/dist/tdclassic-bundle.min.css', array(), $theme_version);

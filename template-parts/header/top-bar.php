@@ -23,11 +23,11 @@
             </a>
         </div>
 
-        <!-- Right: Brand Message / Address (Luxury feel) -->
-        <div class="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-sans flex items-center gap-2">
-            <span>TD Classic</span>
-            <span class="w-1.5 h-1.5 rounded-full bg-gold opacity-50"></span>
-            <span>Âm Thanh Đích Thực, Cảm Xúc Vẹn Nguyên</span>
+        <!-- Right: Brand Message / Address (Luxury feel with high contrast) -->
+        <div class="text-[10px] uppercase tracking-[0.2em] text-gray-300 font-medium font-sans flex items-center gap-2">
+            <span class="text-gray-200">TD Classic</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+            <span class="text-gray-300">Âm Thanh Đích Thực, Cảm Xúc Vẹn Nguyên</span>
         </div>
 
     </div>
