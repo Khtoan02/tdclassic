@@ -8,6 +8,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// LLMs.txt & Agentic Browsing Support
+require_once get_template_directory() . '/inc/llms-txt.php';
+
 // === PERFORMANCE OPTIMIZATIONS ===
 
 // 1. Cleanup WP Head (Remove Emojis, Embeds, etc.)
@@ -137,7 +140,13 @@ function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $incl
         if ($include_image) {
             $image_id = get_term_meta($category->term_id, 'thumbnail_id', true);
             if ($image_id) {
-                $image_url = wp_get_attachment_image_url($image_id, 'large');
+                $image_url = wp_get_attachment_image_url($image_id, 'medium');
+                if (!$image_url) {
+                    $image_url = wp_get_attachment_image_url($image_id, 'medium_large');
+                }
+                if (!$image_url) {
+                    $image_url = wp_get_attachment_image_url($image_id, 'full');
+                }
                 $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
                 if (empty($image_alt)) {
                     $image_alt = $category->name;
@@ -446,6 +455,7 @@ add_filter('script_loader_tag', function ($tag, $handle, $src) {
         'lucide-icons',
         'tdclassic-main',
         'tdclassic-mega-menu',
+        'tdclassic-page-transitions',
         'tdclassic-carousel',
         'tdclassic-counter',
         'tdclassic-front-page',
@@ -455,8 +465,8 @@ add_filter('script_loader_tag', function ($tag, $handle, $src) {
         'sourcebuster-js',
         'wc-order-attribution'
     );
-    if (in_array($handle, $defer_scripts, true) && strpos($tag, 'defer') === false) {
-        return str_replace(' src=', ' defer src=', $tag);
+    if ((in_array($handle, $defer_scripts, true) || $handle === 'google_gtagjs-js' || strpos($src, 'googletagmanager.com') !== false) && strpos($tag, 'defer') === false) {
+        return str_replace('<script ', '<script defer ', $tag);
     }
     return $tag;
 }, 10, 3);

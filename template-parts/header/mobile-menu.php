@@ -17,7 +17,7 @@ $news_categories = tdclassic_get_news_categories();
             if ($custom_logo_id) {
                 $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
                 if ($logo) {
-                    echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="header-logo-mobile h-11 sm:h-12 w-auto object-contain">';
+                    echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" width="' . esc_attr(!empty($logo[1]) ? $logo[1] : 500) . '" height="' . esc_attr(!empty($logo[2]) ? $logo[2] : 500) . '" class="header-logo-mobile h-11 sm:h-12 w-auto object-contain" loading="lazy">';
                 }
             } else {
                 echo '<div class="flex flex-col leading-none">';

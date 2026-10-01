@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
     
-    <!-- Preconnect to Google Fonts and CDNs for CWV LCP/FCP -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <!-- LLM Discovery & Agentic Browsing Specification -->
+    <link rel="alternate" type="text/markdown" title="LLM Context" href="<?php echo esc_url(home_url('/llms.txt')); ?>">
+
+    <!-- Preload Critical Above-The-Fold Web Fonts (Eliminates Font Swap CLS) -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/cinzel/v26/8vIJ7ww63mVu7gt79mT7PkRXMw.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggixSvfedN62Zw.woff2" as="font" type="font/woff2" crossorigin>
 
     <?php if (is_front_page()): ?>
     <!-- Preload Hero LCP Image -->
@@ -61,7 +63,7 @@
                         if ($custom_logo_id) {
                             $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
                             if ($logo) {
-                                echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="h-12 sm:h-14 lg:h-16 xl:h-20 max-h-[50px] sm:max-h-[58px] lg:max-h-[68px] xl:max-h-[78px] w-auto object-contain opacity-95 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-105">';
+                                echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" width="' . esc_attr(!empty($logo[1]) ? $logo[1] : 500) . '" height="' . esc_attr(!empty($logo[2]) ? $logo[2] : 500) . '" fetchpriority="high" class="h-12 sm:h-14 lg:h-16 xl:h-20 max-h-[50px] sm:max-h-[58px] lg:max-h-[68px] xl:max-h-[78px] w-auto object-contain opacity-95 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-105">';
                             }
                         } else {
                             echo '<div class="flex flex-col items-center leading-none py-0.5">';

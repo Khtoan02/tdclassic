@@ -25,7 +25,7 @@
                             <img src="https://images.dmca.com/Badges/DMCA_badge_grn_60w.png?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" alt="DMCA.com Protection Status" width="60" height="60" />
                         </a>
                         <a href="#" class="fake-goods-badge cert-tooltip" data-tooltip="Cam kết 100% Chính hãng">
-                            <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" width="100" height="32" style="height: 32px; width: auto;" />
+                            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/badges/noi-khong-hang-gia.webp'); ?>" alt="Nói không với hàng giả" width="100" height="32" style="height: 32px; width: auto;" loading="lazy" />
                         </a>
                     </div>
                 </div>

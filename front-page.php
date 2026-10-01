@@ -113,24 +113,24 @@ get_header();
             </div>
             <!-- Slide 1 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-2.webp'); ?>"
+                <img data-src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-2.webp'); ?>"
                     class="w-full h-full object-cover animate-slow-zoom" alt="TD Classic Stage Light"
                     width="1920" height="823"
-                    loading="lazy">
+                    loading="lazy" decoding="async">
             </div>
             <!-- Slide 2 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-3.webp'); ?>"
+                <img data-src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-3.webp'); ?>"
                     class="w-full h-full object-cover animate-slow-zoom" alt="TD Classic Technology"
                     width="1920" height="823"
-                    loading="lazy">
+                    loading="lazy" decoding="async">
             </div>
             <!-- Slide 3 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-4.webp'); ?>"
+                <img data-src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-4.webp'); ?>"
                     class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="TD Classic Concert Sound"
                     width="1920" height="823"
-                    loading="lazy">
+                    loading="lazy" decoding="async">
             </div>
 
             <!-- Premium Gradient Overlay (Smoother transition) -->
@@ -218,9 +218,17 @@ get_header();
             else if (index < 0) currentSlide = totalSlides - 1;
             else currentSlide = index;
 
-            // Toggle Classes
+            // Toggle Classes & Load On-Demand
             slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === currentSlide);
+                const isActive = (i === currentSlide);
+                slide.classList.toggle('active', isActive);
+                if (isActive) {
+                    const img = slide.querySelector('img[data-src]');
+                    if (img) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                }
             });
             
             updateSliderUI(currentSlide);
@@ -425,13 +433,15 @@ get_header();
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 <?php foreach ($sections as $grid_item): ?>
                 <a href="#<?php echo esc_attr($grid_item['id']); ?>"
-                    aria-label="<?php echo esc_attr($grid_item['short_title']); ?>"
+                    aria-label="<?php echo esc_attr('Khám phá phân loại ' . $grid_item['short_title']); ?>"
                     class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
                     <img src="<?php echo esc_url($grid_item['img']); ?>"
-                        alt="<?php echo esc_attr($grid_item['short_title']); ?>"
+                        alt=""
+                        role="presentation"
                         width="300" height="400"
                         class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700"
-                        loading="lazy">
+                        loading="lazy"
+                        decoding="async">
                     <div class="absolute bottom-4 left-0 w-full text-center">
                         <p class="font-sans font-bold text-white text-lg group-hover:text-gold transition-colors">
                             <?php echo esc_html($grid_item['short_title']); ?>
