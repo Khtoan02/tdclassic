@@ -24,14 +24,11 @@ get_header();
             width: 100%;
             background-color: #000;
             overflow: hidden;
-            height: 90vh;
-            min-height: 580px;
+            height: 700px;
         }
-        @media (min-width: 768px) {
+        @media (max-width: 768px) {
             .hero-cinematic-section {
-                height: 80vh;
-                min-height: 600px;
-                max-height: 820px;
+                height: 580px;
             }
         }
 

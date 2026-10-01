@@ -9,6 +9,26 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Auto-generate and cache physical static llms.txt and llms-full.txt in WordPress root
+ * This allows LiteSpeed/Nginx to serve it directly in <10ms statically without booting PHP,
+ * preventing Lighthouse fetch timeouts.
+ */
+function tdclassic_sync_physical_llms_files() {
+    if (!defined('ABSPATH')) return;
+    
+    $llms_path = ABSPATH . 'llms.txt';
+    $llms_full_path = ABSPATH . 'llms-full.txt';
+    
+    if (!file_exists($llms_path) || (time() - @filemtime($llms_path) > 86400)) {
+        @file_put_contents($llms_path, tdclassic_generate_llms_content());
+    }
+    if (!file_exists($llms_full_path) || (time() - @filemtime($llms_full_path) > 86400)) {
+        @file_put_contents($llms_full_path, tdclassic_generate_llms_full_content());
+    }
+}
+add_action('init', 'tdclassic_sync_physical_llms_files', 0);
+
+/**
  * Intercept /llms.txt and /llms-full.txt early on init
  */
 add_action('init', 'tdclassic_handle_llms_txt_requests', 1);
@@ -33,6 +53,7 @@ function tdclassic_send_llms_txt_response($is_full = false) {
     }
     header('Content-Type: text/markdown; charset=utf-8');
     header('Cache-Control: public, max-age=86400, s-maxage=604800');
+    header('X-LiteSpeed-Cache-Control: public, max-age=604800');
     header('Access-Control-Allow-Origin: *');
     header('X-Robots-Tag: index, follow');
 
