@@ -157,6 +157,36 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // Purge Native Cache
+    $('#btn-purge-cache').on('click', function(e) {
+        e.preventDefault();
+        var $btn = $(this);
+        var origText = $btn.html();
+        $btn.prop('disabled', true).html('<span class="dashicons dashicons-update spin"></span> Đang xóa...');
+
+        $.ajax({
+            url: tdDiagnostics.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'tdclassic_purge_native_cache',
+                nonce: tdDiagnostics.nonce
+            },
+            success: function(res) {
+                $btn.prop('disabled', false).html(origText);
+                if (res.success) {
+                    showToast('✅ Đã xóa sạch toàn bộ cache HTML code tay!');
+                    setTimeout(function() { location.reload(); }, 600);
+                } else {
+                    showToast('❌ Không thể xóa cache.', true);
+                }
+            },
+            error: function() {
+                $btn.prop('disabled', false).html(origText);
+                showToast('❌ Lỗi kết nối máy chủ.', true);
+            }
+        });
+    });
+
     // 3. Clear Perf Logs
     $('#btn-clear-perf').on('click', function(e) {
         e.preventDefault();

@@ -789,6 +789,9 @@ class TD_Classic_Diagnostics {
                     <button type="button" id="btn-copy-ai-report" class="button button-primary">
                         <span class="dashicons dashicons-clipboard"></span> Copy Báo Cáo Cho AI
                     </button>
+                    <button type="button" id="btn-purge-cache" class="button button-secondary">
+                        <span class="dashicons dashicons-update"></span> Xóa Cache Code Tay
+                    </button>
                     <button type="button" id="btn-export-json" class="button button-secondary">
                         <span class="dashicons dashicons-download"></span> Tải JSON Debug
                     </button>
@@ -830,7 +833,10 @@ class TD_Classic_Diagnostics {
                                 <tr>
                                     <td>Cơ chế Cache:</td>
                                     <td>
-                                        <span class="td-badge td-badge-success">Code Tay (Native HTTP Header & Transients)</span>
+                                        <?php 
+                                        $cache_stats = class_exists('TD_Classic_Native_Cache') ? TD_Classic_Native_Cache::get_instance()->get_stats() : array('count' => 0, 'size_mb' => 0);
+                                        ?>
+                                        <span class="td-badge td-badge-success">Code Tay (<?php echo intval($cache_stats['count']); ?> trang tĩnh / <?php echo esc_html($cache_stats['size_mb']); ?> MB)</span>
                                     </td>
                                 </tr>
                                 <tr>

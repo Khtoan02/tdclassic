@@ -127,6 +127,9 @@ function tdclassic_purge_server_cache()
 add_action('save_post', 'tdclassic_purge_server_cache');
 add_action('edit_terms', 'tdclassic_purge_server_cache');
 
+// Include Native Handcrafted HTML Page Cache (Code tay 100%)
+require_once get_template_directory() . '/inc/native-cache.php';
+
 // Include admin product specifications
 require_once get_template_directory() . '/inc/admin-product-specs.php';
 
