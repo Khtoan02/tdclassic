@@ -93,9 +93,3 @@ function tdclassic_generate_llms_full_content() {
     return $content;
 }
 
-/**
- * Add LLM discovery link in HTML head
- */
-add_action('wp_head', function () {
-    echo '<link rel="alternate" type="text/markdown" title="LLM Context" href="' . esc_url(home_url('/llms.txt')) . '">' . "\n";
-}, 2);

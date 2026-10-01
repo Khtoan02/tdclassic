@@ -15,6 +15,16 @@
   let isNavigating = false;
   let activeAbort = null;
 
+  // Seed initial page into cache for 0ms return navigation
+  if (typeof document !== 'undefined' && document.documentElement) {
+    const initialHtml = '<!DOCTYPE html>' + document.documentElement.outerHTML;
+    pageCache.set(window.location.href, initialHtml);
+    try {
+      const initUrl = new URL(window.location.href);
+      pageCache.set(initUrl.origin + initUrl.pathname, initialHtml);
+    } catch (e) {}
+  }
+
   // 1. Sleek luxury gold top loading bar
   const progressBar = document.createElement('div');
   progressBar.id = 'td-page-progress';

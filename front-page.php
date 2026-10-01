@@ -18,29 +18,45 @@ get_header();
     <!-- 1. HERO SECTION -->
     <!-- Custom Animations & Slider Styles -->
     <style>
-        @keyframes slowZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
+        /* Hero Section Geometry (Zero Layout Shift) */
+        .hero-cinematic-section {
+            position: relative;
+            width: 100%;
+            background-color: #000;
+            overflow: hidden;
+            height: 90vh;
+            min-height: 580px;
         }
+        @media (min-width: 768px) {
+            .hero-cinematic-section {
+                height: 80vh;
+                min-height: 600px;
+                max-height: 820px;
+            }
+        }
+
         @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% { transform: translateY(8px); }
+            100% { transform: translateY(0); }
         }
         @keyframes progressLoading {
             0% { width: 0%; }
             100% { width: 100%; }
         }
-        .animate-slow-zoom {
-            animation: slowZoom 20s linear infinite alternate;
+        .animate-fade-up-1, .animate-fade-up-2, .animate-fade-up-3, .animate-fade-up-4 {
+            opacity: 1;
+            transform: translateY(0);
         }
-        .animate-fade-up-1 { animation: fadeUp 0.8s ease-out forwards; opacity: 0; }
-        .animate-fade-up-2 { animation: fadeUp 0.8s ease-out 0.2s forwards; opacity: 0; }
-        .animate-fade-up-3 { animation: fadeUp 0.8s ease-out 0.4s forwards; opacity: 0; }
-        .animate-fade-up-4 { animation: fadeUp 0.8s ease-out 0.6s forwards; opacity: 0; }
+        @media (prefers-reduced-motion: no-preference) {
+            .animate-fade-up-1 { animation: fadeUp 0.4s ease-out; }
+            .animate-fade-up-2 { animation: fadeUp 0.5s ease-out; }
+            .animate-fade-up-3 { animation: fadeUp 0.6s ease-out; }
+            .animate-fade-up-4 { animation: fadeUp 0.7s ease-out; }
+        }
         
         /* Slider Classes */
         .hero-slide {
-            transition: opacity 1.2s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
             opacity: 0; 
             z-index: 0;
             pointer-events: none;
@@ -99,36 +115,38 @@ get_header();
     </style>
 
     <!-- 1. HERO SECTION (Premium Cinematic - Aligned) -->
-    <section class="relative w-full bg-black group overflow-hidden min-h-[580px] h-[90vh] md:h-auto md:aspect-[21/9]">
+    <section class="hero-cinematic-section group">
         
         <!-- SLIDER BACKGROUNDS -->
         <div id="hero-slider-container" class="absolute inset-0 w-full h-full">
             <div class="hero-slide active absolute inset-0 w-full h-full">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1.webp'); ?>"
-                    srcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1-mobile.webp'); ?> 768w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1.webp'); ?> 1920w"
-                    sizes="100vw"
-                    class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="TD Classic Live Event Hero"
-                    width="1920" height="823"
-                    fetchpriority="high">
+                <picture class="w-full h-full block">
+                    <source media="(max-width: 768px)" srcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1-mobile.webp'); ?>" type="image/webp">
+                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1.webp'); ?>"
+                        class="w-full h-full object-cover"
+                        alt="TD Classic Live Event Hero"
+                        width="1920" height="814"
+                        fetchpriority="high">
+                </picture>
             </div>
             <!-- Slide 1 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
                 <img data-src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-2.webp'); ?>"
-                    class="w-full h-full object-cover animate-slow-zoom" alt="TD Classic Stage Light"
+                    class="w-full h-full object-cover" alt="TD Classic Stage Light"
                     width="1920" height="823"
                     loading="lazy" decoding="async">
             </div>
             <!-- Slide 2 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
                 <img data-src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-3.webp'); ?>"
-                    class="w-full h-full object-cover animate-slow-zoom" alt="TD Classic Technology"
+                    class="w-full h-full object-cover" alt="TD Classic Technology"
                     width="1920" height="823"
                     loading="lazy" decoding="async">
             </div>
             <!-- Slide 3 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
                 <img data-src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-4.webp'); ?>"
-                    class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="TD Classic Concert Sound"
+                    class="w-full h-full object-cover" alt="TD Classic Concert Sound"
                     width="1920" height="823"
                     loading="lazy" decoding="async">
             </div>

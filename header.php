@@ -9,10 +9,12 @@
     
     <!-- LLM Discovery & Agentic Browsing Specification -->
     <link rel="alternate" type="text/markdown" title="LLM Context" href="<?php echo esc_url(home_url('/llms.txt')); ?>">
+    <link rel="alternate" type="text/markdown" title="LLM Full Documentation" href="<?php echo esc_url(home_url('/llms-full.txt')); ?>">
 
     <!-- Preload Critical Above-The-Fold Web Fonts (Eliminates Font Swap CLS) -->
     <link rel="preload" href="https://fonts.gstatic.com/s/cinzel/v26/8vIJ7ww63mVu7gt79mT7PkRXMw.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggixSvfedN62Zw.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSvfedN4.woff2" as="font" type="font/woff2" crossorigin>
 
     <?php if (is_front_page()): ?>
     <!-- Preload Hero LCP Image -->
