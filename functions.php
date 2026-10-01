@@ -535,9 +535,17 @@ add_filter('script_loader_tag', function ($tag, $handle, $src) {
     if (is_admin()) {
         return $tag;
     }
+
+    // Suppress unneeded WooCommerce scripts on non-shop pages to eliminate errors & reduce payload
+    $is_wc_page = false;
+    if (function_exists('is_woocommerce')) {
+        $is_wc_page = is_woocommerce() || is_cart() || is_checkout() || is_account_page() || is_singular('product');
+    }
+    if (!$is_wc_page && in_array($handle, array('wc-jquery-blockui', 'wc-js-cookie', 'woocommerce', 'wc-add-to-cart', 'wc-cart-fragments', 'sourcebuster-js', 'wc-order-attribution', 'gla-gtag-events'), true)) {
+        return '';
+    }
+
     $defer_scripts = array(
-        'jquery-core',
-        'jquery-migrate',
         'lucide-icons',
         'tdclassic-main',
         'tdclassic-mega-menu',
