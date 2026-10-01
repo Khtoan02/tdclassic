@@ -708,11 +708,18 @@ class TD_Classic_Diagnostics {
         $loop_status = is_wp_error($loop_res) ? 'Lỗi: ' . $loop_res->get_error_message() : (wp_remote_retrieve_response_code($loop_res) . ' OK');
 
         // OPcache info
-        $opcache_enabled = function_exists('opcache_get_status') && !empty(opcache_get_status(false)['opcache_enabled']);
+        $opcache_enabled = false;
         $opcache_memory = 0;
-        if ($opcache_enabled) {
-            $op_status = opcache_get_status(false);
-            $opcache_memory = round(($op_status['memory_usage']['used_memory'] ?? 0) / 1048576, 1);
+        if (function_exists('opcache_get_status')) {
+            $op_status = @opcache_get_status(false);
+            if (!empty($op_status['opcache_enabled'])) {
+                $opcache_enabled = true;
+                $opcache_memory = round(($op_status['memory_usage']['used_memory'] ?? 0) / 1048576, 1);
+            }
+        }
+        if (!$opcache_enabled && (bool) ini_get('opcache.enable')) {
+            $opcache_enabled = true;
+            $opcache_memory = 'Đang chạy (hàm xem RAM bị chặn)';
         }
 
         // Active plugins
