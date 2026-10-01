@@ -124,6 +124,9 @@ require_once get_template_directory() . '/inc/admin-company-info.php';
 // Include auto-create pages functionality
 require_once get_template_directory() . '/inc/auto-create-pages.php';
 
+// Include Performance & Diagnostics System
+require_once get_template_directory() . '/inc/admin-diagnostics.php';
+
 /**
  * Get WooCommerce product categories with images and descriptions (Cached via Transients)
  * 
@@ -435,7 +438,7 @@ add_action('after_setup_theme', 'tdclassic_setup');
 // Enqueue scripts and styles
 function tdclassic_scripts()
 {
-    $theme_version = '3.0.3';
+    $theme_version = '3.1.0';
 
     // Unified High-Performance Theme Bundle (Tailwind + Style + Header + Footer + Mobile)
     wp_enqueue_style('tdclassic-bundle', get_template_directory_uri() . '/assets/css/dist/tdclassic-bundle.min.css', array(), $theme_version);
