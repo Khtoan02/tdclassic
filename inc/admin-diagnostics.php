@@ -335,8 +335,6 @@ class TD_Classic_Diagnostics {
      * AJAX: Record Telemetry
      */
     public function ajax_record_telemetry() {
-        check_ajax_referer('td_diagnostics_nonce', false); // Optional for beacon
-
         $url = isset($_POST['url']) ? esc_url_raw($_POST['url']) : '';
         if (empty($url)) {
             wp_send_json_error();
