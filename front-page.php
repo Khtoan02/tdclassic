@@ -510,6 +510,9 @@ get_header();
                         $args = array(
                             'post_type' => 'product',
                             'posts_per_page' => 6,
+                            'no_found_rows' => true,
+                            'update_post_term_cache' => false,
+                            'update_post_meta_cache' => true,
                             'tax_query' => array(
                                 array(
                                     'taxonomy' => 'product_cat',

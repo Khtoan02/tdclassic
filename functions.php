@@ -94,8 +94,7 @@ require_once get_template_directory() . '/inc/admin-company-info.php';
 require_once get_template_directory() . '/inc/auto-create-pages.php';
 
 /**
- * Get WooCommerce product categories with images and descriptions
- * Unified function that can be used for both front-page and mega menu
+ * Get WooCommerce product categories with images and descriptions (Cached via Transients)
  * 
  * @param int $limit Number of categories to return
  * @param bool $hide_empty Whether to hide empty categories
@@ -104,97 +103,120 @@ require_once get_template_directory() . '/inc/auto-create-pages.php';
  */
 function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $include_image = true)
 {
-    // Lấy danh mục "Chưa phân loại" để loại bỏ
-    $uncategorized_term = get_term_by('slug', 'uncategorized', 'product_cat');
-    $exclude_ids = array();
+    $cache_key = 'td_cats_' . ($hide_empty ? '1' : '0') . '_' . ($include_image ? '1' : '0');
+    $all_cats = get_transient($cache_key);
 
-    if ($uncategorized_term && !is_wp_error($uncategorized_term)) {
-        $exclude_ids[] = $uncategorized_term->term_id;
-    }
+    if ($all_cats === false || !is_array($all_cats)) {
+        // Lấy danh mục "Chưa phân loại" để loại bỏ
+        $uncategorized_term = get_term_by('slug', 'uncategorized', 'product_cat');
+        $exclude_ids = array();
 
-    $categories = get_terms(array(
-        'taxonomy' => 'product_cat',
-        'hide_empty' => $hide_empty,
-        'orderby' => 'menu_order',
-        'order' => 'ASC',
-        'exclude' => $exclude_ids,
-        'number' => $limit
-    ));
-
-    if (is_wp_error($categories) || empty($categories)) {
-        return array();
-    }
-
-    $formatted_categories = array();
-
-    foreach ($categories as $category) {
-        // Bỏ qua danh mục "Chưa phân loại" nếu vẫn còn
-        if ($category->slug === 'uncategorized' || strpos(strtolower($category->name), 'uncategorized') !== false) {
-            continue;
+        if ($uncategorized_term && !is_wp_error($uncategorized_term)) {
+            $exclude_ids[] = $uncategorized_term->term_id;
         }
 
-        // Lấy hình ảnh danh mục (nếu cần)
-        $image_url = '';
-        $image_alt = $category->name;
+        $categories = get_terms(array(
+            'taxonomy' => 'product_cat',
+            'hide_empty' => $hide_empty,
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
+            'exclude' => $exclude_ids,
+            'number' => 24
+        ));
 
-        if ($include_image) {
-            $image_id = get_term_meta($category->term_id, 'thumbnail_id', true);
-            if ($image_id) {
-                $image_url = wp_get_attachment_image_url($image_id, 'medium');
-                if (!$image_url) {
-                    $image_url = wp_get_attachment_image_url($image_id, 'medium_large');
-                }
-                if (!$image_url) {
-                    $image_url = wp_get_attachment_image_url($image_id, 'full');
-                }
-                $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
-                if (empty($image_alt)) {
-                    $image_alt = $category->name;
-                }
-            } else {
-                // Hình ảnh mặc định
-                $image_url = 'https://www.hifivietnam.vn/wp-content/uploads/2024/05/hfvn-nhahathoguom-5.webp';
+        if (is_wp_error($categories) || empty($categories)) {
+            return array();
+        }
+
+        $all_cats = array();
+
+        foreach ($categories as $category) {
+            // Bỏ qua danh mục "Chưa phân loại" nếu vẫn còn
+            if ($category->slug === 'uncategorized' || strpos(strtolower($category->name), 'uncategorized') !== false) {
+                continue;
             }
+
+            // Lấy hình ảnh danh mục (nếu cần)
+            $image_url = '';
+            $image_alt = $category->name;
+
+            if ($include_image) {
+                $image_id = get_term_meta($category->term_id, 'thumbnail_id', true);
+                if ($image_id) {
+                    $image_url = wp_get_attachment_image_url($image_id, 'medium');
+                    if (!$image_url) {
+                        $image_url = wp_get_attachment_image_url($image_id, 'medium_large');
+                    }
+                    if (!$image_url) {
+                        $image_url = wp_get_attachment_image_url($image_id, 'full');
+                    }
+                    $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+                    if (empty($image_alt)) {
+                        $image_alt = $category->name;
+                    }
+                } else {
+                    // Hình ảnh mặc định
+                    $image_url = 'https://www.hifivietnam.vn/wp-content/uploads/2024/05/hfvn-nhahathoguom-5.webp';
+                }
+            }
+
+            // Lấy mô tả danh mục (lược bỏ HTML cho menu và thẻ tóm tắt)
+            $clean_desc = wp_strip_all_tags($category->description);
+            $clean_desc = trim(preg_replace('/\s+/', ' ', $clean_desc));
+            $description = !empty($clean_desc) ? wp_trim_words($clean_desc, 30, '...') : ('Khám phá các sản phẩm ' . strtolower($category->name) . ' chất lượng cao');
+
+            // URL danh mục
+            $category_url = get_term_link($category);
+            if (is_wp_error($category_url)) {
+                $category_url = home_url('/product-category/' . $category->slug);
+            }
+
+            $all_cats[] = array(
+                'id' => $category->term_id,
+                'name' => $category->name,
+                'slug' => $category->slug,
+                'description' => $description,
+                'image_url' => $image_url,
+                'image_alt' => $image_alt,
+                'url' => $category_url,
+                'count' => $category->count
+            );
         }
 
-        // Lấy mô tả danh mục (lược bỏ HTML cho menu và thẻ tóm tắt)
-        $clean_desc = wp_strip_all_tags($category->description);
-        $clean_desc = trim(preg_replace('/\s+/', ' ', $clean_desc));
-        $description = !empty($clean_desc) ? wp_trim_words($clean_desc, 30, '...') : ('Khám phá các sản phẩm ' . strtolower($category->name) . ' chất lượng cao');
-
-        // URL danh mục
-        $category_url = get_term_link($category);
-        if (is_wp_error($category_url)) {
-            $category_url = home_url('/product-category/' . $category->slug);
-        }
-
-        $formatted_categories[] = array(
-            'id' => $category->term_id,
-            'name' => $category->name,
-            'slug' => $category->slug,
-            'description' => $description,
-            'image_url' => $image_url,
-            'image_alt' => $image_alt,
-            'url' => $category_url,
-            'count' => $category->count
-        );
+        set_transient($cache_key, $all_cats, DAY_IN_SECONDS);
     }
 
-    return $formatted_categories;
+    if ($limit > 0 && count($all_cats) > $limit) {
+        return array_slice($all_cats, 0, $limit);
+    }
+
+    return $all_cats;
 }
 
 /**
- * Get products by category for Mega Menu
+ * Get products by category for Mega Menu (Cached via Transients)
  * @param string $category_slug Category slug
  * @param int $limit Number of products to return
  * @return array Formatted products array
  */
 function tdclassic_get_products_by_category($category_slug, $limit = 8)
 {
+    $cache_key = 'td_prods_' . sanitize_key($category_slug);
+    $cached = get_transient($cache_key);
+
+    if ($cached !== false && is_array($cached)) {
+        if ($limit > 0 && count($cached) > $limit) {
+            return array_slice($cached, 0, $limit);
+        }
+        return $cached;
+    }
+
     $args = array(
         'post_type' => 'product',
-        'posts_per_page' => $limit,
+        'posts_per_page' => 8,
         'post_status' => 'publish',
+        'no_found_rows' => true,
+        'update_post_term_cache' => false,
         'tax_query' => array(
             array(
                 'taxonomy' => 'product_cat',
@@ -275,6 +297,12 @@ function tdclassic_get_products_by_category($category_slug, $limit = 8)
         );
     }
 
+    set_transient($cache_key, $formatted_products, DAY_IN_SECONDS);
+
+    if ($limit > 0 && count($formatted_products) > $limit) {
+        return array_slice($formatted_products, 0, $limit);
+    }
+
     return $formatted_products;
 }
 
@@ -292,11 +320,17 @@ function tdclassic_get_mega_menu_categories($limit = 10)
 }
 
 /**
- * Get news categories for dropdown menu
+ * Get news categories for dropdown menu (Cached via Transients)
  * @return array Formatted news categories
  */
 function tdclassic_get_news_categories()
 {
+    $cache_key = 'td_news_categories';
+    $cached = get_transient($cache_key);
+    if ($cached !== false && is_array($cached)) {
+        return $cached;
+    }
+
     $categories = get_categories(array(
         'orderby' => 'name',
         'order' => 'ASC',
@@ -315,8 +349,27 @@ function tdclassic_get_news_categories()
         );
     }
 
+    set_transient($cache_key, $formatted_categories, DAY_IN_SECONDS);
+
     return $formatted_categories;
 }
+
+/**
+ * Clear all theme-specific transients upon updating posts, products, or categories
+ */
+function tdclassic_clear_all_transients()
+{
+    global $wpdb;
+    $wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_td_%' OR option_name LIKE '_transient_timeout_td_%'");
+}
+add_action('save_post_product', 'tdclassic_clear_all_transients');
+add_action('delete_post', 'tdclassic_clear_all_transients');
+add_action('edited_product_cat', 'tdclassic_clear_all_transients');
+add_action('create_product_cat', 'tdclassic_clear_all_transients');
+add_action('delete_product_cat', 'tdclassic_clear_all_transients');
+add_action('save_post_post', 'tdclassic_clear_all_transients');
+add_action('category_edit', 'tdclassic_clear_all_transients');
+add_action('category_create', 'tdclassic_clear_all_transients');
 
 // Theme setup
 function tdclassic_setup()
@@ -435,6 +488,11 @@ add_action('wp_enqueue_scripts', 'tdclassic_scripts');
  * Make non-critical external fonts and stylesheets non-render-blocking
  */
 add_filter('style_loader_tag', function ($html, $handle, $href, $media) {
+    // Suppress any 404 dawnbridge or stray tailwind-output.css
+    if ($handle === 'dawnbridge-tailwind' || strpos($href, 'tailwind-output.css') !== false) {
+        return '';
+    }
+
     if (in_array($handle, array('font-awesome', 'google-fonts'), true)) {
         return '<link rel="stylesheet" id="' . esc_attr($handle) . '-css" href="' . esc_url($href) . '" media="print" onload="this.media=\'all\'">' . "\n" .
                '<noscript><link rel="stylesheet" id="' . esc_attr($handle) . '-noscript-css" href="' . esc_url($href) . '"></noscript>' . "\n";
@@ -476,7 +534,9 @@ add_filter('script_loader_tag', function ($tag, $handle, $src) {
  * Dequeue WooCommerce styles and scripts on non-shop pages to improve Core Web Vitals
  */
 add_action('wp_enqueue_scripts', function () {
-    // Always dequeue unneeded wc-blocks and default WooCommerce layout styles on frontend
+    // Always dequeue unneeded dawnbridge-tailwind, wc-blocks and default WooCommerce layout styles on frontend
+    wp_dequeue_style('dawnbridge-tailwind');
+    wp_deregister_style('dawnbridge-tailwind');
     wp_dequeue_style('wc-blocks-style');
     wp_deregister_style('wc-blocks-style');
     wp_dequeue_style('woocommerce-layout');
