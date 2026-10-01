@@ -10,16 +10,14 @@ get_header(); ?>
 <!-- Noise Texture Overlay -->
 <div class="noise"></div>
 
-<main id="main" class="site-main products-page antialiased selection:bg-gold selection:text-black"
-    style="background-color: #050505;">
+<div id="products-archive" class="products-page antialiased selection:bg-gold selection:text-black bg-[#050505]">
 
-    <!-- PAGE HERO -->
-    <section class="relative pt-36 md:pt-40 pb-16 md:pb-24 bg-void overflow-hidden">
+    <!-- PAGE HERO (Clearance ensures never covered by fixed header) -->
+    <section class="category-hero-section page-header-clearance relative pb-14 md:pb-20 bg-void overflow-hidden text-center">
         <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#151515] to-transparent opacity-30">
         </div>
         <div class="container mx-auto px-4 md:px-6 lg:px-12 relative z-10 text-center">
-            <span class="font-sans text-[#C5A059] text-xs tracking-[0.3em] uppercase block mb-4 md:mb-6">Bộ sưu tập
-                2025</span>
+            <span class="font-sans text-[#C5A059] text-xs tracking-[0.3em] uppercase block mb-3 md:mb-5">Bộ sưu tập 2025</span>
             <h1 class="font-sans font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-4 md:mb-6 break-words"
                 style="font-family: 'Manrope', sans-serif;">KHO TÀNG ÂM THANH</h1>
             <p class="font-sans text-gray-400 text-sm md:text-base font-light leading-relaxed max-w-2xl mx-auto"
@@ -30,13 +28,13 @@ get_header(); ?>
         </div>
     </section>
 
-    <!-- STICKY FILTER BAR -->
-    <div class="sticky top-0 z-30 bg-[#050505]/80 transition-all duration-300"
-        style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05);">
+    <!-- STICKY FILTER BAR (Sticks flush below header) -->
+    <div class="sticky z-30 bg-[#050505]/95 transition-all duration-300 top-[68px] lg:top-[142px]"
+        style="backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.08);">
         <div class="container mx-auto px-6 md:px-12">
-            <div class="flex items-center justify-between h-16">
+            <div class="flex items-center justify-between h-14 md:h-16">
                 <!-- Mobile Scrollable List -->
-                <div class="flex overflow-x-auto gap-8 w-full md:justify-center items-center"
+                <div class="flex overflow-x-auto gap-6 md:gap-8 w-full md:justify-center items-center scrollbar-none"
                     style="-ms-overflow-style: none; scrollbar-width: none;">
                     <?php
                     // Detect which taxonomy to use (same as main section)
@@ -100,22 +98,25 @@ get_header(); ?>
             // Alternate background colors
             $bg_class = ($category_count % 2 == 0) ? 'bg-[#151515]' : 'bg-void';
 
-            // Get products for this category
-            $products_query = new WP_Query(array(
-                'post_type' => 'product',
-                'posts_per_page' => 5, // 1 spotlight + 4 grid
-                'post_status' => 'publish',
-                'tax_query' => array(
-                    array(
-                        'taxonomy' => $taxonomy,
-                        'field' => 'term_id',
-                        'terms' => $category->term_id,
-                    ),
-                ),
-            ));
+            // Get cached products for this category
+            $cache_key = 'td_arch_cat_' . $category->term_id;
+            $cat_data = get_transient($cache_key);
 
-            // Only show section if there are products
-            if ($products_query->have_posts()):
+            if (false === $cat_data) {
+                $products_query = new WP_Query(array(
+                    'post_type' => 'product',
+                    'posts_per_page' => 5, // 1 spotlight + 4 grid
+                    'post_status' => 'publish',
+                    'no_found_rows' => false,
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => $taxonomy,
+                            'field' => 'term_id',
+                            'terms' => $category->term_id,
+                        ),
+                    ),
+                ));
+
                 $products_array = array();
                 while ($products_query->have_posts()):
                     $products_query->the_post();
@@ -126,8 +127,21 @@ get_header(); ?>
                         'thumbnail' => get_the_post_thumbnail_url(get_the_ID(), 'large'),
                     );
                 endwhile;
+                $found_count = (int) $products_query->found_posts;
                 wp_reset_postdata();
 
+                $cat_data = array(
+                    'products' => $products_array,
+                    'found_posts' => $found_count,
+                );
+                set_transient($cache_key, $cat_data, DAY_IN_SECONDS);
+            }
+
+            $products_array = $cat_data['products'];
+            $found_posts = $cat_data['found_posts'];
+
+            // Only show section if there are products
+            if (!empty($products_array)):
                 // Get spotlight product (first one)
                 $spotlight = isset($products_array[0]) ? $products_array[0] : null;
                 // Get grid products (rest)
@@ -135,7 +149,7 @@ get_header(); ?>
                 ?>
 
                 <!-- CATEGORY SECTION: <?php echo strtoupper($category->name); ?> -->
-                <section id="<?php echo $category->slug; ?>" class="py-16 md:py-24 <?php echo $bg_class; ?> border-b border-white/5"
+                <section id="<?php echo $category->slug; ?>" class="py-16 md:py-24 <?php echo $bg_class; ?> border-b border-white/5 scroll-mt-32 lg:scroll-mt-48"
                     data-category="<?php echo $category->slug; ?>">
                     <div class="container mx-auto px-4 md:px-6 lg:px-12">
                         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-4 md:gap-6">
@@ -237,12 +251,12 @@ get_header(); ?>
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($products_query->found_posts > 5): ?>
+                        <?php if ($found_posts > 5): ?>
                             <div class="text-center mt-12">
                                 <a href="<?php echo get_term_link($category); ?>"
                                     class="btn-load-more group inline-flex flex-col items-center gap-2 text-gray-400 hover:text-[#C5A059] transition-colors">
                                     <span class="font-sans text-xs font-bold uppercase tracking-widest">Xem tất cả
-                                        <?php echo $products_query->found_posts; ?> sản phẩm</span>
+                                        <?php echo $found_posts; ?> sản phẩm</span>
                                     <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300"></i>
                                 </a>
                             </div>
@@ -251,7 +265,7 @@ get_header(); ?>
                 </section>
 
             <?php
-            endif; // if products_query->have_posts()
+            endif; // if !empty($products_array)
     
             // Add promotional banner after every 2 categories
             if ($category_count % 2 == 0):
@@ -417,59 +431,53 @@ get_header(); ?>
     }
 </style>
 
+</div><!-- #products-archive -->
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Initialize Lucide icons
+    function initCategoryFilters() {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
 
-        // Smooth scroll for category filter links
         const filterLinks = document.querySelectorAll('.category-filter-link');
         const allSections = document.querySelectorAll('section[data-category]');
         const promotionalBanners = document.querySelectorAll('section.py-16.md\\:py-20, section.py-20');
 
+        if (!filterLinks.length) return;
+
         filterLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
+            link.onclick = function (e) {
                 e.preventDefault();
 
-                // Remove active class from all links
                 filterLinks.forEach(l => {
                     l.classList.remove('active', 'border-[#C5A059]', 'text-[#C5A059]');
                     l.classList.add('text-gray-500');
                     l.style.borderBottomColor = '';
                 });
 
-                // Add active class to clicked link
                 this.classList.add('active');
                 this.classList.remove('text-gray-500');
                 this.style.color = '#C5A059';
                 this.style.borderBottomColor = '#C5A059';
 
-                // Get target category
                 const category = this.getAttribute('data-category');
 
-                // Show/hide sections based on category
                 if (category === 'all') {
-                    // Show all category sections
                     allSections.forEach(section => {
                         section.style.display = '';
                     });
-                    // Show promotional banners
                     promotionalBanners.forEach(banner => {
                         if (!banner.hasAttribute('data-category')) {
                             banner.style.display = '';
                         }
                     });
                 } else {
-                    // Hide promotional banners when filtering
                     promotionalBanners.forEach(banner => {
                         if (!banner.hasAttribute('data-category')) {
                             banner.style.display = 'none';
                         }
                     });
 
-                    // Show only selected category
                     let targetSection = null;
                     allSections.forEach(section => {
                         if (section.getAttribute('data-category') === category) {
@@ -480,16 +488,19 @@ get_header(); ?>
                         }
                     });
 
-                    // Smooth scroll to the target section
                     if (targetSection) {
                         setTimeout(() => {
                             targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100);
+                        }, 50);
                     }
                 }
-            });
+            };
         });
-    });
+    }
+
+    initCategoryFilters();
+    document.addEventListener('DOMContentLoaded', initCategoryFilters);
+    window.addEventListener('tdclassic:page-transitioned', initCategoryFilters);
 </script>
 
 <?php get_footer(); ?>

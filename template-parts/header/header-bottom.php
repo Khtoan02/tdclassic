@@ -132,7 +132,7 @@ if ($is_fallback) {
 }
 ?>
 <?php 
-$show_mobile_cats = is_front_page() || is_post_type_archive('product') || is_page('san-pham') || is_page_template('page-san-pham.php') || is_tax('product_cat') || is_tax('product_category') || is_singular('product');
+$show_mobile_cats = (is_front_page() || is_tax('product_cat') || is_tax('product_category') || is_singular('product')) && !is_post_type_archive('product') && !is_page('san-pham') && !is_page_template('page-san-pham.php');
 ?>
 <div class="header-bottom-wrapper w-full <?php echo !$show_mobile_cats ? 'hidden lg:block' : ''; ?>">
     <div class="max-w-[1700px] mx-auto px-6 md:px-12">

@@ -277,7 +277,7 @@
       return;
     }
 
-    // 2. Single on-demand fetch with 3.5s safety timeout
+    // 2. Single on-demand fetch with 7.5s safety timeout
     isNavigating = true;
     startProgress();
 
@@ -287,7 +287,7 @@
     activeAbort = new AbortController();
     const abortTimeout = setTimeout(() => {
       if (activeAbort) activeAbort.abort('Timeout');
-    }, 3500);
+    }, 7500);
 
     try {
       const res = await fetch(url, {

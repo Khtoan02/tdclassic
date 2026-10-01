@@ -46,7 +46,7 @@ html, body, .products-page {
 }
 </style>
 
-<main id="main" class="site-main products-page bg-[#050505] text-white selection:bg-[#C5A059] selection:text-black">
+<div id="products-page-container" class="products-page bg-[#050505] text-white selection:bg-[#C5A059] selection:text-black">
     <!-- Hero Section -->
     <section class="category-hero-section page-header-clearance relative pb-12 sm:pb-16 bg-[#050505] border-b border-white/5 overflow-hidden text-center">
         <div class="absolute inset-0 z-0 opacity-20 pointer-events-none bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:24px_24px]"></div>
@@ -82,7 +82,7 @@ html, body, .products-page {
     </section>
 
     <!-- Sticky Filter & Search Bar -->
-    <div class="sticky top-0 z-30 backdrop-blur-md border-b border-white/10 py-3 transition-all duration-300 shadow-lg" style="background-color: #080808 !important;">
+    <div class="sticky top-[68px] lg:top-[142px] z-30 backdrop-blur-md border-b border-white/10 py-3 transition-all duration-300 shadow-lg" style="background-color: #080808 !important;">
         <div class="container mx-auto px-4 max-w-7xl">
             <div class="flex flex-col md:flex-row items-center justify-between gap-3">
                 <!-- Mobile Horizontal Touch Scroller for Categories -->
@@ -332,6 +332,7 @@ html, body, .products-page {
     color: #888;
 }
 </style>
+</div><!-- #products-page-container -->
 
 <script>
 // Filter & Search Script with URL Query Support

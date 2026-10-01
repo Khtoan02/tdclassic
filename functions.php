@@ -435,7 +435,7 @@ add_action('after_setup_theme', 'tdclassic_setup');
 // Enqueue scripts and styles
 function tdclassic_scripts()
 {
-    $theme_version = '3.0.2';
+    $theme_version = '3.0.3';
 
     // Unified High-Performance Theme Bundle (Tailwind + Style + Header + Footer + Mobile)
     wp_enqueue_style('tdclassic-bundle', get_template_directory_uri() . '/assets/css/dist/tdclassic-bundle.min.css', array(), $theme_version);
