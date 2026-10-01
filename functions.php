@@ -703,8 +703,10 @@ add_action('wp_head', 'tdclassic_seo_meta_tags', 1);
 function tdclassic_preload_lcp_images()
 {
     if (is_front_page()) {
-        $front_hero_url = 'https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover-scaled.webp';
-        echo '<link rel="preload" href="' . esc_url($front_hero_url) . '" as="image" fetchpriority="high">' . "\n";
+        $hero_desktop = get_stylesheet_directory_uri() . '/assets/images/hero/hero-1.webp';
+        $hero_mobile = get_stylesheet_directory_uri() . '/assets/images/hero/hero-1-mobile.webp';
+        echo '<link rel="preload" href="' . esc_url($hero_mobile) . '" as="image" type="image/webp" media="(max-width: 768px)" fetchpriority="high">' . "\n";
+        echo '<link rel="preload" href="' . esc_url($hero_desktop) . '" as="image" type="image/webp" media="(min-width: 769px)" fetchpriority="high">' . "\n";
     } elseif (is_singular('product')) {
         $product_img_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
         if ($product_img_url) {

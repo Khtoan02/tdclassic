@@ -261,7 +261,10 @@ get_header();
 
         function initSlider() {
             if(slides.length === 0) return;
-            slideInterval = setInterval(nextSlide, 5000);
+            // Delay first auto-slide so Core Web Vitals measures slide 0 correctly
+            setTimeout(() => {
+                slideInterval = setInterval(nextSlide, 6000);
+            }, 6000);
         }
 
         document.addEventListener('DOMContentLoaded', initSlider);
