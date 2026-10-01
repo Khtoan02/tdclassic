@@ -98,21 +98,7 @@
     }
 </script>
 
-<!-- Speculation Rules for Instant Navigation -->
-<script type="speculationrules">
-{
-  "prerender": [{
-    "where": {
-      "and": [
-        { "href_matches": "/*" },
-        { "not": { "href_matches": "/wp-admin/*" } },
-        { "not": { "href_matches": "/wp-login.php" } }
-      ]
-    },
-    "eagerness": "moderate"
-  }]
-}
-</script>
+
 
 </body>
 </html>

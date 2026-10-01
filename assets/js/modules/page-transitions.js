@@ -1,19 +1,19 @@
 /**
- * TD Classic - Seamless Persistent Header & Instant Page Transitions
- * Creates a smooth, app-like SPA experience:
- * - Persistent, non-reloading header across all page navigations
- * - Zero-latency instant loading with intelligent link prefetching
- * - Ultra-smooth View Transitions API with CSS cross-fade fallback
+ * TD Classic - Seamless Persistent Header & Ultra-Fast Page Transitions
+ * - Persistent header across page navigations without page reload flicker
+ * - Instant back/forward navigation using in-memory page cache
+ * - Single-request on-demand loading on user click (Zero hover prefetch spam)
+ * - Safe 3.5s timeout with automatic native browser fallback
  * - Real-time active navigation states in desktop header & mobile drawer
- * - Dynamic head assets (styles & scripts) synchronization
- * - Dynamic mobile category bar state updating
+ * - Dynamic head assets (CSS & scripts) synchronization
  */
 (function () {
   'use strict';
 
-  // In-memory cache for instant navigation
+  // In-memory cache for instant subsequent navigations
   const pageCache = new Map();
   let isNavigating = false;
+  let activeAbort = null;
 
   // 1. Sleek luxury gold top loading bar
   const progressBar = document.createElement('div');
@@ -61,24 +61,7 @@
     }
   }
 
-  // 3. Intelligent Prefetching on Hover or Touch
-  function prefetchUrl(url) {
-    if (!isInternalNavigableUrl(url) || pageCache.has(url)) return;
-    fetch(url, {
-      headers: { 'X-Requested-With': 'TDClassic-SPA' },
-      credentials: 'same-origin',
-    })
-      .then((res) => {
-        if (res.ok) return res.text();
-        throw new Error('Prefetch failed');
-      })
-      .then((html) => {
-        pageCache.set(url, html);
-      })
-      .catch(() => {});
-  }
-
-  // 4. Update Navigation Links Active States in Header & Drawer
+  // 3. Update Navigation Links Active States in Header & Drawer
   function updateNavActiveStates(targetUrl) {
     let targetPath = '/';
     try {
@@ -123,7 +106,7 @@
     });
   }
 
-  // 5. Update Category Bar visibility and content
+  // 4. Update Category Bar visibility and content
   function updateCategoryBar(newDoc) {
     const currentBottom = document.querySelector('.header-bottom-wrapper');
     const newBottom = newDoc.querySelector('.header-bottom-wrapper');
@@ -133,7 +116,7 @@
     }
   }
 
-  // 6. Dynamic Head Assets (Stylesheets & External Scripts)
+  // 5. Dynamic Head Assets (Stylesheets & External Scripts)
   function updateHeadAssets(newDoc) {
     // Sync missing stylesheets
     const currentStyles = new Set(Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map((l) => l.href));
@@ -159,7 +142,7 @@
     });
   }
 
-  // 7. Execute scripts embedded in the new content
+  // 6. Execute scripts embedded in the new content
   function executeNewScripts(container) {
     const scripts = container.querySelectorAll('script');
     scripts.forEach((oldScript) => {
@@ -170,7 +153,7 @@
     });
   }
 
-  // 8. Re-initialize page widgets & interactive features
+  // 7. Re-initialize page widgets & interactive features
   function reinitPageFeatures() {
     // Lucide Icons
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
@@ -185,13 +168,81 @@
     window.dispatchEvent(new Event('tdclassic:page-transitioned'));
   }
 
-  // 9. Core Page Loader
+  // 8. Swap DOM content
+  async function renderPageHtml(html, canonicalUrl, pushState) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Check for canonical link in document
+    const canonicalTag = doc.querySelector('link[rel="canonical"]');
+    if (canonicalTag && canonicalTag.href) {
+      canonicalUrl = canonicalTag.href;
+    }
+
+    const currentMain = document.getElementById('main-content');
+    const newMain = doc.getElementById('main-content');
+
+    if (!currentMain || !newMain) {
+      window.location.href = canonicalUrl;
+      return;
+    }
+
+    // Synchronize head assets (CSS & scripts) before swapping DOM
+    updateHeadAssets(doc);
+
+    // DOM Swap function
+    const performSwap = () => {
+      // Update Title
+      document.title = doc.title;
+
+      // Update Body Classes (for page-specific layouts)
+      document.body.className = doc.body.className;
+
+      // Swap Content inside Main without touching Header or Footer!
+      currentMain.innerHTML = newMain.innerHTML;
+      currentMain.className = newMain.className;
+
+      // Update browser history synchronously with DOM swap
+      if (pushState) {
+        window.history.pushState({ url: canonicalUrl }, doc.title, canonicalUrl);
+      }
+
+      // Update Header Nav & Category Bar
+      updateNavActiveStates(canonicalUrl);
+      updateCategoryBar(doc);
+
+      // Reset scroll position to top
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      // Execute any new inline scripts
+      executeNewScripts(currentMain);
+
+      // Re-init interactive components
+      reinitPageFeatures();
+    };
+
+    // Native View Transitions if supported by browser
+    if (document.startViewTransition) {
+      await document.startViewTransition(performSwap).finished;
+    } else {
+      // Fast, elegant CSS crossfade fallback
+      currentMain.style.transition = 'opacity 0.12s ease, transform 0.12s ease';
+      currentMain.style.opacity = '0';
+      currentMain.style.transform = 'translateY(4px)';
+
+      await new Promise((r) => setTimeout(r, 120));
+      performSwap();
+
+      currentMain.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      currentMain.style.opacity = '1';
+      currentMain.style.transform = 'translateY(0)';
+    }
+  }
+
+  // 9. Core Page Loader (Single Request on Demand)
   async function loadPage(url, pushState = true) {
     if (isNavigating) return;
     if (url === window.location.href && pushState) return;
-
-    isNavigating = true;
-    startProgress();
 
     // Close Mobile Drawer if open
     const overlay = document.getElementById('mobile-menu-overlay');
@@ -200,102 +251,64 @@
       document.body.style.overflow = '';
     }
 
+    // 1. Instant cache check (0ms for visited pages)
+    let cachedHtml = pageCache.get(url);
+    if (!cachedHtml) {
+      try {
+        const u = new URL(url, window.location.href);
+        cachedHtml = pageCache.get(u.origin + u.pathname);
+      } catch (e) {}
+    }
+
+    if (cachedHtml) {
+      startProgress();
+      await renderPageHtml(cachedHtml, url, pushState);
+      finishProgress();
+      return;
+    }
+
+    // 2. Single on-demand fetch with 3.5s safety timeout
+    isNavigating = true;
+    startProgress();
+
+    if (activeAbort) {
+      activeAbort.abort();
+    }
+    activeAbort = new AbortController();
+    const abortTimeout = setTimeout(() => {
+      if (activeAbort) activeAbort.abort('Timeout');
+    }, 3500);
+
     try {
-      let html = pageCache.get(url);
-      let canonicalUrl = url;
+      const res = await fetch(url, {
+        headers: { 'X-Requested-With': 'TDClassic-SPA' },
+        credentials: 'same-origin',
+        signal: activeAbort.signal,
+      });
+      clearTimeout(abortTimeout);
 
-      if (!html) {
-        const res = await fetch(url, {
-          headers: { 'X-Requested-With': 'TDClassic-SPA' },
-          credentials: 'same-origin',
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        if (res.url) canonicalUrl = res.url;
-        html = await res.text();
-        pageCache.set(url, html);
-        if (canonicalUrl !== url) {
-          pageCache.set(canonicalUrl, html);
-        }
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const canonicalUrl = res.url || url;
+      const html = await res.text();
+
+      pageCache.set(url, html);
+      if (canonicalUrl !== url) {
+        pageCache.set(canonicalUrl, html);
       }
 
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-
-      // Check for canonical link in document
-      const canonicalTag = doc.querySelector('link[rel="canonical"]');
-      if (canonicalTag && canonicalTag.href) {
-        canonicalUrl = canonicalTag.href;
-      }
-
-      const currentMain = document.getElementById('main-content');
-      const newMain = doc.getElementById('main-content');
-
-      if (!currentMain || !newMain) {
-        // Fallback to native navigation if layout structure differs
-        window.location.href = url;
-        return;
-      }
-
-      // Synchronize head assets (CSS & scripts) before swapping DOM
-      updateHeadAssets(doc);
-
-      // DOM Swap function
-      const performSwap = () => {
-        // Update Title
-        document.title = doc.title;
-
-        // Update Body Classes (for page-specific layouts)
-        document.body.className = doc.body.className;
-
-        // Swap Content inside Main without touching Header or Footer!
-        currentMain.innerHTML = newMain.innerHTML;
-        currentMain.className = newMain.className;
-
-        // Update browser history synchronously with DOM swap
-        if (pushState) {
-          window.history.pushState({ url: canonicalUrl }, doc.title, canonicalUrl);
-        }
-
-        // Update Header Nav & Category Bar
-        updateNavActiveStates(canonicalUrl);
-        updateCategoryBar(doc);
-
-        // Reset scroll position to top
-        window.scrollTo({ top: 0, behavior: 'instant' });
-
-        // Execute any new inline scripts
-        executeNewScripts(currentMain);
-
-        // Re-init interactive components
-        reinitPageFeatures();
-      };
-
-      // Native View Transitions if supported by browser
-      if (document.startViewTransition) {
-        await document.startViewTransition(performSwap).finished;
-      } else {
-        // Fast, elegant CSS crossfade fallback
-        currentMain.style.transition = 'opacity 0.12s ease, transform 0.12s ease';
-        currentMain.style.opacity = '0';
-        currentMain.style.transform = 'translateY(4px)';
-
-        await new Promise((r) => setTimeout(r, 120));
-        performSwap();
-
-        currentMain.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-        currentMain.style.opacity = '1';
-        currentMain.style.transform = 'translateY(0)';
-      }
+      await renderPageHtml(html, canonicalUrl, pushState);
     } catch (err) {
+      clearTimeout(abortTimeout);
       console.warn('[TD Classic] Seamless navigation fallback to full load:', err);
       window.location.href = url;
     } finally {
       finishProgress();
       isNavigating = false;
+      activeAbort = null;
     }
   }
 
-  // 10. Intercept link clicks
+  // 10. Intercept link clicks only (No background hover spam)
   document.addEventListener('click', function (e) {
     const link = e.target.closest('a');
     if (!link) return;
@@ -318,26 +331,7 @@
     loadPage(link.href, true);
   });
 
-  // 11. Instant Hover / Touch Prefetching
-  document.addEventListener(
-    'mouseover',
-    function (e) {
-      const link = e.target.closest('a');
-      if (link && link.href) prefetchUrl(link.href);
-    },
-    { passive: true }
-  );
-
-  document.addEventListener(
-    'touchstart',
-    function (e) {
-      const link = e.target.closest('a');
-      if (link && link.href) prefetchUrl(link.href);
-    },
-    { passive: true }
-  );
-
-  // 12. Handle Browser Back & Forward
+  // 11. Handle Browser Back & Forward
   window.addEventListener('popstate', function () {
     loadPage(window.location.href, false);
   });
