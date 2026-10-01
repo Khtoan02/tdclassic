@@ -1,0 +1,16 @@
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependencies
+node_modules/
+
+# Test & Audit Reports
+lighthouse-*.json
+*.log
+scratch/
+
+# Temp DB dumps
+assets/db-content.txt

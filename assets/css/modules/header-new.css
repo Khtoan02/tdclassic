@@ -563,6 +563,7 @@
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     text-decoration: none;
     cursor: pointer;
+    white-space: nowrap !important;
 }
 
 .bottom-cat-link:hover {
@@ -694,5 +695,32 @@
     .admin-bar .sticky-bar,
     .admin-bar .sticky.top-0 {
         top: 142px !important;
+    }
+}
+
+/* ==========================================================================
+   PAGE HERO CLEARANCE (PREVENTS COVERING BY FIXED HEADER ON DESKTOP & MOBILE)
+   ========================================================================== */
+.page-header-clearance,
+.contact-hero-section {
+    padding-top: 140px !important;
+}
+
+@media (min-width: 1024px) {
+    .page-header-clearance,
+    .contact-hero-section {
+        padding-top: 220px !important;
+    }
+}
+
+.admin-bar .page-header-clearance,
+.admin-bar .contact-hero-section {
+    padding-top: 186px !important;
+}
+
+@media (min-width: 783px) {
+    .admin-bar .page-header-clearance,
+    .admin-bar .contact-hero-section {
+        padding-top: 252px !important;
     }
 }

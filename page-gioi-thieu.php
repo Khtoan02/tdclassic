@@ -36,16 +36,16 @@ get_header(); ?>
     style="background-color: #050505;">
     <!-- Background Image with overlay -->
     <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1600&auto=format&fit=crop"
-            class="w-full h-full object-cover opacity-30" alt="Sound Studio" decoding="sync" fetchpriority="high">
+        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero/hero-2.webp'); ?>"
+            class="w-full h-full object-cover opacity-30" alt="Sound Studio" width="1920" height="1080" decoding="sync" fetchpriority="high">
         <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent"></div>
     </div>
 
-    <div class="container mx-auto px-6 md:px-12 relative z-10 text-center py-24">
-        <span class="inline-block font-sans text-xs tracking-[0.3em] uppercase mb-6" style="color: #C5A059;">About
+    <div class="container mx-auto px-6 md:px-12 relative z-10 text-center page-header-clearance pb-20 md:pb-32">
+        <span class="inline-block font-sans text-xs tracking-[0.3em] uppercase mb-4 md:mb-6" style="color: #C5A059;">About
             Us</span>
-        <h1 class="font-sans font-bold text-5xl md:text-7xl text-white mb-6">Về Chúng Tôi</h1>
-        <p class="font-sans text-gray-400 text-lg max-w-2xl mx-auto font-light leading-relaxed">
+        <h1 class="font-sans font-bold text-3xl sm:text-5xl md:text-7xl text-white mb-6 break-words">Về Chúng Tôi</h1>
+        <p class="font-sans text-gray-400 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
             Hơn một thập kỷ kiến tạo chuẩn mực âm thanh chuyên nghiệp tại Việt Nam
         </p>
     </div>
@@ -101,9 +101,9 @@ get_header(); ?>
                 <div class="absolute -top-4 -right-4 w-24 h-24 border-t border-r"
                     style="border-color: rgba(197,160,89,0.3);"></div>
                 <div class="aspect-[4/3] overflow-hidden" style="background-color: #1E1E1E;">
-                    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1200&auto=format&fit=crop"
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero/hero-3.webp'); ?>"
                         class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 filter grayscale group-hover:grayscale-0"
-                        alt="TD Classic Story" loading="lazy">
+                        alt="TD Classic Story" width="600" height="450" loading="lazy">
                 </div>
             </div>
         </div>
@@ -117,25 +117,25 @@ get_header(); ?>
             <div class="p-6 border" style="border-color: rgba(255,255,255,0.05);">
                 <span class="block font-serif text-4xl md:text-5xl text-white stats-counter"
                     style="color: #C5A059;">10+</span>
-                <span class="font-sans text-xs uppercase tracking-widest text-gray-500 mt-2 block">Năm Kinh
+                <span class="font-sans text-xs uppercase tracking-widest text-gray-400 mt-2 block">Năm Kinh
                     Nghiệm</span>
             </div>
             <div class="p-6 border" style="border-color: rgba(255,255,255,0.05);">
                 <span class="block font-serif text-4xl md:text-5xl text-white stats-counter"
                     style="color: #C5A059;">1000+</span>
-                <span class="font-sans text-xs uppercase tracking-widest text-gray-500 mt-2 block">Dự Án Hoàn
+                <span class="font-sans text-xs uppercase tracking-widest text-gray-400 mt-2 block">Dự Án Hoàn
                     Thành</span>
             </div>
             <div class="p-6 border" style="border-color: rgba(255,255,255,0.05);">
                 <span class="block font-serif text-4xl md:text-5xl text-white stats-counter"
                     style="color: #C5A059;">63</span>
-                <span class="font-sans text-xs uppercase tracking-widest text-gray-500 mt-2 block">Tỉnh Thành Phủ
+                <span class="font-sans text-xs uppercase tracking-widest text-gray-400 mt-2 block">Tỉnh Thành Phủ
                     Sóng</span>
             </div>
             <div class="p-6 border" style="border-color: rgba(255,255,255,0.05);">
                 <span class="block font-serif text-4xl md:text-5xl text-white stats-counter"
                     style="color: #C5A059;">50+</span>
-                <span class="font-sans text-xs uppercase tracking-widest text-gray-500 mt-2 block">Đại Lý Ủy
+                <span class="font-sans text-xs uppercase tracking-widest text-gray-400 mt-2 block">Đại Lý Ủy
                     Quyền</span>
             </div>
         </div>
@@ -215,7 +215,7 @@ get_header(); ?>
                     </svg>
                 </div>
                 <h3 class="font-sans font-bold text-xl text-white mb-4">Chất Lượng</h3>
-                <p class="font-sans text-sm text-gray-500 font-light leading-relaxed">
+                <p class="font-sans text-sm text-gray-400 font-light leading-relaxed">
                     Cam kết chất lượng sản phẩm đạt tiêu chuẩn quốc tế. Mỗi sản phẩm đều trải qua quy trình kiểm định
                     nghiêm ngặt 48 giờ trước khi đến tay khách hàng.
                 </p>
@@ -234,7 +234,7 @@ get_header(); ?>
                     </svg>
                 </div>
                 <h3 class="font-sans font-bold text-xl text-white mb-4">Uy Tín</h3>
-                <p class="font-sans text-sm text-gray-500 font-light leading-relaxed">
+                <p class="font-sans text-sm text-gray-400 font-light leading-relaxed">
                     Xây dựng niềm tin từ sự minh bạch và chính trực. Hơn 10 năm đồng hành cùng hàng ngàn khách hàng là
                     minh chứng cho cam kết của chúng tôi.
                 </p>
@@ -251,7 +251,7 @@ get_header(); ?>
                     </svg>
                 </div>
                 <h3 class="font-sans font-bold text-xl text-white mb-4">Sáng Tạo</h3>
-                <p class="font-sans text-sm text-gray-500 font-light leading-relaxed">
+                <p class="font-sans text-sm text-gray-400 font-light leading-relaxed">
                     Không ngừng đổi mới và cải tiến. Đội ngũ R&D luôn nghiên cứu những công nghệ mới nhất để mang đến
                     giải pháp tối ưu cho khách hàng.
                 </p>
@@ -266,7 +266,7 @@ get_header(); ?>
         <div class="text-center mb-16">
             <span class="font-sans text-xs tracking-[0.3em] uppercase" style="color: #C5A059;">Our Team</span>
             <h2 class="font-sans font-bold text-3xl md:text-4xl text-white mt-4">Đội Ngũ Chuyên Gia</h2>
-            <p class="font-sans text-gray-500 text-sm mt-4 max-w-xl mx-auto">
+            <p class="font-sans text-gray-400 text-sm mt-4 max-w-xl mx-auto">
                 Những con người tâm huyết với âm thanh, sẵn sàng mang đến giải pháp tốt nhất cho bạn
             </p>
         </div>
@@ -284,8 +284,8 @@ get_header(); ?>
                     style="background-color: #050505;">
                     <span class="block font-sans font-bold text-3xl mb-2"
                         style="color: #C5A059;"><?php echo $member['count']; ?></span>
-                    <h4 class="font-sans text-white text-sm font-bold mb-1"><?php echo $member['role']; ?></h4>
-                    <p class="font-sans text-xs text-gray-500"><?php echo $member['desc']; ?></p>
+                    <h3 class="font-sans text-white text-sm font-bold mb-1"><?php echo $member['role']; ?></h3>
+                    <p class="font-sans text-xs text-gray-400"><?php echo $member['desc']; ?></p>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -296,8 +296,11 @@ get_header(); ?>
 <section class="py-24 relative overflow-hidden"
     style="background-color: #050505; border-top: 1px solid rgba(255,255,255,0.05);">
     <div class="absolute inset-0 opacity-20">
-        <img src="https://images.unsplash.com/photo-1571974599782-87624638275e?q=80&w=1600&auto=format&fit=crop"
-            class="w-full h-full object-cover" loading="lazy">
+        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero/hero-4.webp'); ?>"
+            class="w-full h-full object-cover"
+            alt="Hợp tác phát triển giải pháp âm thanh cùng TD Classic"
+            width="1920" height="1080"
+            loading="lazy">
         <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-[#050505]"></div>
     </div>
 
@@ -322,13 +325,13 @@ get_header(); ?>
 </section>
 
 <!-- LEGAL FOOTNOTE -->
-<section class="py-16 font-sans text-[10px] leading-relaxed"
-    style="background-color: #050505; color: #666666; border-top: 1px solid rgba(255,255,255,0.05);">
+<section class="py-16 font-sans text-xs leading-relaxed"
+    style="background-color: #050505; color: #9ca3af; border-top: 1px solid rgba(255,255,255,0.05);">
     <div class="container mx-auto px-6 md:px-12 max-w-4xl">
-        <div class="text-center opacity-50">
-            <p>Thông tin được cung cấp trên trang này phản ánh hoạt động của công ty tại thời điểm cập nhật.
+        <div class="text-center">
+            <p style="color: #9ca3af !important;">Thông tin được cung cấp trên trang này phản ánh hoạt động của công ty tại thời điểm cập nhật.
                 TD Classic bảo lưu quyền thay đổi thông tin mà không cần báo trước.</p>
-            <p class="mt-4">Mã tài liệu: DOC-ABOUT-<?php echo date('Y'); ?> | Bản quyền © <?php echo date('Y'); ?> TD
+            <p class="mt-4" style="color: #9ca3af !important;">Mã tài liệu: DOC-ABOUT-<?php echo date('Y'); ?> | Bản quyền © <?php echo date('Y'); ?> TD
                 Classic Audio. Mọi quyền được bảo lưu.</p>
         </div>
     </div>

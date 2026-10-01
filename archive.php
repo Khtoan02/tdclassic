@@ -1,53 +1,30 @@
 <?php
 /**
- * The template for displaying project category archive pages
- * Upgraded to Dark Luxury Aesthetic for TD Classic
+ * The template for displaying archive pages (Tags, Author, Date, Taxonomies)
  *
  * @package TD_Classic
  */
 
-get_header(); 
-
-$term = get_queried_object();
-$count = isset($term->count) ? (int)$term->count : 0;
-?>
+get_header(); ?>
 
 <main id="primary" class="site-main bg-void text-gray-200 min-h-screen pt-28 md:pt-36 pb-20">
-    <div class="max-w-6xl mx-auto px-6">
-        
-        <!-- Archive Header -->
+    <div class="max-w-6xl mx-auto px-6 py-10 md:py-16">
         <header class="mb-12 border-b border-white/10 pb-8">
-            <nav class="mb-4 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-widest text-gray-400" aria-label="Breadcrumb">
-                <a href="<?php echo esc_url(home_url('/')); ?>" class="hover:text-gold transition-colors">Trang chủ</a>
-                <span class="text-white/20">/</span>
-                <a href="<?php echo esc_url(home_url('/du-an')); ?>" class="hover:text-gold transition-colors">Dự án</a>
-                <span class="text-white/20">/</span>
-                <span class="text-gold"><?php single_term_title(); ?></span>
-            </nav>
-
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-bold tracking-tight mb-3">
-                        Dự án: <?php single_term_title(); ?>
-                    </h1>
-                    <?php if (term_description()) : ?>
-                        <div class="text-sm md:text-base text-gray-400 font-light max-w-2xl leading-relaxed">
-                            <?php echo wpautop(term_description()); ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <div class="text-xs uppercase tracking-widest text-gold font-mono whitespace-nowrap">
-                    <?php echo $count; ?> Dự án thực hiện
-                </div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gold text-xs font-semibold uppercase tracking-widest mb-4">
+                <span>Chuyên mục lưu trữ</span>
             </div>
+            <h1 class="font-serif text-3xl md:text-5xl text-white font-bold tracking-tight mb-3">
+                <?php the_archive_title(); ?>
+            </h1>
+            <?php the_archive_description('<div class="text-sm md:text-base text-gray-400 font-light mt-2 max-w-2xl leading-relaxed">', '</div>'); ?>
         </header>
 
         <?php if (have_posts()) : ?>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php while (have_posts()) : the_post(); 
                     $thumb_url = has_post_thumbnail() 
-                        ? get_the_post_thumbnail_url(get_the_ID(), 'large') 
-                        : (function_exists('tdclassic_get_project_thumb_url') ? tdclassic_get_project_thumb_url(get_the_ID(), 'large') : get_template_directory_uri() . '/assets/images/placeholder.jpg');
+                        ? get_the_post_thumbnail_url(get_the_ID(), 'medium_large') 
+                        : get_template_directory_uri() . '/assets/images/placeholder.jpg';
                 ?>
                     <article id="post-<?php the_ID(); ?>" <?php post_class('group bg-surface/50 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/40 transition-all duration-300 flex flex-col h-full hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]'); ?>>
                         <a href="<?php the_permalink(); ?>" class="aspect-video overflow-hidden bg-metal block relative">
@@ -55,16 +32,13 @@ $count = isset($term->count) ? (int)$term->count : 0;
                                  alt="<?php the_title_attribute(); ?>"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
                                  loading="lazy">
-                            <div class="absolute top-3 left-3 bg-black/70 backdrop-blur-md border border-white/10 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-gold">
-                                Dự án tiêu biểu
-                            </div>
                         </a>
 
                         <div class="p-6 flex flex-col flex-grow">
                             <div class="flex items-center gap-3 text-xs text-gray-400 mb-3">
                                 <span><?php echo get_the_date('d/m/Y'); ?></span>
-                                <span class="text-white/20">•</span>
-                                <span class="text-gold font-medium">Hoàn thành</span>
+                                <span>•</span>
+                                <span><?php the_author(); ?></span>
                             </div>
 
                             <h2 class="font-serif text-xl text-white font-bold line-clamp-2 mb-3 group-hover:text-gold transition-colors">
@@ -78,7 +52,7 @@ $count = isset($term->count) ? (int)$term->count : 0;
                             </div>
 
                             <a href="<?php the_permalink(); ?>" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold hover:text-white transition-colors mt-auto">
-                                <span>Xem công trình</span>
+                                <span>Đọc tiếp</span>
                                 <i class="fa-solid fa-arrow-right text-[10px] transform group-hover:translate-x-1 transition-transform"></i>
                             </a>
                         </div>
@@ -98,14 +72,13 @@ $count = isset($term->count) ? (int)$term->count : 0;
 
         <?php else : ?>
             <div class="text-center py-16 px-4 bg-surface/30 border border-white/5 rounded-3xl max-w-xl mx-auto">
-                <h3 class="font-serif text-2xl text-white font-semibold mb-3">Chưa có dự án nào</h3>
-                <p class="text-sm text-gray-400 mb-6 font-light">Hiện tại danh mục "<?php single_term_title(); ?>" chưa có công trình nào được công bố.</p>
-                <a href="<?php echo esc_url(home_url('/du-an')); ?>" class="inline-flex items-center px-6 py-3 rounded-full bg-gold hover:bg-goldDim text-black text-xs font-bold uppercase tracking-widest transition-colors">
-                    Xem tất cả dự án
+                <h3 class="font-serif text-2xl text-white font-semibold mb-3">Chưa có bài viết</h3>
+                <p class="text-sm text-gray-400 mb-6">Mục này hiện tại chưa có nội dung nào.</p>
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="inline-flex items-center px-6 py-3 rounded-full bg-gold hover:bg-goldDim text-black text-xs font-bold uppercase tracking-widest transition-colors">
+                    Về trang chủ
                 </a>
             </div>
         <?php endif; ?>
-
     </div>
 </main>
 

@@ -8,7 +8,7 @@ get_header();
 
 <!-- Noise Overlay -->
 <div class="noise"
-    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; opacity: 0.03; background: url('https://grainy-gradients.vercel.app/noise.svg');">
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; opacity: 0.03; background: url('<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/noise.svg'); ?>');">
 </div>
 
 <style>
@@ -262,6 +262,14 @@ get_header();
         border-radius: 8px;
         overflow: hidden;
     }
+    @media (max-width: 768px) {
+        .product-entry-content table {
+            display: block;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
     .product-entry-content table th,
     .product-entry-content table td {
         padding: 12px 16px;
@@ -343,7 +351,10 @@ get_header();
                                 <img id="mainImage" src="<?php the_post_thumbnail_url('large'); ?>"
                                     class="w-full h-full object-cover p-8 md:p-16 transition-all duration-700 group-hover:scale-105"
                                     style="opacity: 1; transition: opacity 0.3s ease, transform 0.7s ease;"
-                                    alt="<?php the_title_attribute(); ?>" />
+                                    alt="<?php the_title_attribute(); ?>"
+                                    width="600" height="600"
+                                    decoding="sync"
+                                    fetchpriority="high" />
                                 <!-- Floating Badge -->
                                 <div class="absolute top-6 left-6 border px-3 py-1 backdrop-blur"
                                     style="border-color: #C5A059; background: rgba(0,0,0,0.5);">
@@ -402,7 +413,7 @@ get_header();
                                 ?>
                             </span>
                             <span class="text-white/20">•</span>
-                            <span class="font-sans text-[11px] tracking-wider uppercase text-gray-500">TD Classic</span>
+                            <span class="font-sans text-[11px] tracking-wider uppercase text-gray-400">TD Classic</span>
                         </div>
 
                         <h1 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white mb-5 leading-tight" style="color: #ffffff !important;">
@@ -492,7 +503,7 @@ get_header();
                         Bài viết chi tiết
                     </span>
                     <h2 class="font-sans font-bold text-3xl md:text-4xl text-white">Mô Tả Sản Phẩm</h2>
-                    <p class="font-sans text-xs mt-2 uppercase tracking-widest text-gray-500">Detailed Overview & Specifications</p>
+                    <p class="font-sans text-xs mt-2 uppercase tracking-widest text-gray-400">Detailed Overview & Specifications</p>
                 </div>
                 <div class="product-entry-content p-6 sm:p-10 md:p-12 rounded-2xl border border-white/[0.06]" style="background-color: #0d0d0d;">
                     <?php 
@@ -566,16 +577,17 @@ get_header();
                                         style="background-color: #1E1E1E;">
                                         <?php if (has_post_thumbnail()): ?>
                                             <img src="<?php the_post_thumbnail_url('medium'); ?>" alt="<?php the_title_attribute(); ?>"
+                                                width="300" height="300" loading="lazy"
                                                 class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                                         <?php else: ?>
                                             <div class="w-full h-full flex items-center justify-center text-xs"
-                                                style="color: #666666;">No Image</div>
+                                                style="color: #9ca3af;">No Image</div>
                                         <?php endif; ?>
                                     </div>
                                     <div class="flex-grow flex flex-col justify-between">
                                         <div>
                                             <span class="text-[10px] tracking-widest uppercase block mb-1"
-                                                style="color: #666666;">
+                                                style="color: #9ca3af;">
                                                 <?php
                                                 $cats = get_the_terms(get_the_ID(), 'product_cat');
                                                 echo ($cats && !is_wp_error($cats)) ? esc_html($cats[0]->name) : 'Audio';
@@ -615,6 +627,20 @@ get_header();
                 </div>
             </div>
         </section>
+
+        <!-- Mobile Sticky Floating Bottom CTA Bar -->
+        <div class="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-[#080808]/95 backdrop-blur-md border-t border-[#C5A059]/30 px-4 py-2.5 flex items-center gap-3 shadow-[0_-10px_25px_rgba(0,0,0,0.8)]">
+            <a href="tel:<?php echo esc_attr(str_replace(' ', '', tdclassic_get_company_phone())); ?>"
+               class="flex-1 flex items-center justify-center gap-2 py-3 rounded-full bg-[#161616] border border-[#C5A059]/40 text-[#C5A059] font-bold text-xs uppercase tracking-wider active:scale-95 transition-all">
+                <i class="fa-solid fa-phone text-xs"></i>
+                Gọi tư vấn
+            </a>
+            <a href="<?php echo esc_url(home_url('/lien-he')); ?>"
+               class="flex-1 flex items-center justify-center gap-2 py-3 rounded-full bg-[#C5A059] text-black font-bold text-xs uppercase tracking-wider active:scale-95 transition-all shadow-[0_0_15px_rgba(197,160,89,0.3)]">
+                <i class="fa-solid fa-file-invoice text-xs"></i>
+                Nhận báo giá
+            </a>
+        </div>
 
     <?php endwhile; ?>
 </main>

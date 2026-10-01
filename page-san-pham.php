@@ -1,94 +1,141 @@
 <?php
 /**
  * Template Name: San Pham
- * The template for displaying the products page
+ * The template for displaying the products page - Luxury Dark Mobile-Optimized Edition
  */
 
 get_header(); ?>
 
-<main id="main" class="site-main products-page">
-    <!-- Hero Section with Category Title -->
-    <section class="category-hero-section">
-        <div class="category-hero-background">
-            <div class="category-hero-overlay"></div>
-            <div class="tech-grid-pattern"></div>
-        </div>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="category-hero-content text-center">
-                        <h1 class="category-hero-title">
-                            <span class="category-title-main">Sản phẩm</span>
-                            <span class="category-title-sub">GIẢI PHÁP & SẢN PHẨM</span>
-                        </h1>
-                        <div class="category-description-wrapper">
-                            <p class="category-hero-description">Khám phá các giải pháp và sản phẩm âm thanh chuyên nghiệp được thiết kế cho doanh nghiệp hiện đại.</p>
-                        </div>
-                        <div class="category-stats">
-                            <div class="stat-item">
-                                <div class="stat-number"><?php echo (int) wp_count_posts('product')->publish; ?>+</div>
-                                <div class="stat-label">Sản phẩm</div>
-                            </div>
-                            <div class="stat-divider"></div>
-                            <div class="stat-item">
-                                <div class="stat-number">100%</div>
-                                <div class="stat-label">Chính hãng</div>
-                            </div>
-                            <div class="stat-divider"></div>
-                            <div class="stat-item">
-                                <div class="stat-number">24/7</div>
-                                <div class="stat-label">Hỗ trợ</div>
-                            </div>
-                        </div>
-                    </div>
+<style>
+/* Scoped Dark Theme Overrides for Products Page */
+html, body, .products-page {
+    background-color: #050505 !important;
+    color: #f3f4f6 !important;
+}
+.products-page p, 
+.products-page .text-gray-400,
+.products-page .text-gray-300 {
+    color: #e5e5e5 !important;
+}
+.products-page .filter-tab {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #f3f4f6 !important;
+}
+.products-page .filter-tab:hover {
+    border-color: #C5A059 !important;
+    color: #C5A059 !important;
+    background: rgba(197, 160, 89, 0.1) !important;
+}
+.products-page .filter-tab.active {
+    background: #C5A059 !important;
+    border-color: #C5A059 !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.3) !important;
+}
+.products-page input#product-search {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
+.products-page .product-card {
+    background: #111111 !important;
+    background-color: #111111 !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+</style>
+
+<main id="main" class="site-main products-page bg-[#050505] text-white selection:bg-[#C5A059] selection:text-black">
+    <!-- Hero Section -->
+    <section class="category-hero-section page-header-clearance relative pb-12 sm:pb-16 bg-[#050505] border-b border-white/5 overflow-hidden text-center">
+        <div class="absolute inset-0 z-0 opacity-20 pointer-events-none bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:24px_24px]"></div>
+        <div class="container mx-auto px-4 relative z-10 max-w-4xl">
+            <span class="inline-block text-[#C5A059] font-sans text-xs font-bold tracking-[0.25em] uppercase mb-3 px-3 py-1 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/20">
+                Bộ Sưu Tập Âm Thanh TD Classic
+            </span>
+            <h1 class="text-2xl sm:text-4xl lg:text-6xl font-extrabold uppercase tracking-tight text-white mb-4 font-serif break-words">
+                Hệ Thống <span class="text-[#C5A059]">Sản Phẩm</span>
+            </h1>
+            <p class="text-sm sm:text-base text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-8">
+                Khám phá các dòng thiết bị âm thanh chuyên nghiệp, dàn karaoke cao cấp và giải pháp âm thanh chuẩn mực được phối ghép bởi chuyên gia.
+            </p>
+
+            <!-- Stats Bar -->
+            <div class="inline-flex items-center justify-center gap-4 sm:gap-8 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-white text-sm sm:text-base text-[#C5A059]"><?php echo (int) wp_count_posts('product')->publish; ?>+</span>
+                    <span>Thiết bị</span>
+                </div>
+                <span class="w-1 h-3 bg-white/20"></span>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-white text-sm sm:text-base text-[#C5A059]">100%</span>
+                    <span>Chính hãng</span>
+                </div>
+                <span class="w-1 h-3 bg-white/20"></span>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-white text-sm sm:text-base text-[#C5A059]">24/7</span>
+                    <span>Bảo hành tận nơi</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Filter Section -->
-    <section class="products-filter">
-        <div class="container">
-            <div class="filter-wrapper">
-                <div class="filter-tabs">
-                    <button class="filter-tab active" data-filter="all">Tất cả</button>
+    <!-- Sticky Filter & Search Bar -->
+    <div class="sticky top-0 z-30 backdrop-blur-md border-b border-white/10 py-3 transition-all duration-300 shadow-lg" style="background-color: #080808 !important;">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-3">
+                <!-- Mobile Horizontal Touch Scroller for Categories -->
+                <div class="w-full md:w-auto flex-1 overflow-x-auto whitespace-nowrap scrollbar-none flex items-center gap-2 py-1 touch-pan-x" id="products-filter-bar">
+                    <button class="filter-tab active text-xs font-semibold px-4 py-2 rounded-full border border-[#C5A059] bg-[#C5A059] text-black shadow-[0_0_12px_rgba(197,160,89,0.25)] transition-all shrink-0 cursor-pointer" data-filter="all">
+                        Tất cả
+                    </button>
                     <?php
+                    $prod_tax = 'product_category';
+                    if (taxonomy_exists('product_cat')) {
+                        $prod_tax = 'product_cat';
+                    }
+
                     $product_categories = get_terms(array(
-                        'taxonomy' => 'product_category',
+                        'taxonomy' => $prod_tax,
                         'hide_empty' => true,
+                        'orderby' => 'count',
+                        'order' => 'DESC',
+                        'number' => 15
                     ));
                     
                     if ($product_categories && !is_wp_error($product_categories)) :
                         foreach ($product_categories as $category) :
                     ?>
-                        <button class="filter-tab" data-filter="<?php echo $category->slug; ?>">
-                            <?php echo $category->name; ?>
+                        <button class="filter-tab text-xs font-medium px-4 py-2 rounded-full border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-[#C5A059]/60 hover:bg-[#C5A059]/10 transition-all shrink-0 cursor-pointer" data-filter="<?php echo esc_attr($category->slug); ?>">
+                            <?php echo esc_html($category->name); ?>
                         </button>
                     <?php
                         endforeach;
                     endif;
                     ?>
                 </div>
-                
-                <div class="filter-search">
-                    <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
+
+                <!-- Instant Search Input -->
+                <div class="relative w-full md:w-72 shrink-0">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                    <input type="text" id="product-search" placeholder="Tìm tên sản phẩm..." 
+                           class="w-full border border-white/10 focus:border-[#C5A059] rounded-full py-2 pl-9 pr-4 text-xs placeholder-gray-400 outline-none transition-all"
+                           style="background-color: rgba(255,255,255,0.06) !important; color: #ffffff !important;">
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Products Grid -->
-    <section class="products-grid">
-        <div class="container">
+    <!-- Products Grid Section -->
+    <section class="py-8 sm:py-12 lg:py-16">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <h2 class="sr-only">Danh sách sản phẩm TD Classic</h2>
             <?php
             $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
             $products = new WP_Query(array(
                 'post_type' => 'product',
-                'posts_per_page' => 9, // 3x3 grid
+                'posts_per_page' => 12,
                 'post_status' => 'publish',
                 'orderby' => 'date',
                 'order' => 'DESC',
@@ -97,60 +144,58 @@ get_header(); ?>
             
             if ($products->have_posts()) :
             ?>
-                <div class="products-container" id="products-container" >
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6" id="products-container">
                     <?php
                     while ($products->have_posts()) : $products->the_post();
-                        $product_categories = get_the_terms(get_the_ID(), 'product_category');
+                        $product_terms = get_the_terms(get_the_ID(), $prod_tax);
                         $category_classes = '';
                         $category_name = '';
-                        if ($product_categories && !is_wp_error($product_categories)) {
-                            foreach ($product_categories as $category) {
+                        if ($product_terms && !is_wp_error($product_terms)) {
+                            foreach ($product_terms as $category) {
                                 $category_classes .= ' category-' . $category->slug;
                             }
-                            $category_name = $product_categories[0]->name;
+                            $category_name = $product_terms[0]->name;
                         }
                     ?>
-                        <a href="<?php the_permalink(); ?>" class="product-card-wrapper<?php echo $category_classes; ?>" data-title="<?php echo strtolower(get_the_title()); ?>">
-                            <div class="modern-product-card">
-                                <div class="product-image-container">
-                                    <div class="product-image">
-                                        <?php if (has_post_thumbnail()) : ?>
-                                            <img src="<?php the_post_thumbnail_url('medium_large'); ?>" alt="<?php the_title(); ?>" loading="lazy">
-                                        <?php else : ?>
-                                            <div class="product-placeholder">
-                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                                    <polyline points="21,15 16,10 5,21"></polyline>
-                                                </svg>
-                                                <span class="placeholder-text">Chưa có ảnh</span>
-                                            </div>
-                                        <?php endif; ?>
+                        <a href="<?php the_permalink(); ?>" 
+                           class="product-card group flex flex-col bg-[#121212] border border-white/5 hover:border-[#C5A059]/40 rounded-xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1 <?php echo esc_attr($category_classes); ?>" 
+                           data-title="<?php echo esc_attr(strtolower(get_the_title())); ?>">
+                            
+                            <!-- Image Container -->
+                            <div class="relative aspect-square w-full bg-[#181818] overflow-hidden flex items-center justify-center">
+                                <?php if (has_post_thumbnail()) : ?>
+                                    <img src="<?php the_post_thumbnail_url('medium_large'); ?>" 
+                                         alt="<?php the_title_attribute(); ?>" 
+                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                                         loading="lazy">
+                                <?php else : ?>
+                                    <div class="flex flex-col items-center justify-center text-gray-600">
+                                        <i class="fa-solid fa-volume-high text-3xl mb-2 text-[#C5A059]/40"></i>
+                                        <span class="text-[10px] uppercase tracking-wider text-gray-500">TD Classic</span>
                                     </div>
-                                    <div class="product-tech-indicator">
-                                        <div class="tech-dot"></div>
-                                        <div class="tech-dot"></div>
-                                        <div class="tech-dot"></div>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <h3 class="product-title">
+                                <?php endif; ?>
+
+                                <?php if (!empty($category_name)) : ?>
+                                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-black/75 text-[#C5A059] border border-[#C5A059]/30 backdrop-blur-sm line-clamp-1 max-w-[80%]">
+                                        <?php echo esc_html($category_name); ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="p-3 sm:p-4 flex flex-col justify-between flex-1">
+                                <div>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-widest block mb-1">Chính hãng</span>
+                                    <h3 class="text-xs sm:text-sm font-semibold text-white group-hover:text-[#C5A059] line-clamp-2 leading-snug font-sans transition-colors">
                                         <?php the_title(); ?>
                                     </h3>
-                                    <div class="product-features">
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Chính hãng</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-shield-alt"></i>
-                                            <span>Bảo hành</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-shipping-fast"></i>
-                                            <span>Giao nhanh</span>
-                                        </div>
-                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-3 border-t border-white/5 mt-3">
+                                    <span class="text-[11px] sm:text-xs font-bold text-[#C5A059] uppercase tracking-wider">Báo giá ngay</span>
+                                    <span class="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-gray-400 group-hover:bg-[#C5A059] group-hover:text-black transition-all">
+                                        <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                                    </span>
                                 </div>
                             </div>
                         </a>
@@ -160,7 +205,7 @@ get_header(); ?>
                 </div>
 
                 <!-- Pagination -->
-                <div class="products-pagination">
+                <div class="mt-12 flex justify-center">
                     <?php
                     $total_pages = $products->max_num_pages;
                     if ($total_pages > 1) :
@@ -169,8 +214,9 @@ get_header(); ?>
                             'format' => 'page/%#%',
                             'current' => $paged,
                             'total' => $total_pages,
-                            'prev_text' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"></polyline></svg>',
-                            'next_text' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"></polyline></svg>'
+                            'prev_text' => '<span class="sr-only">Trang trước</span><i class="fa-solid fa-chevron-left text-xs" aria-hidden="true"></i>',
+                            'next_text' => '<span class="sr-only">Trang sau</span><i class="fa-solid fa-chevron-right text-xs" aria-hidden="true"></i>',
+                            'type' => 'plain',
                         ));
                     endif;
                     wp_reset_postdata();
@@ -178,245 +224,179 @@ get_header(); ?>
                 </div>
 
             <?php else : ?>
-                <div class="no-products">
-                    <div class="no-products-icon">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                        </svg>
-                    </div>
-                    <h3>Chưa có sản phẩm nào</h3>
-                    <p>Hiện tại chúng tôi chưa có sản phẩm nào để hiển thị. Vui lòng quay lại sau.</p>
+                <div class="text-center py-16 bg-white/5 border border-white/10 rounded-2xl max-w-xl mx-auto">
+                    <i class="fa-solid fa-box-open text-4xl text-[#C5A059] mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Chưa có sản phẩm nào</h3>
+                    <p class="text-sm text-gray-400">Danh mục sản phẩm đang được cập nhật. Vui lòng liên hệ hotline để nhận tư vấn trực tiếp.</p>
                 </div>
             <?php endif; ?>
         </div>
     </section>
 
-    <!-- Why Choose TD Classic Section -->
-    <section class="why-choose-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Tại sao bạn nên chọn sản phẩm TD Classic?</h2>
-                <p>Khám phá 5 yếu tố cốt lõi làm nên sự khác biệt của chúng tôi</p>
+    <!-- Why Choose TD Classic - Luxury Edition -->
+    <section class="py-12 sm:py-16 bg-[#090909] border-t border-white/5">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-[#C5A059] block mb-2">Cam Kết Vàng</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white font-serif">Tại sao chọn thiết bị tại TD Classic?</h2>
             </div>
             
-            <div class="features-slider-container">
-                <div class="features-slider" id="features-slider">
-                    <div class="feature-slide active">
-                        <div class="feature-icon">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                            </svg>
-                        </div>
-                        <h3>Chất lượng vượt trội</h3>
-                        <p>Mỗi sản phẩm được thiết kế và sản xuất theo tiêu chuẩn quốc tế với công nghệ hiện đại nhất. Chúng tôi cam kết mang đến cho khách hàng những sản phẩm có chất lượng vượt trội, bền bỉ theo thời gian.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div class="p-6 rounded-xl bg-white/5 border border-white/5 hover:border-[#C5A059]/30 transition-all text-center">
+                    <div class="w-12 h-12 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/20 flex items-center justify-center mx-auto mb-4 text-[#C5A059]">
+                        <i class="fa-solid fa-certificate text-lg"></i>
                     </div>
-                    
-                    <div class="feature-slide">
-                        <div class="feature-icon">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
-                                <line x1="16" y1="8" x2="2" y2="22"></line>
-                                <line x1="17.5" y1="15" x2="9" y2="15"></line>
-                            </svg>
-                        </div>
-                        <h3>Thiết kế sáng tạo</h3>
-                        <p>Đội ngũ thiết kế giàu kinh nghiệm của chúng tôi luôn đặt sự sáng tạo và tính thẩm mỹ lên hàng đầu. Mỗi sản phẩm không chỉ có chức năng tuyệt vời mà còn mang vẻ đẹp tinh tế, phù hợp với xu hướng hiện đại.</p>
-                    </div>
-                    
-                    <div class="feature-slide">
-                        <div class="feature-icon">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0"></path>
-                                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z"></path>
-                            </svg>
-                        </div>
-                        <h3>Hỗ trợ 24/7</h3>
-                        <p>Đội ngũ hỗ trợ khách hàng chuyên nghiệp của TD Classic sẵn sàng phục vụ bạn 24/7. Chúng tôi cam kết giải đáp mọi thắc mắc và hỗ trợ khách hàng một cách nhanh chóng, hiệu quả nhất.</p>
-                    </div>
-                    
-                    <div class="feature-slide">
-                        <div class="feature-icon">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                            </svg>
-                        </div>
-                        <h3>Bảo hành toàn diện</h3>
-                        <p>Mọi sản phẩm của TD Classic đều được bảo hành toàn diện với thời gian dài. Chúng tôi tự tin về chất lượng sản phẩm và cam kết chăm sóc khách hàng sau bán hàng một cách tốt nhất.</p>
-                    </div>
-                    
-                    <div class="feature-slide">
-                        <div class="feature-icon">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="3"></circle>
-                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                            </svg>
-                        </div>
-                        <h3>Tối ưu hiệu suất</h3>
-                        <p>Sản phẩm TD Classic được tối ưu hóa để mang lại hiệu suất làm việc tốt nhất. Chúng tôi luôn nghiên cứu và cải tiến để đảm bảo sản phẩm hoạt động mượt mà, tiết kiệm năng lượng và nâng cao năng suất làm việc.</p>
-                    </div>
+                    <h3 class="font-bold text-white text-base mb-2">100% Chính Hãng</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Đầy đủ CO, CQ và giấy tờ nhập khẩu chính ngạch từ các thương hiệu Hi-End hàng đầu thế giới.</p>
                 </div>
-                
-                <div class="slider-controls">
-                    <button class="slider-btn prev-btn" id="prev-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="15,18 9,12 15,6"></polyline>
-                        </svg>
-                    </button>
-                    
-                    <div class="slider-dots">
-                        <button class="dot active" data-slide="0"></button>
-                        <button class="dot" data-slide="1"></button>
-                        <button class="dot" data-slide="2"></button>
-                        <button class="dot" data-slide="3"></button>
-                        <button class="dot" data-slide="4"></button>
+
+                <div class="p-6 rounded-xl bg-white/5 border border-white/5 hover:border-[#C5A059]/30 transition-all text-center">
+                    <div class="w-12 h-12 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/20 flex items-center justify-center mx-auto mb-4 text-[#C5A059]">
+                        <i class="fa-solid fa-sliders text-lg"></i>
                     </div>
-                    
-                    <button class="slider-btn next-btn" id="next-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="9,18 15,12 9,6"></polyline>
-                        </svg>
-                    </button>
+                    <h3 class="font-bold text-white text-base mb-2">Setup Chuẩn Chuyên Gia</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Đo lường âm học bằng thiết bị chuyên dụng và căn chỉnh tối ưu cho từng không gian kiến trúc.</p>
+                </div>
+
+                <div class="p-6 rounded-xl bg-white/5 border border-white/5 hover:border-[#C5A059]/30 transition-all text-center">
+                    <div class="w-12 h-12 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/20 flex items-center justify-center mx-auto mb-4 text-[#C5A059]">
+                        <i class="fa-solid fa-shield-halved text-lg"></i>
+                    </div>
+                    <h3 class="font-bold text-white text-base mb-2">Bảo Hành Tận Nơi</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Chế độ bảo hành chính hãng lên đến 36 tháng cùng dịch vụ bảo trì định kỳ định kỳ miễn phí.</p>
+                </div>
+
+                <div class="p-6 rounded-xl bg-white/5 border border-white/5 hover:border-[#C5A059]/30 transition-all text-center">
+                    <div class="w-12 h-12 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/20 flex items-center justify-center mx-auto mb-4 text-[#C5A059]">
+                        <i class="fa-solid fa-headset text-lg"></i>
+                    </div>
+                    <h3 class="font-bold text-white text-base mb-2">Tư Vấn 24/7</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Đội ngũ kỹ thuật viên giàu kinh nghiệm sẵn sàng lắng nghe và giải đáp mọi yêu cầu của bạn.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="products-cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Cần tư vấn về sản phẩm?</h2>
-                <p>Đội ngũ chuyên gia của chúng tôi sẵn sàng hỗ trợ bạn tìm ra giải pháp phù hợp nhất</p>
-                <div class="cta-buttons">
-                    <a href="<?php echo home_url('/lien-he'); ?>" class="btn btn-primary">Liên hệ ngay</a>
-                    <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>" class="btn btn-secondary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg>
-                        Gọi ngay
-                    </a>
-                </div>
+    <!-- Bottom Call-To-Action Banner -->
+    <section class="py-12 bg-gradient-to-r from-[#111] via-[#1a1710] to-[#111] border-t border-white/10 text-center">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-2xl sm:text-3xl font-bold text-white font-serif mb-3">Bạn cần tìm giải pháp âm thanh chuyên biệt?</h2>
+            <p class="text-sm text-gray-300 mb-6">Liên hệ trực tiếp với chuyên gia âm thanh TD Classic để nhận cấu hình tối ưu và mức giá ưu đãi nhất.</p>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="<?php echo esc_url(home_url('/lien-he')); ?>" class="px-6 py-3 rounded-full bg-[#C5A059] text-black font-bold uppercase tracking-widest text-xs hover:bg-[#d8b46e] transition-all shadow-[0_0_20px_rgba(197,160,89,0.3)]">
+                    Yêu cầu tư vấn
+                </a>
+                <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', tdclassic_get_company_phone())); ?>" class="px-6 py-3 rounded-full bg-white/5 border border-white/20 text-white font-bold uppercase tracking-widest text-xs hover:border-[#C5A059] hover:text-[#C5A059] transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-phone text-xs text-[#C5A059]"></i>
+                    Hotline: <?php echo esc_html(tdclassic_get_company_phone()); ?>
+                </a>
             </div>
         </div>
     </section>
 </main>
 
 <style>
-/* Products Page - Hero Section (reused from blog category hero) */
-.category-hero-section { background: radial-gradient(circle, rgba(66,66,66,1) 0%, rgba(0,0,0,1) 100%); color: #fff; padding: 100px 0 80px; position: relative; overflow: hidden; }
-.category-hero-background { position: absolute; inset: 0; z-index: 1; }
-.category-hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
-.tech-grid-pattern { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 50px 50px; }
-.category-hero-content { position: relative; z-index: 10; }
-.category-hero-title { margin-bottom: 2rem; }
-.category-title-main { display: block; font-size: 3.5rem; font-weight: 800; margin-bottom: .5rem; background: linear-gradient(45deg, #fff, #ccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.category-title-sub { display: block; font-size: 1.2rem; font-weight: 400; color: #ccc; letter-spacing: 3px; text-transform: uppercase; }
-.category-description-wrapper { margin: 0 auto 3rem; }
-.category-hero-description { font-size: 1.2rem; color: #ccc; line-height: 1.8; }
-.category-stats { display: flex; justify-content: center; align-items: center; gap: 2rem; margin-top: 3rem; }
-.category-stats .stat-item { text-align: center; }
-.category-stats .stat-number { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
-.category-stats .stat-label { font-size: .9rem; color: #999; text-transform: uppercase; letter-spacing: 1px; }
-.category-stats .stat-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.2); }
-@media (max-width: 768px) { .category-title-main { font-size: 2.5rem; } .category-title-sub { font-size:1rem; letter-spacing:2px; } .category-stats { flex-wrap: wrap; gap: 1rem; } }
-@media (max-width: 480px) { .category-hero-section { padding:60px 0 50px; } .category-title-main { font-size:2rem; } }
+/* Product Pagination Styles */
+.page-numbers {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px;
+    margin: 0 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e5e5e5;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+.page-numbers:hover {
+    border-color: #C5A059;
+    color: #C5A059;
+    background: rgba(197, 160, 89, 0.1);
+}
+.page-numbers.current {
+    background: #C5A059;
+    border-color: #C5A059;
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+}
+.page-numbers.dots {
+    border: none;
+    background: transparent;
+    color: #888;
+}
 </style>
 
 <script>
-// Product filtering and search functionality
+// Filter & Search Script with URL Query Support
 document.addEventListener('DOMContentLoaded', function() {
     const filterTabs = document.querySelectorAll('.filter-tab');
     const productCards = document.querySelectorAll('.product-card');
     const searchInput = document.getElementById('product-search');
     
-    // Filter functionality
-    filterTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const filter = this.dataset.filter;
-            
-            // Update active tab
-            filterTabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Filter products
-            productCards.forEach(card => {
-                if (filter === 'all' || card.classList.contains('category-' + filter)) {
-                    card.style.display = 'block';
-                    setTimeout(() => card.style.opacity = '1', 10);
-                } else {
-                    card.style.opacity = '0';
-                    setTimeout(() => card.style.display = 'none', 300);
-                }
-            });
+    function applyFilter(filter) {
+        filterTabs.forEach(t => {
+            if (t.dataset.filter === filter) {
+                t.classList.add('active', 'bg-[#C5A059]', 'text-black', 'border-[#C5A059]');
+                t.classList.remove('bg-white/5', 'text-gray-300', 'border-white/10');
+            } else {
+                t.classList.remove('active', 'bg-[#C5A059]', 'text-black', 'border-[#C5A059]');
+                t.classList.add('bg-white/5', 'text-gray-300', 'border-white/10');
+            }
         });
-    });
-    
-    // Search functionality
-    searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
         
         productCards.forEach(card => {
-            const title = card.dataset.title;
-            if (title.includes(searchTerm)) {
-                card.style.display = 'block';
+            if (filter === 'all' || card.classList.contains('category-' + filter)) {
+                card.style.display = 'flex';
                 setTimeout(() => card.style.opacity = '1', 10);
             } else {
                 card.style.opacity = '0';
-                setTimeout(() => card.style.display = 'none', 300);
+                card.style.display = 'none';
             }
+        });
+    }
+
+    // Filter Click
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            applyFilter(this.dataset.filter);
         });
     });
     
-    // Features slider functionality
-    const slider = document.getElementById('features-slider');
-    const slides = document.querySelectorAll('.feature-slide');
-    const dots = document.querySelectorAll('.dot');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
-    let currentSlide = 0;
-    
-    function showSlide(index) {
-        slides.forEach(slide => slide.classList.remove('active'));
-        dots.forEach(dot => dot.classList.remove('active'));
-        
-        slides[index].classList.add('active');
-        dots[index].classList.add('active');
-    }
-    
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slides.length;
-        showSlide(currentSlide);
-    }
-    
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(currentSlide);
-    }
-    
-    // Button controls
-    nextBtn.addEventListener('click', nextSlide);
-    prevBtn.addEventListener('click', prevSlide);
-    
-    // Dot controls
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            currentSlide = index;
-            showSlide(currentSlide);
+    // Search Input
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            productCards.forEach(card => {
+                const title = card.dataset.title || '';
+                if (title.includes(query)) {
+                    card.style.display = 'flex';
+                    card.style.opacity = '1';
+                } else {
+                    card.style.display = 'none';
+                    card.style.opacity = '0';
+                }
+            });
         });
-    });
-    
-    // Shift + Mouse wheel control
-    slider.addEventListener('wheel', function(e) {
-        if (e.shiftKey) {
-            e.preventDefault();
-            if (e.deltaY > 0) {
-                nextSlide();
-            } else {
-                prevSlide();
-            }
+    }
+
+    // URL parameter auto-filter (?cat=slug)
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get('cat');
+    if (catParam) {
+        applyFilter(catParam);
+        const activeTab = document.querySelector(`.filter-tab[data-filter="${catParam}"]`);
+        if (activeTab) {
+            activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
-    });
+    }
 });
 </script>
 
-<?php get_footer(); ?> 
+<?php get_footer(); ?>

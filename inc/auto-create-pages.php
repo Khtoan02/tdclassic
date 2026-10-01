@@ -113,10 +113,7 @@ function tdclassic_create_required_pages()
     return $created_pages;
 }
 
-// Hook vào admin_init để chạy khi admin truy cập
-add_action('admin_init', 'tdclassic_create_required_pages');
-
-// Hook vào after_switch_theme để chạy khi theme được kích hoạt
+// Hook vào after_switch_theme để chạy khi theme được kích hoạt lần đầu
 add_action('after_switch_theme', 'tdclassic_create_required_pages');
 
 /**

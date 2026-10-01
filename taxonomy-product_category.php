@@ -26,20 +26,24 @@ $child_categories = get_terms(array(
 $thumbnail_id = get_term_meta($current_category->term_id, 'thumbnail_id', true);
 $category_image = $thumbnail_id ? wp_get_attachment_url($thumbnail_id) : 'https://images.unsplash.com/photo-1543508282-6319a3e2621f?q=80&w=1600&auto=format&fit=crop';
 
-// Get products count
-$products_query = new WP_Query(array(
-    'post_type' => 'product',
-    'posts_per_page' => -1,
-    'tax_query' => array(
-        array(
-            'taxonomy' => 'product_category',
-            'field' => 'term_id',
-            'terms' => $current_category->term_id,
+// Get products count (optimized to prevent memory exhaustion)
+$total_products = isset($current_category->count) ? (int) $current_category->count : 0;
+if ($total_products <= 0) {
+    $products_query = new WP_Query(array(
+        'post_type' => 'product',
+        'posts_per_page' => 1,
+        'fields' => 'ids',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'product_category',
+                'field' => 'term_id',
+                'terms' => $current_category->term_id,
+            )
         )
-    )
-));
-$total_products = $products_query->found_posts;
-wp_reset_postdata();
+    ));
+    $total_products = $products_query->found_posts;
+    wp_reset_postdata();
+}
 
 // Get featured/flagship product (most recent or featured)
 $flagship_product_query = new WP_Query(array(

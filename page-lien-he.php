@@ -7,16 +7,40 @@
 get_header();
 
 // Get company information
-$addresses = tdclassic_get_company_addresses();
-$phones = tdclassic_get_company_phones();
-$emails = tdclassic_get_company_emails();
-$primary_phone = !empty($phones) ? $phones[0] : '';
-$secondary_phone = !empty($phones) && count($phones) > 1 ? $phones[1] : '';
-$primary_email = !empty($emails) ? $emails[0] : '';
+$addresses = function_exists('tdclassic_get_company_addresses') ? tdclassic_get_company_addresses() : array();
+$phones = function_exists('tdclassic_get_company_phones') ? tdclassic_get_company_phones() : array();
+$emails = function_exists('tdclassic_get_company_emails') ? tdclassic_get_company_emails() : array();
+$primary_phone = function_exists('tdclassic_get_primary_phone') ? tdclassic_get_primary_phone() : (!empty($phones) ? $phones[0] : '+84 904 433 799');
+$secondary_phone = !empty($phones) && count($phones) > 1 ? $phones[1] : '+84 988 888 888';
+$primary_email = function_exists('tdclassic_get_primary_email') ? tdclassic_get_primary_email() : (!empty($emails) ? $emails[0] : 'info@tdclassic.vn');
 ?>
 
 <!-- Tailwind and Global Styles loaded via functions.php -->
 <style>
+    /* Header Clearance for Contact Page */
+    .contact-hero-section {
+        padding-top: 140px !important;
+        padding-bottom: 5rem !important;
+    }
+    @media (min-width: 1024px) {
+        .contact-hero-section {
+            padding-top: 220px !important;
+            padding-bottom: 6rem !important;
+        }
+    }
+    .admin-bar .contact-hero-section {
+        padding-top: 186px !important;
+    }
+    @media (min-width: 783px) {
+        .admin-bar .contact-hero-section {
+            padding-top: 252px !important;
+        }
+    }
+
+    .text-gray-500, .text-gray-600 {
+        color: #9ca3af !important;
+    }
+
     /* Input Field Animation */
     .input-group {
         position: relative;
@@ -44,7 +68,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
         position: absolute;
         top: 1rem;
         left: 0;
-        color: #666;
+        color: #9ca3af;
         font-size: 0.875rem;
         pointer-events: none;
         transition: all 0.3s ease;
@@ -110,11 +134,11 @@ $primary_email = !empty($emails) ? $emails[0] : '';
 <div class="noise"></div>
 
     <!-- HERO HEADER -->
-    <section class="pt-40 pb-20 bg-void relative overflow-hidden">
+    <section class="contact-hero-section bg-void relative overflow-hidden">
         <div class="container mx-auto px-6 md:px-12 text-center relative z-10">
             <span class="font-sans text-gold text-xs tracking-[0.4em] uppercase block mb-6 animate-fade-in">Kết nối &
                 Hợp tác</span>
-            <h1 class="font-sans font-bold text-5xl md:text-7xl text-white mb-8">Liên Hệ TD Classic</h1>
+            <h1 class="font-sans font-bold text-3xl sm:text-5xl md:text-7xl text-white mb-8 break-words">Liên Hệ TD Classic</h1>
             <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-6"></div>
             <p class="font-sans text-gray-400 max-w-2xl mx-auto text-base leading-relaxed">
                 Đồng hành cùng hơn 1,000+ dự án âm thanh chuyên nghiệp trên toàn quốc.
@@ -558,6 +582,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                                 <div class="absolute inset-0 bg-void/20 pointer-events-none z-10"></div>
                                 <iframe class="w-full h-full"
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.5!2d106.586!3d20.877!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDUyJzM3LjIiTiAxMDbCsDM1JzA5LjYiRQ!5e0!3m2!1svi!2s!4v1620000000000!5m2!1svi!2s"
+                                    title="Bản đồ vị trí showroom TD Classic Hải Phòng"
                                     style="border:0;" allowfullscreen="" loading="lazy">
                                 </iframe>
                             </div>
@@ -613,6 +638,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                                 <div class="absolute inset-0 bg-void/20 pointer-events-none z-10"></div>
                                 <iframe class="w-full h-full"
                                     src="https://maps.google.com/maps?q=L%C3%B4+5+-+TT7+-+Khu+%C4%91%E1%BA%A5u+gi%C3%A1+T%E1%BB%A9+Hi%E1%BB%87p,+Thanh+Tr%C3%AC,+H%C3%A0+N%E1%BB%99i&output=embed"
+                                    title="Bản đồ vị trí văn phòng TD Classic Hà Nội"
                                     style="border:0;" allowfullscreen="" loading="lazy">
                                 </iframe>
                             </div>
@@ -627,7 +653,16 @@ $primary_email = !empty($emails) ? $emails[0] : '';
     </section>
 
     <script>
-        lucide.createIcons();
+        function safeLucideInit() {
+            if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+                lucide.createIcons();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', safeLucideInit);
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+            safeLucideInit();
+        }
 
         // Location tab switching
         function showLocation(location) {
@@ -655,7 +690,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
             event.target.classList.remove('bg-surface', 'text-gray-400');
 
             // Reinitialize Lucide icons for newly shown content
-            lucide.createIcons();
+            safeLucideInit();
         }
 
         // Contact form handling
@@ -669,7 +704,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
             // Disable submit button
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Đang gửi...';
-            lucide.createIcons();
+            safeLucideInit();
 
             fetch(this.action, {
                 method: 'POST',
@@ -695,7 +730,7 @@ $primary_email = !empty($emails) ? $emails[0] : '';
                 .finally(() => {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Gửi thông tin <i data-lucide="arrow-right" class="w-4 h-4"></i>';
-                    lucide.createIcons();
+                    safeLucideInit();
                 });
         });
     </script>

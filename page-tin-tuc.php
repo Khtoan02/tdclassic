@@ -56,26 +56,36 @@ get_header(); ?>
     .hidden-item {
         display: none !important;
     }
+
+    .filter-btn {
+        background-color: #050505 !important;
+        background: #050505 !important;
+        color: #9ca3af !important;
+    }
+    .filter-btn.text-gold, .filter-btn:hover {
+        color: #C5A059 !important;
+    }
 </style>
 
 <div class="noise"></div>
 
 <!-- PAGE HERO -->
-<section class="relative pt-32 pb-20 bg-void overflow-hidden">
+<section class="relative page-header-clearance pb-20 bg-void overflow-hidden">
     <!-- Dynamic Background -->
     <div class="absolute top-0 right-0 w-3/4 h-full opacity-20">
         <img src="https://images.unsplash.com/photo-1481437642641-2f0ae875f836?q=80&w=1600&auto=format&fit=crop"
-            class="w-full h-full object-cover grayscale mask-image-gradient" decoding="sync" fetchpriority="high">
+            class="w-full h-full object-cover grayscale mask-image-gradient" alt="Tạp chí âm thanh TD Classic" width="1600" height="900" decoding="sync" fetchpriority="high">
         <div class="absolute inset-0 bg-gradient-to-l from-void via-void/50 to-void"></div>
     </div>
 
     <div class="container mx-auto px-6 md:px-12 relative z-10">
         <a href="<?php echo home_url('/'); ?>"
-            class="inline-flex items-center gap-2 text-gray-500 hover:text-gold transition-colors font-sans text-xs font-bold uppercase tracking-widest mb-8">
+            class="inline-flex items-center gap-2 hover:text-gold transition-colors font-sans text-xs font-bold uppercase tracking-widest mb-8"
+            style="color: #d1d5db !important;">
             <i data-lucide="arrow-left" class="w-4 h-4"></i> Trang chủ
         </a>
 
-        <h1 class="font-sans font-bold text-5xl md:text-7xl text-white mb-6">Tạp Chí Âm Thanh</h1>
+        <h1 class="font-sans font-bold text-3xl sm:text-5xl md:text-7xl text-white mb-6 break-words">Tạp Chí Âm Thanh</h1>
         <p class="font-sans text-gray-400 text-sm md:text-base font-light leading-relaxed max-w-xl">
             Nơi chia sẻ kiến thức chuyên sâu, xu hướng công nghệ và những câu chuyện hậu trường từ các dự án âm thanh
             đẳng cấp của TD Classic.
@@ -84,13 +94,14 @@ get_header(); ?>
 </section>
 
 <!-- STICKY FILTER BAR -->
-<div class="sticky top-0 z-30 sticky-bar bg-void/90 transition-all duration-300 shadow-2xl shadow-black/50">
+<div class="sticky top-0 z-30 sticky-bar bg-void transition-all duration-300 shadow-2xl shadow-black/50" style="background-color: #050505 !important;">
     <div class="container mx-auto px-6 md:px-12">
         <div class="flex items-center justify-between h-16">
             <!-- Filter Buttons -->
             <div class="flex overflow-x-auto no-scrollbar gap-6 w-full items-center" id="filter-container">
                 <button
                     class="filter-btn text-gold font-sans text-xs font-bold uppercase tracking-widest whitespace-nowrap border-b-2 border-gold pb-4 mt-4 transition-all"
+                    style="color: #C5A059 !important;"
                     data-filter="all">Tất cả</button>
                 <?php
                 // Dynamic Categories based on existing terms
@@ -102,7 +113,7 @@ get_header(); ?>
 
                     // Create a slug for data-filter
                     $filter_slug = $cat->slug;
-                    echo '<button class="filter-btn text-gray-500 hover:text-white font-sans text-xs font-bold uppercase tracking-widest whitespace-nowrap pb-4 mt-4 transition-colors border-b-2 border-transparent hover:border-white/20" data-filter="' . esc_attr($filter_slug) . '">' . esc_html($cat->name) . '</button>';
+                    echo '<button class="filter-btn hover:text-white font-sans text-xs font-bold uppercase tracking-widest whitespace-nowrap pb-4 mt-4 transition-colors border-b-2 border-transparent hover:border-white/20" style="color: #d1d5db !important;" data-filter="' . esc_attr($filter_slug) . '">' . esc_html($cat->name) . '</button>';
                 }
                 ?>
             </div>
@@ -175,7 +186,7 @@ get_header(); ?>
                             'origin' => 'remote',
                             'title' => isset($remote_post['title']) ? $remote_post['title'] : '',
                             'link' => isset($remote_post['link']) ? $remote_post['link'] : '#',
-                            'image' => isset($remote_post['image']) ? $remote_post['image'] : '',
+                            'image' => !empty($remote_post['image']) ? $remote_post['image'] : 'https://images.unsplash.com/photo-1516280440614-6697288d5d38?q=80&w=800&auto=format&fit=crop',
                             'date' => isset($remote_post['date']) ? $remote_post['date'] : '',
                             'raw_date' => isset($remote_post['raw_date']) ? $remote_post['raw_date'] : '',
                             'excerpt' => isset($remote_post['excerpt']) ? $remote_post['excerpt'] : '',
@@ -194,7 +205,7 @@ get_header(); ?>
 
             // OUTPUT LOOP
             if (empty($combined_posts)):
-                echo '<div class="col-span-3 text-center text-gray-500">Chưa có bài viết nào.</div>';
+                echo '<div class="col-span-3 text-center text-gray-400">Chưa có bài viết nào.</div>';
             else:
                 foreach ($combined_posts as $post):
                     ?>
@@ -205,6 +216,8 @@ get_header(); ?>
                             <div
                                 class="img-container aspect-[3/2] bg-surface overflow-hidden relative mb-6 border border-white/5">
                                 <img src="<?php echo esc_url($post['image']); ?>" class="w-full h-full object-cover"
+                                    alt="<?php echo esc_attr($post['title']); ?>"
+                                    width="600" height="400"
                                     loading="lazy">
                                 <div
                                     class="absolute top-4 left-4 bg-black/80 backdrop-blur text-gold text-[10px] font-bold uppercase px-3 py-1 tracking-widest border border-gold/20">
@@ -213,15 +226,16 @@ get_header(); ?>
                             </div>
                             <div class="flex-1 flex flex-col">
                                 <div
-                                    class="flex items-center gap-3 mb-3 text-[10px] text-gray-500 font-sans tracking-widest uppercase">
+                                    class="flex items-center gap-3 mb-3 text-[10px] font-sans tracking-widest uppercase"
+                                    style="color: #9ca3af !important;">
                                     <span><?php echo esc_html($post['date']); ?></span>
                                     <span class="w-1 h-1 bg-gold rounded-full"></span>
                                     <span><?php echo esc_html($post['read_time']); ?></span>
                                 </div>
-                                <h3
+                                <h2
                                     class="font-sans font-bold text-xl text-white mb-3 group-hover:text-gold transition-colors leading-snug">
                                     <?php echo esc_html($post['title']); ?>
-                                </h3>
+                                </h2>
                                 <p class="font-sans text-xs text-gray-400 font-light leading-relaxed mb-6 line-clamp-3">
                                     <?php echo esc_html(wp_trim_words($post['excerpt'], 20)); ?>
                                 </p>
@@ -283,15 +297,24 @@ get_header(); ?>
             </p>
         </div>
 
-        <div class="mt-12 pt-8 border-t border-white/5 text-center opacity-40">
-            <p>Mã tài liệu: DOC-JOURNAL-2025 | Bản quyền © 2025 TD Classic Audio. Mọi quyền được bảo lưu.</p>
+        <div class="mt-12 pt-8 border-t border-white/5 text-center">
+            <p style="color: #9ca3af !important;">Mã tài liệu: DOC-JOURNAL-2025 | Bản quyền © 2025 TD Classic Audio. Mọi quyền được bảo lưu.</p>
         </div>
     </div>
 </section>
 
 <!-- Include Scripts -->
 <script>
-    lucide.createIcons();
+    function safeLucideInit() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+            lucide.createIcons();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', safeLucideInit);
+    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+        safeLucideInit();
+    }
 
     // FILTER LOGIC
     const filterBtns = document.querySelectorAll('.filter-btn');
@@ -394,7 +417,7 @@ get_header(); ?>
                     }
 
                     // Re-init icons for new content if needed (Lucide handles auto but safe to check)
-                    lucide.createIcons();
+                    safeLucideInit();
                 }
             })
             .catch(err => {

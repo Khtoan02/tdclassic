@@ -28,20 +28,24 @@ $child_categories = get_terms(array(
 $thumbnail_id = get_term_meta($current_category->term_id, 'thumbnail_id', true);
 $category_image = $thumbnail_id ? wp_get_attachment_url($thumbnail_id) : 'https://images.unsplash.com/photo-1543508282-6319a3e2621f?q=80&w=1600&auto=format&fit=crop';
 
-// Get products count
-$products_query = new WP_Query(array(
-    'post_type' => 'product',
-    'posts_per_page' => -1,
-    'tax_query' => array(
-        array(
-            'taxonomy' => 'product_cat',
-            'field' => 'term_id',
-            'terms' => $current_category->term_id,
+// Get products count (optimized to prevent memory exhaustion)
+$total_products = isset($current_category->count) ? (int) $current_category->count : 0;
+if ($total_products <= 0) {
+    $products_query = new WP_Query(array(
+        'post_type' => 'product',
+        'posts_per_page' => 1,
+        'fields' => 'ids',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field' => 'term_id',
+                'terms' => $current_category->term_id,
+            )
         )
-    )
-));
-$total_products = $products_query->found_posts;
-wp_reset_postdata();
+    ));
+    $total_products = $products_query->found_posts;
+    wp_reset_postdata();
+}
 
 // Get featured/flagship product (most expensive or featured)
 $flagship_product_query = new WP_Query(array(
@@ -77,10 +81,19 @@ $flagship_product_query = new WP_Query(array(
         </a>
         
         <h1 class="font-serif text-5xl md:text-7xl text-white mb-6"><?php echo single_term_title('', false); ?></h1>
-        <?php if (!empty($term_description)) : ?>
-            <div class="font-sans text-gray-400 text-sm md:text-base font-light leading-relaxed max-w-xl">
-                <?php echo wpautop($term_description); ?>
-            </div>
+        <?php if (!empty($term_description)) : 
+            $has_html = (strpos($term_description, '<') !== false);
+            $clean_intro = wp_strip_all_tags($term_description);
+        ?>
+            <?php if (!$has_html) : ?>
+                <div class="font-sans text-gray-400 text-sm md:text-base font-light leading-relaxed max-w-2xl">
+                    <?php echo wpautop($term_description); ?>
+                </div>
+            <?php else : ?>
+                <div class="font-sans text-gray-300 text-sm md:text-base font-light leading-relaxed max-w-2xl mb-4">
+                    <?php echo esc_html(wp_trim_words($clean_intro, 35, '...')); ?>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </section>
@@ -352,10 +365,21 @@ $flagship_product_query = new WP_Query(array(
         </div>
         
         <div class="mt-12 pt-8 border-t border-white/5 text-center opacity-40">
-            <p>Mã tài liệu: DOC-CAT-SPEAKERS-2025 | Bản quyền © 2025 TD Classic Audio. Mọi quyền được bảo lưu.</p>
+            <p>Danh mục: <?php echo esc_html($current_category->name); ?> | Bản quyền © <?php echo date('Y'); ?> TD Classic Audio.</p>
         </div>
     </div>
 </section>
+
+<?php if (!empty($term_description) && strpos($term_description, '<') !== false) : ?>
+    <!-- RICH CATEGORY CONTENT & GUIDE -->
+    <section class="py-16 bg-[#0a0a0a] border-t border-white/5">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="max-w-4xl mx-auto category-rich-content text-gray-300">
+                <?php echo do_shortcode($term_description); ?>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
 
 <style>
 /* Product Card Hover Effects */

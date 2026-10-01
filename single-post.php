@@ -26,7 +26,7 @@ get_header(); ?>
         pointer-events: none;
         z-index: 50;
         opacity: 0.03;
-        background: url('https://grainy-gradients.vercel.app/noise.svg');
+        background: url('<?php echo esc_url(get_template_directory_uri() . "/assets/images/noise.svg"); ?>');
     }
 
     .no-scrollbar::-webkit-scrollbar {
@@ -154,17 +154,17 @@ get_header(); ?>
         ?>
 
         <!-- ARTICLE HERO -->
-        <section class="pt-32 pb-16 bg-void relative">
+        <section class="pt-36 md:pt-40 pb-16 bg-void relative">
             <div class="container mx-auto px-6 md:px-12 max-w-4xl text-center">
                 <div class="inline-flex items-center gap-3 mb-6">
                     <span
                         class="bg-gold/10 text-gold text-[10px] font-bold uppercase px-3 py-1 tracking-widest border border-gold/20 rounded-full"><?php echo esc_html($cat_name); ?></span>
                     <span
-                        class="text-gray-500 text-[10px] font-sans uppercase tracking-widest"><?php echo get_the_date('d M Y'); ?>
+                        class="text-gray-400 text-[10px] font-sans uppercase tracking-widest"><?php echo get_the_date('d M Y'); ?>
                         • <?php echo esc_html($read_time); ?></span>
                 </div>
 
-                <h1 class="font-sans font-bold text-3xl md:text-5xl lg:text-6xl text-white mb-8 leading-tight">
+                <h1 class="font-sans font-bold text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-white mb-8 leading-tight break-words">
                     <?php the_title(); ?>
                 </h1>
 
@@ -177,7 +177,7 @@ get_header(); ?>
 
                 <div class="flex items-center justify-center gap-4">
                     <div class="w-10 h-10 rounded-full bg-surface border border-white/10 overflow-hidden">
-                        <img src="<?php echo esc_url($author_avatar); ?>" class="w-full h-full object-cover">
+                        <img src="<?php echo esc_url($author_avatar); ?>" class="w-full h-full object-cover" alt="<?php echo esc_attr($author_name); ?>" width="40" height="40">
                     </div>
                     <div class="text-left">
                         <p class="text-white text-xs font-bold font-sans"><?php echo esc_html($author_name); ?></p>
@@ -191,7 +191,10 @@ get_header(); ?>
         <div class="container mx-auto px-4 md:px-12 max-w-6xl mb-16">
             <div class="aspect-video w-full overflow-hidden relative border border-white/5 group">
                 <img src="<?php echo esc_url($feat_img); ?>"
-                    class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000">
+                    class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+                    alt="<?php the_title_attribute(); ?>"
+                    width="1200" height="675"
+                    fetchpriority="high">
                 <?php if (get_post_meta(get_the_ID(), '_thumbnail_caption', true)): ?>
                     <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent">
                         <p class="text-gray-400 text-[10px] text-center italic">
@@ -220,10 +223,10 @@ get_header(); ?>
             <div class="container mx-auto px-6 md:px-12 max-w-3xl">
                 <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
                     <div class="w-24 h-24 rounded-full bg-surface border-2 border-gold overflow-hidden flex-shrink-0">
-                        <img src="<?php echo esc_url($author_avatar); ?>" class="w-full h-full object-cover">
+                        <img src="<?php echo esc_url($author_avatar); ?>" class="w-full h-full object-cover" alt="<?php echo esc_attr($author_name); ?>" width="96" height="96" loading="lazy">
                     </div>
                     <div class="text-center md:text-left">
-                        <h4 class="text-white font-sans font-bold text-xl mb-2"><?php echo esc_html($author_name); ?></h4>
+                        <h2 class="text-white font-sans font-bold text-xl mb-2"><?php echo esc_html($author_name); ?></h2>
                         <p class="text-gold text-xs uppercase tracking-widest mb-4">TD Classic Expert •
                             <?php echo esc_html($read_time); ?> Writer
                         </p>
@@ -263,7 +266,10 @@ get_header(); ?>
                                 <a href="<?php the_permalink(); ?>">
                                     <div class="aspect-[3/2] bg-surface overflow-hidden mb-4 relative border border-white/5">
                                         <img src="<?php echo esc_url($rel_img); ?>"
-                                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                            alt="<?php the_title_attribute(); ?>"
+                                            width="600" height="400"
+                                            loading="lazy">
                                     </div>
                                     <div class="text-gold text-[10px] font-bold uppercase tracking-widest mb-2">
                                         <?php echo esc_html($rel_cat); ?>
@@ -284,9 +290,9 @@ get_header(); ?>
         </section>
 
         <!-- FOOTNOTES & LEGAL (Standardized) -->
-        <section class="py-20 bg-void border-t border-white/5 text-gray-600 font-sans text-[10px] leading-relaxed">
+        <section class="py-20 bg-void border-t border-white/5 text-gray-400 font-sans text-xs leading-relaxed" style="color: #d1d5db;">
             <div class="container mx-auto px-6 md:px-12 max-w-5xl">
-                <div class="dense-text space-y-6 opacity-70">
+                <div class="dense-text space-y-6">
                     <p>
                         Thông tin được cung cấp trong trang Tạp chí này nhằm mục đích chia sẻ kiến thức và kinh nghiệm chung
                         về lĩnh vực âm thanh. TD Classic không chịu trách nhiệm pháp lý cho việc áp dụng các kỹ thuật hoặc
@@ -311,8 +317,8 @@ get_header(); ?>
                     </p>
                 </div>
 
-                <div class="mt-12 pt-8 border-t border-white/5 text-center opacity-40">
-                    <p>Mã tài liệu: DOC-JOURNAL-DETAIL-<?php echo date('Y'); ?> | Bản quyền © <?php echo date('Y'); ?> TD
+                <div class="mt-12 pt-8 border-t border-white/5 text-center text-gray-400 text-xs">
+                    <p style="color: #9ca3af !important;">Mã tài liệu: DOC-JOURNAL-DETAIL-<?php echo date('Y'); ?> | Bản quyền © <?php echo date('Y'); ?> TD
                         Classic Audio. Mọi quyền được bảo lưu.</p>
                 </div>
             </div>
@@ -323,7 +329,11 @@ get_header(); ?>
 </main>
 
 <script>
-    lucide.createIcons();
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
 
     // Scroll Progress Bar
     window.onscroll = function () {

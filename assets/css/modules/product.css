@@ -1278,7 +1278,7 @@
 
 .other-products-section .product-card {
   scroll-snap-align: start;
-  background: #ffffff;
+  background: #141414;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -1662,7 +1662,7 @@
 }
 
 .products-grid-section .product-card {
-  background: #ffffff;
+  background: #141414;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -4825,7 +4825,7 @@
 
 .other-products-section .product-card {
   scroll-snap-align: start;
-  background: #ffffff;
+  background: #141414;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -5209,7 +5209,7 @@
 }
 
 .products-grid-section .product-card {
-  background: #ffffff;
+  background: #141414;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);

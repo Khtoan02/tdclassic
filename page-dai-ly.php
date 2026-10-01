@@ -5,13 +5,13 @@
 
 get_header(); ?>
 
-<div class="container-fluid py-5">
+<div class="container-fluid pb-16 page-header-clearance">
     <div class="container">
         <!-- Page Header -->
         <div class="row mb-5">
             <div class="col-12">
-                <h1 class="display-4 text-center mb-3">Hệ thống Đại lý TD Classic</h1>
-                <p class="lead text-center text-muted">Tìm kiếm đại lý gần bạn nhất</p>
+                <h1 class="font-sans font-bold text-xl sm:text-3xl md:text-5xl text-center mb-3 text-white break-words px-2">Hệ thống Đại lý TD Classic</h1>
+                <p class="lead text-center" style="color: #9ca3af !important;">Tìm kiếm đại lý gần bạn nhất</p>
             </div>
         </div>
 
@@ -20,12 +20,12 @@ get_header(); ?>
             <!-- Agents List - Left Side -->
             <div class="col-lg-4">
                 <div class="agents-list-container">
-                    <h3 class="mb-4">Danh sách Đại lý</h3>
+                    <h2 class="h3 mb-4 text-white">Danh sách Đại lý</h2>
                     
                     <?php
                     $agents = new WP_Query(array(
                         'post_type' => 'agent',
-                        'posts_per_page' => -1,
+                        'posts_per_page' => 100,
                         'post_status' => 'publish',
                         'orderby' => 'title',
                         'order' => 'ASC'
@@ -42,7 +42,7 @@ get_header(); ?>
                                 <div class="agent-item" data-maps-link="<?php echo esc_attr($google_maps_link); ?>">
                                     <div class="agent-card">
                                         <div class="agent-info">
-                                            <h5 class="agent-name"><?php the_title(); ?></h5>
+                                            <h3 class="h5 agent-name"><?php the_title(); ?></h3>
                                             <?php if ($address) : ?>
                                                 <p class="agent-address">
                                                     <i class="fas fa-map-marker-alt"></i>
@@ -77,8 +77,8 @@ get_header(); ?>
                             <?php endwhile; ?>
                         </div>
                     <?php else : ?>
-                        <div class="alert alert-info">
-                            <p>Chưa có đại lý nào được thêm vào hệ thống.</p>
+                        <div class="alert alert-dark" style="background-color: #1e1e1e !important; border-color: rgba(255,255,255,0.05); color: #d1d5db !important;">
+                            <p class="mb-0" style="color: #d1d5db !important;">Chưa có đại lý nào được thêm vào hệ thống.</p>
                         </div>
                     <?php endif; 
                     wp_reset_postdata(); ?>
@@ -88,7 +88,7 @@ get_header(); ?>
             <!-- Google Maps - Right Side -->
             <div class="col-lg-8">
                 <div class="maps-container">
-                    <h3 class="mb-4">Bản đồ</h3>
+                    <h2 class="h3 mb-4 text-white">Bản đồ</h2>
                     <div class="map-wrapper">
                         <div id="googleMap" class="google-map"></div>
                     </div>
@@ -100,12 +100,26 @@ get_header(); ?>
 
 <style>
 .agents-list-container {
-    background: #fff;
+    background: #151515 !important;
+    border: 1px solid rgba(255,255,255,0.05);
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     height: 600px;
     overflow-y: auto;
+}
+
+.maps-container {
+    background: #151515 !important;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.map-wrapper {
+    background: #1e1e1e !important;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .agents-list {
@@ -124,26 +138,26 @@ get_header(); ?>
 }
 
 .agent-card {
-    background: #f8f9fa;
+    background: #1e1e1e !important;
     border-radius: 8px;
     padding: 15px;
-    border-left: 4px solid #007bff;
+    border-left: 4px solid #C5A059 !important;
     transition: all 0.3s ease;
 }
 
 .agent-card:hover {
-    background: #e9ecef;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background: #252525 !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .agent-name {
-    color: #333;
+    color: #ffffff !important;
     margin-bottom: 8px;
     font-weight: 600;
 }
 
 .agent-address {
-    color: #666;
+    color: #9ca3af !important;
     font-size: 0.9rem;
     margin-bottom: 8px;
 }
@@ -358,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     <?php else : ?>
         // No API key configured
-        document.getElementById('googleMap').innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f8f9fa; color: #666;"><p>Vui lòng cấu hình Google Maps API Key trong Admin Settings</p></div>';
+        document.getElementById('googleMap').innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #1e1e1e; color: #d1d5db; min-height: 300px;"><p style="color: #d1d5db !important; margin: 0; padding: 20px; text-align: center;">Vui lòng cấu hình Google Maps API Key trong Admin Settings</p></div>';
     <?php endif; ?>
 });
 </script>

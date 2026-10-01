@@ -148,11 +148,10 @@ function tdclassic_get_product_categories($limit = 6, $hide_empty = false, $incl
             }
         }
 
-        // Lấy mô tả danh mục
-        $description = $category->description;
-        if (empty($description)) {
-            $description = 'Khám phá các sản phẩm ' . strtolower($category->name) . ' chất lượng cao';
-        }
+        // Lấy mô tả danh mục (lược bỏ HTML cho menu và thẻ tóm tắt)
+        $clean_desc = wp_strip_all_tags($category->description);
+        $clean_desc = trim(preg_replace('/\s+/', ' ', $clean_desc));
+        $description = !empty($clean_desc) ? wp_trim_words($clean_desc, 30, '...') : ('Khám phá các sản phẩm ' . strtolower($category->name) . ' chất lượng cao');
 
         // URL danh mục
         $category_url = get_term_link($category);
@@ -343,52 +342,29 @@ add_action('after_setup_theme', 'tdclassic_setup');
 // Enqueue scripts and styles
 function tdclassic_scripts()
 {
-    $theme_version = '2.4.1';
+    $theme_version = '3.0.0';
 
-    // Bootstrap CSS
-    wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css', array(), '5.3.0');
+    // Unified High-Performance Theme Bundle (Tailwind + Style + Header + Footer + Mobile)
+    wp_enqueue_style('tdclassic-bundle', get_template_directory_uri() . '/assets/css/dist/tdclassic-bundle.min.css', array(), $theme_version);
 
-    // Static compiled Tailwind CSS (Replacement for heavy JIT CDN - Preflight Disabled & Database-aware!)
-    wp_enqueue_style('tdclassic-tailwind', get_template_directory_uri() . '/assets/css/dist/tailwind.min.css', array('bootstrap-css'), $theme_version);
-
-    // Theme stylesheet (base styles)
-    wp_enqueue_style('tdclassic-style', get_stylesheet_uri(), array('bootstrap-css', 'tdclassic-tailwind'), $theme_version);
-
-    // Font Awesome 6.4.0 (Updated)
+    // Font Awesome 6.4.0 (Non-blocking via style_loader_tag)
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
 
-    // Google Fonts - Outfit & Cormorant Garamond + Cinzel & Manrope for Product Page
+    // Google Fonts (Non-blocking via style_loader_tag)
     wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;700;800&family=Cormorant+Garamond:ital,wght@1,300;1,500&family=Cinzel:wght@400;500;600;700&family=Manrope:wght@200;300;400;500;600;700&display=swap', array(), null);
 
-    // Lucide Icons
+    // Lucide Icons (Deferred)
     wp_enqueue_script('lucide-icons', 'https://unpkg.com/lucide@0.400.0/dist/umd/lucide.min.js', array(), '0.400.0', true);
 
-    // ===== CSS MODULES - Load on all pages =====
-    // Header CSS - New design - Load on all pages
-    wp_enqueue_style('tdclassic-header-new', get_template_directory_uri() . '/assets/css/modules/header-new.css', array('tdclassic-style'), $theme_version);
-
-    // Legacy header CSS (keep for backward compatibility if needed)
-    // wp_enqueue_style('tdclassic-header', get_template_directory_uri() . '/assets/css/modules/header.css', array('tdclassic-style'), $theme_version);
-
-    // Footer CSS - Load on all pages
-    wp_enqueue_style('tdclassic-footer', get_template_directory_uri() . '/assets/css/modules/footer.css', array('tdclassic-style'), $theme_version);
-
-    // ===== CSS COMPONENTS - Load on all pages =====
-    // Mobile optimization - Load on all pages
-    wp_enqueue_style('tdclassic-mobile', get_template_directory_uri() . '/assets/css/components/mobile.css', array('tdclassic-style'), $theme_version);
-
     // ===== CSS MODULES - Conditional loading =====
-    // Front page CSS - Only on front page
+    // Front page CSS - Only on front page (Minified)
     if (is_front_page()) {
-        wp_enqueue_style('tdclassic-front-page', get_template_directory_uri() . '/assets/css/modules/front-page.css', array('tdclassic-style'), $theme_version);
-        wp_enqueue_style('tdclassic-front-page-enhanced', get_template_directory_uri() . '/assets/css/modules/front-page-enhanced.css', array('tdclassic-front-page'), $theme_version);
+        wp_enqueue_style('tdclassic-front-page', get_template_directory_uri() . '/assets/css/modules/front-page.min.css', array('tdclassic-bundle'), $theme_version);
     }
 
-    // Product CSS - Only on product archive/category pages (Single product template has self-contained Dark Luxury design)
+    // Product CSS - Only on product archive/category pages
     if (!is_singular('product') && (is_post_type_archive('product') || (function_exists('is_product_category') && is_product_category()) || is_page_template('page-san-pham.php'))) {
-        wp_enqueue_style('tdclassic-product', get_template_directory_uri() . '/assets/css/modules/product.css', array('tdclassic-style'), $theme_version);
-        wp_enqueue_style('tdclassic-product-image', get_template_directory_uri() . '/assets/css/components/product-image.css', array('tdclassic-product'), $theme_version);
-        wp_enqueue_style('tdclassic-product-tabs', get_template_directory_uri() . '/assets/css/components/product-tabs.css', array('tdclassic-product'), $theme_version);
+        wp_enqueue_style('tdclassic-product', get_template_directory_uri() . '/assets/css/modules/product.min.css', array('tdclassic-bundle'), $theme_version);
     }
 
     // WordPress Caption Responsive CSS - Only on posts/blogs
@@ -397,13 +373,8 @@ function tdclassic_scripts()
     }
 
     // Projects CSS - Only on project pages
-    if (is_post_type_archive('project') || is_singular('project')) {
+    if (is_post_type_archive('project') || is_singular('project') || is_tax('project_category') || (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/du-an') !== false)) {
         wp_enqueue_style('tdclassic-projects', get_template_directory_uri() . '/assets/css/modules/projects.css', array('tdclassic-style'), $theme_version);
-    }
-
-    // Project Archive CSS - Only on project archive page
-    if (is_post_type_archive('project')) {
-        wp_enqueue_style('tdclassic-project-archive', get_template_directory_uri() . '/assets/css/pages/project-archive.css', array('tdclassic-projects'), $theme_version);
     }
 
     // Company Profile CSS - Only on company profile page
@@ -412,25 +383,16 @@ function tdclassic_scripts()
     }
 
     // ===== JAVASCRIPT MODULES =====
-    // Bootstrap JS - Load globally
-    wp_enqueue_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', array(), '5.3.0', true);
+    // Main theme script - Minified, without Bootstrap dependency
+    wp_enqueue_script('tdclassic-main', get_template_directory_uri() . '/assets/js/main.min.js', array('jquery'), $theme_version, true);
 
-    // Main theme script - Load globally (header, footer, common features)
-    wp_enqueue_script('tdclassic-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap-js'), $theme_version, true);
-
-    // Mega Menu JS - Load globally for new header design
-    wp_enqueue_script('tdclassic-mega-menu', get_template_directory_uri() . '/assets/js/modules/mega-menu.js', array('tdclassic-main'), $theme_version, true);
+    // Mega Menu JS - Minified
+    wp_enqueue_script('tdclassic-mega-menu', get_template_directory_uri() . '/assets/js/modules/mega-menu.min.js', array('tdclassic-main'), $theme_version, true);
 
     // ===== JS MODULES - Conditional loading =====
-    // Front page JS modules - Only on front page
     if (is_front_page()) {
-        // Carousel module (reusable)
-        wp_enqueue_script('tdclassic-carousel', get_template_directory_uri() . '/assets/js/modules/carousel.js', array('tdclassic-main'), $theme_version, true);
-
-        // Counter module
+        wp_enqueue_script('tdclassic-carousel', get_template_directory_uri() . '/assets/js/modules/carousel.min.js', array('tdclassic-main'), $theme_version, true);
         wp_enqueue_script('tdclassic-counter', get_template_directory_uri() . '/assets/js/modules/counter.js', array('tdclassic-main'), $theme_version, true);
-
-        // Front page specific JS
         wp_enqueue_script('tdclassic-front-page', get_template_directory_uri() . '/assets/js/modules/front-page.js', array('tdclassic-carousel', 'tdclassic-counter'), $theme_version, true);
     }
 
@@ -445,8 +407,8 @@ function tdclassic_scripts()
         wp_enqueue_script('tdclassic-partner-slider', get_template_directory_uri() . '/assets/js/components/partner-slider.js', array('tdclassic-main'), $theme_version, true);
     }
 
-    // Cloudflare Turnstile API Script
-    if (is_page_template('page-lien-he.php') || is_singular('product') || is_front_page()) {
+    // Cloudflare Turnstile API Script (Only when form exists)
+    if (is_page_template('page-lien-he.php')) {
         wp_enqueue_script('cloudflare-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, true);
     }
 
@@ -457,41 +419,174 @@ function tdclassic_scripts()
 }
 add_action('wp_enqueue_scripts', 'tdclassic_scripts');
 
-// Add Tailwind CSS via CDN (Development Mode) with custom config
-function tdclassic_add_tailwind()
-{
-    ?>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        serif: ['"Cinzel"', 'serif'],
-                        sans: ['"Manrope"', 'sans-serif'],
-                    },
-                    colors: {
-                        void: '#050505',
-                        metal: '#151515',
-                        surface: '#1E1E1E',
-                        gold: '#C5A059',
-                        goldDim: '#8A703E',
-                        dust: '#666666'
-                    },
-                    letterSpacing: {
-                        'cinematic': '0.3em',
-                    },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                    }
-                }
-            }
+/**
+ * Make non-critical external fonts and stylesheets non-render-blocking
+ */
+add_filter('style_loader_tag', function ($html, $handle, $href, $media) {
+    if (in_array($handle, array('font-awesome', 'google-fonts'), true)) {
+        return '<link rel="stylesheet" id="' . esc_attr($handle) . '-css" href="' . esc_url($href) . '" media="print" onload="this.media=\'all\'">' . "\n" .
+               '<noscript><link rel="stylesheet" id="' . esc_attr($handle) . '-noscript-css" href="' . esc_url($href) . '"></noscript>' . "\n";
+    }
+    return $html;
+}, 10, 4);
+
+/**
+ * Add defer attribute to non-critical JavaScript to eliminate blocking time
+ */
+add_filter('script_loader_tag', function ($tag, $handle, $src) {
+    if (is_admin()) {
+        return $tag;
+    }
+    $defer_scripts = array(
+        'jquery-core',
+        'jquery-migrate',
+        'lucide-icons',
+        'tdclassic-main',
+        'tdclassic-mega-menu',
+        'tdclassic-carousel',
+        'tdclassic-counter',
+        'tdclassic-front-page',
+        'tdclassic-single-product',
+        'tdclassic-product-tabs',
+        'tdclassic-partner-slider',
+        'sourcebuster-js',
+        'wc-order-attribution'
+    );
+    if (in_array($handle, $defer_scripts, true) && strpos($tag, 'defer') === false) {
+        return str_replace(' src=', ' defer src=', $tag);
+    }
+    return $tag;
+}, 10, 3);
+
+/**
+ * Optimize WooCommerce Scripts & Styles
+ * Dequeue WooCommerce styles and scripts on non-shop pages to improve Core Web Vitals
+ */
+add_action('wp_enqueue_scripts', function () {
+    // Always dequeue unneeded wc-blocks and default WooCommerce layout styles on frontend
+    wp_dequeue_style('wc-blocks-style');
+    wp_deregister_style('wc-blocks-style');
+    wp_dequeue_style('woocommerce-layout');
+    wp_dequeue_style('woocommerce-smallscreen');
+
+    if (function_exists('is_woocommerce')) {
+        if (!is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page()) {
+            // Dequeue styles
+            wp_dequeue_style('woocommerce-general');
+            // Dequeue scripts
+            wp_dequeue_script('wc-add-to-cart');
+            wp_dequeue_script('wc-cart-fragments');
+            wp_dequeue_script('woocommerce');
+            wp_dequeue_script('wc-jquery-blockui');
+            wp_dequeue_script('wc-js-cookie');
+            wp_dequeue_script('sourcebuster-js');
+            wp_dequeue_script('wc-order-attribution');
         }
-    </script>
-    <?php
+    }
+}, 9999);
+
+/**
+ * Comprehensive SEO Meta Tags, Canonical, OpenGraph, and Schema.org Generator
+ */
+function tdclassic_seo_meta_tags()
+{
+    // Generate page-aware Meta Description
+    $desc = '';
+    if (is_front_page() || is_home()) {
+        $desc = 'TD Classic® - Thương hiệu âm thanh đỉnh cao, cung cấp thiết bị Pro Audio, karaoke cao cấp, hội trường sân khấu và giải pháp âm thanh chuyên nghiệp chuẩn châu Âu.';
+    } elseif (is_singular('product')) {
+        global $post;
+        $desc = !empty($post->post_excerpt) ? wp_strip_all_tags($post->post_excerpt) : wp_trim_words(wp_strip_all_tags($post->post_content), 30, '...');
+    } elseif (is_singular('post') || is_page()) {
+        global $post;
+        if (!empty($post->post_excerpt)) {
+            $desc = wp_strip_all_tags($post->post_excerpt);
+        } elseif (!empty($post->post_content)) {
+            $desc = wp_trim_words(wp_strip_all_tags($post->post_content), 30, '...');
+        } else {
+            $desc = get_the_title() . ' - TD Classic® Thương hiệu âm thanh đỉnh cao, cung cấp thiết bị Pro Audio, karaoke cao cấp và giải pháp âm thanh chuyên nghiệp chuẩn châu Âu.';
+        }
+    } elseif (is_tax() || is_category() || is_tag()) {
+        $term = get_queried_object();
+        if ($term && !empty($term->description)) {
+            $desc = wp_trim_words(wp_strip_all_tags($term->description), 30, '...');
+        } else {
+            $desc = 'Khám phá các sản phẩm và giải pháp âm thanh chất lượng cao thuộc danh mục ' . single_term_title('', false) . ' tại TD Classic.';
+        }
+    } elseif (is_search()) {
+        $desc = 'Kết quả tìm kiếm cho: ' . get_search_query() . ' tại TD Classic.';
+    } else {
+        $desc = get_bloginfo('description') ?: 'TD Classic Professional Audio Systems';
+    }
+    if (empty($desc)) {
+        $page_title = is_singular() || is_page() ? get_the_title() : wp_get_document_title();
+        $desc = $page_title . ' - TD Classic® Thương hiệu âm thanh đỉnh cao, cung cấp thiết bị Pro Audio, karaoke cao cấp và giải pháp âm thanh chuyên nghiệp chuẩn châu Âu.';
+    }
+    $desc = esc_attr(trim(preg_replace('/\s+/', ' ', $desc)));
+
+    // Meta Description & SEO Tags
+    echo '<meta name="description" content="' . $desc . '">' . "\n";
+    echo '<meta name="robots" content="index, follow, max-image-preview:large">' . "\n";
+
+    // Canonical URL
+    $canonical = is_front_page() ? home_url('/') : (is_singular() ? get_permalink() : home_url(add_query_arg(array(), $GLOBALS['wp']->request ?? '')));
+    echo '<link rel="canonical" href="' . esc_url($canonical) . '">' . "\n";
+
+    // Open Graph & Social Cards
+    $title = wp_get_document_title();
+    $site_name = get_bloginfo('name');
+    $og_img = has_post_thumbnail() ? get_the_post_thumbnail_url(null, 'large') : 'https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover-scaled.webp';
+
+    echo '<meta property="og:locale" content="vi_VN">' . "\n";
+    echo '<meta property="og:type" content="' . (is_single() ? 'article' : 'website') . '">' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr($title) . '">' . "\n";
+    echo '<meta property="og:description" content="' . $desc . '">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url($canonical) . '">' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr($site_name) . '">' . "\n";
+    echo '<meta property="og:image" content="' . esc_url($og_img) . '">' . "\n";
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($title) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . $desc . '">' . "\n";
+    echo '<meta name="twitter:image" content="' . esc_url($og_img) . '">' . "\n";
+
+    // JSON-LD Schema.org (Organization & WebSite)
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@graph' => array(
+            array(
+                '@type' => 'Organization',
+                '@id' => home_url('/#organization'),
+                'name' => 'TD Classic',
+                'url' => home_url('/'),
+                'logo' => array(
+                    '@type' => 'ImageObject',
+                    'url' => 'https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover-scaled.webp'
+                ),
+                'contactPoint' => array(
+                    '@type' => 'ContactPoint',
+                    'telephone' => tdclassic_get_company_phone(),
+                    'contactType' => 'customer service',
+                    'areaServed' => 'VN',
+                    'availableLanguage' => 'Vietnamese'
+                )
+            ),
+            array(
+                '@type' => 'WebSite',
+                '@id' => home_url('/#website'),
+                'url' => home_url('/'),
+                'name' => 'TD Classic Audio',
+                'publisher' => array('@id' => home_url('/#organization')),
+                'potentialAction' => array(
+                    '@type' => 'SearchAction',
+                    'target' => home_url('/?s={search_term_string}'),
+                    'query-input' => 'required name=search_term_string'
+                )
+            )
+        )
+    );
+    echo '<script type="application/ld+json">' . json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
 }
-// Disable Tailwind JIT CDN in production for maximum performance (replaced by static compiled tailwind.min.css)
-// add_action('wp_head', 'tdclassic_add_tailwind', 10);
+add_action('wp_head', 'tdclassic_seo_meta_tags', 1);
 
 /**
  * Preload LCP (Largest Contentful Paint) images dynamically in head for optimal PageSpeed
@@ -965,7 +1060,9 @@ function tdclassic_create_product_post_type()
         )
     );
 }
-add_action('init', 'tdclassic_create_product_post_type');
+if (!class_exists('WooCommerce')) {
+    add_action('init', 'tdclassic_create_product_post_type');
+}
 
 // Custom post type for Partners
 function tdclassic_create_partner_post_type()
@@ -1371,86 +1468,6 @@ function tdclassic_cleanup_head()
     remove_action('wp_head', 'adjacent_posts_rel_link_wp_head');
 }
 add_action('init', 'tdclassic_cleanup_head');
-
-// Handle contact form submission
-function handle_contact_form()
-{
-    // Check nonce
-    if (!wp_verify_nonce($_POST['nonce'], 'contact_form_nonce')) {
-        wp_die('Security check failed');
-    }
-
-    // Sanitize form data
-    $name = sanitize_text_field($_POST['contact_name']);
-    $email = sanitize_email($_POST['contact_email']);
-    $phone = sanitize_text_field($_POST['contact_phone']);
-    $company = sanitize_text_field($_POST['contact_company']);
-    $subject = sanitize_text_field($_POST['contact_subject']);
-    $message = sanitize_textarea_field($_POST['contact_message']);
-    $newsletter = isset($_POST['contact_newsletter']) ? 1 : 0;
-
-    // Validate required fields
-    if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-        wp_die('Vui lòng điền đầy đủ thông tin bắt buộc.');
-    }
-
-    // Validate email
-    if (!is_email($email)) {
-        wp_die('Email không hợp lệ.');
-    }
-
-    // Prepare email content
-    $to = get_option('admin_email');
-    $email_subject = 'Liên hệ từ website: ' . $subject;
-
-    $email_body = "Thông tin liên hệ mới từ website:\n\n";
-    $email_body .= "Họ tên: " . $name . "\n";
-    $email_body .= "Email: " . $email . "\n";
-    $email_body .= "Điện thoại: " . $phone . "\n";
-    $email_body .= "Công ty: " . $company . "\n";
-    $email_body .= "Chủ đề: " . $subject . "\n";
-    $email_body .= "Đăng ký nhận tin: " . ($newsletter ? 'Có' : 'Không') . "\n\n";
-    $email_body .= "Tin nhắn:\n" . $message . "\n\n";
-    $email_body .= "---\n";
-    $email_body .= "Gửi từ: " . get_bloginfo('name') . "\n";
-    $email_body .= "Thời gian: " . current_time('mysql') . "\n";
-
-    $headers = array(
-        'Content-Type: text/plain; charset=UTF-8',
-        'From: ' . $name . ' <' . $email . '>',
-        'Reply-To: ' . $email
-    );
-
-    // Send email
-    $sent = wp_mail($to, $email_subject, $email_body, $headers);
-
-    if ($sent) {
-        // Save to database (optional)
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'contact_messages';
-
-        $wpdb->insert(
-            $table_name,
-            array(
-                'name' => $name,
-                'email' => $email,
-                'phone' => $phone,
-                'company' => $company,
-                'subject' => $subject,
-                'message' => $message,
-                'newsletter' => $newsletter,
-                'created_at' => current_time('mysql')
-            ),
-            array('%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s')
-        );
-
-        wp_die('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.');
-    } else {
-        wp_die('Có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại sau.');
-    }
-}
-add_action('wp_ajax_handle_contact_form', 'handle_contact_form');
-add_action('wp_ajax_nopriv_handle_contact_form', 'handle_contact_form');
 
 // Create contact messages table
 function create_contact_messages_table()
@@ -2023,10 +2040,6 @@ function tdclassic_handle_contact_form()
 add_action('wp_ajax_handle_contact_form', 'tdclassic_handle_contact_form');
 add_action('wp_ajax_nopriv_handle_contact_form', 'tdclassic_handle_contact_form');
 
-// Remove old contact form handler
-remove_action('wp_ajax_handle_contact_form', 'handle_contact_form');
-remove_action('wp_ajax_nopriv_handle_contact_form', 'handle_contact_form');
-
 /**
  * Contact Messages Management
  */
@@ -2054,8 +2067,11 @@ function tdclassic_contact_messages_page()
     // Handle message deletion
     if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
         $id = intval($_GET['id']);
-        $wpdb->delete($table_name, array('id' => $id), array('%d'));
-        echo '<div class="notice notice-success"><p>Tin nhắn đã được xóa thành công!</p></div>';
+        check_admin_referer('delete_contact_message_' . $id);
+        if (current_user_can('manage_options')) {
+            $wpdb->delete($table_name, array('id' => $id), array('%d'));
+            echo '<div class="notice notice-success"><p>Tin nhắn đã được xóa thành công!</p></div>';
+        }
     }
 
     // Get messages with pagination
@@ -2137,7 +2153,13 @@ function tdclassic_contact_messages_page()
                                     class="button button-small">
                                     Trả lời
                                 </a>
-                                <a href="<?php echo admin_url('admin.php?page=contact-messages&action=delete&id=' . $message->id); ?>"
+                                <?php
+                                $delete_nonce_url = wp_nonce_url(
+                                    admin_url('admin.php?page=contact-messages&action=delete&id=' . $message->id),
+                                    'delete_contact_message_' . $message->id
+                                );
+                                ?>
+                                <a href="<?php echo esc_url($delete_nonce_url); ?>"
                                     class="button button-small button-link-delete"
                                     data-confirm-delete="Bạn có chắc chắn muốn xóa tin nhắn này?">
                                     Xóa
@@ -2509,7 +2531,7 @@ function tdclassic_get_project_thumb_url($post_id = null, $size = 'project-thumb
         }
     }
     // Placeholder mặc định theo phong cách TD Classic
-    return get_template_directory_uri() . '/assets/images/project-placeholder.jpg';
+    return get_template_directory_uri() . '/assets/images/placeholder.jpg';
 }
 
 /* --- CODE LẤY TIN (DÀNH CHO LOCALHOST / TIN TỨC) --- */
@@ -2528,13 +2550,13 @@ function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1)
     $page = max(1, (int) $page);
     $total_pages = 1;
 
-    // 1. Nếu đang làm giao diện, có thể bật cache để nhẹ server hơn
-    // $cache_key    = 'db_main_posts_' . $quantity . '_page_' . $page;
-    // $cached_posts = get_transient($cache_key);
-    // if (false !== $cached_posts) {
-    //     $total_pages = isset($cached_posts['total_pages']) ? (int) $cached_posts['total_pages'] : 1;
-    //     return isset($cached_posts['items']) ? $cached_posts['items'] : [];
-    // }
+    // Cache kết quả transient 15 phút để tăng tốc website và chống nghẽn
+    $cache_key = 'tdclassic_remote_posts_' . $quantity . '_p_' . $page;
+    $cached_data = get_transient($cache_key);
+    if (false !== $cached_data && is_array($cached_data)) {
+        $total_pages = isset($cached_data['total_pages']) ? (int) $cached_data['total_pages'] : 1;
+        return isset($cached_data['items']) ? $cached_data['items'] : array();
+    }
 
     $api_url = add_query_arg(
         array(
@@ -2545,18 +2567,18 @@ function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1)
         'https://tavaled.vn/wp-json/wp/v2/posts'
     );
 
-    // QUAN TRỌNG: Thêm 'sslverify' => false để tránh lỗi trên Localhost
+    // Timeout 5s để tránh treo trang nếu host bên ngoài phản hồi chậm
     $response = wp_remote_get(
         $api_url,
         array(
-            'timeout' => 15,
+            'timeout' => 5,
             'sslverify' => false,
         )
     );
 
     if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200) {
-        // Mẹo: In lỗi ra để xem nếu không lấy được tin
-        // echo '<pre>'; print_r($response); echo '</pre>';
+        // Cache kết quả rỗng 5 phút nếu lỗi kết nối để tránh nghẽn trang các lượt sau
+        set_transient($cache_key, array('items' => array(), 'total_pages' => 1), 5 * MINUTE_IN_SECONDS);
         return array();
     }
 
@@ -2627,15 +2649,15 @@ function get_posts_from_main_site($quantity = 3, $page = 1, &$total_pages = 1)
             );
         }
 
-        // Dev xong nếu muốn có thể bật cache lại cho nhẹ server
-        // set_transient(
-        //     $cache_key,
-        //     array(
-        //         'items'       => $final_posts,
-        //         'total_pages' => $total_pages,
-        //     ),
-        //     600 // Cache 10 phút
-        // );
+        // Lưu cache 15 phút
+        set_transient(
+            $cache_key,
+            array(
+                'items'       => $final_posts,
+                'total_pages' => $total_pages,
+            ),
+            15 * MINUTE_IN_SECONDS
+        );
     }
 
     return $final_posts;

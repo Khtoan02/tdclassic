@@ -1,100 +1,103 @@
 <?php
 /**
- * The template for displaying the blog page
+ * The template for displaying the blog / posts index page
+ * Upgraded to Dark Luxury Aesthetic for TD Classic
+ *
+ * @package TD_Classic
  */
 
 get_header(); ?>
 
-<main id="main" class="site-main">
-    <div class="container py-5">
-        <div class="row">
-            <div class="col-lg-12">
-                <header class="page-header mb-5">
-                    <h1 class="page-title">Blog</h1>
-                    <p class="page-description lead text-muted">
-                        Cập nhật những thông tin mới nhất về công nghệ, xu hướng thị trường và kiến thức hữu ích
-                    </p>
-                </header>
-
-                <?php if (have_posts()) : ?>
-                    <div class="row g-4">
-                        <?php while (have_posts()) : the_post(); ?>
-                            <div class="col-lg-6 col-md-12">
-                                <article class="blog-post">
-                                    <div class="card h-100">
-                                        <?php if (has_post_thumbnail()) : ?>
-                                            <img src="<?php the_post_thumbnail_url('blog-thumb'); ?>" class="card-img-top" alt="<?php the_title(); ?>">
-                                        <?php else : ?>
-                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
-                                                <span class="text-muted">Blog Image</span>
-                                            </div>
-                                        <?php endif; ?>
-                                        
-                                        <div class="card-body d-flex flex-column">
-                                            <div class="blog-meta mb-3">
-                                                <small class="text-muted">
-                                                    <i class="fas fa-calendar-alt me-1"></i>
-                                                    <?php echo get_the_date(); ?>
-                                                    <span class="mx-2">|</span>
-                                                    <i class="fas fa-user me-1"></i>
-                                                    <?php the_author(); ?>
-                                                    <?php if (get_the_category()) : ?>
-                                                        <span class="mx-2">|</span>
-                                                        <i class="fas fa-folder me-1"></i>
-                                                        <?php the_category(', '); ?>
-                                                    <?php endif; ?>
-                                                </small>
-                                            </div>
-                                            
-                                            <h5 class="card-title">
-                                                <a href="<?php the_permalink(); ?>" class="text-decoration-none text-dark">
-                                                    <?php the_title(); ?>
-                                                </a>
-                                            </h5>
-                                            
-                                            <p class="card-text flex-grow-1"><?php the_excerpt(); ?></p>
-                                            
-                                            <div class="mt-auto">
-                                                <a href="<?php the_permalink(); ?>" class="btn btn-outline-primary">
-                                                    Đọc thêm
-                                                </a>
-                                                
-                                                <?php if (get_the_tags()) : ?>
-                                                    <div class="blog-tags mt-3">
-                                                        <small class="text-muted">
-                                                            <i class="fas fa-tags me-1"></i>
-                                                            <?php the_tags('', ', ', ''); ?>
-                                                        </small>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>
-                        <?php endwhile; ?>
-                    </div>
-
-                    <!-- Pagination -->
-                    <div class="row mt-5">
-                        <div class="col-12">
-                            <?php tdclassic_pagination(); ?>
-                        </div>
-                    </div>
-
-                <?php else : ?>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="alert alert-info text-center" role="alert">
-                                <h4>Chưa có bài viết nào</h4>
-                                <p class="mb-0">Hiện tại chúng tôi chưa có bài viết nào để hiển thị. Vui lòng quay lại sau.</p>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
+<main id="primary" class="site-main bg-void text-gray-200 min-h-screen pt-28 md:pt-36 pb-20">
+    <div class="max-w-6xl mx-auto px-6">
+        
+        <!-- Blog Header -->
+        <header class="mb-12 border-b border-white/10 pb-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gold text-xs font-semibold uppercase tracking-widest mb-4">
+                <i class="fa-solid fa-newspaper text-[10px]"></i>
+                <span>Bản tin & Kiến thức</span>
             </div>
-        </div>
+
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl text-white font-bold tracking-tight mb-3">
+                        Tin Tức & Sự Kiện
+                    </h1>
+                    <p class="text-sm md:text-base text-gray-400 font-light max-w-2xl leading-relaxed">
+                        Cập nhật các dự án âm thanh đỉnh cao, công nghệ Pro Audio mới nhất và hoạt động nổi bật từ TD Classic.
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <?php if (have_posts()) : ?>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <?php while (have_posts()) : the_post(); 
+                    $thumb_url = has_post_thumbnail() 
+                        ? get_the_post_thumbnail_url(get_the_ID(), 'large') 
+                        : get_template_directory_uri() . '/assets/images/placeholder.jpg';
+                    
+                    $categories = get_the_category();
+                    $cat_name = !empty($categories) ? $categories[0]->name : 'Tin tức';
+                ?>
+                    <article id="post-<?php the_ID(); ?>" <?php post_class('group bg-surface/50 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/40 transition-all duration-300 flex flex-col h-full hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]'); ?>>
+                        <a href="<?php the_permalink(); ?>" class="aspect-video overflow-hidden bg-metal block relative">
+                            <img src="<?php echo esc_url($thumb_url); ?>" 
+                                 alt="<?php the_title_attribute(); ?>"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                                 loading="lazy">
+                            <div class="absolute top-3 left-3 bg-black/70 backdrop-blur-md border border-white/10 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-gold">
+                                <?php echo esc_html($cat_name); ?>
+                            </div>
+                        </a>
+
+                        <div class="p-6 flex flex-col flex-grow">
+                            <div class="flex items-center gap-3 text-xs text-gray-400 mb-3">
+                                <span><?php echo get_the_date('d/m/Y'); ?></span>
+                                <span class="text-white/20">•</span>
+                                <span><?php the_author(); ?></span>
+                            </div>
+
+                            <h2 class="font-serif text-xl text-white font-bold line-clamp-2 mb-3 group-hover:text-gold transition-colors">
+                                <a href="<?php the_permalink(); ?>">
+                                    <?php the_title(); ?>
+                                </a>
+                            </h2>
+
+                            <div class="text-sm text-gray-400 font-light leading-relaxed line-clamp-3 mb-6 flex-grow">
+                                <?php the_excerpt(); ?>
+                            </div>
+
+                            <a href="<?php the_permalink(); ?>" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold hover:text-white transition-colors mt-auto">
+                                <span>Đọc chi tiết</span>
+                                <i class="fa-solid fa-arrow-right text-[10px] transform group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </article>
+                <?php endwhile; ?>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-12 pt-8 border-t border-white/10 flex justify-center">
+                <?php
+                the_posts_pagination(array(
+                    'prev_text' => '<i class="fa-solid fa-chevron-left me-1"></i> ' . __('Trước', 'tdclassic'),
+                    'next_text' => __('Sau', 'tdclassic') . ' <i class="fa-solid fa-chevron-right ms-1"></i>',
+                ));
+                ?>
+            </div>
+
+        <?php else : ?>
+            <div class="text-center py-16 px-4 bg-surface/30 border border-white/5 rounded-3xl max-w-xl mx-auto">
+                <h3 class="font-serif text-2xl text-white font-semibold mb-3">Chưa có bài viết</h3>
+                <p class="text-sm text-gray-400 mb-6 font-light">Chưa có bài viết nào được xuất bản gần đây.</p>
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="inline-flex items-center px-6 py-3 rounded-full bg-gold hover:bg-goldDim text-black text-xs font-bold uppercase tracking-widest transition-colors">
+                    Về trang chủ
+                </a>
+            </div>
+        <?php endif; ?>
+
     </div>
 </main>
 
-<?php get_footer(); ?> 
+<?php get_footer(); ?>

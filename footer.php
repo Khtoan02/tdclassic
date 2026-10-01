@@ -1,292 +1,6 @@
-</div><!-- #content -->
+</main><!-- #main-content -->
 
-    <!-- FOOTER DESIGN BY GEMINI - HIGHLIGHT SHOWROOM & WAREHOUSE -->
-    <style>
-        /* --- CSS VARIABLES & RESET --- */
-        :root {
-            --f-bg-color: #080808;       /* Đen sâu */
-            --f-bg-card: #141414;        /* Nền card */
-            --f-text-main: #ffffff;      /* Trắng tinh */
-            --f-text-muted: #888888;     /* Xám bạc */
-            --f-border-light: #333333;   /* Viền thường */
-            --f-border-highlight: #555555; /* Viền nổi bật cho Showroom */
-            --f-accent: #ffffff;         /* Màu nhấn */
-        }
-
-        .site-footer {
-            background-color: var(--f-bg-color);
-            color: var(--f-text-muted);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            font-size: 14px;
-            line-height: 1.6;
-            padding-top: 70px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .site-footer a {
-            text-decoration: none;
-            color: var(--f-text-muted);
-            transition: all 0.3s ease;
-        }
-
-        .site-footer a:hover {
-            color: var(--f-text-main);
-            transform: translateX(3px);
-        }
-
-        .footer-container {
-            max-width: 1440px; /* Mở rộng container một chút */
-            margin: 0 auto;
-            padding: 0 30px;
-        }
-
-        /* --- BRAND --- */
-        .footer-brand {
-            margin-bottom: 50px;
-            border-bottom: 1px solid var(--f-border-light);
-            padding-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-brand h2 {
-            font-size: 2.2rem;
-            color: var(--f-text-main);
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: -0.02em;
-        }
-
-        .footer-brand span {
-            font-size: 13px; /* Điều chỉnh size chữ nhẹ nhàng hơn */
-            text-transform: uppercase;
-            letter-spacing: 1px; /* Giảm khoảng cách chữ để dòng slogan dài hiển thị đẹp hơn */
-            opacity: 0.7;
-            font-weight: 500;
-        }
-
-        /* --- GRID SYSTEM --- */
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 200px 1fr 380px; /* Cột 3 (Map) rộng hơn chút */
-            gap: 50px;
-        }
-
-        .footer-heading {
-            color: var(--f-text-main);
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            display: block;
-            opacity: 0.9;
-        }
-
-        /* --- PRODUCT LINKS --- */
-        .product-links li {
-            margin-bottom: 12px;
-        }
-        .product-links a {
-            font-size: 15px;
-            display: block;
-            padding: 5px 0;
-            border-bottom: 1px dashed #222;
-        }
-        .product-links a:hover {
-            border-bottom-color: #555;
-        }
-
-        /* --- HIGHLIGHT BOX (SHOWROOM & WAREHOUSE) --- */
-        .highlight-box {
-            border: 1px solid var(--f-border-highlight);
-            background: var(--f-bg-card);
-            padding: 25px;
-            border-radius: 6px;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        /* Nhãn nổi bật */
-        .highlight-label {
-            position: absolute;
-            top: -12px;
-            left: 20px;
-            background: var(--f-text-main);
-            color: #000;
-            padding: 2px 12px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 2px;
-        }
-
-        .highlight-title {
-            color: var(--f-text-main);
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .highlight-address {
-            font-size: 15px;
-            color: #e0e0e0; /* Trắng sáng hơn text thường */
-            line-height: 1.5;
-        }
-
-        /* --- OFFICE LIST (SECONDARY) --- */
-        .office-list {
-            padding-left: 10px;
-            border-left: 2px solid var(--f-border-light);
-        }
-
-        .office-item {
-            margin-bottom: 20px;
-        }
-
-        .office-title {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            color: #ccc;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-        }
-        
-        .office-addr {
-            font-size: 14px;
-        }
-
-        /* --- WAREHOUSE & MAP --- */
-        .warehouse-item {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #2a2a2a;
-        }
-        .warehouse-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .map-wrapper {
-            border: 1px solid var(--f-border-light);
-            padding: 5px; /* Tạo khung viền cho map */
-            background: #1a1a1a;
-            border-radius: 4px;
-        }
-
-        .map-frame {
-            width: 100%;
-            height: 200px;
-            display: block;
-            background: #ddd;
-        }
-
-        /* --- BOTTOM --- */
-        .footer-bottom {
-            margin-top: 60px;
-            border-top: 1px solid var(--f-border-light);
-            padding: 30px 0;
-            display: flex;
-            justify-content: center; /* Căn giữa vì chỉ còn 1 nội dung */
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            text-align: center;
-        }
-        
-        .contact-info-block p {
-            margin: 0;
-            font-size: 14px;
-        }
-        
-        .footer-certs {
-            margin-top: 25px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        
-        .dmca-badge img, .fake-goods-badge img {
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-        
-        .dmca-badge:hover img, .fake-goods-badge:hover img {
-            opacity: 1;
-        }
-
-        /* Tooltip Styles */
-        .cert-tooltip {
-            position: relative;
-        }
-        
-        .cert-tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #222;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            border: 1px solid #444;
-            pointer-events: none;
-            z-index: 20;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .cert-tooltip:hover::after {
-            opacity: 1;
-            visibility: visible;
-            bottom: 115%; /* Slight float up effect */
-        }
-        
-        .cert-tooltip::before {
-            content: '';
-            position: absolute;
-            bottom: 110%; /* Arrow position */
-            left: 50%;
-            transform: translateX(-50%);
-            border: 5px solid transparent;
-            border-top-color: #444; /* Match border color */
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 19;
-        }
-
-        .cert-tooltip:hover::before {
-            opacity: 1;
-            visibility: visible;
-            bottom: 105%;
-        }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 1024px) {
-            .footer-brand { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .highlight-box { padding: 20px; }
-        }
-    </style>
-
-    <footer id="colophon" class="site-footer">
+    <footer id="colophon" class="site-footer" role="contentinfo">
         <div class="footer-container">
             
             <!-- 1. BRAND HEADER -->
@@ -307,11 +21,11 @@
                     </div>
                     
                     <div class="footer-certs">
-                            <a href="https://www.dmca.com/Protection/Status.aspx?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2&refurl=https://tdclassic.vn/" title="DMCA.com Protection Status" class="dmca-badge cert-tooltip" target="_blank" data-tooltip="Bảo vệ bản quyền DMCA">
-                            <img src="https://images.dmca.com/Badges/DMCA_badge_grn_60w.png?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" alt="DMCA.com Protection Status" />
+                        <a href="https://www.dmca.com/Protection/Status.aspx?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2&refurl=https://tdclassic.vn/" title="DMCA.com Protection Status" class="dmca-badge cert-tooltip" target="_blank" rel="noopener noreferrer" data-tooltip="Bảo vệ bản quyền DMCA">
+                            <img src="https://images.dmca.com/Badges/DMCA_badge_grn_60w.png?ID=b0b7c935-c097-42d6-993d-fc94ddf78bf2" alt="DMCA.com Protection Status" width="60" height="60" />
                         </a>
                         <a href="#" class="fake-goods-badge cert-tooltip" data-tooltip="Cam kết 100% Chính hãng">
-                            <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" style="height: 32px; width: auto;" />
+                            <img src="https://tdclassic.vn/wp-content/uploads/2025/10/Noi-khong-voi-hang-gia.png" alt="Nói không với hàng giả" width="100" height="32" style="height: 32px; width: auto;" />
                         </a>
                     </div>
                 </div>
@@ -323,10 +37,10 @@
                         <!-- Hải Phòng -->
                         <div class="highlight-box mb-0 py-4 px-5">
                             <div class="highlight-title text-sm">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4 8 4v14M8 21v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21h18M5 21V7l8-4 8 4v14M8 21v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                 VP & SHOWROOM HẢI PHÒNG
                             </div>
-                            <div class="highlight-address text-xs text-gray-400">
+                            <div class="highlight-address text-xs text-gray-300">
                                 Lô BT36-06 Khu đô thị (KĐT) thương mại & nhà ở công nhân Tràng Duệ, Phường An Dương, TP Hải Phòng, Việt Nam
                             </div>
                         </div>
@@ -334,10 +48,10 @@
                         <!-- Hà Nội -->
                         <div class="highlight-box mb-0 py-4 px-5">
                             <div class="highlight-title text-sm">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
                                 VĂN PHÒNG HÀ NỘI
                             </div>
-                            <div class="highlight-address text-xs text-gray-400">
+                            <div class="highlight-address text-xs text-gray-300">
                                 Lô 5 - TT7 - Khu đấu giá Tứ Hiệp, Thanh Trì, Hà Nội
                             </div>
                         </div>
@@ -346,15 +60,15 @@
 
                 <!-- CỘT 3: VĂN PHÒNG & MAP -->
                 <div class="footer-col">
-                    
-
-
                     <!-- MAP -->
                     <div class="map-wrapper">
                         <iframe class="map-frame"
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.999177617507!2d106.70327410000002!3d20.8720834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7adc297467ef%3A0x2d9f6796b87197c!2zMjIgTmfDtCBRdXnhu4FuLCBU4buVIGTDom4gcGjhu5Egc-G7kSA1LCBOZ8O0IFF1eeG7gW4sIEjhuqNpIFBow7JuZw!5e0!3m2!1svi!2s!4v1754320853116!5m2!1svi!2s" 
+                            title="Bản đồ định vị văn phòng TD Classic tại Hải Phòng"
+                            width="340"
+                            height="200"
                             style="border:0;" 
-                            allowfullscreen="" pul
+                            allowfullscreen=""
                             loading="lazy" 
                             referrerpolicy="no-referrer-when-downgrade">
                         </iframe>
@@ -367,7 +81,7 @@
             <div class="footer-bottom">
                 <div class="company-legal">
                     <p style="margin: 0; color: #fff; font-weight: 600;">© <?php echo date('Y'); ?> CÔNG TY CỔ PHẦN CÔNG NGHỆ TAVA VIỆT NAM</p>
-                    <p style="margin: 5px 0 0 0; font-size: 13px; opacity: 0.5;">Mã số thuế: 0201879542 | Cấp ngày: 07/06/2018 | Nơi cấp: Sở Kế hoạch và Đầu tư TP. Hải Phòng</p>
+                    <p style="margin: 5px 0 0 0; font-size: 13px; opacity: 0.7;">Mã số thuế: 0201879542 | Cấp ngày: 07/06/2018 | Nơi cấp: Sở Kế hoạch và Đầu tư TP. Hải Phòng</p>
                 </div>
             </div>
 
@@ -377,12 +91,27 @@
 
 <?php wp_footer(); ?>
 
-<!-- Lucide Icons -->
+<!-- Lucide Icons Safe Init -->
 <script>
-    // Initialize Lucide icons
-    if (typeof lucide !== 'undefined') {
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
         lucide.createIcons();
     }
+</script>
+
+<!-- Speculation Rules for Instant Navigation -->
+<script type="speculationrules">
+{
+  "prerender": [{
+    "where": {
+      "and": [
+        { "href_matches": "/*" },
+        { "not": { "href_matches": "/wp-admin/*" } },
+        { "not": { "href_matches": "/wp-login.php" } }
+      ]
+    },
+    "eagerness": "moderate"
+  }]
+}
 </script>
 
 </body>

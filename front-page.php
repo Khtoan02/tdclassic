@@ -104,23 +104,33 @@ get_header();
         <!-- SLIDER BACKGROUNDS -->
         <div id="hero-slider-container" class="absolute inset-0 w-full h-full">
             <div class="hero-slide active absolute inset-0 w-full h-full">
-                <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover-scaled.webp"
-                    class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="Live Event">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1.webp'); ?>"
+                    srcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1-mobile.webp'); ?> 768w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1.webp'); ?> 1920w"
+                    sizes="100vw"
+                    class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="TD Classic Live Event Hero"
+                    width="1920" height="823"
+                    fetchpriority="high">
             </div>
             <!-- Slide 1 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover_02-scaled.webp"
-                    class="w-full h-full object-cover animate-slow-zoom" alt="Stage Light">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-2.webp'); ?>"
+                    class="w-full h-full object-cover animate-slow-zoom" alt="TD Classic Stage Light"
+                    width="1920" height="823"
+                    loading="lazy">
             </div>
             <!-- Slide 2 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover_03-scaled.webp"
-                    class="w-full h-full object-cover animate-slow-zoom" alt="Technology">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-3.webp'); ?>"
+                    class="w-full h-full object-cover animate-slow-zoom" alt="TD Classic Technology"
+                    width="1920" height="823"
+                    loading="lazy">
             </div>
             <!-- Slide 3 -->
             <div class="hero-slide absolute inset-0 w-full h-full">
-                <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover_01-scaled.webp"
-                    class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="Live Event">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-4.webp'); ?>"
+                    class="w-full h-full object-cover animate-slow-zoom" style="animation-delay: -5s;" alt="TD Classic Concert Sound"
+                    width="1920" height="823"
+                    loading="lazy">
             </div>
 
             <!-- Premium Gradient Overlay (Smoother transition) -->
@@ -167,11 +177,11 @@ get_header();
         </div>
 
         <!-- NAVIGATION ARROWS (Floating Cleanly) -->
-        <button onclick="prevSlide()" class="flex absolute top-1/2 left-4 md:left-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+        <button onclick="prevSlide()" aria-label="Slide trước" class="flex absolute top-1/2 left-4 md:left-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             <i class="fa-solid fa-chevron-left text-sm md:text-lg transform group-hover:-translate-x-0.5 transition-transform duration-300"></i>
         </button>
 
-        <button onclick="nextSlide()" class="flex absolute top-1/2 right-4 md:right-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+        <button onclick="nextSlide()" aria-label="Slide tiếp theo" class="flex absolute top-1/2 right-4 md:right-12 -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border border-white/10 bg-black/45 backdrop-blur-md items-center justify-center text-white/60 hover:text-gold hover:border-gold/50 hover:bg-black/75 transition-all duration-300 group cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             <i class="fa-solid fa-chevron-right text-sm md:text-lg transform group-hover:translate-x-0.5 transition-transform duration-300"></i>
         </button>
 
@@ -189,13 +199,17 @@ get_header();
 
         function updateSliderUI(index) {
             // Update Number
-            currentEl.textContent = '0' + (index + 1);
+            if (currentEl) {
+                currentEl.textContent = '0' + (index + 1);
+            }
             
             // Reset Animation
-            slideFill.classList.remove('running');
-            void slideFill.offsetWidth; // trigger reflow
-            if(isAutoPlaying) slideFill.classList.add('running');
-            else slideFill.style.width = '100%'; // Full if paused manually
+            if (slideFill) {
+                slideFill.classList.remove('running');
+                void slideFill.offsetWidth; // trigger reflow
+                if(isAutoPlaying) slideFill.classList.add('running');
+                else slideFill.style.width = '100%'; // Full if paused manually
+            }
         }
 
         function showSlide(index) {
@@ -275,12 +289,12 @@ get_header();
                         class="aspect-[4/3] overflow-hidden rounded-lg transition-all duration-1000">
                         <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
-                            alt="Sứ mệnh âm thanh" loading="lazy">
+                            alt="Sứ mệnh kiến tạo âm thanh TD Classic" width="800" height="600" loading="lazy">
                     </div>
                 </div>
                 <div class="w-full md:w-1/2 lg:pl-12 relative">
                     <span
-                        class="text-4xl sm:text-6xl font-serif text-white/5 absolute -translate-y-8 sm:-translate-y-10 -translate-x-2 sm:-translate-x-4 select-none pointer-events-none">Mission</span>
+                        class="text-4xl sm:text-6xl font-serif text-white/30 absolute -translate-y-8 sm:-translate-y-10 -translate-x-2 sm:-translate-x-4 select-none pointer-events-none" aria-hidden="true">Mission</span>
                     <h3 class="text-2xl sm:text-3xl font-sans font-bold text-white mb-4 sm:mb-6 relative z-10">Sứ Mệnh Kiến Tạo</h3>
                     <p class="font-sans text-gray-300 font-light leading-relaxed text-sm sm:text-base mb-6 text-left md:text-justify">
                         Sứ mệnh của TD Classic không dừng lại ở việc sản xuất thiết bị. Chúng tôi khao khát <strong>xóa
@@ -297,23 +311,24 @@ get_header();
             <div class="flex flex-col md:flex-row-reverse gap-8 md:gap-16 items-center mb-16 md:mb-32">
                 <div class="w-full md:w-1/2 relative group">
                     <div class="absolute -bottom-4 -right-4 w-20 sm:w-24 h-20 sm:h-24 border-b border-r border-gold/30 pointer-events-none"></div>
-                    <div
-                        class="aspect-[4/3] overflow-hidden rounded-lg transition-all duration-1000">
+                    <div class="aspect-[4/3] overflow-hidden rounded-lg transition-all duration-1000">
                         <img src="https://tdclassic.vn/wp-content/uploads/2026/01/tdclassic_cover_02-scaled.webp"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
-                            alt="Tầm nhìn" loading="lazy">
+                            alt="Tầm nhìn vươn xa của TD Classic" width="800" height="600" loading="lazy">
                     </div>
                 </div>
-                <div class="w-full md:w-1/2 lg:pr-12 text-left md:text-right relative">
+                <div class="w-full md:w-1/2 lg:pr-12 relative text-left">
                     <span
-                        class="text-4xl sm:text-6xl font-serif text-white/5 absolute -translate-y-8 sm:-translate-y-10 right-auto md:right-0 md:left-auto left-0 translate-x-0 md:translate-x-12 select-none pointer-events-none">Vision</span>
+                        class="text-4xl sm:text-6xl font-serif text-white/30 absolute -translate-y-8 sm:-translate-y-10 left-0 -translate-x-2 sm:-translate-x-4 select-none pointer-events-none" aria-hidden="true">Vision</span>
                     <h3 class="text-2xl sm:text-3xl font-sans font-bold text-white mb-4 sm:mb-6 relative z-10">Tầm Nhìn Vươn Xa</h3>
-                    <p class="font-sans text-gray-300 font-light leading-relaxed text-sm sm:text-base mb-6 text-left md:text-right"
-                        dir="auto">
+                    <p class="font-sans text-gray-300 font-light leading-relaxed text-sm sm:text-base mb-6 text-left md:text-justify">
                         Định vị trở thành biểu tượng <strong>số 1 về Pro Audio</strong> tại Việt Nam. TD Classic hướng
                         tới việc xây dựng một hệ sinh thái âm thanh toàn diện, nơi công nghệ phục vụ nghệ thuật, và chất
                         lượng Việt Nam vươn tầm quốc tế.
                     </p>
+                    <div class="flex items-center gap-3 sm:gap-4 text-gold text-xs sm:text-sm font-sans tracking-widest uppercase">
+                        <span>Đỉnh cao</span> <span class="w-1.5 h-1.5 bg-gold rounded-full"></span> <span>Bền vững</span> <span class="w-1.5 h-1.5 bg-gold rounded-full"></span> <span>Vươn xa</span>
+                    </div>
                 </div>
             </div>
 
@@ -322,7 +337,7 @@ get_header();
                 <div class="bg-[#111111] p-6 sm:p-8 rounded-xl border border-white/10 hover:border-gold/50 transition-all duration-300 group">
                     <i data-lucide="gem"
                         class="w-8 h-8 sm:w-10 sm:h-10 text-gold mb-4 sm:mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="font-sans font-bold text-lg sm:text-xl text-white mb-3 group-hover:text-gold transition-colors">Tinh Hoa (Craftsmanship)</h4>
+                    <h3 class="font-sans font-bold text-lg sm:text-xl text-white mb-3 group-hover:text-gold transition-colors">Tinh Hoa (Craftsmanship)</h3>
                     <p class="font-sans text-gray-300 text-sm leading-relaxed">
                         Sự tỉ mỉ trong từng mối hàn, từng lớp sơn. Chúng tôi coi mỗi sản phẩm là một tác phẩm nghệ thuật
                         cần được hoàn thiện thủ công kết hợp công nghệ chính xác.
@@ -331,7 +346,7 @@ get_header();
                 <div class="bg-[#111111] p-6 sm:p-8 rounded-xl border border-white/10 hover:border-gold/50 transition-all duration-300 group">
                     <i data-lucide="users"
                         class="w-8 h-8 sm:w-10 sm:h-10 text-gold mb-4 sm:mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="font-sans font-bold text-lg sm:text-xl text-white mb-3 group-hover:text-gold transition-colors">Con Người (People)</h4>
+                    <h3 class="font-sans font-bold text-lg sm:text-xl text-white mb-3 group-hover:text-gold transition-colors">Con Người (People)</h3>
                     <p class="font-sans text-gray-300 text-sm leading-relaxed">
                         Đội ngũ kỹ sư R&D và kỹ thuật viên không chỉ giỏi chuyên môn mà còn có đôi tai thẩm âm tinh tế,
                         thấu hiểu nhu cầu khắt khe của khách hàng.
@@ -340,7 +355,7 @@ get_header();
                 <div class="bg-[#111111] p-6 sm:p-8 rounded-xl border border-white/10 hover:border-gold/50 transition-all duration-300 group">
                     <i data-lucide="map"
                         class="w-8 h-8 sm:w-10 sm:h-10 text-gold mb-4 sm:mb-6 stroke-1 group-hover:scale-110 transition-transform"></i>
-                    <h4 class="font-sans font-bold text-lg sm:text-xl text-white mb-3 group-hover:text-gold transition-colors">Quy Mô (Scale)</h4>
+                    <h3 class="font-sans font-bold text-lg sm:text-xl text-white mb-3 group-hover:text-gold transition-colors">Quy Mô (Scale)</h3>
                     <p class="font-sans text-gray-300 text-sm leading-relaxed">
                         Mạng lưới phân phối trải rộng 3 miền. Hệ thống Showroom tiêu chuẩn Lab. Hàng ngàn dự án đã được
                         lắp đặt và vận hành ổn định.
@@ -385,7 +400,7 @@ get_header();
                 'cat_num' => sprintf('%02d', $display_index + 1),
                 'short_title' => $cat['name'],
                 'title' => $cat['name'],
-                'desc' => $cat['description'] ? $cat['description'] : 'Khám phá các sản phẩm ' . strtolower($cat['name']) . ' chất lượng cao từ TD Classic.',
+                'desc' => !empty($cat['description']) ? wp_strip_all_tags($cat['description']) : 'Khám phá các sản phẩm ' . strtolower($cat['name']) . ' chất lượng cao từ TD Classic.',
                 'specs' => ['• Chất lượng âm thanh chuyên nghiệp', '• Thiết kế bền bỉ, sang trọng', '• Bảo hành chính hãng'],
                 'img' => !empty($cat['image_url']) ? $cat['image_url'] : 'https://placehold.co/600x400/1a1a1a/D4AF37?text=' . urlencode($cat['name']),
                 'reverse' => !$is_even
@@ -410,8 +425,11 @@ get_header();
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 <?php foreach ($sections as $grid_item): ?>
                 <a href="#<?php echo esc_attr($grid_item['id']); ?>"
+                    aria-label="<?php echo esc_attr($grid_item['short_title']); ?>"
                     class="group relative aspect-[3/4] bg-surface overflow-hidden border border-white/5 hover:border-gold/50 transition-all">
                     <img src="<?php echo esc_url($grid_item['img']); ?>"
+                        alt="<?php echo esc_attr($grid_item['short_title']); ?>"
+                        width="300" height="400"
                         class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700"
                         loading="lazy">
                     <div class="absolute bottom-4 left-0 w-full text-center">
@@ -449,7 +467,9 @@ get_header();
                     <div class="w-full md:w-1/2 relative h-[400px] bg-void overflow-hidden group border border-white/5">
                         <img src="<?php echo esc_url($sec['img']); ?>"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            alt="Cover" loading="lazy">
+                            alt="<?php echo esc_attr($sec['title']); ?>"
+                            width="600" height="400"
+                            loading="lazy">
                     </div>
 
                     <!-- Text Wrapper (Always Second in DOM) -->
@@ -459,10 +479,10 @@ get_header();
                         <h3 class="font-sans font-bold text-3xl md:text-5xl text-white mb-6 leading-tight">
                             <?php echo esc_html($sec['title']); ?>
                         </h3>
-                        <p class="font-sans text-gray-400 font-light leading-relaxed mb-6 text-justify">
+                        <p class="font-sans text-gray-300 font-light leading-relaxed mb-6 text-justify">
                             <?php echo esc_html($sec['desc']); ?>
                         </p>
-                        <ul class="space-y-2 font-sans text-sm text-gray-500">
+                        <ul class="space-y-2 font-sans text-sm text-gray-300">
                             <?php foreach ($sec['specs'] as $spec): ?>
                                 <li><?php echo esc_html($spec); ?></li>
                             <?php endforeach; ?>
@@ -500,20 +520,23 @@ get_header();
                                 <div
                                     class="min-w-[280px] md:min-w-[320px] snap-start bg-<?php echo ($sec['bg'] === 'bg-metal') ? 'void' : 'metal'; ?> p-4 border border-white/5 group hover:border-gold/50 transition-all">
                                     <div class="aspect-square bg-surface overflow-hidden mb-4 relative">
-                                        <a href="<?php the_permalink(); ?>">
+                                        <a href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
                                             <?php if (has_post_thumbnail()): ?>
                                                 <img src="<?php the_post_thumbnail_url('medium_large'); ?>"
                                                     class="w-full h-full object-cover zoom-img"
+                                                    alt="<?php the_title_attribute(); ?>"
+                                                    width="300" height="300"
                                                     loading="lazy">
                                             <?php else: ?>
-                                                <div class="w-full h-full flex items-center justify-center bg-gray-800 text-gray-600">No
+                                                <div class="w-full h-full flex items-center justify-center bg-gray-800 text-gray-400">No
                                                     Image</div>
                                             <?php endif; ?>
                                         </a>
                                     </div>
                                     <h4 class="text-white font-sans font-bold text-lg truncate"><a
+                                            class="text-white hover:text-gold transition-colors"
                                             href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
-                                    <p class="text-xs text-gray-500 mb-2 truncate">
+                                    <p class="text-xs text-gray-400 mb-2 truncate">
                                         <?php
                                         $cats = get_the_terms(get_the_ID(), 'product_cat');
                                         if ($cats && !is_wp_error($cats)) {
@@ -530,7 +553,7 @@ get_header();
                             wp_reset_postdata();
                         else:
                             ?>
-                            <div class="p-8 text-gray-500 italic">Đang cập nhật sản phẩm cho danh mục này...</div>
+                            <div class="p-8 text-gray-400 italic">Đang cập nhật sản phẩm cho danh mục này...</div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -540,7 +563,7 @@ get_header();
 
     <!-- 5. TECHNOLOGY & QUALITY -->
     <section class="py-32 bg-metal relative overflow-hidden border-y border-white/5">
-        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
+        <div class="absolute inset-0 bg-[url('<?php echo esc_url(get_template_directory_uri() . '/assets/images/noise.svg'); ?>')] opacity-10"></div>
         <div class="container mx-auto px-6 md:px-12 relative z-10">
             <div class="text-center mb-16">
                 <span class="font-sans text-gold text-xs tracking-cinematic uppercase">Technology</span>
@@ -550,26 +573,26 @@ get_header();
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="p-6 border border-white/5 hover:bg-void transition-colors">
                     <i data-lucide="cpu" class="w-10 h-10 text-gold mb-4"></i>
-                    <h4 class="text-white font-sans font-bold text-xl mb-3 text-center">DSP 32-Bit</h4>
-                    <p class="text-gray-500 text-xs leading-relaxed">Chip xử lý tín hiệu kỹ thuật số tiên tiến nhất, cho
+                    <h3 class="text-white font-sans font-bold text-xl mb-3 text-center">DSP 32-Bit</h3>
+                    <p class="text-gray-300 text-xs leading-relaxed">Chip xử lý tín hiệu kỹ thuật số tiên tiến nhất, cho
                         độ phân giải âm thanh cao.</p>
                 </div>
                 <div class="p-6 border border-white/5 hover:bg-void transition-colors">
                     <i data-lucide="activity" class="w-10 h-10 text-gold mb-4"></i>
-                    <h4 class="text-white font-sans font-bold text-xl mb-3 text-center">RTA Testing</h4>
-                    <p class="text-gray-500 text-xs leading-relaxed">Đo đáp tuyến tần số thực tế (Real Time Analyzer)
+                    <h3 class="text-white font-sans font-bold text-xl mb-3 text-center">RTA Testing</h3>
+                    <p class="text-gray-300 text-xs leading-relaxed">Đo đáp tuyến tần số thực tế (Real Time Analyzer)
                         đảm bảo độ phẳng tuyệt đối.</p>
                 </div>
                 <div class="p-6 border border-white/5 hover:bg-void transition-colors">
                     <i data-lucide="shield-check" class="w-10 h-10 text-gold mb-4"></i>
-                    <h4 class="text-white font-sans font-bold text-xl mb-3 text-center">Burn-in 48h</h4>
-                    <p class="text-gray-500 text-xs leading-relaxed">Quy trình chạy thử tải nặng liên tục 48 giờ trước
+                    <h3 class="text-white font-sans font-bold text-xl mb-3 text-center">Burn-in 48h</h3>
+                    <p class="text-gray-300 text-xs leading-relaxed">Quy trình chạy thử tải nặng liên tục 48 giờ trước
                         khi xuất xưởng.</p>
                 </div>
                 <div class="p-6 border border-white/5 hover:bg-void transition-colors">
                     <i data-lucide="layers" class="w-10 h-10 text-gold mb-4"></i>
-                    <h4 class="text-white font-sans font-bold text-xl mb-3 text-center">Linh Kiện Nhập</h4>
-                    <p class="text-gray-500 text-xs leading-relaxed">Tụ điện, trở, sò công suất nhập khẩu từ các thương
+                    <h3 class="text-white font-sans font-bold text-xl mb-3 text-center">Linh Kiện Nhập</h3>
+                    <p class="text-gray-300 text-xs leading-relaxed">Tụ điện, trở, sò công suất nhập khẩu từ các thương
                         hiệu hàng đầu.</p>
                 </div>
             </div>
@@ -582,7 +605,7 @@ get_header();
             <div class="text-center mb-24">
                 <span class="font-sans text-gold text-xs tracking-cinematic uppercase">Giải pháp chuyên sâu</span>
                 <h2 class="font-sans font-bold text-3xl md:text-5xl text-white mb-6">Ứng Dụng Thực Tế</h2>
-                <p class="text-gray-400 mt-4 max-w-2xl mx-auto font-light">Chúng tôi không áp dụng một công thức cho tất
+                <p class="text-gray-300 mt-4 max-w-2xl mx-auto font-light">Chúng tôi không áp dụng một công thức cho tất
                     cả. Mỗi không gian là một bài toán âm học riêng biệt cần lời giải chính xác.</p>
             </div>
 
@@ -592,31 +615,33 @@ get_header();
                 <div class="flex flex-col md:flex-row gap-12 items-center">
                     <div class="w-full md:w-1/2 relative group">
                         <div class="absolute -top-4 -left-4 w-16 h-16 border-t border-l border-gold/50"></div>
-                        <img src="https://tdclassic.vn/wp-content/uploads/2025/10/3-HE-THONG-AM-THANH-GOM-NHUNG-GI.jpg"
+                        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/app/app-1.jpg'); ?>"
+                            alt="Giải pháp âm thanh cho Bar và Lounge TD Classic"
+                            width="800" height="533"
                             class="w-full transition-all duration-1000"
                             loading="lazy">
                     </div>
                     <div class="w-full md:w-1/2">
                         <div class="flex items-center gap-4 mb-4">
-                            <span class="text-4xl font-serif text-white/10">01</span>
+                            <span class="text-4xl font-serif text-white/35" aria-hidden="true">01</span>
                             <h3 class="text-white font-sans font-bold text-2xl">Bar & Lounge</h3>
                         </div>
                         <div class="space-y-6">
                             <div>
                                 <h4 class="text-gold text-xs uppercase tracking-widest mb-2">Thách thức</h4>
-                                <p class="text-gray-400 text-sm font-light">Không gian ồn ào, vật liệu tiêu âm kém
+                                <p class="text-gray-300 text-sm font-light">Không gian ồn ào, vật liệu tiêu âm kém
                                     (kính, đá). Cần áp lực âm thanh lớn (SPL cao) để kích thích không khí nhưng không
                                     được gây chói tai hay mệt mỏi cho khách hàng ngồi lâu.</p>
                             </div>
                             <div>
                                 <h4 class="text-gold text-xs uppercase tracking-widest mb-2">Giải pháp TD Classic</h4>
-                                <p class="text-gray-400 text-sm font-light">Sử dụng hệ thống Array phân tán đều hoặc loa
+                                <p class="text-gray-300 text-sm font-light">Sử dụng hệ thống Array phân tán đều hoặc loa
                                     Full công suất lớn. Tinh chỉnh DSP để cắt dải tần gây chói, tăng cường dải trầm sâu
                                     (Sub-bass) tạo độ "đầm".</p>
                             </div>
                             <div class="bg-metal p-4 border border-white/5">
                                 <h4 class="text-white text-xs uppercase tracking-widest mb-2">Cấu hình đề xuất</h4>
-                                <p class="text-gray-500 text-xs">Loa Array LA-210 • Subwoofer S-2180 • Cục đẩy 4 kênh
+                                <p class="text-gray-300 text-xs">Loa Array LA-210 • Subwoofer S-2180 • Cục đẩy 4 kênh
                                     D-4800</p>
                             </div>
                         </div>
@@ -629,30 +654,32 @@ get_header();
                     <div class="w-full md:w-1/2 relative group">
                         <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b border-r border-gold/50"></div>
                         <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800&auto=format&fit=crop"
+                            alt="Giải pháp âm thanh Karaoke Luxury TD Classic"
+                            width="800" height="533"
                             class="w-full transition-all duration-1000"
                             loading="lazy">
                     </div>
                     <div class="w-full md:w-1/2">
                         <div class="flex items-center gap-4 mb-4">
-                            <span class="text-4xl font-serif text-white/10">02</span>
+                            <span class="text-4xl font-serif text-white/35" aria-hidden="true">02</span>
                             <h3 class="text-white font-sans font-bold text-2xl">Karaoke Luxury</h3>
                         </div>
                         <div class="space-y-6">
                             <div>
                                 <h4 class="text-gold text-xs uppercase tracking-widest mb-2">Thách thức</h4>
-                                <p class="text-gray-400 text-sm font-light">Khách hàng hát không chuyên nghiệp, dễ xảy
+                                <p class="text-gray-300 text-sm font-light">Khách hàng hát không chuyên nghiệp, dễ xảy
                                     ra hú rít. Yêu cầu hiệu ứng Vocal (Echo/Reverb) phải nịnh giọng, dễ hát, nhạc nền
                                     phải bốc.</p>
                             </div>
                             <div>
                                 <h4 class="text-gold text-xs uppercase tracking-widest mb-2">Giải pháp TD Classic</h4>
-                                <p class="text-gray-400 text-sm font-light">Micro độ nhạy cao kết hợp Vang số chống hú 4
+                                <p class="text-gray-300 text-sm font-light">Micro độ nhạy cao kết hợp Vang số chống hú 4
                                     cấp độ. Setup chế độ Effect riêng biệt cho từng thể loại nhạc (Bolero/Remix). Loa
                                     chịu tải tốt trong phòng kín.</p>
                             </div>
                             <div class="bg-metal p-4 border border-white/5">
                                 <h4 class="text-white text-xs uppercase tracking-widest mb-2">Cấu hình đề xuất</h4>
-                                <p class="text-gray-500 text-xs">Loa Full TD-12 Pro • Sub S-1800 • Micro M-20 Gold •
+                                <p class="text-gray-300 text-xs">Loa Full TD-12 Pro • Sub S-1800 • Micro M-20 Gold •
                                     Vang X-6 Pro</p>
                             </div>
                         </div>
@@ -665,30 +692,32 @@ get_header();
                     <div class="w-full md:w-1/2 relative group">
                         <div class="absolute -top-4 -left-4 w-16 h-16 border-t border-l border-gold/50"></div>
                         <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=800&auto=format&fit=crop"
+                            alt="Giải pháp âm thanh Hội Trường và Sự Kiện TD Classic"
+                            width="800" height="533"
                             class="w-full transition-all duration-1000"
                             loading="lazy">
                     </div>
                     <div class="w-full md:w-1/2">
                         <div class="flex items-center gap-4 mb-4">
-                            <span class="text-4xl font-serif text-white/10">03</span>
+                            <span class="text-4xl font-serif text-white/35" aria-hidden="true">03</span>
                             <h3 class="text-white font-sans font-bold text-2xl">Hội Trường & Sự Kiện</h3>
                         </div>
                         <div class="space-y-6">
                             <div>
                                 <h4 class="text-gold text-xs uppercase tracking-widest mb-2">Thách thức</h4>
-                                <p class="text-gray-400 text-sm font-light">Không gian rộng, trần cao, dễ bị vang vọng
+                                <p class="text-gray-300 text-sm font-light">Không gian rộng, trần cao, dễ bị vang vọng
                                     (Reverb tự nhiên) làm đục tiếng nói. Cần độ phủ âm đều cho cả hàng ghế đầu và cuối.
                                 </p>
                             </div>
                             <div>
                                 <h4 class="text-gold text-xs uppercase tracking-widest mb-2">Giải pháp TD Classic</h4>
-                                <p class="text-gray-400 text-sm font-light">Sử dụng loa Column hoặc Array có tính định
+                                <p class="text-gray-300 text-sm font-light">Sử dụng loa Column hoặc Array có tính định
                                     hướng cao. Tính toán góc phủ âm để giảm thiểu phản xạ trần/sàn. Tối ưu dải trung
                                     (Mid) cho giọng nói rõ nét.</p>
                             </div>
                             <div class="bg-metal p-4 border border-white/5">
                                 <h4 class="text-white text-xs uppercase tracking-widest mb-2">Cấu hình đề xuất</h4>
-                                <p class="text-gray-500 text-xs">Loa Column C-10s • Sub S-15 Compact • Micro W-1000</p>
+                                <p class="text-gray-300 text-xs">Loa Column C-10s • Sub S-15 Compact • Micro W-1000</p>
                             </div>
                         </div>
                     </div>
@@ -698,18 +727,31 @@ get_header();
         </div>
     </section>
 
+            </div>
+        </div>
+    </section>
+
 </div>
 
 <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            lucide.createIcons();
+        }
 
-    // Smooth Scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
+        // Smooth Scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                var targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    var target = document.querySelector(targetId);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }
             });
         });
     });

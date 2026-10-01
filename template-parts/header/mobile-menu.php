@@ -20,7 +20,10 @@ $news_categories = tdclassic_get_news_categories();
                     echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="header-logo-mobile h-11 sm:h-12 w-auto object-contain">';
                 }
             } else {
-                echo '<span class="text-xl font-bold text-white uppercase tracking-widest font-serif">' . esc_html(get_bloginfo('name')) . '</span>';
+                echo '<div class="flex flex-col leading-none">';
+                echo '<span class="text-xl font-extrabold text-white uppercase tracking-[0.2em] font-serif inline-flex items-center gap-1.5"><span class="text-white">TD</span><span class="text-[#C5A059]">CLASSIC</span></span>';
+                echo '<span class="text-[8px] uppercase tracking-[0.3em] text-gray-400 mt-1 font-sans">Audio Hi-End</span>';
+                echo '</div>';
             }
             ?>
             <button id="close-mob-menu" class="text-gray-400 hover:text-white p-2" aria-label="Đóng trình đơn">
@@ -29,7 +32,17 @@ $news_categories = tdclassic_get_news_categories();
         </div>
 
         <!-- Mobile Links Scrollable -->
-        <div class="flex-1 overflow-y-auto py-6">
+        <div class="flex-1 overflow-y-auto px-6 py-5">
+            <!-- Search bar in drawer -->
+            <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="mb-5">
+                <div class="relative">
+                    <input type="search" name="s" placeholder="Tìm kiếm sản phẩm, tin tức..." class="w-full bg-white/5 border border-white/15 focus:border-[#C5A059] rounded-full py-2.5 pl-4 pr-10 text-xs text-white placeholder-gray-400 outline-none transition-all">
+                    <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#C5A059] p-1" aria-label="Tìm kiếm">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </button>
+                </div>
+            </form>
+
             <a href="<?php echo esc_url(home_url('/')); ?>" class="mob-link">Trang chủ</a>
             <a href="<?php echo esc_url(home_url('/gioi-thieu/')); ?>" class="mob-link">Giới thiệu</a>
 
@@ -66,6 +79,8 @@ $news_categories = tdclassic_get_news_categories();
                 </div>
             </div>
 
+            <a href="<?php echo esc_url(home_url('/du-an/')); ?>" class="mob-link">Dự án tiêu biểu</a>
+
             <!-- Accordion: Tin tức - Dynamic -->
             <?php if (!empty($news_categories)): ?>
                 <div class="mob-accordion">
@@ -82,7 +97,9 @@ $news_categories = tdclassic_get_news_categories();
                 </div>
             <?php endif; ?>
 
-            <a href="<?php echo esc_url(home_url('/lien-he')); ?>" class="mob-link">Liên hệ</a>
+            <a href="<?php echo esc_url(home_url('/ho-so-nang-luc/')); ?>" class="mob-link">Hồ sơ năng lực</a>
+            <a href="<?php echo esc_url(home_url('/dai-ly/')); ?>" class="mob-link">Hệ thống đại lý</a>
+            <a href="<?php echo esc_url(home_url('/lien-he/')); ?>" class="mob-link">Liên hệ</a>
         </div>
 
         <!-- Mobile Footer -->

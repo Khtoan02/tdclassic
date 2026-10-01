@@ -14,13 +14,13 @@ get_header(); ?>
     style="background-color: #050505;">
 
     <!-- PAGE HERO -->
-    <section class="relative pt-24 md:pt-32 pb-16 md:pb-24 bg-void overflow-hidden">
+    <section class="relative pt-36 md:pt-40 pb-16 md:pb-24 bg-void overflow-hidden">
         <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#151515] to-transparent opacity-30">
         </div>
         <div class="container mx-auto px-4 md:px-6 lg:px-12 relative z-10 text-center">
             <span class="font-sans text-[#C5A059] text-xs tracking-[0.3em] uppercase block mb-4 md:mb-6">Bộ sưu tập
                 2025</span>
-            <h1 class="font-sans font-bold text-4xl md:text-6xl lg:text-7xl text-white mb-4 md:mb-6"
+            <h1 class="font-sans font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-4 md:mb-6 break-words"
                 style="font-family: 'Manrope', sans-serif;">KHO TÀNG ÂM THANH</h1>
             <p class="font-sans text-gray-400 text-sm md:text-base font-light leading-relaxed max-w-2xl mx-auto"
                 style="font-family: 'Manrope', sans-serif;">
@@ -65,7 +65,7 @@ get_header(); ?>
                         foreach ($product_categories as $category):
                             ?>
                             <a href="#<?php echo $category->slug; ?>"
-                                class="category-filter-link text-gray-500 hover:text-white font-sans text-xs font-bold uppercase tracking-widest whitespace-nowrap pb-4 mt-4 transition-colors"
+                                class="category-filter-link text-gray-400 hover:text-white font-sans text-xs font-bold uppercase tracking-widest whitespace-nowrap pb-4 mt-4 transition-colors"
                                 data-category="<?php echo $category->slug; ?>"><?php echo $category->name; ?></a>
                             <?php
                         endforeach;
@@ -142,14 +142,20 @@ get_header(); ?>
                             <div>
                                 <h2 class="font-sans font-bold text-3xl text-white" style="font-family: 'Manrope', sans-serif;">
                                     <?php echo $category->name; ?></h2>
-                                <p class="font-sans text-gray-500 text-xs mt-2 uppercase tracking-widest"
+                                <p class="font-sans text-gray-400 text-xs mt-2 uppercase tracking-widest"
                                     style="font-family: 'Manrope', sans-serif;">
-                                    <?php echo $category->description ? $category->description : 'Dòng sản phẩm chuyên nghiệp'; ?>
+                                    <?php 
+                                     $clean_desc = wp_strip_all_tags($category->description);
+                                     echo !empty($clean_desc) ? esc_html(wp_trim_words($clean_desc, 14, '...')) : 'Dòng sản phẩm chuyên nghiệp'; 
+                                     ?>
                                 </p>
                             </div>
                         </div>
 
-                        <?php if ($spotlight): ?>
+                        <?php if ($spotlight): 
+                            $is_first_spotlight = ($category_count === 1);
+                            $loading_attr = $is_first_spotlight ? 'fetchpriority="high" decoding="sync"' : 'loading="lazy" decoding="async"';
+                        ?>
                             <!-- Spotlight Item -->
                             <div
                                 class="mb-8 md:mb-12 product-card group cursor-pointer relative bg-[#151515] border border-white/5 overflow-hidden h-[350px] md:h-[450px] lg:h-[500px]">
@@ -158,7 +164,9 @@ get_header(); ?>
                                         <?php if ($spotlight['thumbnail']): ?>
                                             <img src="<?php echo $spotlight['thumbnail']; ?>"
                                                 class="w-full h-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.2,1,0.3,1)] group-hover:scale-[1.08]"
-                                                alt="<?php echo $spotlight['title']; ?>"
+                                                alt="<?php echo esc_attr($spotlight['title']); ?>"
+                                                width="600" height="500"
+                                                <?php echo $loading_attr; ?>
                                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-[#1E1E1E] to-[#0A0A0A] flex items-center justify-center\'><svg class=\'w-24 h-24 text-[#C5A059] opacity-30\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3\'></path></svg></div>';">
                                         <?php else: ?>
                                             <div
@@ -177,7 +185,7 @@ get_header(); ?>
                                         <span
                                             class="bg-[#C5A059] text-black text-[10px] font-bold uppercase tracking-wider px-3 py-1 inline-block w-fit mb-3">Signature
                                             Series</span>
-                                        <h4 class="text-white font-sans font-bold text-lg mb-2">Củ Loa Neodymium</h4>
+                                        <p class="text-[#C5A059] font-sans font-bold text-sm mb-1 uppercase tracking-wider">Củ Loa Neodymium</p>
                                         <h3 class="font-sans font-bold text-2xl md:text-4xl lg:text-5xl text-white mb-2"
                                             style="font-family: 'Manrope', sans-serif;"><?php echo $spotlight['title']; ?></h3>
                                         <p class="font-sans text-gray-300 text-sm mb-6 max-w-lg hidden md:block"
@@ -197,12 +205,15 @@ get_header(); ?>
                             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                                 <?php foreach ($grid_products as $product): ?>
                                     <a href="<?php echo $product['url']; ?>"
-                                        class="product-card group cursor-pointer bg-[#151515] border border-white/5 p-4 hover:border-[#C5A059]/30 transition-all">
+                                        class="product-card block group cursor-pointer bg-[#151515] border border-white/5 p-4 hover:border-[#C5A059]/30 transition-all"
+                                        style="background-color: #151515 !important;">
                                         <div class="img-container aspect-square bg-[#1E1E1E] overflow-hidden mb-4 relative">
                                             <?php if ($product['thumbnail']): ?>
                                                 <img src="<?php echo $product['thumbnail']; ?>"
                                                     class="w-full h-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.2,1,0.3,1)] group-hover:scale-[1.08]"
-                                                    alt="<?php echo $product['title']; ?>"
+                                                    alt="<?php echo esc_attr($product['title']); ?>"
+                                                    width="300" height="300"
+                                                    loading="lazy"
                                                     onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-[#1E1E1E] to-[#0A0A0A] flex items-center justify-center\'><svg class=\'w-16 h-16 text-[#C5A059] opacity-30\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3\'></path></svg></div>';">
                                             <?php else: ?>
                                                 <div
@@ -216,11 +227,11 @@ get_header(); ?>
                                                 </div>
                                             <?php endif; ?>
                                         </div>
-                                        <h4 class="text-white font-sans font-bold text-lg mb-2">Thùng Gỗ Bạch Dương</h4>
-                                        <h4 class="font-sans font-bold text-white text-sm md:text-base group-hover:text-[#C5A059] transition-colors"
-                                            style="font-family: 'Manrope', sans-serif;"><?php echo $product['title']; ?></h4>
-                                        <p class="font-sans text-gray-500 text-[10px] uppercase mt-1"
-                                            style="font-family: 'Manrope', sans-serif;">Chuyên nghiệp</p>
+                                        <p class="text-[#C5A059] font-sans font-bold text-xs mb-1 uppercase tracking-wider" style="color: #C5A059 !important;">Thùng Gỗ Bạch Dương</p>
+                                        <h3 class="font-sans font-bold text-white text-sm md:text-base group-hover:text-[#C5A059] transition-colors"
+                                            style="font-family: 'Manrope', sans-serif; color: #ffffff !important;"><?php echo $product['title']; ?></h3>
+                                        <p class="font-sans text-gray-400 text-[10px] uppercase mt-1"
+                                            style="font-family: 'Manrope', sans-serif; color: #9ca3af !important;">Chuyên nghiệp</p>
                                     </a>
                                 <?php endforeach; ?>
                             </div>
@@ -249,7 +260,10 @@ get_header(); ?>
                 <section class="py-16 md:py-20 bg-[#151515] relative overflow-hidden border-y border-white/5">
                     <div class="absolute inset-0 opacity-20">
                         <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1600&auto=format&fit=crop"
-                            class="w-full h-full object-cover grayscale">
+                            class="w-full h-full object-cover grayscale"
+                            alt="Giải pháp âm thanh dự án TD Classic"
+                            width="1600" height="900"
+                            loading="lazy">
                     </div>
                     <div class="container mx-auto px-6 text-center relative z-10">
                         <h2 class="font-sans font-bold text-2xl md:text-3xl lg:text-4xl text-white mb-3 md:mb-4"
@@ -273,10 +287,10 @@ get_header(); ?>
 
     <!-- DETAILED DOCUMENTATION (Combined & Dense) -->
     <section
-        class="py-12 md:py-16 lg:py-20 bg-void border-t border-white/5 text-gray-600 font-sans text-[10px] leading-relaxed"
-        style="font-family: 'Manrope', sans-serif;">
+        class="py-12 md:py-16 lg:py-20 bg-void border-t border-white/5 font-sans text-xs leading-relaxed"
+        style="font-family: 'Manrope', sans-serif; color: #d1d5db;">
         <div class="container mx-auto px-6 md:px-12 max-w-5xl">
-            <div class="space-y-6 opacity-70" style="text-align: justify; text-justify: inter-word;">
+            <div class="space-y-6 text-gray-300" style="color: #d1d5db !important; text-align: justify; text-justify: inter-word;">
                 <p>
                     Thông tin được cung cấp trong tài liệu này phản ánh các thông số kỹ thuật và đặc tính hiệu suất của
                     các dòng sản phẩm tại thời điểm xuất bản. TD Classic, tuân theo chính sách phát triển và cải tiến
@@ -336,8 +350,8 @@ get_header(); ?>
                 </p>
             </div>
 
-            <div class="mt-12 pt-8 border-t border-white/5 text-center opacity-40">
-                <p>Mã tài liệu: DOC-CAT-2025-V2.1 | Bản quyền © 2025 TD Classic Audio. Mọi quyền được bảo lưu.</p>
+            <div class="mt-12 pt-8 border-t border-white/5 text-center text-gray-400 text-xs">
+                <p style="color: #9ca3af !important;">Mã tài liệu: DOC-CAT-2025-V2.1 | Bản quyền © 2025 TD Classic Audio. Mọi quyền được bảo lưu.</p>
             </div>
         </div>
     </section>
@@ -355,7 +369,7 @@ get_header(); ?>
         pointer-events: none;
         z-index: 50;
         opacity: 0.03;
-        background: url('https://grainy-gradients.vercel.app/noise.svg');
+        background: url('<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/noise.svg'); ?>');
     }
 
     /* No scrollbar for horizontal scroll */
@@ -364,6 +378,10 @@ get_header(); ?>
     }
 
     /* Product Card Hover Effects */
+    .product-card {
+        background-color: #151515 !important;
+    }
+
     .product-card .img-container img {
         transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
     }
@@ -399,11 +417,12 @@ get_header(); ?>
     }
 </style>
 
-<script src="https://unpkg.com/lucide@latest"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Initialize Lucide icons
-        lucide.createIcons();
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
 
         // Smooth scroll for category filter links
         const filterLinks = document.querySelectorAll('.category-filter-link');

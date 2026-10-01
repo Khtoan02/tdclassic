@@ -6,11 +6,33 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    <!-- Preconnect to Google Fonts and CDNs for CWV LCP/FCP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+    <?php if (is_front_page()): ?>
+    <!-- Preload Hero LCP Image -->
+    <link rel="preload" as="image" href="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1.webp'); ?>"
+          imagesrcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1-mobile.webp'); ?> 768w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/hero/hero-1.webp'); ?> 1920w"
+          imagesizes="100vw"
+          fetchpriority="high">
+    <?php elseif (is_singular('product') && has_post_thumbnail()): ?>
+    <!-- Preload Product Main LCP Image -->
+    <link rel="preload" as="image" href="<?php echo esc_url(get_the_post_thumbnail_url(null, 'large')); ?>" fetchpriority="high">
+    <?php endif; ?>
+
     <?php wp_head(); ?>
 </head>
 
 <body <?php body_class('antialiased selection:bg-gold selection:text-black bg-black text-white'); ?>>
     <?php wp_body_open(); ?>
+
+    <!-- Accessibility Skip to Main Content Link -->
+    <a class="skip-link screen-reader-text sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-gold focus:text-black focus:font-bold focus:shadow-lg focus:outline-none" href="#main-content">
+        Chuyển đến nội dung chính
+    </a>
 
     <!-- === NEW PREMIUM FLOATING HEADER === -->
     <header class="header-wrapper sticky-header" id="main-header">
@@ -42,7 +64,10 @@
                                 echo '<img src="' . esc_url($logo[0]) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="h-12 sm:h-14 lg:h-16 xl:h-20 max-h-[50px] sm:max-h-[58px] lg:max-h-[68px] xl:max-h-[78px] w-auto object-contain opacity-95 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-105">';
                             }
                         } else {
-                            echo '<span class="text-2xl lg:text-3xl font-bold uppercase tracking-widest text-white font-serif">' . esc_html(get_bloginfo('name')) . '</span>';
+                            echo '<div class="flex flex-col items-center leading-none py-0.5">';
+                            echo '<span class="text-xl sm:text-2xl lg:text-3xl font-extrabold uppercase tracking-[0.2em] text-white font-serif inline-flex items-center gap-1.5"><span class="text-white">TD</span><span class="text-[#C5A059]">CLASSIC</span></span>';
+                            echo '<span class="text-[8px] sm:text-[9px] uppercase tracking-[0.35em] text-gray-400 mt-1 font-sans hidden sm:block">Audio Hi-End</span>';
+                            echo '</div>';
                         }
                         ?>
                     </a>
@@ -124,4 +149,4 @@
     <?php get_template_part('template-parts/header/mobile-menu'); ?>
     <!-- === END MOBILE MENU === -->
 
-    <div id="content" class="site-content">
+    <main id="main-content" class="site-main site-content">
